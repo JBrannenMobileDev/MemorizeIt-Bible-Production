@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/my_verses_fragment">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_verse_button_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="15dp"
+        app:backgroundTint="@color/colorHighlight"
+        android:src="@drawable/ic_add_white_24dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/current_set_recycler_view"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>

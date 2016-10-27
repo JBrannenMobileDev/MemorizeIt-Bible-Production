@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="book_list_array">
+        <item>Genesis</item>
+        <item>Exodus</item>
+        <item>Leviticus</item>
+        <item>Numbers</item>
+        <item>Deuteronomy</item>
+        <item>Joshua</item>
+        <item>Judges</item>
+        <item>Ruth</item>
+        <item>1 Samuel</item>
+        <item>2 Samuel</item>
+        <item>1 Kings</item>
+        <item>2 Kings</item>
+        <item>1 Chronicles</item>
+        <item>2 Chronicals</item>
+        <item>Ezra</item>
+        <item>Nehemiah</item>
+        <item>Esther</item>
+        <item>Job</item>
+        <item>Psalms</item>
+        <item>Proverbs</item>
+        <item>Ecclesiastes</item>
+        <item>The Song of Solomon</item>
+        <item>Isaiah</item>
+        <item>Jeremiah</item>
+        <item>Lamentations</item>
+        <item>Ezekiel</item>
+        <item>Daniel</item>
+        <item>Hosea</item>
+        <item>Joel</item>
+        <item>Amos</item>
+
+    </string-array>
+</resources>

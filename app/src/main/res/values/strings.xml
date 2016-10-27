@@ -1,0 +1,178 @@
+<resources>
+    <string name="app_name">MemorizeIt-Bible</string>
+
+    //UnlockActivity Strings
+    <string name="did_you_get_it">Did You Get It?</string>
+    <string name="read_this_verse_once">Read this verse</string>
+    <string name="what_is_the_verse">What is this verse?</string>
+    <string name="where_is_the_verse">Where is this verse?</string>
+    <string name="more">More Verses</string>
+    <string name="done">Done</string>
+    <string name="check_answer">CHECK ANSWER</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Tap anywhere on the screen to reveal the answer. Tap again to exit the quiz.</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_unlock">UnlockActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <string name="title_activity_phone_unlock">PhoneUnlockActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="first_time_unlock_toast">Tap anywhere on the screen to reveal the answer. Tap again to exit the quiz.</string>
+    //Prod
+    <!--<string name="unlock_view_banneradd">ca-app-pub-2849776172926644/2939040418</string>-->
+    //Testing
+    <string name="unlock_view_banner_ad">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="app_ad_id">ca-app-pub-2849776172926644~6032107612</string>
+    <string name="title_activity_current_list">CurrentList</string>
+    <string name="title_activity_learning_list">LearningList</string>
+    <string name="title_activity_memorized_list">MemorizedList</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_current_set">CurrentSet</string>
+    <string name="title_activity_learning_set">LearningSet</string>
+    <string name="title_activity_memorized_set">MemorizedSet</string>
+    <string name="title_activity_unlock_quiz_settings">UnlockQuizSettings</string>
+
+    <string-array name="books_of_the_bible">
+        <item>Genesis</item>
+        <item>Exodus</item>
+        <item>Leviticus</item>
+        <item>Numbers</item>
+        <item>Deuteronomy</item>
+        <item>Joshua</item>
+        <item>Judges</item>
+        <item>Ruth</item>
+        <item>1 Samuel</item>
+        <item>2 Samuel</item>
+        <item>1 Kings</item>
+        <item>2 Kings</item>
+        <item>1 Chronicles</item>
+        <item>2 Chronicles</item>
+        <item>Ezra</item>
+        <item>Nehemiah</item>
+        <item>Esther</item>
+        <item>Job</item>
+        <item>Psalms</item>
+        <item>Proverbs</item>
+        <item>Ecclesiastes</item>
+        <item>Song of Songs</item>
+        <item>Isaiah</item>
+        <item>Jeremiah</item>
+        <item>Lamentations</item>
+        <item>Ezekiel</item>
+        <item>Daniel</item>
+        <item>Hosea</item>
+        <item>Joel</item>
+        <item>Amos</item>
+        <item>Obadiah</item>
+        <item>Jonah</item>
+        <item>Micah</item>
+        <item>Nahum</item>
+        <item>Habakkuk</item>
+        <item>Zephaniah</item>
+        <item>Haggai</item>
+        <item>Zechariah</item>
+        <item>Malachi</item>
+        <item>Matthew</item>
+        <item>Mark</item>
+        <item>Luke</item>
+        <item>John</item>
+        <item>Acts</item>
+        <item>Romans</item>
+        <item>1 Corinthians</item>
+        <item>2 Corinthians</item>
+        <item>Galatians</item>
+        <item>Ephesians</item>
+        <item>Philippians</item>
+        <item>Colossians</item>
+        <item>1 Thessalonians</item>
+        <item>2 Thessalonians</item>
+        <item>1 Timothy</item>
+        <item>2 Timothy</item>
+        <item>Titus</item>
+        <item>Philemon</item>
+        <item>Hebrews</item>
+        <item>James</item>
+        <item>1 Peter</item>
+        <item>2 Peter</item>
+        <item>1 John</item>
+        <item>2 John</item>
+        <item>3 John</item>
+        <item>Jude</item>
+        <item>Revelation</item>
+    </string-array>
+
+    <string-array name="number_of_chapters_list">
+        <item>50</item>
+        <item>40</item>
+        <item>27</item>
+        <item>36</item>
+        <item>34</item>
+        <item>24</item>
+        <item>21</item>
+        <item>4</item>
+        <item>31</item>
+        <item>24</item>
+        <item>22</item>
+        <item>25</item>
+        <item>29</item>
+        <item>36</item>
+        <item>10</item>
+        <item>13</item>
+        <item>10</item>
+        <item>42</item>
+        <item>150</item>
+        <item>31</item>
+        <item>12</item>
+        <item>8</item>
+        <item>66</item>
+        <item>52</item>
+        <item>5</item>
+        <item>48</item>
+        <item>12</item>
+        <item>14</item>
+        <item>3</item>
+        <item>9</item>
+        <item>1</item>
+        <item>4</item>
+        <item>7</item>
+        <item>3</item>
+        <item>3</item>
+        <item>3</item>
+        <item>2</item>
+        <item>14</item>
+        <item>4</item>
+        <item>28</item>
+        <item>16</item>
+        <item>24</item>
+        <item>21</item>
+        <item>28</item>
+        <item>16</item>
+        <item>16</item>
+        <item>13</item>
+        <item>6</item>
+        <item>6</item>
+        <item>4</item>
+        <item>4</item>
+        <item>5</item>
+        <item>3</item>
+        <item>6</item>
+        <item>4</item>
+        <item>3</item>
+        <item>1</item>
+        <item>13</item>
+        <item>5</item>
+        <item>5</item>
+        <item>3</item>
+        <item>5</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>22</item>
+    </string-array>
+</resources>

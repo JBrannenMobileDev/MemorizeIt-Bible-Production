@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#007298</color>
+    <color name="colorPrimaryDark">#01516b</color>
+    <color name="colorAccent">#007298</color>
+    <color name="bgColor">#01516b</color>
+    <color name="colorHighlight">#01bdfc</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorCloseButtonTextUnselected">#014860</color>
+    <color name="colorGreenText">#2bfc74</color>
+    <color name="colorNoText">#ff642c</color>
+    <color name="indicator">#01bdfc</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="circle_button">#016585</color>
+    <color name="tabsScrollColor">#014860</color>
+    <color name="greyBg">#d5d5d5</color>
+    <color name="colorProgressBg">#0d97c5</color>
+    <color name="colorStartQuiz">#017faa</color>
+    <color name="colorCardviewHighlight">#97ddf5</color>
+    <color name="view_by_text_color">#003143</color>
+    <color name="view_by_view_background">#015d7a</color>
+    <color name="testColor">#9dc9d7</color>
+</resources>

@@ -1,0 +1,146 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="nape.biblememory.Activities.Fragments.Dialogs.VerseSelection"
+    android:orientation="vertical"
+    android:id="@+id/verse_selection_fragment"
+    android:background="@color/greyBg">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Custom List"
+        android:id="@+id/custom_list_textview"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp"
+        android:layout_height="35dp"
+        android:background="@color/colorStartQuiz"
+        android:layout_marginTop="20dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:text="New Verse"
+        android:id="@+id/new_verse_button"
+        android:translationZ="4dp"
+        android:textAlignment="textStart"
+        android:background="@color/colorWhite"
+        android:paddingLeft="20dp"
+        android:textColor="@color/view_by_text_color"
+        android:textSize="20sp"
+        android:layout_height="45dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Pre-made Categories"
+        android:id="@+id/preset_lists_textview"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp"
+        android:layout_height="35dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorStartQuiz" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:text="Roman Road"
+            android:id="@+id/roman_road_button"
+            android:translationZ="4dp"
+            android:textAlignment="textStart"
+            android:background="@color/colorWhite"
+            android:paddingLeft="20dp"
+            android:textColor="@color/view_by_text_color"
+            android:textSize="20sp"
+            android:layout_height="45dp"
+            android:layout_marginTop="2dp"
+            android:textAllCaps="false" />
+
+        <CheckBox
+            android:layout_height="match_parent"
+            android:id="@+id/checkBoxRomanRoad"
+            android:layout_weight="10"
+            android:translationZ="4dp"
+            android:layout_alignRight="@+id/roman_road_button"
+            android:layout_width="40dp" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:text="Faith"
+            android:id="@+id/faith_button"
+            android:translationZ="4dp"
+            android:textAlignment="textStart"
+            android:background="@color/colorWhite"
+            android:paddingLeft="20dp"
+            android:textColor="@color/view_by_text_color"
+            android:textSize="20sp"
+            android:layout_height="45dp"
+            android:layout_marginTop="2dp"
+            android:textAllCaps="false" />
+
+        <CheckBox
+            android:layout_height="match_parent"
+            android:id="@+id/checkBoxFaith"
+            android:layout_weight="10"
+            android:translationZ="4dp"
+            android:layout_alignRight="@+id/faith_button"
+            android:layout_width="40dp" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:text="Salvation"
+            android:id="@+id/salvation_button"
+            android:translationZ="4dp"
+            android:textAlignment="textStart"
+            android:background="@color/colorWhite"
+            android:paddingLeft="20dp"
+            android:textColor="@color/view_by_text_color"
+            android:textSize="20sp"
+            android:layout_height="45dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="1"
+            android:textAllCaps="false" />
+
+        <CheckBox
+            android:layout_height="match_parent"
+            android:id="@+id/checkBoxSalvation"
+            android:layout_weight="10"
+            android:translationZ="4dp"
+            android:layout_alignRight="@+id/salvation_button"
+            android:layout_width="40dp" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+</LinearLayout>
