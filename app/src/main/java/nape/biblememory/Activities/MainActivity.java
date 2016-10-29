@@ -4,21 +4,18 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
 
 import nape.biblememory.Activities.Adapters.ViewPagerAdapter;
 import nape.biblememory.Activities.Adapters.ViewPagerAdapterVerseSelector;
@@ -102,7 +99,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                 return getResources().getColor(R.color.tabsScrollColor);
             }
         });
-
+        //added for test commit
         // Setting the ViewPager For the SlidingTabsLayout
         tabsMain.setViewPager(pagerMain);
     }
