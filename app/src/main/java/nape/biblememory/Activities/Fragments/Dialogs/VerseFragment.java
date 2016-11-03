@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nape.biblememory.Activities.Adapters.ChapterGridviewAdapter;
+import nape.biblememory.Activities.Adapters.VersesGridviewAdapter;
 import nape.biblememory.Activities.Interfaces.BaseCallback;
 import nape.biblememory.Activities.UserPreferences;
 import nape.biblememory.R;
@@ -24,11 +25,11 @@ public class VerseFragment extends Fragment {
     private GridView gridView;
     private int numOfVerses;
     private BaseCallback refreshDataCallback;
+    private BaseCallback verseSelectedCallback;
     private UserPreferences mPrefs;
 
     public VerseFragment() {
         // Required empty public constructor
-        //This is for a test commit
     }
 
 
@@ -38,8 +39,15 @@ public class VerseFragment extends Fragment {
         final View v = inflater.inflate(R.layout.fragment_verse, container, false);
         List<String> dataList = new ArrayList<>();
         gridView = (GridView) v.findViewById(R.id.verses_gridview);
-        gridView.setAdapter(new ChapterGridviewAdapter(v.getContext(), dataList, 0));
+        gridView.setAdapter(new VersesGridviewAdapter(v.getContext(), dataList, 0, verseSelectedCallback));
         mPrefs = new UserPreferences();
+
+        verseSelectedCallback = new BaseCallback() {
+            @Override
+            public void OnResponse(Object obj) {
+
+            }
+        };
 
         refreshDataCallback = new BaseCallback() {
             @Override
@@ -50,7 +58,7 @@ public class VerseFragment extends Fragment {
                     chaptersList.add(String.valueOf(i));
                 }
                 gridView = (GridView) v.findViewById(R.id.verses_gridview);
-                gridView.setAdapter(new ChapterGridviewAdapter(v.getContext(), chaptersList, 0));
+                gridView.setAdapter(new VersesGridviewAdapter(v.getContext(), chaptersList, 0, verseSelectedCallback));
             }
         };
         return v;

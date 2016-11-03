@@ -40,6 +40,9 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     int Numboftabs =3;
     private TextView startQuiz;
     private UserPreferences mPrefs;
+    private String bookName;
+    private String chapterNum;
+    private String verseNum;
 
     private static final String BACK = "BACK";
     private static final String START_QUIZ = "START QUIZ";
@@ -229,6 +232,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
     @Override
     public void onBookSelected(String bookName) {
+        this.bookName = bookName;
         mPrefs.setNumberOfChapters(getNumOfChapters(bookName), getApplicationContext());
         pagerVerseSelector.setCurrentItem(1,true);
     }
@@ -250,11 +254,12 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
     @Override
     public void onChapterSelected(String chapterNum) {
-        mPrefs.setNumberOfVerses(getNumOfVerses(chapterNum), getApplicationContext());
+        this.chapterNum = chapterNum;
+        mPrefs.setNumberOfVerses(getNumOfVerses(this.bookName, chapterNum), getApplicationContext());
         pagerVerseSelector.setCurrentItem(2,true);
     }
 
-    private int getNumOfVerses(String chapterNum) {
-        return 15;
+    private int getNumOfVerses(String bookName, String chapterNum) {
+        return 59;
     }
 }

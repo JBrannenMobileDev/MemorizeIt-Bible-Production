@@ -21,10 +21,10 @@ public class VersesGridviewAdapter extends BaseAdapter {
     private Context mContext;
     private List<String> mChapterNums;
     private int selectedPosition;
-    private BaseCallback chSelectedCallback;
+    private BaseCallback vSelectedCallback;
 
-    public VersesGridviewAdapter(Context c, List<String> chapterNums, int selectedPostion, BaseCallback chapterSelectedCallback) {
-        chSelectedCallback = chapterSelectedCallback;
+    public VersesGridviewAdapter(Context c, List<String> chapterNums, int selectedPostion, BaseCallback verseSelectedCallback) {
+        vSelectedCallback = verseSelectedCallback;
         if(c != null) {
             mContext = c;
         }
@@ -74,8 +74,8 @@ public class VersesGridviewAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
 
-                if(chSelectedCallback != null){
-                    chSelectedCallback.OnResponse(String.valueOf(mChapterNums.get(position)));
+                if(vSelectedCallback != null){
+                    vSelectedCallback.OnResponse(String.valueOf(mChapterNums.get(position)));
                 }
             }
         });

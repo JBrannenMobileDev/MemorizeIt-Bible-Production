@@ -28,6 +28,7 @@ public class ChapterFragment extends Fragment {
     private BaseCallback refreshDataCallback;
     private BaseCallback chapterSelectedCallback;
     private UserPreferences mPrefs;
+    private String chaptNumSelected;
 
     public ChapterFragment() {
         // Required empty public constructor
@@ -37,10 +38,12 @@ public class ChapterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_chapter, container, false);
+        chaptNumSelected = "0";
 
         chapterSelectedCallback = new BaseCallback() {
             @Override
             public void OnResponse(Object obj) {
+                chaptNumSelected = (String)obj;
                 ((ChapterFragment.ChaptersFragmentListener) getActivity()).onChapterSelected((String) obj);
             }
         };
@@ -59,10 +62,20 @@ public class ChapterFragment extends Fragment {
                     chaptersList.add(String.valueOf(i));
                 }
                 gridView = (GridView) v.findViewById(R.id.chapter_gridview);
-                gridView.setAdapter(new ChapterGridviewAdapter(v.getContext(), chaptersList, 0));
+                int tempNum = Integer.valueOf(chaptNumSelected);
+                if(tempNum != 0){
+                    tempNum = tempNum - 1;
+                }
+                gridView.setAdapter(new ChapterGridviewAdapter(v.getContext(), chaptersList, tempNum, chapterSelectedCallback));
             }
         };
         return v;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        gridView = null;
     }
 
     @Override
