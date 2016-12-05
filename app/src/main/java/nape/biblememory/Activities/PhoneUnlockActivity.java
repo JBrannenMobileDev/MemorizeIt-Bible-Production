@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -24,6 +23,10 @@ import nape.biblememory.Activities.Presenters.PhoneUnlockPresenter;
 import nape.biblememory.Activities.Presenters.PhoneUnlockPresenterImp;
 import nape.biblememory.Activities.Views.PhoneUnlockView;
 import nape.biblememory.R;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.analytics.FirebaseAnalytics.Event;
+import com.google.firebase.analytics.FirebaseAnalytics.Param;
 
 
 public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnlockView{
@@ -49,6 +52,8 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
     private PhoneUnlockPresenter mPresenter;
     private FirstTimeUnlockDialog firstTimeDialog;
 
+    private FirebaseAnalytics analytics;
+
 
     @Override
     protected void onResume() {
@@ -60,6 +65,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_unlock);
+        analytics = FirebaseAnalytics.getInstance( this );
 
         InitializeBannerAd();
 
@@ -131,6 +137,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
             int width = dm.widthPixels;
             mPrefs.setScreenWidth(width, getApplicationContext());
         }
+        analytics.setMinimumSessionDuration(500);
     }
 
     private void hideUIControls() {

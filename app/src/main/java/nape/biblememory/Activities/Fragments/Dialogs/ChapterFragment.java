@@ -29,6 +29,7 @@ public class ChapterFragment extends Fragment {
     private BaseCallback chapterSelectedCallback;
     private UserPreferences mPrefs;
     private String chaptNumSelected;
+    private String bookNameForSavedView;
 
     public ChapterFragment() {
         // Required empty public constructor
@@ -44,6 +45,7 @@ public class ChapterFragment extends Fragment {
             @Override
             public void OnResponse(Object obj) {
                 chaptNumSelected = (String)obj;
+                mPrefs.setSelectedChapter(chaptNumSelected, getContext());
                 ((ChapterFragment.ChaptersFragmentListener) getActivity()).onChapterSelected((String) obj);
             }
         };
@@ -52,6 +54,8 @@ public class ChapterFragment extends Fragment {
         gridView = (GridView) v.findViewById(R.id.chapter_gridview);
         gridView.setAdapter(new ChapterGridviewAdapter(v.getContext(), dataList, 0, chapterSelectedCallback));
         mPrefs = new UserPreferences();
+
+        bookNameForSavedView = mPrefs.getSelectedBook(getContext());
 
         refreshDataCallback = new BaseCallback() {
             @Override
@@ -66,7 +70,12 @@ public class ChapterFragment extends Fragment {
                 if(tempNum != 0){
                     tempNum = tempNum - 1;
                 }
-                gridView.setAdapter(new ChapterGridviewAdapter(v.getContext(), chaptersList, tempNum, chapterSelectedCallback));
+                if(mPrefs.getSelectedBook(getContext()).equalsIgnoreCase(bookNameForSavedView)) {
+                    gridView.setAdapter(new ChapterGridviewAdapter(v.getContext(), chaptersList, tempNum, chapterSelectedCallback));
+                }else{
+                    bookNameForSavedView = mPrefs.getSelectedBook(getContext());
+                    gridView.setAdapter(new ChapterGridviewAdapter(v.getContext(), chaptersList, 0, chapterSelectedCallback));
+                }
             }
         };
         return v;

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import nape.biblememory.Activities.Adapters.RecyclerViewAdapterBooks;
 import nape.biblememory.Activities.Adapters.RecyclerViewAdapterMyVerses;
 import nape.biblememory.Activities.Interfaces.BaseCallback;
+import nape.biblememory.Activities.UserPreferences;
 import nape.biblememory.Activities.Views.SlidingTabLayout;
 import nape.biblememory.R;
 
@@ -25,6 +26,8 @@ public class BooksFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private BaseCallback bookSelectedCallback;
+    private UserPreferences mPrefs;
+
 
     public BooksFragment() {
         // Required empty public constructor
@@ -38,12 +41,15 @@ public class BooksFragment extends Fragment {
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.books_recycler_view);
 
+        mPrefs = new UserPreferences();
+
         mLayoutManager = new LinearLayoutManager(this.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         bookSelectedCallback = new BaseCallback() {
             @Override
             public void OnResponse(Object obj) {
+                mPrefs.setSelectedBook((String) obj, getContext());
                 ((BooksFragment.BooksFragmentListener) getActivity()).onBookSelected((String) obj);
             }
         };

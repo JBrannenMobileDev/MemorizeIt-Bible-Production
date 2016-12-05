@@ -74,6 +74,26 @@ public class UserPreferences{
         return getSharedPreferences(context).getString(UserPreferenceConstants.PREVIOUS_BOOK_GROUP, "");
     }
 
+    public String getSelectedBook(Context context){
+        return getSharedPreferences(context).getString(UserPreferenceConstants.SELECTED_BOOK, "");
+    }
+
+    public void setSelectedBook(String bookName, Context context){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putString(UserPreferenceConstants.SELECTED_BOOK, bookName);
+        editor.commit();
+    }
+
+    public String getSelectedChapter(Context context){
+        return getSharedPreferences(context).getString(UserPreferenceConstants.SELECTED_CHAPTER, "");
+    }
+
+    public void setSelectedChapter(String chapterNum, Context context){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putString(UserPreferenceConstants.SELECTED_CHAPTER, chapterNum);
+        editor.commit();
+    }
+
     public void setNumberOfChapters(int numOfChapters, Context context) {
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
         editor.putInt(UserPreferenceConstants.NUMBER_OF_CHAPTERS, numOfChapters);

@@ -7,11 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import nape.biblememory.Activities.Adapters.ChapterGridviewAdapter;
 import nape.biblememory.Activities.Adapters.VersesGridviewAdapter;
 import nape.biblememory.Activities.Interfaces.BaseCallback;
 import nape.biblememory.Activities.UserPreferences;
@@ -42,13 +42,6 @@ public class VerseFragment extends Fragment {
         gridView.setAdapter(new VersesGridviewAdapter(v.getContext(), dataList, 0, verseSelectedCallback));
         mPrefs = new UserPreferences();
 
-        verseSelectedCallback = new BaseCallback() {
-            @Override
-            public void OnResponse(Object obj) {
-
-            }
-        };
-
         refreshDataCallback = new BaseCallback() {
             @Override
             public void OnResponse(Object obj) {
@@ -75,7 +68,7 @@ public class VerseFragment extends Fragment {
     }
 
     private Object getNumOfVersesToDisplay() {
-        Object result = mPrefs.getNumberOfChapters(getContext());
+        Object result = mPrefs.getNumberOfVerses(getContext());
         return result;
     }
 

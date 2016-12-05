@@ -10,6 +10,8 @@
     <string name="done">Done</string>
     <string name="check_answer">CHECK ANSWER</string>
 
+    <string name="dbt_api_key">90272a6a087822f43ae502456a20ec35</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Tap anywhere on the screen to reveal the answer. Tap again to exit the quiz.</string>
 
