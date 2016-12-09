@@ -9,11 +9,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import nape.biblememory.Activities.Interfaces.BaseCallback;
+import java.util.List;
+
+
+import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.R;
 
 public class RecyclerViewAdapterBooks extends RecyclerView.Adapter<RecyclerViewAdapterBooks.ViewHolder> {
-    private String[] mDataset;
+    private List<String> mDataset;
     private int mTabPosition;
     private BaseCallback bookSelectedCallback;
 
@@ -30,14 +33,14 @@ public class RecyclerViewAdapterBooks extends RecyclerView.Adapter<RecyclerViewA
             bookNameTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    bookSelectedCallback.OnResponse(bookNameTextView.getText());
+                    bookSelectedCallback.onResponse(bookNameTextView.getText());
                 }
             });
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public RecyclerViewAdapterBooks(String[] dataset, int tabPosition, BaseCallback bookSelected) {
+    public RecyclerViewAdapterBooks(List<String> dataset, int tabPosition, BaseCallback bookSelected) {
         mDataset = dataset;
         mTabPosition = tabPosition;
         this.bookSelectedCallback = bookSelected;
@@ -68,12 +71,12 @@ public class RecyclerViewAdapterBooks extends RecyclerView.Adapter<RecyclerViewA
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.bookNameTextView.setText(mDataset[position]);
+        holder.bookNameTextView.setText(mDataset.get(position));
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDataset.size();
     }
 }

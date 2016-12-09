@@ -10,9 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.faithcomesbyhearing.dbt.model.Volume;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import nape.biblememory.Activities.Adapters.RecyclerViewAdapterBooks;
 import nape.biblememory.Activities.Adapters.RecyclerViewAdapterMyVerses;
-import nape.biblememory.Activities.Interfaces.BaseCallback;
+import nape.biblememory.Activities.BaseCallback;
+import nape.biblememory.Activities.DBTApi.DBTApi;
+
 import nape.biblememory.Activities.UserPreferences;
 import nape.biblememory.Activities.Views.SlidingTabLayout;
 import nape.biblememory.R;
@@ -28,9 +35,11 @@ public class BooksFragment extends Fragment {
     private BaseCallback bookSelectedCallback;
     private UserPreferences mPrefs;
 
+    List<Volume> volumeList;
+
 
     public BooksFragment() {
-        // Required empty public constructor
+        volumeList = new ArrayList<>();
     }
 
 
@@ -48,17 +57,19 @@ public class BooksFragment extends Fragment {
 
         bookSelectedCallback = new BaseCallback() {
             @Override
-            public void OnResponse(Object obj) {
-                mPrefs.setSelectedBook((String) obj, getContext());
-                ((BooksFragment.BooksFragmentListener) getActivity()).onBookSelected((String) obj);
+            public void onResponse(Object response) {
+                mPrefs.setSelectedBook((String) response, getContext());
+                ((BooksFragment.BooksFragmentListener) getActivity()).onBookSelected((String) response);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
             }
         };
 
-        Resources res = getResources();
-        String[] books = res.getStringArray(R.array.books_of_the_bible);
+        getBookList(bookSelectedCallback);
 
-        mAdapter = new RecyclerViewAdapterBooks(books, SlidingTabLayout.POSITION_1, bookSelectedCallback);
-        mRecyclerView.setAdapter(mAdapter);
         // Inflate the layout for this fragment
         return v;
     }
@@ -67,4 +78,40 @@ public class BooksFragment extends Fragment {
         void onBookSelected(String bookName);
     }
 
+    private void getBookList(final BaseCallback bookSelectedCallback){
+        final DBTApi REST = new DBTApi(getActivity().getApplicationContext());
+
+        final BaseCallback booksCallback = new BaseCallback() {
+            @Override
+            public void onResponse(Object response) {
+                handleRESTResponse(bookSelectedCallback, response);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+
+        BaseCallback volumesCallback = new BaseCallback() {
+            @Override
+            public void onResponse(Object response) {
+                volumeList = (List<Volume>) response;
+                //TODO filter out desired volume from volumesList.
+                REST.getBooksList(booksCallback, volumeList.get(0).getDamId());
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+
+        REST.getVolumeList(volumesCallback, mPrefs.getSelectedBibleLanguage(getActivity().getApplicationContext()));
+    }
+
+    private void handleRESTResponse(BaseCallback bookSelectedCallback, Object response){
+        mAdapter = new RecyclerViewAdapterBooks((List<String>)response, SlidingTabLayout.POSITION_1, bookSelectedCallback);
+        mRecyclerView.setAdapter(mAdapter);
+    }
 }

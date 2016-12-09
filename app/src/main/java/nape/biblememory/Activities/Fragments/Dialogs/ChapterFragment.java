@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nape.biblememory.Activities.Adapters.ChapterGridviewAdapter;
-import nape.biblememory.Activities.Interfaces.BaseCallback;
+import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.Activities.Managers.ScriptureManager;
 import nape.biblememory.Activities.UserPreferences;
 import nape.biblememory.R;
@@ -43,10 +43,15 @@ public class ChapterFragment extends Fragment {
 
         chapterSelectedCallback = new BaseCallback() {
             @Override
-            public void OnResponse(Object obj) {
-                chaptNumSelected = (String)obj;
+            public void onResponse(Object response) {
+                chaptNumSelected = (String)response;
                 mPrefs.setSelectedChapter(chaptNumSelected, getContext());
-                ((ChapterFragment.ChaptersFragmentListener) getActivity()).onChapterSelected((String) obj);
+                ((ChapterFragment.ChaptersFragmentListener) getActivity()).onChapterSelected((String) response);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
             }
         };
 
@@ -59,9 +64,9 @@ public class ChapterFragment extends Fragment {
 
         refreshDataCallback = new BaseCallback() {
             @Override
-            public void OnResponse(Object obj) {
+            public void onResponse(Object response) {
                 List<String> chaptersList = new ArrayList<>();
-                numOfChapters = (int) obj;
+                numOfChapters = (int) response;
                 for(int i = 1; i <= numOfChapters; i++){
                     chaptersList.add(String.valueOf(i));
                 }
@@ -76,6 +81,11 @@ public class ChapterFragment extends Fragment {
                     bookNameForSavedView = mPrefs.getSelectedBook(getContext());
                     gridView.setAdapter(new ChapterGridviewAdapter(v.getContext(), chaptersList, 0, chapterSelectedCallback));
                 }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
             }
         };
         return v;
@@ -92,7 +102,7 @@ public class ChapterFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if(refreshDataCallback != null){
-                refreshDataCallback.OnResponse(getNumOfChaptersToDisplay());
+                refreshDataCallback.onResponse(getNumOfChaptersToDisplay());
             }
         }
     }

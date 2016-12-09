@@ -113,4 +113,14 @@ public class UserPreferences{
     public int getNumberOfVerses(Context context){
         return getSharedPreferences(context).getInt(UserPreferenceConstants.NUMBER_OF_VERSES, 0);
     }
+
+    public String getSelectedBibleLanguage(Context context){
+        return getSharedPreferences(context).getString(UserPreferenceConstants.SELECTED_BIBLE_LANGUAGE, "");
+    }
+
+    public void setSelectedBibleLanguage(String bibleLanguage, Context context){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putString(UserPreferenceConstants.SELECTED_BIBLE_LANGUAGE, bibleLanguage);
+        editor.commit();
+    }
 }

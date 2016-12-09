@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import nape.biblememory.Activities.Interfaces.BaseCallback;
+import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.Activities.Models.ScriptureData;
 import nape.biblememory.R;
 
@@ -39,7 +39,7 @@ public class RecyclerViewAdapterBookList extends RecyclerView.Adapter<RecyclerVi
 
                 @Override
                 public void onClick(View v) {
-                    bookSelectedCallback.OnResponse(bookName.getText());
+                    bookSelectedCallback.onResponse(bookName.getText());
                 }
             });
         }

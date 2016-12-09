@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nape.biblememory.Activities.Adapters.VersesGridviewAdapter;
-import nape.biblememory.Activities.Interfaces.BaseCallback;
+import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.Activities.UserPreferences;
 import nape.biblememory.R;
 
@@ -44,14 +44,19 @@ public class VerseFragment extends Fragment {
 
         refreshDataCallback = new BaseCallback() {
             @Override
-            public void OnResponse(Object obj) {
+            public void onResponse(Object response) {
                 List<String> chaptersList = new ArrayList<>();
-                numOfVerses = (int) obj;
+                numOfVerses = (int) response;
                 for(int i = 1; i <= numOfVerses; i++){
                     chaptersList.add(String.valueOf(i));
                 }
                 gridView = (GridView) v.findViewById(R.id.verses_gridview);
                 gridView.setAdapter(new VersesGridviewAdapter(v.getContext(), chaptersList, 0, verseSelectedCallback));
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
             }
         };
         return v;
@@ -62,7 +67,7 @@ public class VerseFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if(refreshDataCallback != null){
-                refreshDataCallback.OnResponse(getNumOfVersesToDisplay());
+                refreshDataCallback.onResponse(getNumOfVersesToDisplay());
             }
         }
     }

@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import nape.biblememory.Activities.Adapters.RecyclerViewAdapterMemorized;
-import nape.biblememory.Activities.Interfaces.BaseCallback;
+import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.Activities.Managers.ScriptureManager;
 import nape.biblememory.Activities.Models.BookGroup;
 import nape.biblememory.Activities.Models.ScriptureData;
@@ -77,15 +77,25 @@ public class MemorizedSetFragment extends Fragment {
     private void createBookSelectedCallback() {
         bookSelectedCallback = new BaseCallback() {
             @Override
-            public void OnResponse(Object bookName) {
-                updateAdapterForExpandBook((String) bookName);
+            public void onResponse(Object response) {
+                updateAdapterForExpandBook((String) response);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
             }
         };
 
         bookDeselectedCallback = new BaseCallback() {
             @Override
-            public void OnResponse(Object bookName) {
-                updateAdapterForCollapseBook((String) bookName);
+            public void onResponse(Object response) {
+                updateAdapterForCollapseBook((String) response);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
             }
         };
     }

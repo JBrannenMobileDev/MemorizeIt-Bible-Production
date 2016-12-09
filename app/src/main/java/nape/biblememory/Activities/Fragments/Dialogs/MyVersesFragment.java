@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import nape.biblememory.Activities.Adapters.RecyclerViewAdapterMyVerses;
-import nape.biblememory.Activities.Interfaces.BaseCallback;
+import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.Activities.Managers.ScriptureManager;
 import nape.biblememory.Activities.Models.ScriptureData;
 import nape.biblememory.Activities.Sqlite.MemoryListContract;
@@ -84,7 +84,12 @@ public class MyVersesFragment extends Fragment {
 
         removeCallback = new BaseCallback() {
             @Override
-            public void OnResponse(Object obj) {
+            public void onResponse(Object response) {
+
+            }
+
+            @Override
+            public void onFailure(Exception e) {
 
             }
         };

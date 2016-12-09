@@ -10,7 +10,8 @@ import android.widget.TextView;
 
 
 import java.util.List;
-import nape.biblememory.Activities.Interfaces.BaseCallback;
+
+import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.Activities.Models.BookGroup;
 import nape.biblememory.Activities.Models.ScriptureData;
 import nape.biblememory.Activities.Singletons.RecyclerViewSingleton;
@@ -69,11 +70,11 @@ public class RecyclerViewAdapterMemorized extends RecyclerView.Adapter<RecyclerV
                         if(selectedBooksList.contains(selectedBookName)){
                             selectedBooksList.remove(selectedBookName);
                             selectedMemory.listOfSelectedBooks = selectedBooksList;
-                            cCallback.OnResponse(selectedBookName);
+                            cCallback.onResponse(selectedBookName);
                         } else {
                             selectedBooksList.add(selectedBookName);
                             selectedMemory.listOfSelectedBooks = selectedBooksList;
-                            eCallback.OnResponse(selectedBookName);
+                            eCallback.onResponse(selectedBookName);
                         }
                     }else {
                         if (v.equals(selectedView)) {

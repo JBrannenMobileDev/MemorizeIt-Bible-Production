@@ -14,6 +14,7 @@ import com.faithcomesbyhearing.dbt.model.Volume;
 
 import java.util.List;
 
+
 import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.R;
 
@@ -98,7 +99,7 @@ public class DBTApi {
         });
     }
 
-    public void getVerseList(final BaseCallback verseCallback, String damId, String bookId,
+    public void getVerseRange(final BaseCallback verseCallback, String damId, String bookId,
                              String verseStart, String verseEnd, String chapterId){
         getVfromDBT(verseCallback, damId, bookId, verseStart, verseEnd, chapterId);
     }

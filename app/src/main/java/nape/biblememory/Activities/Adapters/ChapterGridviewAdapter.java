@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import nape.biblememory.Activities.Interfaces.BaseCallback;
+import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.R;
 
 
@@ -81,7 +81,7 @@ public class ChapterGridviewAdapter extends BaseAdapter {
                 previousView.setBackgroundResource(R.color.colorWhite);
                 previousView.setTextColor(mContext.getResources().getColor(R.color.view_by_text_color));
                 selectedPosition = Integer.valueOf(tView.getText().toString());
-                chapterSelectedCallback.OnResponse(tView.getText());
+                chapterSelectedCallback.onResponse(tView.getText());
                 previousView = tView;
             }
         });

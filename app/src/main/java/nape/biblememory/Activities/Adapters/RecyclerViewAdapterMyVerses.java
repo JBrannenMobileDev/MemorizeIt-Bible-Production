@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import nape.biblememory.Activities.Interfaces.BaseCallback;
+import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.Activities.Models.ScriptureData;
 import nape.biblememory.R;
 
@@ -50,7 +50,7 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
                 removeLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        rCallback.OnResponse(verseLocation.getText());
+                        rCallback.onResponse(verseLocation.getText());
                     }
                 });
             }

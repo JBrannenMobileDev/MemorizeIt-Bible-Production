@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import nape.biblememory.Activities.Interfaces.BaseCallback;
+import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.R;
 
 
@@ -75,7 +75,7 @@ public class VersesGridviewAdapter extends BaseAdapter {
             public void onClick(View v) {
 
                 if(vSelectedCallback != null){
-                    vSelectedCallback.OnResponse(String.valueOf(mChapterNums.get(position)));
+                    vSelectedCallback.onResponse(String.valueOf(mChapterNums.get(position)));
                 }
             }
         });
