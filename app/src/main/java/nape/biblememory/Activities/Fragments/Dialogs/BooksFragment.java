@@ -10,16 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.faithcomesbyhearing.dbt.model.Book;
 import com.faithcomesbyhearing.dbt.model.Volume;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import nape.biblememory.Activities.Adapters.RecyclerViewAdapterBooks;
-import nape.biblememory.Activities.Adapters.RecyclerViewAdapterMyVerses;
 import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.Activities.DBTApi.DBTApi;
-
 import nape.biblememory.Activities.UserPreferences;
 import nape.biblememory.Activities.Views.SlidingTabLayout;
 import nape.biblememory.R;
@@ -29,11 +29,15 @@ import nape.biblememory.R;
  */
 public class BooksFragment extends Fragment {
 
+    private static final String TAG = "BooksFragment: ";
+
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private BaseCallback bookSelectedCallback;
     private UserPreferences mPrefs;
+    private List<Book> newTestament;
+    private List<Book> oldTestament;
 
     List<Volume> volumeList;
 
@@ -54,6 +58,9 @@ public class BooksFragment extends Fragment {
 
         mLayoutManager = new LinearLayoutManager(this.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        oldTestament = new ArrayList<>();
+        newTestament = new ArrayList<>();
 
         bookSelectedCallback = new BaseCallback() {
             @Override
@@ -80,11 +87,16 @@ public class BooksFragment extends Fragment {
 
     private void getBookList(final BaseCallback bookSelectedCallback){
         final DBTApi REST = new DBTApi(getActivity().getApplicationContext());
+        String selectedBibleLanguage;
 
-        final BaseCallback booksCallback = new BaseCallback() {
+        final BaseCallback<List<Book>> booksCallbackNewTest = new BaseCallback<List<Book>>() {
             @Override
-            public void onResponse(Object response) {
-                handleRESTResponse(bookSelectedCallback, response);
+            public void onResponse(List<Book> response) {
+                newTestament = response;
+                List<String> bookList;
+                bookList = getBookNameList(oldTestament);
+                bookList.addAll(getBookNameList(newTestament));
+                handleRESTResponse(bookSelectedCallback, bookList);
             }
 
             @Override
@@ -93,12 +105,25 @@ public class BooksFragment extends Fragment {
             }
         };
 
-        BaseCallback volumesCallback = new BaseCallback() {
+        final BaseCallback volumesCallbackNewTest = new BaseCallback() {
             @Override
             public void onResponse(Object response) {
                 volumeList = (List<Volume>) response;
                 //TODO filter out desired volume from volumesList.
-                REST.getBooksList(booksCallback, volumeList.get(0).getDamId());
+                REST.getBooksList(booksCallbackNewTest, volumeList.get(0).getDamId());
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                String t = e.getMessage();
+            }
+        };
+
+        final BaseCallback<List<Book>> booksCallbackOldTest = new BaseCallback<List<Book>>() {
+            @Override
+            public void onResponse(List<Book> response) {
+                oldTestament = response;
+                REST.getVolumeList(volumesCallbackNewTest, "eng");
             }
 
             @Override
@@ -107,11 +132,42 @@ public class BooksFragment extends Fragment {
             }
         };
 
-        REST.getVolumeList(volumesCallback, mPrefs.getSelectedBibleLanguage(getActivity().getApplicationContext()));
+        final BaseCallback volumesCallbackOldTest = new BaseCallback() {
+            @Override
+            public void onResponse(Object response) {
+                volumeList = (List<Volume>) response;
+                //TODO filter out desired volume from volumesList.
+
+                REST.getBooksList(booksCallbackOldTest, volumeList.get(1).getDamId());
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+
+        selectedBibleLanguage = mPrefs.getSelectedVersion(getActivity().getApplicationContext());
+
+        if("ESV".equals(selectedBibleLanguage)){
+            Resources res = getResources();
+            List<String> books = Arrays.asList(res.getStringArray(R.array.books_of_the_bible));
+            handleRESTResponse(bookSelectedCallback, books);
+        }else {
+            REST.getVolumeList(volumesCallbackOldTest, "eng");
+        }
     }
 
-    private void handleRESTResponse(BaseCallback bookSelectedCallback, Object response){
-        mAdapter = new RecyclerViewAdapterBooks((List<String>)response, SlidingTabLayout.POSITION_1, bookSelectedCallback);
+    private List<String> getBookNameList(List<Book> bookList) {
+        List<String> bookNameList = new ArrayList<>();
+        for(Book book : bookList){
+            bookNameList.add(book.getBookName());
+        }
+        return bookNameList;
+    }
+
+    private void handleRESTResponse(BaseCallback bookSelectedCallback, List<String> response){
+        mAdapter = new RecyclerViewAdapterBooks(response, SlidingTabLayout.POSITION_1, bookSelectedCallback);
         mRecyclerView.setAdapter(mAdapter);
     }
 }

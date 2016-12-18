@@ -123,4 +123,8 @@ public class UserPreferences{
         editor.putString(UserPreferenceConstants.SELECTED_BIBLE_LANGUAGE, bibleLanguage);
         editor.commit();
     }
+
+    public String getSelectedVersion(Context context) {
+        return getSharedPreferences(context).getString(UserPreferenceConstants.SELECTED_BIBLE_VERSION, "ESV");
+    }
 }

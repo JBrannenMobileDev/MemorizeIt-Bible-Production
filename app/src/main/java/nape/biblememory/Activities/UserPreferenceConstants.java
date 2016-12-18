@@ -14,5 +14,6 @@ public class UserPreferenceConstants {
     public static final String NUMBER_OF_VERSES = "number_of_verses";
     public static final String SELECTED_BOOK = "selected_book";
     public static final String SELECTED_CHAPTER = "selected_chapter";
-    public static final String SELECTED_BIBLE_LANGUAGE = "English";
+    public static final String SELECTED_BIBLE_LANGUAGE = "selected_bible_language";
+    public static final String SELECTED_BIBLE_VERSION = "selected_bible_version";
 }

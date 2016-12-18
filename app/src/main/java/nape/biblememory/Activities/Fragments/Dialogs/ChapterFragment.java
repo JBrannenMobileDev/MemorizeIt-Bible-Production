@@ -1,13 +1,11 @@
 package nape.biblememory.Activities.Fragments.Dialogs;
 
 
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridView;
 
 import java.util.ArrayList;
@@ -15,7 +13,6 @@ import java.util.List;
 
 import nape.biblememory.Activities.Adapters.ChapterGridviewAdapter;
 import nape.biblememory.Activities.BaseCallback;
-import nape.biblememory.Activities.Managers.ScriptureManager;
 import nape.biblememory.Activities.UserPreferences;
 import nape.biblememory.R;
 
@@ -108,6 +105,22 @@ public class ChapterFragment extends Fragment {
     }
 
     private Object getNumOfChaptersToDisplay() {
+        /*final DBTApi REST = new DBTApi(getActivity().getApplicationContext());
+
+        final BaseCallback chaptersCallback = new BaseCallback() {
+            @Override
+            public void onResponse(Object response) {
+
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+
+        REST.getChapterList(chaptersCallback,"", "");
+        */
         Object result = mPrefs.getNumberOfChapters(getContext());
         return result;
     }
