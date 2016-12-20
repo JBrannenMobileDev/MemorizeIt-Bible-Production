@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -22,11 +23,13 @@ import nape.biblememory.Activities.Adapters.ViewPagerAdapterVerseSelector;
 import nape.biblememory.Activities.Fragments.Dialogs.BooksFragment;
 import nape.biblememory.Activities.Fragments.Dialogs.ChapterFragment;
 import nape.biblememory.Activities.Fragments.Dialogs.MyVersesFragment;
+import nape.biblememory.Activities.Fragments.Dialogs.VerseFragment;
 import nape.biblememory.Activities.Fragments.Dialogs.VerseSelection;
 import nape.biblememory.Activities.Views.SlidingTabLayout;
+import nape.biblememory.Activities.Views.VerseSelectedDialogFragment;
 import nape.biblememory.R;
 
-public class MainActivity extends ActionBarActivity implements NavigationView.OnNavigationItemSelectedListener, MyVersesFragment.OnAddVerseSelectedListener, VerseSelection.FragmentToActivity, BooksFragment.BooksFragmentListener, ChapterFragment.ChaptersFragmentListener{
+public class MainActivity extends ActionBarActivity implements NavigationView.OnNavigationItemSelectedListener, MyVersesFragment.OnAddVerseSelectedListener, VerseSelection.FragmentToActivity, BooksFragment.BooksFragmentListener, ChapterFragment.ChaptersFragmentListener, VerseFragment.OnVerseSelected{
 
     private ViewPager pagerMain;
     private ViewPagerAdapter adapterMain;
@@ -37,7 +40,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     private ViewPagerAdapterVerseSelector adapterVerseSelector;
     private SlidingTabLayout tabsVerseSelector;
     private CharSequence VerseSelectorTitles[]={"BOOKS","CHAPTER","VERSE"};
-    int Numboftabs =3;
+    private int Numboftabs =3;
     private TextView startQuiz;
     private UserPreferences mPrefs;
     private String bookName;
@@ -233,7 +236,9 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     @Override
     public void onBookSelected(String bookName) {
         this.bookName = bookName;
-        mPrefs.setNumberOfChapters(getNumOfChapters(bookName), getApplicationContext());
+        if(mPrefs.getNumberOfChapters(getApplicationContext()) == 0) {
+            mPrefs.setNumberOfChapters(getNumOfChapters(bookName), getApplicationContext());
+        }
         pagerVerseSelector.setCurrentItem(1,true);
     }
 
@@ -255,11 +260,13 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     @Override
     public void onChapterSelected(String chapterNum) {
         this.chapterNum = chapterNum;
-        mPrefs.setNumberOfVerses(getNumOfVerses(this.bookName, chapterNum), getApplicationContext());
         pagerVerseSelector.setCurrentItem(2,true);
     }
 
-    private int getNumOfVerses(String bookName, String chapterNum) {
-        return 59;
+    @Override
+    public void onVerseSelected() {
+        FragmentManager fm = getSupportFragmentManager();
+        VerseSelectedDialogFragment verseSelectedDialog = new VerseSelectedDialogFragment();
+        verseSelectedDialog.show(fm, "verseSelectedFragment");
     }
 }

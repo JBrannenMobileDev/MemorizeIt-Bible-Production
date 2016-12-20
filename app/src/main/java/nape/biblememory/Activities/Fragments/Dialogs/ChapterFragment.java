@@ -21,7 +21,7 @@ import nape.biblememory.R;
  */
 public class ChapterFragment extends Fragment {
     private GridView gridView;
-    private int numOfChapters;
+    private long numOfChapters;
     private BaseCallback refreshDataCallback;
     private BaseCallback chapterSelectedCallback;
     private UserPreferences mPrefs;
@@ -63,7 +63,7 @@ public class ChapterFragment extends Fragment {
             @Override
             public void onResponse(Object response) {
                 List<String> chaptersList = new ArrayList<>();
-                numOfChapters = (int) response;
+                numOfChapters = (long) response;
                 for(int i = 1; i <= numOfChapters; i++){
                     chaptersList.add(String.valueOf(i));
                 }
@@ -104,24 +104,8 @@ public class ChapterFragment extends Fragment {
         }
     }
 
-    private Object getNumOfChaptersToDisplay() {
-        /*final DBTApi REST = new DBTApi(getActivity().getApplicationContext());
-
-        final BaseCallback chaptersCallback = new BaseCallback() {
-            @Override
-            public void onResponse(Object response) {
-
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-
-            }
-        };
-
-        REST.getChapterList(chaptersCallback,"", "");
-        */
-        Object result = mPrefs.getNumberOfChapters(getContext());
+    private Long getNumOfChaptersToDisplay() {
+        Long result = mPrefs.getNumberOfChapters(getContext());
         return result;
     }
 

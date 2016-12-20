@@ -16,4 +16,9 @@ public class UserPreferenceConstants {
     public static final String SELECTED_CHAPTER = "selected_chapter";
     public static final String SELECTED_BIBLE_LANGUAGE = "selected_bible_language";
     public static final String SELECTED_BIBLE_VERSION = "selected_bible_version";
+    public static final String OLD_TEST_DAM_ID = "old_test_dam_id";
+    public static final String NEW_TEST_DAM_ID = "new_test_dam_id";
+    public static final String SELECTED_BOOK_ID = "book_id";
+    public static final String DAM_ID = "dam_id";
+    public static final String SELECTED_VERSE_TEXT = "selected_verse_text";
 }

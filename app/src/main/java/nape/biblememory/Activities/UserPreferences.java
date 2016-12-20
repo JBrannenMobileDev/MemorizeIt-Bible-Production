@@ -84,6 +84,16 @@ public class UserPreferences{
         editor.commit();
     }
 
+    public String getSelectedBookId(Context context){
+        return getSharedPreferences(context).getString(UserPreferenceConstants.SELECTED_BOOK_ID, "");
+    }
+
+    public void setSelectedBookId(String bookId, Context context){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putString(UserPreferenceConstants.SELECTED_BOOK_ID, bookId);
+        editor.commit();
+    }
+
     public String getSelectedChapter(Context context){
         return getSharedPreferences(context).getString(UserPreferenceConstants.SELECTED_CHAPTER, "");
     }
@@ -94,24 +104,24 @@ public class UserPreferences{
         editor.commit();
     }
 
-    public void setNumberOfChapters(int numOfChapters, Context context) {
+    public void setNumberOfChapters(long numOfChapters, Context context) {
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
-        editor.putInt(UserPreferenceConstants.NUMBER_OF_CHAPTERS, numOfChapters);
+        editor.putLong(UserPreferenceConstants.NUMBER_OF_CHAPTERS, numOfChapters);
         editor.commit();
     }
 
-    public int getNumberOfChapters(Context context){
-        return getSharedPreferences(context).getInt(UserPreferenceConstants.NUMBER_OF_CHAPTERS, 0);
+    public long getNumberOfChapters(Context context){
+        return getSharedPreferences(context).getLong(UserPreferenceConstants.NUMBER_OF_CHAPTERS, 0);
     }
 
-    public void setNumberOfVerses(int numOfVerses, Context applicationContext) {
+    public void setNumberOfVerses(long numOfVerses, Context applicationContext) {
         SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
-        editor.putInt(UserPreferenceConstants.NUMBER_OF_VERSES, numOfVerses);
+        editor.putLong(UserPreferenceConstants.NUMBER_OF_VERSES, numOfVerses);
         editor.commit();
     }
 
-    public int getNumberOfVerses(Context context){
-        return getSharedPreferences(context).getInt(UserPreferenceConstants.NUMBER_OF_VERSES, 0);
+    public long getNumberOfVerses(Context context){
+        return getSharedPreferences(context).getLong(UserPreferenceConstants.NUMBER_OF_VERSES, 0);
     }
 
     public String getSelectedBibleLanguage(Context context){
@@ -124,7 +134,48 @@ public class UserPreferences{
         editor.commit();
     }
 
+    public void setSelectedVersion(String version, Context context){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putString(UserPreferenceConstants.SELECTED_BIBLE_VERSION, version);
+    }
+
     public String getSelectedVersion(Context context) {
         return getSharedPreferences(context).getString(UserPreferenceConstants.SELECTED_BIBLE_VERSION, "ESV");
+    }
+
+    public void setDamIdNewTestament(String damId, Context context){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putString(UserPreferenceConstants.NEW_TEST_DAM_ID, damId);
+    }
+
+    public String getDamIdNewTestament(Context context) {
+        return getSharedPreferences(context).getString(UserPreferenceConstants.NEW_TEST_DAM_ID, "ENGESVN2ET");
+    }
+
+    public void setDamIdOldTestament(String damId, Context context){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putString(UserPreferenceConstants.OLD_TEST_DAM_ID, damId);
+    }
+
+    public String getDamIdOldTestament(Context context) {
+        return getSharedPreferences(context).getString(UserPreferenceConstants.OLD_TEST_DAM_ID, "ENGESVO2ET");
+    }
+
+    public void setDamId(String damId, Context context){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putString(UserPreferenceConstants.DAM_ID, damId);
+    }
+
+    public String getDamId(Context context) {
+        return getSharedPreferences(context).getString(UserPreferenceConstants.DAM_ID, "ENGESV");
+    }
+
+    public void setSelectedVerseNum(String damId, Context context){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putString(UserPreferenceConstants.DAM_ID, damId);
+    }
+
+    public String getSelectedVerseNum(Context context) {
+        return getSharedPreferences(context).getString(UserPreferenceConstants.SELECTED_VERSE_TEXT, "");
     }
 }
