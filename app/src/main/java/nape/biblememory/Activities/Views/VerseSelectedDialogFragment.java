@@ -54,7 +54,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
             }
         };
 
-        REST.getVerse(selectedVerseCallback, mPrefs.getDamId(context), mPrefs.getSelectedBookId(context), mPrefs.getSelectedVerseNum(context), mPrefs.getSelectedChapter(context));
+        REST.getVerse(selectedVerseCallback, mPrefs.getDamId(context)+"OT", mPrefs.getSelectedBookId(context), mPrefs.getSelectedVerseNum(context), mPrefs.getSelectedChapter(context));
 
         setOnclickListeners();
         getDialog().setTitle("Add To My Verses List");
