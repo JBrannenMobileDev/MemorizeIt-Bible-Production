@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.faithcomesbyhearing.dbt.model.Verse;
 
+import java.util.List;
+
 import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.Activities.DBTApi.DBTApi;
 import nape.biblememory.Activities.UserPreferences;
@@ -28,8 +30,9 @@ public class VerseSelectedDialogFragment extends DialogFragment {
     private Button cancel;
     private UserPreferences mPrefs;
     private DBTApi REST;
-    private BaseCallback<Verse> selectedVerseCallback;
+    private BaseCallback<List<Verse>> selectedVerseCallback;
     private Context context;
+    private String selectedVerseNum;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,11 +44,12 @@ public class VerseSelectedDialogFragment extends DialogFragment {
         REST = new DBTApi(getActivity().getApplicationContext());
         context = getActivity().getApplicationContext();
         mPrefs = new UserPreferences();
+        selectedVerseNum = getArguments().getString("num");
 
-        selectedVerseCallback = new BaseCallback<Verse>() {
+        selectedVerseCallback = new BaseCallback<List<Verse>>() {
             @Override
-            public void onResponse(Verse response) {
-                verse.setText(response.getVerseText());
+            public void onResponse(List<Verse> response) {
+                verse.setText(response.get(0).getVerseText());
             }
 
             @Override
@@ -54,7 +58,13 @@ public class VerseSelectedDialogFragment extends DialogFragment {
             }
         };
 
-        REST.getVerse(selectedVerseCallback, mPrefs.getDamId(context)+"OT", mPrefs.getSelectedBookId(context), mPrefs.getSelectedVerseNum(context), mPrefs.getSelectedChapter(context));
+        String damId;
+        if(mPrefs.isBookLocationOT(context)){
+            damId = mPrefs.getDamIdOldTestament(context);
+        }else{
+            damId = mPrefs.getDamIdNewTestament(context);
+        }
+        REST.getVerse(selectedVerseCallback, damId, mPrefs.getSelectedBookId(context), selectedVerseNum, mPrefs.getSelectedChapter(context));
 
         setOnclickListeners();
         getDialog().setTitle("Add To My Verses List");

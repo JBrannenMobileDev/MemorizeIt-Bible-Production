@@ -106,6 +106,6 @@ public class DBTApi {
 
     public void getVerse(final BaseCallback verseCallback, String damId, String bookId,
                              String verseNum, String chapterId){
-        getVfromDBT(verseCallback, damId, bookId, verseNum, verseNum, chapterId);
+        getVfromDBT(verseCallback, damId, bookId, verseNum, null, chapterId);
     }
 }

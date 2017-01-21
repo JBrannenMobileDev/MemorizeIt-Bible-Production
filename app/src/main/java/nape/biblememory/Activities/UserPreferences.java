@@ -170,12 +170,22 @@ public class UserPreferences{
         return getSharedPreferences(context).getString(UserPreferenceConstants.DAM_ID, "ENGESV");
     }
 
-    public void setSelectedVerseNum(String damId, Context context){
+    public void setSelectedVerseNum(String verseNum, Context context){
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
-        editor.putString(UserPreferenceConstants.DAM_ID, damId);
+        editor.putString(UserPreferenceConstants.SELECTED_VERSE_TEXT, verseNum);
     }
 
     public String getSelectedVerseNum(Context context) {
         return getSharedPreferences(context).getString(UserPreferenceConstants.SELECTED_VERSE_TEXT, "");
+    }
+
+    public void setBookLocationOT(boolean isOT, Context context){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putBoolean(UserPreferenceConstants.BOOK_LOCATION_OT, isOT);
+        editor.commit();
+    }
+
+    public boolean isBookLocationOT(Context context){
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.BOOK_LOCATION_OT , false);
     }
 }

@@ -21,4 +21,5 @@ public class UserPreferenceConstants {
     public static final String SELECTED_BOOK_ID = "book_id";
     public static final String DAM_ID = "dam_id";
     public static final String SELECTED_VERSE_TEXT = "selected_verse_text";
+    public static final String BOOK_LOCATION_OT = "book_location_ot";
 }

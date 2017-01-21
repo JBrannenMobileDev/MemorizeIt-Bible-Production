@@ -264,9 +264,14 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     }
 
     @Override
-    public void onVerseSelected() {
+    public void onVerseSelected(String verseNumber) {
         FragmentManager fm = getSupportFragmentManager();
         VerseSelectedDialogFragment verseSelectedDialog = new VerseSelectedDialogFragment();
+
+        Bundle args = new Bundle();
+        args.putString("num", verseNumber);
+        verseSelectedDialog.setArguments(args);
+
         verseSelectedDialog.show(fm, "verseSelectedFragment");
     }
 }

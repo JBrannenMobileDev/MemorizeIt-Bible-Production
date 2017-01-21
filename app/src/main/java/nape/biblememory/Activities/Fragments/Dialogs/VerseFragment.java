@@ -2,6 +2,7 @@ package nape.biblememory.Activities.Fragments.Dialogs;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ public class VerseFragment extends Fragment {
     private List<Chapter> chapterList;
     private String chapterId;
     private OnVerseSelected verseSelectedListener;
+    private Context context;
 
     public VerseFragment() {
     }
@@ -59,13 +61,14 @@ public class VerseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_verse, container, false);
+        context = getActivity().getApplicationContext();
         List<String> dataList = new ArrayList<>();
 
         verseSelectedCallback = new BaseCallback() {
             @Override
             public void onResponse(Object response) {
-                mPrefs.setSelectedVerseNum((String) response, getContext());
-                verseSelectedListener.onVerseSelected();
+                mPrefs.setSelectedVerseNum((String) response, context);
+                verseSelectedListener.onVerseSelected((String) response);
             }
 
             @Override
@@ -150,7 +153,12 @@ public class VerseFragment extends Fragment {
             }
         };
 
-        REST.getVerseRange(verseListCallback, mPrefs.getDamIdOldTestament(getActivity()), mPrefs.getSelectedBookId(getActivity()), null, null, chapterId);
+        if(mPrefs.isBookLocationOT(context)) {
+            REST.getVerseRange(verseListCallback, mPrefs.getDamIdOldTestament(context), mPrefs.getSelectedBookId(context), null, null, chapterId);
+        }else{
+            REST.getVerseRange(verseListCallback, mPrefs.getDamIdNewTestament(context), mPrefs.getSelectedBookId(context), null, null, chapterId);
+        }
+
         return 0;
     }
 
@@ -170,11 +178,11 @@ public class VerseFragment extends Fragment {
             }
         };
 
-        REST.getChapterList(chapterCallback, mPrefs.getDamId(getContext()), mPrefs.getSelectedBookId(getContext()));
+        REST.getChapterList(chapterCallback, mPrefs.getDamId(context), mPrefs.getSelectedBookId(context));
     }
 
     private String getChapterId(){
-        String selectedChapter = mPrefs.getSelectedChapter(getActivity().getApplicationContext());
+        String selectedChapter = mPrefs.getSelectedChapter(context);
         String result = "";
         for(Chapter chapter : chapterList){
             if(selectedChapter.equalsIgnoreCase(chapter.getChapterId())){
@@ -185,7 +193,7 @@ public class VerseFragment extends Fragment {
     }
 
     public interface OnVerseSelected{
-        void onVerseSelected();
+        void onVerseSelected(String response);
     }
 
 }

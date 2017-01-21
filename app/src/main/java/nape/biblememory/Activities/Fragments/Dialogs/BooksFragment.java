@@ -70,6 +70,7 @@ public class BooksFragment extends Fragment {
                 mPrefs.setSelectedBook((String) response, getContext());
                 mPrefs.setSelectedBookId(getBookId((String)response), context);
                 mPrefs.setNumberOfChapters(getNumberOfChapters((String)response), context);
+                setBookLocation((String)response);
                 ((BooksFragment.BooksFragmentListener) getActivity()).onBookSelected((String) response);
             }
 
@@ -83,6 +84,17 @@ public class BooksFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return v;
+    }
+
+    private void setBookLocation(String response) {
+        boolean isOT = false;
+        for(int i = 0; i < oldTestament.size(); i++){
+            if(oldTestament.get(i).getBookName().equalsIgnoreCase(response)){
+                isOT = true;
+                break;
+            }
+        }
+        mPrefs.setBookLocationOT(isOT, context);
     }
 
     private String getBookId(String response) {
