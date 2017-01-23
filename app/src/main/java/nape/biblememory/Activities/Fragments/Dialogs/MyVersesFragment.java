@@ -15,6 +15,7 @@ import java.util.List;
 import nape.biblememory.Activities.Adapters.RecyclerViewAdapterMyVerses;
 import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.Activities.Managers.ScriptureManager;
+import nape.biblememory.Activities.Managers.VerseOperations;
 import nape.biblememory.Activities.Models.ScriptureData;
 import nape.biblememory.Activities.Sqlite.MemoryListContract;
 import nape.biblememory.Activities.Views.SlidingTabLayout;
@@ -32,6 +33,7 @@ public class MyVersesFragment extends Fragment {
     private List<ScriptureData> dataSet;
     private BaseCallback removeCallback;
     private FloatingActionButton addVerseButton;
+    private VerseOperations vManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,7 +87,10 @@ public class MyVersesFragment extends Fragment {
         removeCallback = new BaseCallback() {
             @Override
             public void onResponse(Object response) {
-
+                final String verseLocation = (String) response;
+                vManager = new VerseOperations(getActivity().getApplicationContext());
+                vManager.removeVerse(verseLocation, MemoryListContract.CurrentSetEntry.TABLE_NAME);
+                RefreshRecyclerView();
             }
 
             @Override

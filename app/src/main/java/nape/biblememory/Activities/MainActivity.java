@@ -1,5 +1,6 @@
 package nape.biblememory.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -18,8 +19,13 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.faithcomesbyhearing.dbt.model.Verse;
+
+import java.util.List;
+
 import nape.biblememory.Activities.Adapters.ViewPagerAdapter;
 import nape.biblememory.Activities.Adapters.ViewPagerAdapterVerseSelector;
+import nape.biblememory.Activities.DBTApi.DBTApi;
 import nape.biblememory.Activities.Fragments.Dialogs.BooksFragment;
 import nape.biblememory.Activities.Fragments.Dialogs.ChapterFragment;
 import nape.biblememory.Activities.Fragments.Dialogs.MyVersesFragment;
@@ -46,6 +52,10 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     private String bookName;
     private String chapterNum;
     private String verseNum;
+
+    private DBTApi REST;
+    private BaseCallback<List<Verse>> selectedVerseCallback;
+    private Context context;
 
     private static final String BACK = "BACK";
     private static final String START_QUIZ = "START QUIZ";
@@ -192,10 +202,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         tabsMain.setVisibility(View.GONE);
         startQuiz.setText(BACK);
         startQuiz.setTypeface(Typeface.DEFAULT_BOLD);
-        fragmentContainer = (FrameLayout) findViewById(R.id.fragment_container);
-        fragmentContainer.setVisibility(View.VISIBLE);
-        VerseSelection fragment = new VerseSelection();
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
+        setSlidingTabViewVerseSelector();
     }
 
     @Override
@@ -206,13 +213,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             onBackPressedFromNewVerseSelector();
             return;
         }
-
-        getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.fragment_container)).commit();
-        pagerMain.setVisibility(View.VISIBLE);
-        tabsMain.setVisibility(View.VISIBLE);
-        startQuiz.setText(START_QUIZ);
-        startQuiz.setTypeface(Typeface.DEFAULT);
-        fragmentContainer.setVisibility(View.GONE);
+        super.onBackPressed();
     }
 
     @Override
@@ -224,13 +225,12 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     }
 
     private void onBackPressedFromNewVerseSelector(){
-        if(pagerVerseSelector != null)
-            pagerVerseSelector.setVisibility(View.GONE);
-
-        if(tabsVerseSelector != null)
-            tabsVerseSelector.setVisibility(View.GONE);
-
-        addVerseSelected();
+        tabsVerseSelector.setVisibility(View.GONE);
+        pagerVerseSelector.setVisibility(View.GONE);
+        pagerMain.setVisibility(View.VISIBLE);
+        tabsMain.setVisibility(View.VISIBLE);
+        startQuiz.setText(START_QUIZ);
+        startQuiz.setTypeface(Typeface.DEFAULT);
     }
 
     @Override
@@ -264,14 +264,38 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     }
 
     @Override
-    public void onVerseSelected(String verseNumber) {
-        FragmentManager fm = getSupportFragmentManager();
-        VerseSelectedDialogFragment verseSelectedDialog = new VerseSelectedDialogFragment();
+    public void onVerseSelected(final String verseNumber) {
+        REST = new DBTApi(getApplicationContext());
+        context = getApplicationContext();
+        selectedVerseCallback = new BaseCallback<List<Verse>>() {
+            @Override
+            public void onResponse(List<Verse> response) {
+                FragmentManager fm = getSupportFragmentManager();
+                VerseSelectedDialogFragment verseSelectedDialog = new VerseSelectedDialogFragment();
 
-        Bundle args = new Bundle();
-        args.putString("num", verseNumber);
-        verseSelectedDialog.setArguments(args);
+                Bundle args = new Bundle();
+                args.putString("num", verseNumber);
+                args.putString("verseText", response.get(0).getVerseText());
+                args.putString("verseLocation", mPrefs.getSelectedBook(context) + " " + mPrefs.getSelectedChapter(context) + ":" + verseNumber);
+                verseSelectedDialog.setArguments(args);
 
-        verseSelectedDialog.show(fm, "verseSelectedFragment");
+                verseSelectedDialog.show(fm, "verseSelectedFragment");
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Exception t = e;
+            }
+        };
+
+        String damId;
+        if(mPrefs.isBookLocationOT(context)){
+            damId = mPrefs.getDamIdOldTestament(context);
+        }else{
+            damId = mPrefs.getDamIdNewTestament(context);
+        }
+        REST.getVerse(selectedVerseCallback, damId, mPrefs.getSelectedBookId(context), verseNumber, mPrefs.getSelectedChapter(context));
+
+
     }
 }

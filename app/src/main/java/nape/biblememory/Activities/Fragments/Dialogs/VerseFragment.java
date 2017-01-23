@@ -139,7 +139,7 @@ public class VerseFragment extends Fragment {
         }
     }
 
-    private long getNumOfVersesToDisplay(final BaseCallback<Integer> numOfVersesCallback) {
+    private void getNumOfVersesToDisplay(final BaseCallback<Integer> numOfVersesCallback) {
         final DBTApi REST = new DBTApi(getActivity().getApplicationContext());
 
         BaseCallback<List<Verse>> verseListCallback = new BaseCallback<List<Verse>>() {
@@ -158,8 +158,6 @@ public class VerseFragment extends Fragment {
         }else{
             REST.getVerseRange(verseListCallback, mPrefs.getDamIdNewTestament(context), mPrefs.getSelectedBookId(context), null, null, chapterId);
         }
-
-        return 0;
     }
 
     private void getChapterList(final BaseCallback<List<Chapter>> chapterSelectedCallback){

@@ -3,11 +3,12 @@ package nape.biblememory.Activities.BroadcastReceivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import nape.biblememory.Activities.Managers.VerseOperations;
 import nape.biblememory.Activities.PhoneUnlockActivity;
+import nape.biblememory.Activities.Sqlite.MemoryListContract;
 import nape.biblememory.Activities.UserPreferences;
 
 
@@ -29,8 +30,11 @@ public class UnlockReceiver extends BroadcastReceiver {
                 }else {
                     Intent s = new Intent(context, PhoneUnlockActivity.class);
                     s.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    Log.d(TAG, "UnlockReceiver - Unlock activity has been launched." );
-                    context.startActivity(s);
+                    VerseOperations vOperations = new VerseOperations(context);
+                    if(vOperations.getVerseSet(MemoryListContract.CurrentSetEntry.TABLE_NAME).size() > 0) {
+                        Log.d(TAG, "UnlockReceiver - Unlock activity has been launched.");
+                        context.startActivity(s);
+                    }
                 }
             }else if(intent.getAction().equals(Intent.ACTION_ANSWER)){
                     String stateStr = intent.getStringExtra(TelephonyManager.EXTRA_STATE);

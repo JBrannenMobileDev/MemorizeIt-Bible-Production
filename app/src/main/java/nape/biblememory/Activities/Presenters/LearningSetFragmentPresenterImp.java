@@ -1,6 +1,5 @@
 package nape.biblememory.Activities.Presenters;
 
-import android.app.Activity;
 import android.content.Context;
 
 import java.util.List;
@@ -30,8 +29,10 @@ public class LearningSetFragmentPresenterImp implements LearningSetFragmentPrese
         ScriptureData scripture = null;
 
         for(ScriptureData verse : scriptureList){
-            if(verse.getVerseLocation().equalsIgnoreCase(verseLocation)){
-                scripture = verse;
+            if(verse.getVerseLocation() != null) {
+                if (verse.getVerseLocation().equalsIgnoreCase(verseLocation)) {
+                    scripture = verse;
+                }
             }
         }
 
