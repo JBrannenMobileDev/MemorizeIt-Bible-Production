@@ -185,6 +185,7 @@ public class VerseFragment extends Fragment {
         for(Chapter chapter : chapterList){
             if(selectedChapter.equalsIgnoreCase(chapter.getChapterId())){
                 result = chapter.getChapterId();
+                mPrefs.setChapterId(result, context);
             }
         }
         return result;

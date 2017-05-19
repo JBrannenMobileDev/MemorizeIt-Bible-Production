@@ -90,7 +90,7 @@ public class MyVersesFragment extends Fragment {
                 final String verseLocation = (String) response;
                 vManager = new VerseOperations(getActivity().getApplicationContext());
                 vManager.removeVerse(verseLocation, MemoryListContract.CurrentSetEntry.TABLE_NAME);
-                RefreshRecyclerView();
+                refreshRecyclerView();
             }
 
             @Override
@@ -102,7 +102,7 @@ public class MyVersesFragment extends Fragment {
         dataSet = scriptureManager.getScriptureSet(MemoryListContract.CurrentSetEntry.TABLE_NAME);
         mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_0, removeCallback);
         mRecyclerView.setAdapter(mAdapter);
-        RefreshRecyclerView();
+        refreshRecyclerView();
         return v;
     }
 
@@ -110,11 +110,11 @@ public class MyVersesFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            RefreshRecyclerView();
+            refreshRecyclerView();
         }
     }
 
-    public void RefreshRecyclerView(){
+    public void refreshRecyclerView(){
         if(mRecyclerView != null) {
             scriptureManager = new ScriptureManager(getContext());
             dataSet = scriptureManager.getScriptureSet(MemoryListContract.CurrentSetEntry.TABLE_NAME);

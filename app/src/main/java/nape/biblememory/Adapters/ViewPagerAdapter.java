@@ -15,6 +15,9 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     CharSequence Titles[]; // This will Store the Titles of the Tabs which are Going to be passed when ViewPagerAdapter is created
     int NumbOfTabs; // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created
 
+    private MyVersesFragment myVersesFragment;
+    private LearningSetFragment learningSetFragment;
+    private MemorizedSetFragment memorizedSetFragment;
 
     // Build a Constructor and assign the passed Values to appropriate values in the class
     public ViewPagerAdapter(FragmentManager fm, CharSequence mTitles[], int mNumbOfTabsumb) {
@@ -32,15 +35,19 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         switch(position){
             case 0:
                 selectedFrag = new MyVersesFragment();
+                myVersesFragment = (MyVersesFragment) selectedFrag;
                 break;
             case 1:
                 selectedFrag = new LearningSetFragment();
+                learningSetFragment = (LearningSetFragment) selectedFrag;
                 break;
             case 2:
                 selectedFrag = new MemorizedSetFragment();
+                memorizedSetFragment = (MemorizedSetFragment) selectedFrag;
                 break;
             default:
                 selectedFrag = new MyVersesFragment();
+                myVersesFragment = (MyVersesFragment) selectedFrag;
         }
         return selectedFrag;
     }
@@ -57,5 +64,17 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return NumbOfTabs;
+    }
+
+    public void refreshrecyclerViews(){
+        if(myVersesFragment != null && myVersesFragment.isVisible()){
+            myVersesFragment.refreshRecyclerView();
+        }
+        if(learningSetFragment != null && learningSetFragment.isVisible()){
+            learningSetFragment.RefreshRecyclerView();
+        }
+        if(memorizedSetFragment != null && memorizedSetFragment.isVisible()){
+            memorizedSetFragment.RefreshRecyclerView();
+        }
     }
 }

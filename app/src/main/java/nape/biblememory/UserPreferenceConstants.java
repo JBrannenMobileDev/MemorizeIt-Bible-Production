@@ -20,6 +20,7 @@ public class UserPreferenceConstants {
     public static final String NEW_TEST_DAM_ID = "new_test_dam_id";
     public static final String SELECTED_BOOK_ID = "book_id";
     public static final String DAM_ID = "dam_id";
-    public static final String SELECTED_VERSE_TEXT = "selected_verse_text";
     public static final String BOOK_LOCATION_OT = "book_location_ot";
+    public static final String CHAPTER_ID = "chapter_id";
+    public static final String SELECTED_VERSE_NUM = "selected_verse_num";
 }

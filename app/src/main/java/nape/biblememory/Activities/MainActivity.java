@@ -303,10 +303,30 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     @Override
     public void onVerseAdded(){
         onBackPressed();
+        adapterMain.refreshrecyclerViews();
     }
 
     @Override
-    public void includeNextVerseSelected(String verseLocation, BaseCallback<Verse> callback) {
+    public void includeNextVerseSelected(String verseLocation, final BaseCallback<Verse> callback, String selectedVerseNum) {
+        DBTApi api = new DBTApi(getApplicationContext());
+        BaseCallback<List<Verse>> nextVerseCallback = new BaseCallback<List<Verse>>() {
+            @Override
+            public void onResponse(List<Verse> response) {
+                callback.onResponse(response.get(0));
+            }
 
+            @Override
+            public void onFailure(Exception e) {
+                callback.onFailure(e);
+            }
+        };
+        String damId;
+        if(mPrefs.isBookLocationOT(context)){
+            damId = mPrefs.getDamIdOldTestament(context);
+        }else{
+            damId = mPrefs.getDamIdNewTestament(context);
+        }
+        String nextVerseNum = String.valueOf(Integer.valueOf(selectedVerseNum) + 1);
+        api.getVerse(nextVerseCallback, damId, mPrefs.getSelectedBookId(getApplicationContext()), nextVerseNum, mPrefs.getChapterId(getApplicationContext()));
     }
 }

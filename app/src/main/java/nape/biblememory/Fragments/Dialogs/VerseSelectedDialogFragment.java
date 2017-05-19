@@ -84,14 +84,18 @@ public class VerseSelectedDialogFragment extends DialogFragment {
         includeNextVerseTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialogActionsListener.includeNextVerseSelected(verseLocation, includeNextVerseCallback);
+                dialogActionsListener.includeNextVerseSelected(verseLocation, includeNextVerseCallback, selectedVerseNum);
             }
         });
 
         includeNextVerseCallback = new BaseCallback<Verse>() {
             @Override
             public void onResponse(Verse response) {
-
+                verseText = removeExtrasSpaces(verseText + response.getVerseText());
+                verseLocation = generateCombinedVerseLocations(response.getVerseId());
+                verse.setText(verseText);
+                verseLocationTv.setText(verseLocation);
+                selectedVerseNum = response.getVerseId();
             }
 
             @Override
@@ -101,8 +105,16 @@ public class VerseSelectedDialogFragment extends DialogFragment {
         };
     }
 
+    private String removeExtrasSpaces(String s) {
+        return s.replaceAll("\\s{2,}"," ");
+    }
+
+    private String generateCombinedVerseLocations(String verseId) {
+        return mPrefs.getSelectedBook(getActivity().getApplicationContext()) + " " + mPrefs.getSelectedChapter(getActivity().getApplicationContext()) + ":" + selectedVerseNum + "-" + verseId;
+    }
+
     public interface addVerseDialogActions {
         void onVerseAdded();
-        void includeNextVerseSelected(String verseLocation, BaseCallback<Verse> callback);
+        void includeNextVerseSelected(String verseLocation, BaseCallback<Verse> callback, String selectedVerseNum);
     }
 }

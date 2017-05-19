@@ -174,11 +174,11 @@ public class UserPreferences{
 
     public void setSelectedVerseNum(String verseNum, Context context){
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
-        editor.putString(UserPreferenceConstants.SELECTED_VERSE_TEXT, verseNum);
+        editor.putString(UserPreferenceConstants.SELECTED_VERSE_NUM, verseNum);
     }
 
     public String getSelectedVerseNum(Context context) {
-        return getSharedPreferences(context).getString(UserPreferenceConstants.SELECTED_VERSE_TEXT, "");
+        return getSharedPreferences(context).getString(UserPreferenceConstants.SELECTED_VERSE_NUM, "");
     }
 
     public void setBookLocationOT(boolean isOT, Context context){
@@ -189,5 +189,14 @@ public class UserPreferences{
 
     public boolean isBookLocationOT(Context context){
         return getSharedPreferences(context).getBoolean(UserPreferenceConstants.BOOK_LOCATION_OT , false);
+    }
+
+    public void setChapterId(String chapterId, Context context) {
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putString(UserPreferenceConstants.CHAPTER_ID, chapterId);
+    }
+
+    public String getChapterId(Context context) {
+        return getSharedPreferences(context).getString(UserPreferenceConstants.CHAPTER_ID, "");
     }
 }
