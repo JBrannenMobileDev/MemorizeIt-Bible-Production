@@ -277,15 +277,6 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
         }
     }
 
-    @Override
-    public void setVerseTextAlignmentCenter(boolean alignment) {
-        if(alignment) {
-            verse.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        }else{
-            verse.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-        }
-    }
-
 
     @Override
     protected void onDestroy() {

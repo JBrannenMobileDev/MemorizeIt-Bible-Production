@@ -317,11 +317,9 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
             view.setCheckAnswerButtonText(R.string.check_answer);
             if (scripture.getMemoryStage() != 7) {
                 view.setHintButtonVisibility(View.VISIBLE);
-                view.setVerseTextAlignmentCenter(false);
             }else{
                 SpannableStringBuilder finalStageTip = stringModifier.createFinalStageTip("Final Stage! \nUnderscores \nwill not be visible.");
                 view.setSpannableVerseText(finalStageTip);
-                view.setVerseTextAlignmentCenter(true);
             }
         }
         view.setCheckAnswerButtonVisibility(View.VISIBLE);

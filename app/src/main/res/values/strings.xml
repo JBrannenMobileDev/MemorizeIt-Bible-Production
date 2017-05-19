@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MemorizeIt-Bible</string>
+    <string name="app_name">MemorizeIt Bible</string>
 
     //UnlockActivity Strings
     <string name="did_you_get_it">Did You Get It?</string>

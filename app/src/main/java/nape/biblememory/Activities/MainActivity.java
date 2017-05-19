@@ -38,7 +38,7 @@ import nape.biblememory.R;
 
 public class MainActivity extends ActionBarActivity implements NavigationView.OnNavigationItemSelectedListener,
         MyVersesFragment.OnAddVerseSelectedListener, VerseSelection.FragmentToActivity, BooksFragment.BooksFragmentListener,
-        ChapterFragment.ChaptersFragmentListener, VerseFragment.OnVerseSelected, VerseSelectedDialogFragment.OnVerseAdded{
+        ChapterFragment.ChaptersFragmentListener, VerseFragment.OnVerseSelected, VerseSelectedDialogFragment.addVerseDialogActions {
 
     private ViewPager pagerMain;
     private ViewPagerAdapter adapterMain;
@@ -303,6 +303,10 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     @Override
     public void onVerseAdded(){
         onBackPressed();
+    }
+
+    @Override
+    public void includeNextVerseSelected(String verseLocation, BaseCallback<Verse> callback) {
 
     }
 }

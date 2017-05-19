@@ -55,7 +55,7 @@ public class ScriptureManager {
                     }
                 }
             }
-        }else if(currentSize == 1){
+        }else if(currentSize == 1 && learningSize < 3){
             scriptureListCurrent = vOperations.getVerseSet(MemoryListContract.CurrentSetEntry.TABLE_NAME);
             verseData = initializeNewVerse(scriptureListCurrent.get(0));
             if(!verseData.getVerseLocation().equalsIgnoreCase("")) {
@@ -63,7 +63,7 @@ public class ScriptureManager {
                 vOperations.removeVerse(verseData.getVerseLocation(), MemoryListContract.CurrentSetEntry.TABLE_NAME);
             }
         }else if(currentSize == 2){
-            int loopSize = 2 - learningSize;
+            int loopSize = 3 - learningSize;
             while(loopSize > 0){
                 if(currentSize > 0) {
                     scriptureListCurrent = vOperations.getVerseSet(MemoryListContract.CurrentSetEntry.TABLE_NAME);
@@ -92,7 +92,9 @@ public class ScriptureManager {
             vOperations.addVerse(temp, MemoryListContract.LearningSetEntry.TABLE_NAME);
             vOperations.removeVerse(temp.getVerseLocation(), MemoryListContract.CurrentSetEntry.TABLE_NAME);
         }
-        if(scriptureListLearning != null && scriptureListLearning.size() > 2) {
+
+        scriptureListLearning = vOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME);
+        if(scriptureListLearning != null && scriptureListLearning.size() > 2 && scriptureListLearning.get(0).getVerse() != null && scriptureListLearning.get(1).getVerse() != null && scriptureListLearning.get(2).getVerse() != null) {
             Random generate = new Random();
             final int random = generate.nextInt(100) + 1;
             caseNumber = calculateCaseNumber(random);
@@ -103,6 +105,31 @@ public class ScriptureManager {
                     return scriptureListLearning.get(1);
                 case 3:
                     return scriptureListLearning.get(2);
+                default:
+                    return scriptureListLearning.get(0);
+            }
+        }else if(scriptureListLearning != null && scriptureListLearning.size() == 2 && scriptureListLearning.get(0).getVerse() != null && scriptureListLearning.get(1).getVerse() != null){
+            Random generate = new Random();
+            final int random = generate.nextInt(100) + 1;
+            caseNumber = calculateCaseNumber(random);
+            switch (caseNumber) {
+                case 1:
+                    return scriptureListLearning.get(0);
+                case 2:
+                case 3:
+                    return scriptureListLearning.get(1);
+                default:
+                    return scriptureListLearning.get(0);
+            }
+        }else if(scriptureListLearning != null && scriptureListLearning.size() == 1 && scriptureListLearning.get(0).getVerse() != null){
+            Random generate = new Random();
+            final int random = generate.nextInt(100) + 1;
+            caseNumber = calculateCaseNumber(random);
+            switch (caseNumber) {
+                case 1:
+                case 2:
+                case 3:
+                    return scriptureListLearning.get(0);
                 default:
                     return scriptureListLearning.get(0);
             }
@@ -111,27 +138,11 @@ public class ScriptureManager {
     }
 
     public ScriptureData getCurrentSetScripture(){
-        int caseNumber;
-        List<ScriptureData> scriptureListLearning = vOperations.getVerseSet(MemoryListContract.CurrentSetEntry.TABLE_NAME);
-        if(scriptureListLearning != null && scriptureListLearning.size() > 2) {
-            Random generate = new Random();
-            final int random = generate.nextInt(100) + 1;
-            caseNumber = calculateCaseNumber(random);
-            switch (caseNumber) {
-                case 1:
-                    return scriptureListLearning.get(0);
-
-                case 2:
-                    return scriptureListLearning.get(1);
-
-                case 3:
-                    return scriptureListLearning.get(2);
-
-                default:
-                    return scriptureListLearning.get(0);
-            }
+        List<ScriptureData> scriptureListCurrentSet = vOperations.getVerseSet(MemoryListContract.CurrentSetEntry.TABLE_NAME);
+        if(scriptureListCurrentSet != null && scriptureListCurrentSet.size() > 0) {
+            return scriptureListCurrentSet.get(0);
         }
-        return new ScriptureData();
+        return null;
     }
 
     private int calculateCaseNumber(int random) {

@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.faithcomesbyhearing.dbt.model.Verse;
+
+import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.Models.ScriptureData;
 import nape.biblememory.Sqlite.MemoryListContract;
@@ -33,6 +36,8 @@ public class VerseSelectedDialogFragment extends DialogFragment {
     private String selectedVerseNum;
     private String verseText;
     private String verseLocation;
+    private addVerseDialogActions dialogActionsListener;
+    private BaseCallback<Verse> includeNextVerseCallback;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,10 +54,9 @@ public class VerseSelectedDialogFragment extends DialogFragment {
         verseText = getArguments().getString("verseText");
         verseLocation = getArguments().getString("verseLocation");
         verseOperations = new VerseOperations(getActivity().getApplicationContext());
-
         verse.setText(verseText);
         verseLocationTv.setText(verseLocation);
-
+        dialogActionsListener = (addVerseDialogActions) getActivity();
         setOnclickListeners();
         return view;
     }
@@ -65,6 +69,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
                 verse.setVerse(verseText);
                 verse.setVerseLocation(verseLocation);
                 verseOperations.addVerse(verse, MemoryListContract.CurrentSetEntry.TABLE_NAME);
+                dialogActionsListener.onVerseAdded();
                 VerseSelectedDialogFragment.this.getDialog().cancel();
             }
         });
@@ -75,9 +80,29 @@ public class VerseSelectedDialogFragment extends DialogFragment {
                 VerseSelectedDialogFragment.this.getDialog().cancel();
             }
         });
+
+        includeNextVerseTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogActionsListener.includeNextVerseSelected(verseLocation, includeNextVerseCallback);
+            }
+        });
+
+        includeNextVerseCallback = new BaseCallback<Verse>() {
+            @Override
+            public void onResponse(Verse response) {
+
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
     }
 
-    public interface OnVerseAdded{
+    public interface addVerseDialogActions {
         void onVerseAdded();
+        void includeNextVerseSelected(String verseLocation, BaseCallback<Verse> callback);
     }
 }

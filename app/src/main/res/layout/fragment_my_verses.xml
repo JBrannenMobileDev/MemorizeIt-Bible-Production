@@ -15,9 +15,16 @@
         app:backgroundTint="@color/colorHighlight"
         android:src="@drawable/ic_add_white_24dp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/current_set_recycler_view"
-        android:scrollbars="vertical"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/current_set_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="75dp"
+            android:scrollbars="vertical" />
+    </ScrollView>
+
 </RelativeLayout>
