@@ -23,19 +23,22 @@ import com.faithcomesbyhearing.dbt.model.Verse;
 
 import java.util.List;
 
-import nape.biblememory.Activities.Adapters.ViewPagerAdapter;
-import nape.biblememory.Activities.Adapters.ViewPagerAdapterVerseSelector;
-import nape.biblememory.Activities.DBTApi.DBTApi;
-import nape.biblememory.Activities.Fragments.Dialogs.BooksFragment;
-import nape.biblememory.Activities.Fragments.Dialogs.ChapterFragment;
-import nape.biblememory.Activities.Fragments.Dialogs.MyVersesFragment;
-import nape.biblememory.Activities.Fragments.Dialogs.VerseFragment;
-import nape.biblememory.Activities.Fragments.Dialogs.VerseSelection;
-import nape.biblememory.Activities.Views.SlidingTabLayout;
-import nape.biblememory.Activities.Views.VerseSelectedDialogFragment;
+import nape.biblememory.Adapters.ViewPagerAdapter;
+import nape.biblememory.Adapters.ViewPagerAdapterVerseSelector;
+import nape.biblememory.DBTApi.DBTApi;
+import nape.biblememory.Fragments.BooksFragment;
+import nape.biblememory.Fragments.ChapterFragment;
+import nape.biblememory.Fragments.MyVersesFragment;
+import nape.biblememory.Fragments.VerseFragment;
+import nape.biblememory.Fragments.VerseSelection;
+import nape.biblememory.UserPreferences;
+import nape.biblememory.Views.SlidingTabLayout;
+import nape.biblememory.Fragments.Dialogs.VerseSelectedDialogFragment;
 import nape.biblememory.R;
 
-public class MainActivity extends ActionBarActivity implements NavigationView.OnNavigationItemSelectedListener, MyVersesFragment.OnAddVerseSelectedListener, VerseSelection.FragmentToActivity, BooksFragment.BooksFragmentListener, ChapterFragment.ChaptersFragmentListener, VerseFragment.OnVerseSelected{
+public class MainActivity extends ActionBarActivity implements NavigationView.OnNavigationItemSelectedListener,
+        MyVersesFragment.OnAddVerseSelectedListener, VerseSelection.FragmentToActivity, BooksFragment.BooksFragmentListener,
+        ChapterFragment.ChaptersFragmentListener, VerseFragment.OnVerseSelected, VerseSelectedDialogFragment.OnVerseAdded{
 
     private ViewPager pagerMain;
     private ViewPagerAdapter adapterMain;
@@ -295,7 +298,11 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             damId = mPrefs.getDamIdNewTestament(context);
         }
         REST.getVerse(selectedVerseCallback, damId, mPrefs.getSelectedBookId(context), verseNumber, mPrefs.getSelectedChapter(context));
+    }
 
+    @Override
+    public void onVerseAdded(){
+        onBackPressed();
 
     }
 }

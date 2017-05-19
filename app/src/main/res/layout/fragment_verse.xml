@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="nape.biblememory.Activities.Fragments.Dialogs.VerseFragment"
+    tools:context=".Fragments.VerseFragment"
     android:background="@color/colorWhite">
     <GridView
         android:id="@+id/verses_gridview"

@@ -31,7 +31,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme" />
 
-        <receiver android:name=".Activities.BroadcastReceivers.UnlockReceiver">
+        <receiver android:name=".BroadcastReceivers.UnlockReceiver">
             <intent-filter
                 android:enabled="true"
                 android:exported="true">

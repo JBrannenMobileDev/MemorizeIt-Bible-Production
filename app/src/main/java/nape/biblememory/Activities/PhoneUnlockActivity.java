@@ -18,15 +18,14 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
-import nape.biblememory.Activities.Fragments.Dialogs.FirstTimeUnlockDialog;
-import nape.biblememory.Activities.Presenters.PhoneUnlockPresenter;
-import nape.biblememory.Activities.Presenters.PhoneUnlockPresenterImp;
-import nape.biblememory.Activities.Views.PhoneUnlockView;
+import nape.biblememory.Fragments.Dialogs.FirstTimeUnlockDialog;
+import nape.biblememory.Presenters.PhoneUnlockPresenter;
+import nape.biblememory.Presenters.PhoneUnlockPresenterImp;
+import nape.biblememory.UserPreferences;
+import nape.biblememory.Fragments.PhoneUnlockView;
 import nape.biblememory.R;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.analytics.FirebaseAnalytics.Event;
-import com.google.firebase.analytics.FirebaseAnalytics.Param;
 
 
 public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnlockView{
