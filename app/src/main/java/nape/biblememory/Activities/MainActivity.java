@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -44,17 +45,19 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     private ViewPagerAdapter adapterMain;
     private SlidingTabLayout tabsMain;
     private FrameLayout fragmentContainer;
-    private CharSequence mainTitles[]={"My Verses","In Progress","Memorized"};
+    private CharSequence mainTitles[]={"New Verses","In Progress","Memorized"};
     private ViewPager pagerVerseSelector;
     private ViewPagerAdapterVerseSelector adapterVerseSelector;
     private SlidingTabLayout tabsVerseSelector;
     private CharSequence VerseSelectorTitles[]={"BOOKS","CHAPTER","VERSE"};
     private int Numboftabs =3;
-    private TextView startQuiz;
+    private FloatingActionButton startQuiz;
     private UserPreferences mPrefs;
     private String bookName;
     private String chapterNum;
     private String verseNum;
+    private NavigationView navigationView;
+    private FrameLayout startQuizFabFrame;
 
     private DBTApi REST;
     private BaseCallback<List<Verse>> selectedVerseCallback;
@@ -77,26 +80,28 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         setSlidingTabViewMain();
 
-        startQuiz = (TextView) findViewById(R.id.toolbar_start_quiz);
+        startQuizFabFrame = (FrameLayout) findViewById(R.id.start_quiz_fab_frame);
+        startQuiz = (FloatingActionButton) findViewById(R.id.start_quiz_fab);
         startQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(pagerMain.getVisibility() == View.GONE){
-                    onBackPressed();
-                    return;
-                }
-                if(pagerVerseSelector != null && pagerVerseSelector.getVisibility() == View.VISIBLE){
-                    onBackPressedFromNewVerseSelector();
-                }
                 Intent myIntent = new Intent(getApplicationContext(), PhoneUnlockActivity.class);
                 startActivity(myIntent);
             }
         });
+    }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        if(startQuiz.getVisibility() == View.VISIBLE){
+            navigationView.getMenu().getItem(0).setChecked(true);
+        }
     }
 
     private void setSlidingTabViewMain() {
@@ -179,18 +184,14 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_add_new_verse) {
+            addVerseSelected();
+        } else if (id == R.id.nav_start_quiz) {
+            startQuiz.callOnClick();
+        } else if (id == R.id.nav_settings) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_home) {
+            onBackPressedFromNewVerseSelector();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -203,14 +204,16 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         this.setTitle("Verse Selection");
         pagerMain.setVisibility(View.GONE);
         tabsMain.setVisibility(View.GONE);
-        startQuiz.setText(BACK);
-        startQuiz.setTypeface(Typeface.DEFAULT_BOLD);
         setSlidingTabViewVerseSelector();
+        startQuiz.setVisibility(View.GONE);
+        startQuizFabFrame.setVisibility(View.GONE);
     }
 
     @Override
     public void onBackPressed(){
         this.setTitle("MemorizeIt-Bible");
+
+        navigationView.getMenu().getItem(0).setChecked(true);
 
         if(pagerVerseSelector != null && pagerVerseSelector.getVisibility() == View.VISIBLE){
             onBackPressedFromNewVerseSelector();
@@ -228,12 +231,14 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     }
 
     private void onBackPressedFromNewVerseSelector(){
-        tabsVerseSelector.setVisibility(View.GONE);
-        pagerVerseSelector.setVisibility(View.GONE);
-        pagerMain.setVisibility(View.VISIBLE);
-        tabsMain.setVisibility(View.VISIBLE);
-        startQuiz.setText(START_QUIZ);
-        startQuiz.setTypeface(Typeface.DEFAULT);
+        if(tabsVerseSelector != null) {
+            tabsVerseSelector.setVisibility(View.GONE);
+            pagerVerseSelector.setVisibility(View.GONE);
+            pagerMain.setVisibility(View.VISIBLE);
+            tabsMain.setVisibility(View.VISIBLE);
+            startQuiz.setVisibility(View.VISIBLE);
+            startQuizFabFrame.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

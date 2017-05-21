@@ -9,11 +9,12 @@
         android:id="@+id/add_verse_button_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="15dp"
-        app:backgroundTint="@color/colorHighlight"
-        android:src="@drawable/ic_add_white_24dp" />
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="80dp"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/ic_add_white_24dp"
+        app:backgroundTint="@color/colorHighlight" />
 
     <ScrollView
         android:layout_width="match_parent"
