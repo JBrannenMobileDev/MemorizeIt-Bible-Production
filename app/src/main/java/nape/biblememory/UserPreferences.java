@@ -199,4 +199,14 @@ public class UserPreferences{
     public String getChapterId(Context context) {
         return getSharedPreferences(context).getString(UserPreferenceConstants.CHAPTER_ID, "");
     }
+
+    public void setStartQuizWhenPhoneUnlocks(boolean start, Context context){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putBoolean(UserPreferenceConstants.START_QUIZ_WHEN_PHONE_UNLOCKS, start);
+        editor.commit();
+    }
+
+    public boolean isStartQuizWhenPhoneUnlock(Context context){
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.START_QUIZ_WHEN_PHONE_UNLOCKS , true);
+    }
 }

@@ -181,7 +181,8 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        Intent settingsIntent = null;
+
         int id = item.getItemId();
 
         if (id == R.id.nav_add_new_verse) {
@@ -189,13 +190,16 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         } else if (id == R.id.nav_start_quiz) {
             startQuiz.callOnClick();
         } else if (id == R.id.nav_settings) {
-
+            settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
         } else if (id == R.id.nav_home) {
             onBackPressedFromNewVerseSelector();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+        if(id == R.id.nav_settings) {
+            startActivity(settingsIntent);
+        }
         return true;
     }
 
