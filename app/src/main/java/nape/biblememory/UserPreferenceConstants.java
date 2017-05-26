@@ -24,4 +24,5 @@ public class UserPreferenceConstants {
     public static final String CHAPTER_ID = "chapter_id";
     public static final String SELECTED_VERSE_NUM = "selected_verse_num";
     public static final String START_QUIZ_WHEN_PHONE_UNLOCKS = "start_quiz";
+    public static final String SHOW_QUIZ_MONDAY = "mon";
 }

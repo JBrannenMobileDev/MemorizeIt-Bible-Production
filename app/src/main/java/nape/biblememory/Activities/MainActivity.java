@@ -68,6 +68,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
         super.onCreate(savedInstanceState);
         mPrefs = new UserPreferences();
         setContentView(R.layout.activity_main);
@@ -94,6 +95,12 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                 startActivity(myIntent);
             }
         });
+    }
+
+    @Override
+    public void finish(){
+        super.finish();
+        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
     }
 
     @Override

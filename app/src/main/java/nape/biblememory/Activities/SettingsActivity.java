@@ -17,6 +17,7 @@ import nape.biblememory.UserPreferences;
 public class SettingsActivity extends AppCompatActivity implements TimeSelectionDialogFragment.TimeSelectedListener {
 
     private Switch launchQuizOnUnlock;
+    private Switch onTheseDaysSwitch;
     private UserPreferences mPrefs;
     private TextView startTime;
     private TextView endTime;
@@ -26,6 +27,7 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_left);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         setTitle("Settings");
@@ -35,6 +37,12 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
         endTime = (TextView) findViewById(R.id.end_time_settings);
         initializeSettings();
         initializeListeners();
+    }
+
+    @Override
+    public void finish(){
+        super.finish();
+        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_left);
     }
 
     private void initializeSettings() {
@@ -57,6 +65,13 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
             @Override
             public void onClick(View view) {
                 mPrefs.setStartQuizWhenPhoneUnlocks(launchQuizOnUnlock.isChecked(), getApplicationContext());
+            }
+        });
+
+        onTheseDaysSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                mPrefs.setShowQuizOnMonday()
             }
         });
 

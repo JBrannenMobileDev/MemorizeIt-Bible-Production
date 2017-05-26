@@ -209,4 +209,14 @@ public class UserPreferences{
     public boolean isStartQuizWhenPhoneUnlock(Context context){
         return getSharedPreferences(context).getBoolean(UserPreferenceConstants.START_QUIZ_WHEN_PHONE_UNLOCKS , true);
     }
+
+    public void setShowQuizOnMonday(boolean show, Context context){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putBoolean(UserPreferenceConstants.BOOK_LOCATION_OT, show);
+        editor.commit();
+    }
+
+    public boolean showQuizOnMonday(Context context){
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.SHOW_QUIZ_MONDAY , false);
+    }
 }
