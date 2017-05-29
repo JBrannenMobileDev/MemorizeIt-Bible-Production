@@ -18,20 +18,55 @@ import nape.biblememory.UserPreferences;
 public class SettingsActivity extends AppCompatActivity implements TimeSelectionDialogFragment.TimeSelectedListener {
 
     private Switch launchQuizOnUnlock;
-    private Switch onTheseDaysSwitch;
+    /*private Switch mondaySwitch;
+    private Switch mondayTimeSwitch;
+    private TextView mondaySwitchtv;
+    private TextView mondayTimeTv;
+    private TextView mondayTv3;
+    private TextView mondayTv4;
+    private Switch tuesdaySwitch;
+    private Switch tuesdayTimeSwitch;
+    private TextView tuesdaySwitchtv;
+    private TextView tuesdayTimeTv;
+    private TextView tuesdayTv3;
+    private TextView tuesdayTv4;
+    private Switch mondaySwitch;
+    private Switch mondayTimeSwitch;
+    private TextView mondaySwitchtv;
+    private TextView mondayTimeTv;
+    private TextView mondayTv3;
+    private TextView mondayTv4;
+    private Switch mondaySwitch;
+    private Switch mondayTimeSwitch;
+    private TextView mondaySwitchtv;
+    private TextView mondayTimeTv;
+    private TextView mondayTv3;
+    private TextView mondayTv4;
+    private Switch mondaySwitch;
+    private Switch mondayTimeSwitch;
+    private TextView mondaySwitchtv;
+    private TextView mondayTimeTv;
+    private TextView mondayTv3;
+    private TextView mondayTv4;
+    private Switch mondaySwitch;
+    private Switch mondayTimeSwitch;
+    private TextView mondaySwitchtv;
+    private TextView mondayTimeTv;
+    private TextView mondayTv3;
+    private TextView mondayTv4;
+    private Switch mondaySwitch;
+    private Switch mondayTimeSwitch;
+    private TextView mondaySwitchtv;
+    private TextView mondayTimeTv;
+    private TextView mondayTv3;
+    private TextView mondayTv4;*/
+
     private UserPreferences mPrefs;
     private TextView startTime;
     private TextView endTime;
     private TextView textViewToSet;
     private Date startDate;
     private Date endDate;
-    private CheckBox cbMon;
-    private CheckBox cbTue;
-    private CheckBox cbWed;
-    private CheckBox cbThur;
-    private CheckBox cbFri;
-    private CheckBox cbSat;
-    private CheckBox cbSun;
 
 
     @Override
@@ -43,15 +78,7 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
         mPrefs = new UserPreferences();
         launchQuizOnUnlock = (Switch) findViewById(R.id.start_quiz_on_unlock);
         startTime = (TextView) findViewById(R.id.start_time_settings);
-        onTheseDaysSwitch = (Switch) findViewById(R.id.on_these_days_switch);
         endTime = (TextView) findViewById(R.id.end_time_settings);
-        cbMon = (CheckBox) findViewById(R.id.checkBoxMon);
-        cbTue = (CheckBox) findViewById(R.id.checkBoxTue);
-        cbWed = (CheckBox) findViewById(R.id.checkBoxWed);
-        cbThur = (CheckBox) findViewById(R.id.checkBoxThur);
-        cbFri = (CheckBox) findViewById(R.id.checkBoxFri);
-        cbSat = (CheckBox) findViewById(R.id.checkBoxSat);
-        cbSun = (CheckBox) findViewById(R.id.checkBoxSun);
         initializeSettings();
         initializeListeners();
     }
@@ -82,19 +109,6 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
             @Override
             public void onClick(View view) {
                 mPrefs.setStartQuizWhenPhoneUnlocks(launchQuizOnUnlock.isChecked(), getApplicationContext());
-            }
-        });
-
-        onTheseDaysSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPrefs.setShowQuizOnMonday(cbMon.isPressed(), getApplicationContext());
-                mPrefs.setShowQuizOnTuesday(cbTue.isPressed(), getApplicationContext());
-                mPrefs.setShowQuizOnWednesday(cbWed.isPressed(), getApplicationContext());
-                mPrefs.setShowQuizOnThursday(cbThur.isPressed(), getApplicationContext());
-                mPrefs.setShowQuizOnFriday(cbFri.isPressed(), getApplicationContext());
-                mPrefs.setShowQuizOnSaturday(cbSat.isPressed(), getApplicationContext());
-                mPrefs.setShowQuizOnSunday(cbSun.isPressed(), getApplicationContext());
             }
         });
 

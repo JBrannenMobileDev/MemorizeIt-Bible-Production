@@ -34,7 +34,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="125dp">
+        android:layout_height="115dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -67,7 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingBottom="10dp"
+            android:paddingBottom="5dp"
             android:paddingLeft="15dp"
             android:text="Include next verse"
             android:textColor="@color/colorProgressBg" />

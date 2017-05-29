@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import java.util.Calendar;
+
 import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.Activities.PhoneUnlockActivity;
 import nape.biblememory.Sqlite.MemoryListContract;
@@ -32,8 +34,60 @@ public class UnlockReceiver extends BroadcastReceiver {
                     s.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     VerseOperations vOperations = new VerseOperations(context);
                     if(vOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() > 0 && mPrefs.isStartQuizWhenPhoneUnlock(context)) {
-                        Log.d(TAG, "UnlockReceiver - Unlock activity has been launched.");
-                        context.startActivity(s);
+                        Calendar calendar = Calendar.getInstance();
+                        boolean startQuiz = true;
+                        if(mPrefs.isStartQuizBasedOffDayOfWeek(context)) {
+                            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+                            if (dayOfWeek == Calendar.MONDAY) {
+                                if (mPrefs.showQuizOnMonday(context)) {
+                                    startQuiz = true;
+                                }else{
+                                    startQuiz = false;
+                                }
+                            } else if (dayOfWeek == Calendar.TUESDAY) {
+                                if (mPrefs.showQuizOnTuesday(context)) {
+                                    startQuiz = true;
+                                }else{
+                                    startQuiz = false;
+                                }
+                            } else if (dayOfWeek == Calendar.WEDNESDAY) {
+                                if (mPrefs.showQuizOnWednesday(context)) {
+                                    startQuiz = true;
+                                }else{
+                                    startQuiz = false;
+                                }
+                            } else if (dayOfWeek == Calendar.THURSDAY) {
+                                if(mPrefs.showQuizOnThursday(context)) {
+                                    startQuiz = true;
+                                }else{
+                                    startQuiz = false;
+                                }
+                            } else if (dayOfWeek == Calendar.FRIDAY) {
+                                if(mPrefs.showQuizOnFriday(context)) {
+                                    startQuiz = true;
+                                }else{
+                                    startQuiz = false;
+                                }
+                            } else if (dayOfWeek == Calendar.SATURDAY) {
+                                if(mPrefs.showQuizOnSaturday(context)) {
+                                    startQuiz = true;
+                                }else{
+                                    startQuiz = false;
+                                }
+                            } else if (dayOfWeek == Calendar.SUNDAY) {
+                                if(mPrefs.showQuizOnSunday(context)) {
+                                    startQuiz = true;
+                                }else{
+                                    startQuiz = false;
+                                }
+                            }
+                        }
+
+                        if(startQuiz){
+                            Log.d(TAG, "UnlockReceiver - Unlock activity has been launched.");
+                            context.startActivity(s);
+                        }
+
                     }
                 }
             }else if(intent.getAction().equals(Intent.ACTION_ANSWER)){

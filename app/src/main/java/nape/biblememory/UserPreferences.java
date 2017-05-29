@@ -299,4 +299,14 @@ public class UserPreferences{
     public long getSettingsEndTime(Context context){
         return getSharedPreferences(context).getLong(UserPreferenceConstants.SETTINGS_END_TIME, 0);
     }
+
+    public boolean isStartQuizBasedOffDayOfWeek(Context context) {
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.SHOW_QUIZ_THIS_DAY , true);
+    }
+
+    public void setShowQuizBasedOffDayOfWeek(boolean pressed, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putBoolean(UserPreferenceConstants.SHOW_QUIZ_THIS_DAY, pressed);
+        editor.commit();
+    }
 }

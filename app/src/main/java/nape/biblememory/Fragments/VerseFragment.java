@@ -97,6 +97,7 @@ public class VerseFragment extends Fragment {
                             @Override
                             public void onResponse(Integer response) {
                                 numOfVerses = response;
+                                mPrefs.setNumberOfVerses(numOfVerses, context);
                                 for (int i = 1; i <= numOfVerses; i++) {
                                     verseNumList.add(String.valueOf(i));
                                 }

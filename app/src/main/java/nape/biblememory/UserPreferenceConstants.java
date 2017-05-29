@@ -33,4 +33,5 @@ public class UserPreferenceConstants {
     public static final String SHOW_QUIZ_SUNDAY = "sun";
     public static final String SETTINGS_START_TIME = "settings_start_time";
     public static final String SETTINGS_END_TIME = "settings_end_time";
+    public static final String SHOW_QUIZ_THIS_DAY = "this_day";
 }
