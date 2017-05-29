@@ -296,6 +296,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                 args.putString("num", verseNumber);
                 args.putString("verseText", response.get(0).getVerseText());
                 args.putString("verseLocation", mPrefs.getSelectedBook(context) + " " + mPrefs.getSelectedChapter(context) + ":" + verseNumber);
+                args.putLong("numOfVersesInChapter", mPrefs.getNumberOfVerses(context));
                 verseSelectedDialog.setArguments(args);
 
                 verseSelectedDialog.show(fm, "verseSelectedFragment");

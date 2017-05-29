@@ -33,9 +33,12 @@ public class VerseSelectedDialogFragment extends DialogFragment {
     private UserPreferences mPrefs;
     private VerseOperations verseOperations;
 
-    private String selectedVerseNum;
+    private String initialSelectedVerseNum;
+    private long currentSelectedVerse;
+    private String previousVerseNum;
     private String verseText;
     private String verseLocation;
+    private long numOfVersesInChapter;
     private addVerseDialogActions dialogActionsListener;
     private BaseCallback<Verse> includeNextVerseCallback;
 
@@ -50,14 +53,20 @@ public class VerseSelectedDialogFragment extends DialogFragment {
         add = (Button) view.findViewById(R.id.addVerseButton);
         cancel = (Button) view.findViewById(R.id.cancelButton);
         mPrefs = new UserPreferences();
-        selectedVerseNum = getArguments().getString("num");
+        initialSelectedVerseNum = getArguments().getString("num");
+        previousVerseNum = initialSelectedVerseNum;
         verseText = getArguments().getString("verseText");
         verseLocation = getArguments().getString("verseLocation");
+        numOfVersesInChapter = getArguments().getLong("numOfVersesInChapter");
         verseOperations = new VerseOperations(getActivity().getApplicationContext());
         verse.setText(verseText);
         verseLocationTv.setText(verseLocation);
         dialogActionsListener = (addVerseDialogActions) getActivity();
         setOnclickListeners();
+        currentSelectedVerse = Long.valueOf(initialSelectedVerseNum);
+        if(currentSelectedVerse == numOfVersesInChapter){
+            includeNextVerseTv.setVisibility(View.INVISIBLE);
+        }
         return view;
     }
 
@@ -84,7 +93,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
         includeNextVerseTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialogActionsListener.includeNextVerseSelected(verseLocation, includeNextVerseCallback, selectedVerseNum);
+                dialogActionsListener.includeNextVerseSelected(verseLocation, includeNextVerseCallback, previousVerseNum);
             }
         });
 
@@ -95,7 +104,11 @@ public class VerseSelectedDialogFragment extends DialogFragment {
                 verseLocation = generateCombinedVerseLocations(response.getVerseId());
                 verse.setText(verseText);
                 verseLocationTv.setText(verseLocation);
-                selectedVerseNum = response.getVerseId();
+                previousVerseNum = response.getVerseId();
+                currentSelectedVerse = Long.valueOf(response.getVerseId());
+                if(currentSelectedVerse == numOfVersesInChapter){
+                    includeNextVerseTv.setVisibility(View.INVISIBLE);
+                }
             }
 
             @Override
@@ -110,7 +123,8 @@ public class VerseSelectedDialogFragment extends DialogFragment {
     }
 
     private String generateCombinedVerseLocations(String verseId) {
-        return mPrefs.getSelectedBook(getActivity().getApplicationContext()) + " " + mPrefs.getSelectedChapter(getActivity().getApplicationContext()) + ":" + selectedVerseNum + "-" + verseId;
+        return mPrefs.getSelectedBook(getActivity().getApplicationContext()) + " " +
+                mPrefs.getSelectedChapter(getActivity().getApplicationContext()) + ":" + initialSelectedVerseNum + "-" + verseId;
     }
 
     public interface addVerseDialogActions {

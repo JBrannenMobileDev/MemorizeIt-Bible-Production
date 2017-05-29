@@ -212,11 +212,91 @@ public class UserPreferences{
 
     public void setShowQuizOnMonday(boolean show, Context context){
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
-        editor.putBoolean(UserPreferenceConstants.BOOK_LOCATION_OT, show);
+        editor.putBoolean(UserPreferenceConstants.SHOW_QUIZ_MONDAY, show);
         editor.commit();
     }
 
     public boolean showQuizOnMonday(Context context){
-        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.SHOW_QUIZ_MONDAY , false);
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.SHOW_QUIZ_MONDAY , true);
+    }
+
+    public void setShowQuizOnTuesday(boolean pressed, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putBoolean(UserPreferenceConstants.SHOW_QUIZ_TUESDAY, pressed);
+        editor.commit();
+    }
+
+    public boolean showQuizOnTuesday(Context context){
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.SHOW_QUIZ_TUESDAY , true);
+    }
+
+    public void setShowQuizOnWednesday(boolean pressed, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putBoolean(UserPreferenceConstants.SHOW_QUIZ_WEDNESDAY, pressed);
+        editor.commit();
+    }
+
+    public boolean showQuizOnWednesday(Context context){
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.SHOW_QUIZ_WEDNESDAY , true);
+    }
+
+    public void setShowQuizOnThursday(boolean pressed, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putBoolean(UserPreferenceConstants.SHOW_QUIZ_THURSDAY, pressed);
+        editor.commit();
+    }
+
+    public boolean showQuizOnThursday(Context context){
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.SHOW_QUIZ_THURSDAY , true);
+    }
+
+    public void setShowQuizOnFriday(boolean pressed, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putBoolean(UserPreferenceConstants.SHOW_QUIZ_FRIDAY, pressed);
+        editor.commit();
+    }
+
+    public boolean showQuizOnFriday(Context context){
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.SHOW_QUIZ_FRIDAY , true);
+    }
+
+    public void setShowQuizOnSaturday(boolean pressed, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putBoolean(UserPreferenceConstants.SHOW_QUIZ_SATURDAY, pressed);
+        editor.commit();
+    }
+
+    public boolean showQuizOnSaturday(Context context){
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.SHOW_QUIZ_SATURDAY , true);
+    }
+
+    public void setShowQuizOnSunday(boolean pressed, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putBoolean(UserPreferenceConstants.SHOW_QUIZ_SUNDAY, pressed);
+        editor.commit();
+    }
+
+    public boolean showQuizOnSunday(Context context){
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.SHOW_QUIZ_SUNDAY , true);
+    }
+
+    public void setSettingsStartTime(long time, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putLong(UserPreferenceConstants.SETTINGS_START_TIME, time);
+        editor.commit();
+    }
+
+    public long getSettingsStartTime(Context context){
+        return getSharedPreferences(context).getLong(UserPreferenceConstants.SETTINGS_START_TIME, 0);
+    }
+
+    public void setSettingsEndTime(long time, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putLong(UserPreferenceConstants.SETTINGS_END_TIME, time);
+        editor.commit();
+    }
+
+    public long getSettingsEndTime(Context context){
+        return getSharedPreferences(context).getLong(UserPreferenceConstants.SETTINGS_END_TIME, 0);
     }
 }

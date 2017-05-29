@@ -25,4 +25,12 @@ public class UserPreferenceConstants {
     public static final String SELECTED_VERSE_NUM = "selected_verse_num";
     public static final String START_QUIZ_WHEN_PHONE_UNLOCKS = "start_quiz";
     public static final String SHOW_QUIZ_MONDAY = "mon";
+    public static final String SHOW_QUIZ_TUESDAY = "tue";
+    public static final String SHOW_QUIZ_WEDNESDAY = "wed";
+    public static final String SHOW_QUIZ_THURSDAY = "thur";
+    public static final String SHOW_QUIZ_FRIDAY = "fri";
+    public static final String SHOW_QUIZ_SATURDAY = "sat";
+    public static final String SHOW_QUIZ_SUNDAY = "sun";
+    public static final String SETTINGS_START_TIME = "settings_start_time";
+    public static final String SETTINGS_END_TIME = "settings_end_time";
 }

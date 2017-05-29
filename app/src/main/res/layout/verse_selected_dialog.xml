@@ -1,108 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
     android:id="@+id/verseSelectedDialog"
-    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
     android:background="@color/colorPrimaryDark"
-    android:layout_width="match_parent">
+    android:orientation="vertical">
 
     <TextView
-        android:text="Confirm Selected Verse"
+        android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:id="@+id/textView4"
-        android:background="@color/circle_button"
+        android:gravity="center_vertical"
+        android:text="Confirm Selected Verse"
+        android:textAlignment="center"
         android:textColor="@color/colorWhite"
         android:textSize="18sp"
-        android:textAlignment="center"
-        android:translationZ="2dp"
         android:textStyle="normal|bold"
-        android:gravity="center_vertical" />
+        android:translationZ="2dp" />
 
     <TextView
-        android:text="Book 2:33"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:id="@+id/verseLocationTextView"
-        android:textStyle="bold"
-        android:textColor="@color/colorWhite"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingTop="15dp"
-        android:textSize="16sp" />
-
-    <TextView
-        android:text="TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/verseTextView"
-        android:textColor="@color/colorWhite"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:paddingTop="5dp"
-        android:textSize="16sp" />
+        android:paddingTop="8dp"
+        android:text="Book 2:33"
+        android:textColor="@color/colorWhite"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="125dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/verseTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="5dp"
+                android:text="TextView"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
 
         <TextView
-            android:text="Include next verse"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/include_next_verse"
-            android:paddingLeft="15dp"
-            android:textColor="@color/colorProgressBg"
-            android:paddingBottom="20dp"
-            android:layout_weight="1" />
-        <TextView
-            android:text="Include next verse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/remove_verse"
-            android:paddingLeft="15dp"
-            android:textColor="@color/colorProgressBg"
-            android:paddingBottom="20dp"
             android:layout_weight="1"
-            android:textAlignment="textEnd"
+            android:paddingBottom="10dp"
+            android:paddingLeft="15dp"
+            android:text="Include next verse"
+            android:textColor="@color/colorProgressBg" />
+
+        <TextView
+            android:id="@+id/remove_verse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="20dp"
+            android:paddingLeft="15dp"
             android:paddingRight="15dp"
+            android:text="Include next verse"
+            android:textAlignment="textEnd"
+            android:textColor="@color/colorProgressBg"
             android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:gravity="end"
+        android:orientation="horizontal"
+        android:paddingRight="16dp">
 
         <Button
-            android:text="Add Verse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/addVerseButton"
-            android:capitalize="none"
-            android:textAllCaps="false"
-            android:background="@color/circle_button"
-            android:layout_weight="1"
-            android:textColor="@color/colorWhite"
-            android:textSize="18dp"
-            android:layout_marginRight="1dp" />
-        <Button
-            android:text="Cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:background="@android:color/transparent"
             android:capitalize="none"
+            android:text="Cancel"
             android:textAllCaps="false"
-            android:background="@color/circle_button"
-            android:layout_weight="1"
-            android:textColor="@color/colorCloseButtonTextUnselected"
-            android:textSize="18dp"
-            android:layout_marginLeft="1dp" />
+            android:textColor="@color/greyBg"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/addVerseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
+            android:background="@android:color/transparent"
+            android:capitalize="none"
+            android:text="Add Verse"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp" />
+
     </LinearLayout>
 
 </LinearLayout>
