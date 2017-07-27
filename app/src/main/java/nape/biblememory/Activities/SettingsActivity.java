@@ -102,6 +102,11 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
         setTitle("Settings");
         mPrefs = new UserPreferences();
         ButterKnife.bind(this);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
         initializeSettings();
         initializeListeners();
     }
@@ -318,6 +323,7 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
             temp.setTime(new Date(mPrefs.getSettingsStartTimeThursday(this)));
             calendar.set(Calendar.HOUR_OF_DAY, temp.get(Calendar.HOUR_OF_DAY));
             calendar.set(Calendar.MINUTE, temp.get(Calendar.MINUTE));
+            startDateThursday = calendar.getTime();
             thursdayStartTimeTv.setText(formatter.format(temp.getTime()));
         }
         if(mPrefs.getSettingsEndTimeThursday(this) == 0) {
@@ -329,6 +335,7 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
             temp.setTime(new Date(mPrefs.getSettingsEndTimeThursday(this)));
             calendar.set(Calendar.HOUR_OF_DAY, temp.get(Calendar.HOUR_OF_DAY));
             calendar.set(Calendar.MINUTE, temp.get(Calendar.MINUTE));
+            endDateThursday = calendar.getTime();
             thursdayEndTimeTv.setText(formatter.format(temp.getTime()));
         }
         /**

@@ -7,6 +7,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.Activities.PhoneUnlockActivity;
@@ -36,50 +37,90 @@ public class UnlockReceiver extends BroadcastReceiver {
                     if(vOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() > 0 && mPrefs.isStartQuizWhenPhoneUnlock(context)) {
                         Calendar calendar = Calendar.getInstance();
                         boolean startQuiz = true;
-                        if(mPrefs.isStartQuizBasedOffDayOfWeek(context)) {
-                            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-                            if (dayOfWeek == Calendar.MONDAY) {
-                                if (mPrefs.showQuizOnMonday(context)) {
-                                    startQuiz = true;
-                                }else{
+                        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+                        if (dayOfWeek == Calendar.MONDAY) {
+                            if(!mPrefs.showQuizOnMonday(context) && mPrefs.showQuizTimeOnMondayChecked(context)){
+                                if(calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeMonday(context))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeMonday(context)))){
                                     startQuiz = false;
-                                }
-                            } else if (dayOfWeek == Calendar.TUESDAY) {
-                                if (mPrefs.showQuizOnTuesday(context)) {
-                                    startQuiz = true;
                                 }else{
-                                    startQuiz = false;
-                                }
-                            } else if (dayOfWeek == Calendar.WEDNESDAY) {
-                                if (mPrefs.showQuizOnWednesday(context)) {
                                     startQuiz = true;
-                                }else{
-                                    startQuiz = false;
                                 }
-                            } else if (dayOfWeek == Calendar.THURSDAY) {
-                                if(mPrefs.showQuizOnThursday(context)) {
+                            }else if (!mPrefs.showQuizOnMonday(context) && !mPrefs.showQuizTimeOnMondayChecked(context)) {
+                                startQuiz = false;
+                            }else if(mPrefs.showQuizOnMonday(context)) {
+                                startQuiz = true;
+                            }
+                        } else if (dayOfWeek == Calendar.TUESDAY) {
+                            if(!mPrefs.showQuizOnTuesday(context) && mPrefs.showQuizTimeOnTuesdayChecked(context)){
+                                if(calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeTuesday(context))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeTuesday(context)))){
+                                    startQuiz = false;
+                                }else{
                                     startQuiz = true;
-                                }else{
-                                    startQuiz = false;
                                 }
-                            } else if (dayOfWeek == Calendar.FRIDAY) {
-                                if(mPrefs.showQuizOnFriday(context)) {
+                            }else if (!mPrefs.showQuizOnTuesday(context) && !mPrefs.showQuizTimeOnTuesdayChecked(context)) {
+                                startQuiz = false;
+                            }else if(mPrefs.showQuizOnTuesday(context)) {
+                                startQuiz = true;
+                            }
+                        } else if (dayOfWeek == Calendar.WEDNESDAY) {
+                            if(!mPrefs.showQuizOnWednesday(context) && mPrefs.showQuizTimeOnWednesdayChecked(context)){
+                                if(calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeWednesday(context))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeWednesday(context)))){
+                                    startQuiz = false;
+                                }else{
                                     startQuiz = true;
-                                }else{
-                                    startQuiz = false;
                                 }
-                            } else if (dayOfWeek == Calendar.SATURDAY) {
-                                if(mPrefs.showQuizOnSaturday(context)) {
+                            }else if (!mPrefs.showQuizOnWednesday(context) && !mPrefs.showQuizTimeOnWednesdayChecked(context)) {
+                                startQuiz = false;
+                            }else if(mPrefs.showQuizOnWednesday(context)) {
+                                startQuiz = true;
+                            }
+                        } else if (dayOfWeek == Calendar.THURSDAY) {
+                            if(!mPrefs.showQuizOnThursday(context) && mPrefs.showQuizTimeOnThursdayChecked(context)){
+                                if(calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeThursday(context))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeThursday(context)))){
+                                    startQuiz = false;
+                                }else{
                                     startQuiz = true;
-                                }else{
-                                    startQuiz = false;
                                 }
-                            } else if (dayOfWeek == Calendar.SUNDAY) {
-                                if(mPrefs.showQuizOnSunday(context)) {
+                            }else if (!mPrefs.showQuizOnThursday(context) && !mPrefs.showQuizTimeOnThursdayChecked(context)) {
+                                startQuiz = false;
+                            }else if(mPrefs.showQuizOnThursday(context)){
+                                startQuiz = true;
+                            }
+                        } else if (dayOfWeek == Calendar.FRIDAY) {
+                            if (!mPrefs.showQuizOnFriday(context) && mPrefs.showQuizTimeOnFridayChecked(context)) {
+                                if (calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeFriday(context))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeFriday(context)))) {
+                                    startQuiz = false;
+                                } else {
                                     startQuiz = true;
-                                }else{
-                                    startQuiz = false;
                                 }
+                            } else if (!mPrefs.showQuizOnFriday(context) && !mPrefs.showQuizTimeOnFridayChecked(context)) {
+                                startQuiz = false;
+                            } else if (mPrefs.showQuizOnFriday(context)) {
+                                startQuiz = true;
+                            }
+                        }else if (dayOfWeek == Calendar.SATURDAY) {
+                            if (!mPrefs.showQuizOnSaturday(context) && mPrefs.showQuizTimeOnSaturdayChecked(context)) {
+                                if (calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeSaturday(context))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeSaturday(context)))) {
+                                    startQuiz = false;
+                                } else {
+                                    startQuiz = true;
+                                }
+                            } else if (!mPrefs.showQuizOnSaturday(context) && !mPrefs.showQuizTimeOnSaturdayChecked(context)) {
+                                startQuiz = false;
+                            } else if (mPrefs.showQuizOnSaturday(context)) {
+                                startQuiz = true;
+                            }
+                        }else if (dayOfWeek == Calendar.SUNDAY) {
+                            if (!mPrefs.showQuizOnSunday(context) && mPrefs.showQuizTimeOnSundayChecked(context)) {
+                                if (calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeSunday(context))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeSunday(context)))) {
+                                    startQuiz = false;
+                                } else {
+                                    startQuiz = true;
+                                }
+                            } else if (!mPrefs.showQuizOnSunday(context) && !mPrefs.showQuizTimeOnSundayChecked(context)) {
+                                startQuiz = false;
+                            } else if (mPrefs.showQuizOnSunday(context)) {
+                                startQuiz = true;
                             }
                         }
 
