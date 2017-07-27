@@ -3,7 +3,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/greyBg">
 
 
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"
@@ -14,41 +15,23 @@
         tools:layout_editor_absoluteY="8dp">
 
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/common_plus_signin_btn_text_dark_disabled"
-            android:gravity="center_vertical"
-            android:paddingBottom="8dp"
-            android:paddingLeft="16dp"
-            android:paddingTop="8dp"
-            android:text="Auto launch quiz settings"
-            android:textColor="@color/common_plus_signin_btn_text_light_default"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider_bar" />
-
         <LinearLayout
             android:id="@+id/phone_unlock"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorWhite"
+            android:elevation="2dp"
             android:orientation="horizontal">
 
             <Switch
                 android:id="@+id/start_quiz_on_unlock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="32dp"
-                android:layout_marginTop="16dp"
                 android:layout_weight="1"
                 android:checked="true"
                 android:cursorVisible="false"
@@ -58,983 +41,981 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider_bar" />
-
         <LinearLayout
-            android:id="@+id/monday"
+            android:id="@+id/settings_hide_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:layout_marginBottom="20dp"
+            android:elevation="2dp"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/mondayTv1"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Do not launch quiz on Monday:"
-                    android:textColor="@color/bgColor"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/mondayTv2"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Between these times:"
-                    android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                    android:textStyle="bold" />
+                android:id="@+id/monday"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@color/colorWhite"
+                android:elevation="2dp"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="4dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/mondayTv3"
+                        android:id="@+id/mondayTv1"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="Do not launch quiz on Monday:"
+                        android:textColor="@color/bgColor"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/mondayTv2"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="4dp"
                         android:layout_marginLeft="16dp"
                         android:layout_weight="1"
-                        android:text="Start time:"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
-
-                    <TextView
-                        android:id="@+id/start_time_settings_monday"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:enabled="false"
-                        android:text="9:00 AM"
+                        android:gravity="center_vertical"
+                        android:text="Between these times:"
                         android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                        android:textSize="16dp"
                         android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="4dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/mondayTv3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_weight="1"
+                            android:text="Start time:"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
+
+                        <TextView
+                            android:id="@+id/start_time_settings_monday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:text="9:00 AM"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/mondayTv4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_weight="1"
+                            android:text="End time:"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
+
+                        <TextView
+                            android:id="@+id/end_time_settings_monday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:text="5:00 PM"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/mondayTv4"
+                    <Switch
+                        android:id="@+id/launch_quiz_monday"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
+                        android:layout_marginRight="32dp"
+                        android:layout_marginTop="4dp"
                         android:layout_weight="1"
-                        android:text="End time:"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
-
-                    <TextView
-                        android:id="@+id/end_time_settings_monday"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:enabled="false"
-                        android:text="5:00 PM"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                        android:textSize="16dp"
+                        android:checked="false"
+                        android:cursorVisible="false"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/bgColor"
+                        android:textSize="13sp"
                         android:textStyle="bold" />
 
+                    <Switch
+                        android:id="@+id/between_these_times_monday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="32dp"
+                        android:checked="false"
+                        android:cursorVisible="false"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/bgColor"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/tuesday"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@color/colorWhite"
+                android:elevation="2dp"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
 
-                <Switch
-                    android:id="@+id/launch_quiz_monday"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tuesdayTv1"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="Do not launch quiz on Tuesday:"
+                        android:textColor="@color/bgColor"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tuesdayTv4"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="Between these times:"
+                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="4dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tuesdayTv2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_weight="1"
+                            android:text="Start time:"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
+
+                        <TextView
+                            android:id="@+id/start_time_settings_tuesday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:text="9:00 AM"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tuesdayTv3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_weight="1"
+                            android:text="End time:"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
+
+                        <TextView
+                            android:id="@+id/end_time_settings_tuesday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:text="5:00 PM"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="32dp"
-                    android:layout_weight="1"
-                    android:checked="false"
-                    android:cursorVisible="false"
-                    android:paddingTop="2dp"
-                    android:textColor="@color/bgColor"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
+                    android:orientation="vertical">
 
-                <Switch
-                    android:id="@+id/between_these_times_monday"
+                    <Switch
+                        android:id="@+id/launch_quiz_tuesday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="32dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:cursorVisible="false"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/bgColor"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <Switch
+                        android:id="@+id/between_these_times_tuesday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="32dp"
+                        android:checked="false"
+                        android:cursorVisible="false"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/bgColor"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/wednesday"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@color/colorWhite"
+                android:elevation="2dp"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/wednesdayTv1"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="Do not launch quiz on Wednesday:"
+                        android:textColor="@color/bgColor"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/wednesdayTv2"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="Between these times:"
+                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="4dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/wednesdayTv3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_weight="1"
+                            android:text="Start time:"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
+
+                        <TextView
+                            android:id="@+id/start_time_settings_wednesday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:text="9:00 AM"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/wednesdayTv4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_weight="1"
+                            android:text="End time:"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
+
+                        <TextView
+                            android:id="@+id/end_time_settings_wednesday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:text="5:00 PM"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="32dp"
-                    android:checked="false"
-                    android:cursorVisible="false"
-                    android:paddingTop="2dp"
-                    android:textColor="@color/bgColor"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
+                    android:orientation="vertical">
+
+                    <Switch
+                        android:id="@+id/launch_quiz_wednesday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="32dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:cursorVisible="false"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/bgColor"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <Switch
+                        android:id="@+id/between_these_times_wednesday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="32dp"
+                        android:checked="false"
+                        android:cursorVisible="false"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/bgColor"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/thursday"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@color/colorWhite"
+                android:elevation="2dp"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/thursdayTv1"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="Do not launch quiz on Thursday:"
+                        android:textColor="@color/bgColor"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/thursdayTv2"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="Between these times:"
+                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="4dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/thursdayTv3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_weight="1"
+                            android:text="Start time:"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
+
+                        <TextView
+                            android:id="@+id/start_time_settings_thursday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:text="9:00 AM"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/thursdayTv4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_weight="1"
+                            android:text="End time:"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
+
+                        <TextView
+                            android:id="@+id/end_time_settings_thursday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:text="5:00 PM"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <Switch
+                        android:id="@+id/launch_quiz_thursday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="32dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:cursorVisible="false"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/bgColor"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <Switch
+                        android:id="@+id/between_these_times_thursday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="32dp"
+                        android:checked="false"
+                        android:cursorVisible="false"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/bgColor"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/friday"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@color/colorWhite"
+                android:elevation="2dp"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/fridayTv1"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="Do not launch quiz on Friday:"
+                        android:textColor="@color/bgColor"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/fridayTv2"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="Between these times:"
+                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="4dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/fridayTv3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_weight="1"
+                            android:text="Start time:"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
+
+                        <TextView
+                            android:id="@+id/start_time_settings_friday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:text="9:00 AM"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/fridayTv4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_weight="1"
+                            android:text="End time:"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
+
+                        <TextView
+                            android:id="@+id/end_time_settings_friday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:text="5:00 PM"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <Switch
+                        android:id="@+id/launch_quiz_friday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="32dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:cursorVisible="false"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/bgColor"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <Switch
+                        android:id="@+id/between_these_times_friday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="32dp"
+                        android:checked="false"
+                        android:cursorVisible="false"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/bgColor"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/saturday"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@color/colorWhite"
+                android:elevation="2dp"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/saturdayTv1"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="Do not launch quiz on Saturday:"
+                        android:textColor="@color/bgColor"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/saturdayTv2"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="Between these times:"
+                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="4dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/saturdayTv3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_weight="1"
+                            android:text="Start time:"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
+
+                        <TextView
+                            android:id="@+id/start_time_settings_saturday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:text="9:00 AM"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/saturdayTv4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_weight="1"
+                            android:text="End time:"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
+
+                        <TextView
+                            android:id="@+id/end_time_settings_saturday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:text="5:00 PM"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <Switch
+                        android:id="@+id/launch_quiz_saturday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="32dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:cursorVisible="false"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/bgColor"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <Switch
+                        android:id="@+id/between_these_times_saturday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="32dp"
+                        android:checked="false"
+                        android:cursorVisible="false"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/bgColor"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/sunday"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@color/colorWhite"
+                android:elevation="2dp"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/sundayTv1"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="Do not launch quiz on Sunday:"
+                        android:textColor="@color/bgColor"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/sundayTv2"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="Between these times:"
+                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="4dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/sundayTv3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_weight="1"
+                            android:text="Start time:"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
+
+                        <TextView
+                            android:id="@+id/start_time_settings_sunday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:text="9:00 AM"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/sundayTv4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_weight="1"
+                            android:text="End time:"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
+
+                        <TextView
+                            android:id="@+id/end_time_settings_sunday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:text="5:00 PM"
+                            android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <Switch
+                        android:id="@+id/launch_quiz_sunday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="32dp"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:cursorVisible="false"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/bgColor"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <Switch
+                        android:id="@+id/between_these_times_sunday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="32dp"
+                        android:checked="false"
+                        android:cursorVisible="false"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/bgColor"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imageView11"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            android:background="@color/divider_bar" />
-
-        <LinearLayout
-            android:id="@+id/tuesday"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tuesdayTv1"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Do not launch quiz on Tuesday:"
-                    android:textColor="@color/bgColor"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tuesdayTv4"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Between these times:"
-                    android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="4dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tuesdayTv2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_weight="1"
-                        android:text="Start time:"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
-
-                    <TextView
-                        android:id="@+id/start_time_settings_tuesday"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:enabled="false"
-                        android:text="9:00 AM"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tuesdayTv3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_weight="1"
-                        android:text="End time:"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
-
-                    <TextView
-                        android:id="@+id/end_time_settings_tuesday"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:enabled="false"
-                        android:text="5:00 PM"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <Switch
-                    android:id="@+id/launch_quiz_tuesday"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="32dp"
-                    android:layout_weight="1"
-                    android:checked="false"
-                    android:cursorVisible="false"
-                    android:paddingTop="2dp"
-                    android:textColor="@color/bgColor"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-
-                <Switch
-                    android:id="@+id/between_these_times_tuesday"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="32dp"
-                    android:checked="false"
-                    android:cursorVisible="false"
-                    android:paddingTop="2dp"
-                    android:textColor="@color/bgColor"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imageView10"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            android:background="@color/divider_bar" />
-
-        <LinearLayout
-            android:id="@+id/wednesday"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/wednesdayTv1"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Do not launch quiz on Wednesday:"
-                    android:textColor="@color/bgColor"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/wednesdayTv2"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Between these times:"
-                    android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="4dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/wednesdayTv3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_weight="1"
-                        android:text="Start time:"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
-
-                    <TextView
-                        android:id="@+id/start_time_settings_wednesday"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:enabled="false"
-                        android:text="9:00 AM"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/wednesdayTv4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_weight="1"
-                        android:text="End time:"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
-
-                    <TextView
-                        android:id="@+id/end_time_settings_wednesday"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:enabled="false"
-                        android:text="5:00 PM"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <Switch
-                    android:id="@+id/launch_quiz_wednesday"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="32dp"
-                    android:layout_weight="1"
-                    android:checked="false"
-                    android:cursorVisible="false"
-                    android:paddingTop="2dp"
-                    android:textColor="@color/bgColor"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-
-                <Switch
-                    android:id="@+id/between_these_times_wednesday"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="32dp"
-                    android:checked="false"
-                    android:cursorVisible="false"
-                    android:paddingTop="2dp"
-                    android:textColor="@color/bgColor"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider_bar" />
-
-        <LinearLayout
-            android:id="@+id/thursday"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/thursdayTv1"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Do not launch quiz on Thursday:"
-                    android:textColor="@color/bgColor"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/thursdayTv2"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Between these times:"
-                    android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="4dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/thursdayTv3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_weight="1"
-                        android:text="Start time:"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
-
-                    <TextView
-                        android:id="@+id/start_time_settings_thursday"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:enabled="false"
-                        android:text="9:00 AM"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/thursdayTv4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_weight="1"
-                        android:text="End time:"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
-
-                    <TextView
-                        android:id="@+id/end_time_settings_thursday"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:enabled="false"
-                        android:text="5:00 PM"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <Switch
-                    android:id="@+id/launch_quiz_thursday"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="32dp"
-                    android:layout_weight="1"
-                    android:checked="false"
-                    android:cursorVisible="false"
-                    android:paddingTop="2dp"
-                    android:textColor="@color/bgColor"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-
-                <Switch
-                    android:id="@+id/between_these_times_thursday"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="32dp"
-                    android:checked="false"
-                    android:cursorVisible="false"
-                    android:paddingTop="2dp"
-                    android:textColor="@color/bgColor"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            android:background="@color/divider_bar" />
-
-        <LinearLayout
-            android:id="@+id/friday"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/fridayTv1"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Do not launch quiz on Friday:"
-                    android:textColor="@color/bgColor"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/fridayTv2"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Between these times:"
-                    android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="4dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/fridayTv3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_weight="1"
-                        android:text="Start time:"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
-
-                    <TextView
-                        android:id="@+id/start_time_settings_friday"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:enabled="false"
-                        android:text="9:00 AM"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/friday_tv4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_weight="1"
-                        android:text="End time:"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
-
-                    <TextView
-                        android:id="@+id/end_time_settings_friday"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:enabled="false"
-                        android:text="5:00 PM"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <Switch
-                    android:id="@+id/launch_quiz_friday"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="32dp"
-                    android:layout_weight="1"
-                    android:checked="false"
-                    android:cursorVisible="false"
-                    android:paddingTop="2dp"
-                    android:textColor="@color/bgColor"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-
-                <Switch
-                    android:id="@+id/between_these_times_friday"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="32dp"
-                    android:checked="false"
-                    android:cursorVisible="false"
-                    android:paddingTop="2dp"
-                    android:textColor="@color/bgColor"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imageView7"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            android:background="@color/divider_bar" />
-
-        <LinearLayout
-            android:id="@+id/saturday"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/saturdayTv1"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Do not launch quiz on Saturday:"
-                    android:textColor="@color/bgColor"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/saturdayTv2"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Between these times:"
-                    android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="4dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/saturdayTv3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_weight="1"
-                        android:text="Start time:"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
-
-                    <TextView
-                        android:id="@+id/start_time_settings_saturday"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:enabled="false"
-                        android:text="9:00 AM"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/saturdayTv4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_weight="1"
-                        android:text="End time:"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
-
-                    <TextView
-                        android:id="@+id/end_time_settings_saturday"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:enabled="false"
-                        android:text="5:00 PM"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <Switch
-                    android:id="@+id/luanch_quiz_saturday"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="32dp"
-                    android:layout_weight="1"
-                    android:checked="false"
-                    android:cursorVisible="false"
-                    android:paddingTop="2dp"
-                    android:textColor="@color/bgColor"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-
-                <Switch
-                    android:id="@+id/between_these_times_saturday"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="32dp"
-                    android:checked="false"
-                    android:cursorVisible="false"
-                    android:paddingTop="2dp"
-                    android:textColor="@color/bgColor"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imageView8"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            android:background="@color/divider_bar" />
-
-        <LinearLayout
-            android:id="@+id/sunday"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/sundayTv1"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Do not launch quiz on Sunday:"
-                    android:textColor="@color/bgColor"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/sundayTv2"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Between these times:"
-                    android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="4dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/sundayTv3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_weight="1"
-                        android:text="Start time:"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
-
-                    <TextView
-                        android:id="@+id/start_time_settings_sunday"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:enabled="false"
-                        android:text="9:00 AM"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/sundayTv4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_weight="1"
-                        android:text="End time:"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled" />
-
-                    <TextView
-                        android:id="@+id/end_time_settings_sunday"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:enabled="false"
-                        android:text="5:00 PM"
-                        android:textColor="@color/common_plus_signin_btn_text_dark_disabled"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <Switch
-                    android:id="@+id/launch_quiz_sunday"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="32dp"
-                    android:layout_weight="1"
-                    android:checked="false"
-                    android:cursorVisible="false"
-                    android:paddingTop="2dp"
-                    android:textColor="@color/bgColor"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-
-                <Switch
-                    android:id="@+id/between_these_times_sunday"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="32dp"
-                    android:checked="false"
-                    android:cursorVisible="false"
-                    android:paddingTop="2dp"
-                    android:textColor="@color/bgColor"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imageView9"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            android:background="@color/divider_bar" />
 
     </LinearLayout>
 

@@ -3,6 +3,7 @@ package nape.biblememory;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import nape.biblememory.Activities.SettingsActivity;
 import nape.biblememory.UserPreferenceConstants;
 
 public class UserPreferences{
@@ -280,24 +281,139 @@ public class UserPreferences{
         return getSharedPreferences(context).getBoolean(UserPreferenceConstants.SHOW_QUIZ_SUNDAY , true);
     }
 
-    public void setSettingsStartTime(long time, Context applicationContext) {
+    public void setSettingsStartTimeMonday(long time, Context applicationContext) {
         SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
-        editor.putLong(UserPreferenceConstants.SETTINGS_START_TIME, time);
+        editor.putLong(UserPreferenceConstants.SETTINGS_START_TIME_MONDAY, time);
         editor.commit();
     }
 
-    public long getSettingsStartTime(Context context){
-        return getSharedPreferences(context).getLong(UserPreferenceConstants.SETTINGS_START_TIME, 0);
+    public long getSettingsStartTimeMonday(Context context){
+        return getSharedPreferences(context).getLong(UserPreferenceConstants.SETTINGS_START_TIME_MONDAY, 0);
     }
 
-    public void setSettingsEndTime(long time, Context applicationContext) {
+    public void setSettingsEndTimeMonday(long time, Context applicationContext) {
         SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
-        editor.putLong(UserPreferenceConstants.SETTINGS_END_TIME, time);
+        editor.putLong(UserPreferenceConstants.SETTINGS_END_TIME_MONDAY, time);
         editor.commit();
     }
 
-    public long getSettingsEndTime(Context context){
-        return getSharedPreferences(context).getLong(UserPreferenceConstants.SETTINGS_END_TIME, 0);
+    public long getSettingsEndTimeMonday(Context context){
+        return getSharedPreferences(context).getLong(UserPreferenceConstants.SETTINGS_END_TIME_MONDAY, 0);
+    }
+
+    public void setSettingsStartTimeTuesday(long time, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putLong(UserPreferenceConstants.SETTINGS_START_TIME_TUESDAY, time);
+        editor.commit();
+    }
+
+    public long getSettingsStartTimeTuesday(Context context){
+        return getSharedPreferences(context).getLong(UserPreferenceConstants.SETTINGS_START_TIME_TUESDAY, 0);
+    }
+
+    public void setSettingsEndTimeTuesday(long time, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putLong(UserPreferenceConstants.SETTINGS_END_TIME_TUESDAY, time);
+        editor.commit();
+    }
+
+    public long getSettingsEndTimeTuesday(Context context){
+        return getSharedPreferences(context).getLong(UserPreferenceConstants.SETTINGS_END_TIME_TUESDAY, 0);
+    }
+    public void setSettingsStartTimeWednesday(long time, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putLong(UserPreferenceConstants.SETTINGS_START_TIME_WEDNESDAY, time);
+        editor.commit();
+    }
+
+    public long getSettingsStartTimeWednesday(Context context){
+        return getSharedPreferences(context).getLong(UserPreferenceConstants.SETTINGS_START_TIME_WEDNESDAY, 0);
+    }
+
+    public void setSettingsEndTimeWednesday(long time, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putLong(UserPreferenceConstants.SETTINGS_END_TIME_WEDNESDAY, time);
+        editor.commit();
+    }
+
+    public long getSettingsEndTimeWednesday(Context context){
+        return getSharedPreferences(context).getLong(UserPreferenceConstants.SETTINGS_END_TIME_WEDNESDAY, 0);
+    }
+    public void setSettingsStartTimeThursday(long time, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putLong(UserPreferenceConstants.SETTINGS_START_TIME_THURSDAY, time);
+        editor.commit();
+    }
+
+    public long getSettingsStartTimeThursday(Context context){
+        return getSharedPreferences(context).getLong(UserPreferenceConstants.SETTINGS_START_TIME_THURSDAY, 0);
+    }
+
+    public void setSettingsEndTimeThursday(long time, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putLong(UserPreferenceConstants.SETTINGS_END_TIME_THURSDAY, time);
+        editor.commit();
+    }
+
+    public long getSettingsEndTimeThursday(Context context){
+        return getSharedPreferences(context).getLong(UserPreferenceConstants.SETTINGS_END_TIME_THURSDAY, 0);
+    }
+    public void setSettingsStartTimeFriday(long time, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putLong(UserPreferenceConstants.SETTINGS_START_TIME_FRIDAY, time);
+        editor.commit();
+    }
+
+    public long getSettingsStartTimeFriday(Context context){
+        return getSharedPreferences(context).getLong(UserPreferenceConstants.SETTINGS_START_TIME_FRIDAY, 0);
+    }
+
+    public void setSettingsEndTimeFriday(long time, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putLong(UserPreferenceConstants.SETTINGS_END_TIME_FRIDAY, time);
+        editor.commit();
+    }
+
+    public long getSettingsEndTimeFriday(Context context){
+        return getSharedPreferences(context).getLong(UserPreferenceConstants.SETTINGS_END_TIME_FRIDAY, 0);
+    }
+    public void setSettingsStartTimeSaturday(long time, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putLong(UserPreferenceConstants.SETTINGS_START_TIME_SATURDAY, time);
+        editor.commit();
+    }
+
+    public long getSettingsStartTimeSaturday(Context context){
+        return getSharedPreferences(context).getLong(UserPreferenceConstants.SETTINGS_START_TIME_SATURDAY, 0);
+    }
+
+    public void setSettingsEndTimeSaturday(long time, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putLong(UserPreferenceConstants.SETTINGS_END_TIME_SATURDAY, time);
+        editor.commit();
+    }
+
+    public long getSettingsEndTimeSaturday(Context context){
+        return getSharedPreferences(context).getLong(UserPreferenceConstants.SETTINGS_END_TIME_SATURDAY, 0);
+    }
+    public void setSettingsStartTimeSunday(long time, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putLong(UserPreferenceConstants.SETTINGS_START_TIME_SUNDAY, time);
+        editor.commit();
+    }
+
+    public long getSettingsStartTimeSunday(Context context){
+        return getSharedPreferences(context).getLong(UserPreferenceConstants.SETTINGS_START_TIME_SUNDAY, 0);
+    }
+
+    public void setSettingsEndTimeSunday(long time, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putLong(UserPreferenceConstants.SETTINGS_END_TIME_SUNDAY, time);
+        editor.commit();
+    }
+
+    public long getSettingsEndTimeSunday(Context context){
+        return getSharedPreferences(context).getLong(UserPreferenceConstants.SETTINGS_END_TIME_SUNDAY, 0);
     }
 
     public boolean isStartQuizBasedOffDayOfWeek(Context context) {
@@ -308,5 +424,75 @@ public class UserPreferences{
         SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
         editor.putBoolean(UserPreferenceConstants.SHOW_QUIZ_THIS_DAY, pressed);
         editor.commit();
+    }
+
+    public void setShowQuizTimeOnMondayChecked(boolean b, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putBoolean(UserPreferenceConstants.MONDAY_TIME_SWITCH_CHECKED, b);
+        editor.commit();
+    }
+
+    public boolean showQuizTimeOnMondayChecked(Context context) {
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.MONDAY_TIME_SWITCH_CHECKED , false);
+    }
+
+    public void setShowQuizTimeOnTuesdayChecked(boolean b, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putBoolean(UserPreferenceConstants.TUESDAY_TIME_SWITCH_CHECKED, b);
+        editor.commit();
+    }
+
+    public boolean showQuizTimeOnTuesdayChecked(Context context) {
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.TUESDAY_TIME_SWITCH_CHECKED , false);
+    }
+
+    public void setShowQuizTimeOnWednesdayChecked(boolean b, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putBoolean(UserPreferenceConstants.WEDNESDAY_TIME_SWITCH_CHECKED, b);
+        editor.commit();
+    }
+
+    public boolean showQuizTimeOnWednesdayChecked(Context context) {
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.WEDNESDAY_TIME_SWITCH_CHECKED , false);
+    }
+
+    public void setShowQuizTimeOnThursdayChecked(boolean b, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putBoolean(UserPreferenceConstants.THURSDAY_TIME_SWITCH_CHECKED, b);
+        editor.commit();
+    }
+
+    public boolean showQuizTimeOnThursdayChecked(Context context) {
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.THURSDAY_TIME_SWITCH_CHECKED , false);
+    }
+
+    public void setShowQuizTimeOnFridayChecked(boolean b, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putBoolean(UserPreferenceConstants.FRIDAY_TIME_SWITCH_CHECKED, b);
+        editor.commit();
+    }
+
+    public boolean showQuizTimeOnFridayChecked(Context context) {
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.FRIDAY_TIME_SWITCH_CHECKED , false);
+    }
+
+    public void setShowQuizTimeOnSaturdayChecked(boolean b, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putBoolean(UserPreferenceConstants.SATURDAY_TIME_SWITCH_CHECKED, b);
+        editor.commit();
+    }
+
+    public boolean showQuizTimeOnSaturdayChecked(Context context) {
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.SATURDAY_TIME_SWITCH_CHECKED , false);
+    }
+
+    public void setShowQuizTimeOnSundayChecked(boolean b, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putBoolean(UserPreferenceConstants.SUNDAY_TIME_SWITCH_CHECKED, b);
+        editor.commit();
+    }
+
+    public boolean showQuizTimeOnSundayChecked(Context context) {
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.SUNDAY_TIME_SWITCH_CHECKED , false);
     }
 }
