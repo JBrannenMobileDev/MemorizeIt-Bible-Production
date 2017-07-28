@@ -13,74 +13,9 @@ import nape.biblememory.Sqlite.MemoryListContract;
 public class ScriptureManager {
 
     private VerseOperations vOperations;
-    private int currentSize;
-    private int learningSize;
-    private int rememberedSize;
-    private int memorizedSize;
 
     public ScriptureManager(Context context){
         vOperations = new VerseOperations(context);
-        List<ScriptureData> scriptureListCurrent = vOperations.getVerseSet(MemoryListContract.CurrentSetEntry.TABLE_NAME);
-        List<ScriptureData> scriptureListLearning = vOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME);
-        List<ScriptureData> scriptureListRemembered = vOperations.getVerseSet(MemoryListContract.RememberedSetEntry.TABLE_NAME);
-        List<ScriptureData> scriptureListMemorized = vOperations.getVerseSet(MemoryListContract.MemorizedSetEntry.TABLE_NAME);
-
-        currentSize = scriptureListCurrent.size();
-        learningSize = scriptureListLearning.size();
-        rememberedSize = scriptureListRemembered.size();
-        memorizedSize = scriptureListMemorized.size();
-
-
-        ScriptureData verseData;
-
-        if(currentSize > 2) {
-            /**
-             * If the learningSet size is less than 3 then add enough verses to the learning set to
-             * make the size three again.  This ensures that the user always has three verses in the
-             * learning rotation.
-             */
-            if(currentSize > 1 && learningSize < 3){
-                int loopSize = 3 - learningSize;
-                while(loopSize > 0){
-                    if(currentSize > 0) {
-                        scriptureListCurrent = vOperations.getVerseSet(MemoryListContract.CurrentSetEntry.TABLE_NAME);
-                        verseData = initializeNewVerse(scriptureListCurrent.get(0));
-                        if(!verseData.getVerseLocation().equalsIgnoreCase("")) {
-                            vOperations.addVerse(verseData, MemoryListContract.LearningSetEntry.TABLE_NAME);
-                            vOperations.removeVerse(verseData.getVerseLocation(), MemoryListContract.CurrentSetEntry.TABLE_NAME);
-                        }
-                        loopSize--;
-                    }else{
-                        break;
-                    }
-                }
-            }
-        }else if(currentSize == 1 && learningSize < 3){
-            scriptureListCurrent = vOperations.getVerseSet(MemoryListContract.CurrentSetEntry.TABLE_NAME);
-            verseData = initializeNewVerse(scriptureListCurrent.get(0));
-            if(!verseData.getVerseLocation().equalsIgnoreCase("")) {
-                vOperations.addVerse(verseData, MemoryListContract.LearningSetEntry.TABLE_NAME);
-                vOperations.removeVerse(verseData.getVerseLocation(), MemoryListContract.CurrentSetEntry.TABLE_NAME);
-            }
-        }else if(currentSize == 2){
-            int loopSize = 3 - learningSize;
-            while(loopSize > 0){
-                if(currentSize > 0) {
-                    scriptureListCurrent = vOperations.getVerseSet(MemoryListContract.CurrentSetEntry.TABLE_NAME);
-                    verseData = initializeNewVerse(scriptureListCurrent.get(0));
-                    if(!verseData.getVerseLocation().equalsIgnoreCase("")) {
-                        vOperations.addVerse(verseData, MemoryListContract.LearningSetEntry.TABLE_NAME);
-                        vOperations.removeVerse(verseData.getVerseLocation(), MemoryListContract.CurrentSetEntry.TABLE_NAME);
-                    }
-                    loopSize--;
-                }else{
-                    break;
-                }
-            }
-        }
-
-
-
     }
 
     public ScriptureData getLearningScripture(){

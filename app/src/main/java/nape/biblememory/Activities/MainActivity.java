@@ -249,6 +249,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             tabsMain.setVisibility(View.VISIBLE);
             startQuiz.setVisibility(View.VISIBLE);
             startQuizFabFrame.setVisibility(View.VISIBLE);
+            setSlidingTabViewMain();
         }
     }
 

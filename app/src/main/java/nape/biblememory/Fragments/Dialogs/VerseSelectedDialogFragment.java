@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.faithcomesbyhearing.dbt.model.Verse;
@@ -27,11 +28,11 @@ public class VerseSelectedDialogFragment extends DialogFragment {
     private TextView verse;
     private TextView verseLocationTv;
     private TextView includeNextVerseTv;
-    private TextView removeVerse;
-    private Button add;
+    private Button confirm;
     private Button cancel;
     private UserPreferences mPrefs;
     private VerseOperations verseOperations;
+    private CheckBox addVerseToInProgress;
 
     private String initialSelectedVerseNum;
     private long currentSelectedVerse;
@@ -41,6 +42,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
     private long numOfVersesInChapter;
     private addVerseDialogActions dialogActionsListener;
     private BaseCallback<Verse> includeNextVerseCallback;
+    private VerseOperations vOperations;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,10 +51,14 @@ public class VerseSelectedDialogFragment extends DialogFragment {
         verse = (TextView) view.findViewById(R.id.verseTextView);
         verseLocationTv = (TextView) view.findViewById(R.id.verseLocationTextView);
         includeNextVerseTv = (TextView) view.findViewById(R.id.include_next_verse);
-        removeVerse = (TextView) view.findViewById(R.id.remove_verse);
-        add = (Button) view.findViewById(R.id.addVerseButton);
+        confirm = (Button) view.findViewById(R.id.addVerseButton);
         cancel = (Button) view.findViewById(R.id.cancelButton);
+        addVerseToInProgress = (CheckBox) view.findViewById(R.id.addVerseToInProgress);
         mPrefs = new UserPreferences();
+        vOperations = new VerseOperations(getActivity().getApplicationContext());
+        if(vOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() > 2){
+            addVerseToInProgress.setVisibility(View.GONE);
+        }
         initialSelectedVerseNum = getArguments().getString("num");
         previousVerseNum = initialSelectedVerseNum;
         verseText = getArguments().getString("verseText");
@@ -71,13 +77,17 @@ public class VerseSelectedDialogFragment extends DialogFragment {
     }
 
     private void setOnclickListeners() {
-        add.setOnClickListener(new View.OnClickListener() {
+        confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ScriptureData verse = new ScriptureData();
                 verse.setVerse(verseText);
                 verse.setVerseLocation(verseLocation);
-                verseOperations.addVerse(verse, MemoryListContract.CurrentSetEntry.TABLE_NAME);
+                if(addVerseToInProgress.isChecked()) {
+                    vOperations.addVerse(verse, MemoryListContract.LearningSetEntry.TABLE_NAME);
+                }else{
+                    verseOperations.addVerse(verse, MemoryListContract.CurrentSetEntry.TABLE_NAME);
+                }
                 dialogActionsListener.onVerseAdded();
                 VerseSelectedDialogFragment.this.getDialog().cancel();
             }

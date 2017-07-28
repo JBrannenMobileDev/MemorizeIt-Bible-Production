@@ -67,14 +67,14 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
         };
 
         dataSet = scriptureManager.getScriptureSet(MemoryListContract.LearningSetEntry.TABLE_NAME);
-        mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_1, removeCallback);
+        mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_1, removeCallback, null);
         mRecyclerView.setAdapter(mAdapter);
         return v;
     }
 
     public void RefreshRecyclerView(){
         dataSet = scriptureManager.getScriptureSet(MemoryListContract.LearningSetEntry.TABLE_NAME);
-        mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_1, removeCallback);
+        mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_1, removeCallback, null);
         mRecyclerView.setAdapter(mAdapter);
     }
 

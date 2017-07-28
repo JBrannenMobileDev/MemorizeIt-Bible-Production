@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
     private List<ScriptureData> mDataset;
     private int mTabPosition;
     private BaseCallback removeCallback;
+    private BaseCallback moveCallback;
     public View selectedView;
     public boolean isViewSelected;
 
@@ -33,17 +35,20 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
         public TextView progressPercent;
         public TextView verseLocation;
         public TextView verse;
-        public LinearLayout removeLayout;
-        public ViewHolder(View v, final int mPosition, final BaseCallback rCallback) {
+        public RelativeLayout removeLayout;
+        public LinearLayout moveLayout;
+        public ViewHolder(View v, final int mPosition, final BaseCallback rCallback, final BaseCallback mCallback) {
             super(v);
             verseLocation = (TextView) v.findViewById(R.id.verse_location);
             verse = (TextView) v.findViewById(R.id.verse);
             pb = (ProgressBar) v.findViewById(R.id.progressBar);
             progressPercent = (TextView) v.findViewById(R.id.progress_percent);
+
             if(mPosition == 1){
-                removeLayout = (LinearLayout) v.findViewById(R.id.linearLayoutRemove);
+                removeLayout = (RelativeLayout) v.findViewById(R.id.linearLayoutRemove);
             }else{
-                removeLayout = (LinearLayout) v.findViewById(R.id.removeLayout);
+                removeLayout = (RelativeLayout) v.findViewById(R.id.removeLayout);
+                moveLayout = (LinearLayout) v.findViewById(R.id.moveLayout);
             }
 
             if(removeLayout != null) {
@@ -55,18 +60,27 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
                 });
             }
 
+            if(moveLayout != null ){
+                moveLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ScriptureData verse = mDataset.get(mPosition);
+                        mCallback.onResponse(verse);
+                    }
+                });
+            }
             v.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
 
                     if (v.equals(selectedView)) {
-                        colapseCardView(selectedView, mPosition);
+                        collapseCardView(selectedView, mPosition);
                         selectedView = null;
                         isViewSelected = false;
                     }else{
                         if(isViewSelected) {
-                            colapseCardView(selectedView, mPosition);
+                            collapseCardView(selectedView, mPosition);
                         }
                         isViewSelected = true;
                         switch(mPosition){
@@ -88,10 +102,11 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public RecyclerViewAdapterMyVerses(List<ScriptureData> dataset, int tabPosition, BaseCallback removeCallback) {
+    public RecyclerViewAdapterMyVerses(List<ScriptureData> dataset, int tabPosition, BaseCallback removeCallback, BaseCallback<ScriptureData> moveCallback) {
         mDataset = dataset;
         mTabPosition = tabPosition;
         this.removeCallback = removeCallback;
+        this.moveCallback = moveCallback;
     }
 
     // Create new views (invoked by the layout manager)
@@ -112,7 +127,7 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
         }
 
         // set the view's size, margins, paddings and layout parameters
-        ViewHolder vh = new ViewHolder(v, mTabPosition, removeCallback);
+        ViewHolder vh = new ViewHolder(v, mTabPosition, removeCallback, moveCallback);
         return vh;
     }
 
@@ -203,7 +218,7 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
-    private void colapseCardView(View v, int position){
+    private void collapseCardView(View v, int position){
         LinearLayout.LayoutParams CVLayoutParams;
         Resources r;
         int px7;

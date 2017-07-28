@@ -19,7 +19,6 @@
             android:id="@+id/phone_unlock"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
             android:background="@color/colorWhite"
             android:elevation="2dp"
@@ -46,15 +45,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="20dp"
+            android:background="@color/colorWhite"
             android:elevation="2dp"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_weight="1"
+                android:paddingLeft="16dp"
+                android:text="Do not launch quiz on:"
+                android:textColor="@color/bgColor"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/monday"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginBottom="1dp"
                 android:layout_weight="1"
                 android:background="@color/colorWhite"
                 android:elevation="2dp"
@@ -63,7 +73,7 @@
                 android:paddingTop="10dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
@@ -76,7 +86,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="Do not launch quiz on Monday:"
+                        android:text="Monday"
                         android:textColor="@color/bgColor"
                         android:textStyle="bold" />
 
@@ -191,7 +201,7 @@
                 android:id="@+id/tuesday"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="1dp"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:background="@color/colorWhite"
@@ -201,7 +211,7 @@
                 android:paddingTop="10dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
@@ -214,12 +224,12 @@
                         android:layout_marginTop="4dp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="Do not launch quiz on Tuesday:"
+                        android:text="Tuesday"
                         android:textColor="@color/bgColor"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tuesdayTv4"
+                        android:id="@+id/tuesdayTv2"
                         android:layout_width="match_parent"
                         android:layout_height="25dp"
                         android:layout_marginBottom="4dp"
@@ -238,7 +248,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/tuesdayTv2"
+                            android:id="@+id/tuesdayTv3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
@@ -266,7 +276,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/tuesdayTv3"
+                            android:id="@+id/tuesdayTv4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
@@ -329,7 +339,7 @@
                 android:id="@+id/wednesday"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="1dp"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:background="@color/colorWhite"
@@ -339,7 +349,7 @@
                 android:paddingTop="10dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
@@ -352,7 +362,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="Do not launch quiz on Wednesday:"
+                        android:text="Wednesday"
                         android:textColor="@color/bgColor"
                         android:textStyle="bold" />
 
@@ -467,7 +477,7 @@
                 android:id="@+id/thursday"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="1dp"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:background="@color/colorWhite"
@@ -477,7 +487,7 @@
                 android:paddingTop="10dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
@@ -490,7 +500,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="Do not launch quiz on Thursday:"
+                        android:text="Thursday"
                         android:textColor="@color/bgColor"
                         android:textStyle="bold" />
 
@@ -605,7 +615,7 @@
                 android:id="@+id/friday"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="1dp"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:background="@color/colorWhite"
@@ -615,7 +625,7 @@
                 android:paddingTop="10dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
@@ -628,7 +638,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="Do not launch quiz on Friday:"
+                        android:text="Friday"
                         android:textColor="@color/bgColor"
                         android:textStyle="bold" />
 
@@ -743,7 +753,7 @@
                 android:id="@+id/saturday"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="1dp"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:background="@color/colorWhite"
@@ -753,7 +763,7 @@
                 android:paddingTop="10dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
@@ -766,7 +776,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="Do not launch quiz on Saturday:"
+                        android:text="Saturday"
                         android:textColor="@color/bgColor"
                         android:textStyle="bold" />
 
@@ -881,7 +891,7 @@
                 android:id="@+id/sunday"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="1dp"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:background="@color/colorWhite"
@@ -891,7 +901,7 @@
                 android:paddingTop="10dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
@@ -904,7 +914,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="Do not launch quiz on Sunday:"
+                        android:text="Sunday"
                         android:textColor="@color/bgColor"
                         android:textStyle="bold" />
 

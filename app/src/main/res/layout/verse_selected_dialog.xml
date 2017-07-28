@@ -60,30 +60,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/include_next_verse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
+            android:gravity="center_vertical"
             android:paddingBottom="5dp"
             android:paddingLeft="15dp"
             android:text="Include next verse"
-            android:textColor="@color/colorProgressBg" />
+            android:textColor="@color/colorHighlight"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/remove_verse"
+        <CheckBox
+            android:id="@+id/addVerseToInProgress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:paddingBottom="20dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:text="Include next verse"
-            android:textAlignment="textEnd"
-            android:textColor="@color/colorProgressBg"
-            android:visibility="gone" />
+            android:text='Add verse to "In Progress" list'
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -112,7 +114,7 @@
             android:layout_marginRight="1dp"
             android:background="@android:color/transparent"
             android:capitalize="none"
-            android:text="Add Verse"
+            android:text="Confirm"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
             android:textSize="16sp" />
