@@ -64,8 +64,10 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
                 moveLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ScriptureData verse = mDataset.get(mPosition);
-                        mCallback.onResponse(verse);
+                        ScriptureData scriptureData = new ScriptureData();
+                        scriptureData.setVerseLocation(verseLocation.getText().toString());
+                        scriptureData.setVerse(verse.getText().toString());
+                        mCallback.onResponse(scriptureData);
                     }
                 });
             }

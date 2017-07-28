@@ -15,6 +15,7 @@ import java.util.List;
 import nape.biblememory.Adapters.RecyclerViewAdapterMyVerses;
 import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.Fragments.Dialogs.InProgressFullAlertDialog;
+import nape.biblememory.Fragments.Dialogs.RemoveVerseFromNewVersesAlertDialog;
 import nape.biblememory.Managers.ScriptureManager;
 import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.Models.ScriptureData;
@@ -89,10 +90,11 @@ public class MyVersesFragment extends Fragment {
         removeCallback = new BaseCallback() {
             @Override
             public void onResponse(Object response) {
-                final String verseLocation = (String) response;
-                vManager = new VerseOperations(getActivity().getApplicationContext());
-                vManager.removeVerse(verseLocation, MemoryListContract.CurrentSetEntry.TABLE_NAME);
-                refreshRecyclerView();
+                Bundle bundle = new Bundle();
+                bundle.putString("verse_location", (String)response);
+                RemoveVerseFromNewVersesAlertDialog removeAlert = new RemoveVerseFromNewVersesAlertDialog();
+                removeAlert.setArguments(bundle);
+                removeAlert.show(getChildFragmentManager(), null);
             }
 
             @Override

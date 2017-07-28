@@ -29,9 +29,14 @@ import nape.biblememory.Adapters.ViewPagerAdapterVerseSelector;
 import nape.biblememory.DBTApi.DBTApi;
 import nape.biblememory.Fragments.BooksFragment;
 import nape.biblememory.Fragments.ChapterFragment;
+import nape.biblememory.Fragments.Dialogs.RemoveVerseFromInProgressAlertDialog;
+import nape.biblememory.Fragments.Dialogs.RemoveVerseFromNewVersesAlertDialog;
 import nape.biblememory.Fragments.MyVersesFragment;
 import nape.biblememory.Fragments.VerseFragment;
 import nape.biblememory.Fragments.VerseSelection;
+import nape.biblememory.Managers.VerseOperations;
+import nape.biblememory.Models.ScriptureData;
+import nape.biblememory.Sqlite.MemoryListContract;
 import nape.biblememory.UserPreferences;
 import nape.biblememory.Views.SlidingTabLayout;
 import nape.biblememory.Fragments.Dialogs.VerseSelectedDialogFragment;
@@ -39,7 +44,8 @@ import nape.biblememory.R;
 
 public class MainActivity extends ActionBarActivity implements NavigationView.OnNavigationItemSelectedListener,
         MyVersesFragment.OnAddVerseSelectedListener, VerseSelection.FragmentToActivity, BooksFragment.BooksFragmentListener,
-        ChapterFragment.ChaptersFragmentListener, VerseFragment.OnVerseSelected, VerseSelectedDialogFragment.addVerseDialogActions {
+        ChapterFragment.ChaptersFragmentListener, VerseFragment.OnVerseSelected, VerseSelectedDialogFragment.addVerseDialogActions,
+        RemoveVerseFromInProgressAlertDialog.YesSelected, RemoveVerseFromNewVersesAlertDialog.YesSelected{
 
     private ViewPager pagerMain;
     private ViewPagerAdapter adapterMain;
@@ -62,6 +68,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     private DBTApi REST;
     private BaseCallback<List<Verse>> selectedVerseCallback;
     private Context context;
+    private VerseOperations vManager;
 
     private static final String BACK = "BACK";
     private static final String START_QUIZ = "START QUIZ";
@@ -85,6 +92,8 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         setSlidingTabViewMain();
+
+        vManager = new VerseOperations(getApplicationContext());
 
         startQuizFabFrame = (FrameLayout) findViewById(R.id.start_quiz_fab_frame);
         startQuiz = (FloatingActionButton) findViewById(R.id.start_quiz_fab);
@@ -346,5 +355,32 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         }
         String nextVerseNum = String.valueOf(Integer.valueOf(selectedVerseNum) + 1);
         api.getVerse(nextVerseCallback, damId, mPrefs.getSelectedBookId(getApplicationContext()), nextVerseNum, mPrefs.getChapterId(getApplicationContext()));
+    }
+
+    @Override
+    public void onYesSelected(String verseLocation) {
+        List<ScriptureData> scriptureList = vManager.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME);
+        ScriptureData scripture = null;
+
+        for(ScriptureData verse : scriptureList){
+            if(verse.getVerseLocation() != null) {
+                if (verse.getVerseLocation().equalsIgnoreCase(verseLocation)) {
+                    scripture = verse;
+                }
+            }
+        }
+
+        if(scripture != null) {
+            vManager.addVerse(scripture, MemoryListContract.CurrentSetEntry.TABLE_NAME);
+        }
+
+        vManager.removeVerse(verseLocation, MemoryListContract.LearningSetEntry.TABLE_NAME);
+        adapterMain.refreshrecyclerViews();
+    }
+
+    @Override
+    public void onRemoveFromNewSelected(String verseLocation) {
+        vManager.removeVerse(verseLocation, MemoryListContract.CurrentSetEntry.TABLE_NAME);
+        adapterMain.refreshrecyclerViews();
     }
 }
