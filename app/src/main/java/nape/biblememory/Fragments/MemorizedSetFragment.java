@@ -222,18 +222,13 @@ public class MemorizedSetFragment extends Fragment {
             case 0:
                 tempVerseList = getBookGroupList(getAllMemorizedVerses());
                 break;
-
-            //Verse Group
-            case 1:
-                break;
-
             //Newest
-            case 2:
+            case 1:
                 tempVerseList = getAllMemorizedVerses();
                 break;
 
             //Oldest
-            case 3:
+            case 2:
                 tempVerseList = getAllMemorizedVerses();
                 Collections.reverse(tempVerseList);
                 break;

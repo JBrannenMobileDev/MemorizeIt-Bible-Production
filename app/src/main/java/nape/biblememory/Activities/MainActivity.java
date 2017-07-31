@@ -61,7 +61,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     private ViewPagerAdapterVerseSelector adapterVerseSelector;
     private SlidingTabLayout tabsVerseSelector;
     private CharSequence VerseSelectorTitles[]={"BOOKS","CHAPTER","VERSE"};
-    private int Numboftabs =3;
+    private int Numboftabs = 3;
     private FloatingActionButton startQuiz;
     private UserPreferences mPrefs;
     private String bookName;
@@ -101,9 +101,11 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
         context = getApplicationContext();
 
+        vManager = new VerseOperations(getApplicationContext());
+
         setSlidingTabViewMain();
 
-        vManager = new VerseOperations(getApplicationContext());
+
 
         startQuizFabFrame = (FrameLayout) findViewById(R.id.start_quiz_fab_frame);
         startQuiz = (FloatingActionButton) findViewById(R.id.start_quiz_fab);
