@@ -10,6 +10,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.List;
 
 import nape.biblememory.Adapters.RecyclerViewAdapterMyVerses;
@@ -39,11 +41,15 @@ public class MyVersesFragment extends Fragment {
     private BaseCallback editCallback;
     private FloatingActionButton addVerseButton;
     private VerseOperations vManager;
+    private FirebaseAnalytics mFirebaseAnalytics;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         scriptureManager = new ScriptureManager(getActivity().getApplicationContext());
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity().getApplicationContext());
+        mFirebaseAnalytics.setCurrentScreen(getActivity(), "Settings", null);
     }
 
     @Override
@@ -62,6 +68,7 @@ public class MyVersesFragment extends Fragment {
             public void onClick(View v) {
                 try{
                     ((OnAddVerseSelectedListener) getActivity()).addVerseSelected();
+                    mFirebaseAnalytics.logEvent("add_verse_from_myverses_selected", null);
                 }catch (ClassCastException cce){
 
                 }

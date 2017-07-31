@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.faithcomesbyhearing.dbt.model.Verse;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
     private String bookName;
     private String chapter;
     private boolean comingFromNewVerses;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,6 +83,9 @@ public class VerseSelectedDialogFragment extends DialogFragment {
         if(currentSelectedVerse == numOfVersesInChapter){
             includeNextVerseTv.setVisibility(View.INVISIBLE);
         }
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity().getApplicationContext());
+        mFirebaseAnalytics.setCurrentScreen(getActivity(), "Verse selection dialog", null);
         return view;
     }
 
@@ -95,6 +100,9 @@ public class VerseSelectedDialogFragment extends DialogFragment {
                 verse.setVerseNumber(initialSelectedVerseNum);
                 verse.setBookName(mPrefs.getSelectedBook(getActivity().getApplicationContext()));
                 verse.setChapter(mPrefs.getSelectedChapter(getActivity().getApplicationContext()));
+                Bundle bundle = new Bundle();
+                bundle.putString("verse_added", verse.getVerseLocation());
+                mFirebaseAnalytics.logEvent("verse_added", bundle);
                 List<ScriptureData> currentList = verseOperations.getVerseSet(MemoryListContract.CurrentSetEntry.TABLE_NAME);
                 List<ScriptureData> learningList = verseOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME);
                 List<ScriptureData> rememberedList = verseOperations.getVerseSet(MemoryListContract.RememberedSetEntry.TABLE_NAME);
@@ -116,6 +124,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
 
                 if(!verseAlreadyExists) {
                     if (addVerseToInProgress.isChecked()) {
+                        mFirebaseAnalytics.logEvent("verse_added_to_learning_list", bundle);
                         verseOperations.addVerse(verse, MemoryListContract.LearningSetEntry.TABLE_NAME);
                     } else {
                         verseOperations.addVerse(verse, MemoryListContract.CurrentSetEntry.TABLE_NAME);
@@ -142,6 +151,9 @@ public class VerseSelectedDialogFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 dialogActionsListener.includeNextVerseSelected(verseLocation, includeNextVerseCallback, previousVerseNum);
+                Bundle bundle = new Bundle();
+                bundle.putString("include_next_verse", verseLocation);
+                mFirebaseAnalytics.logEvent("include_next_verse", bundle);
             }
         });
 

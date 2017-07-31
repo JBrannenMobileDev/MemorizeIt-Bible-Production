@@ -53,7 +53,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
     private PhoneUnlockPresenter mPresenter;
     private FirstTimeUnlockDialog firstTimeDialog;
 
-    private FirebaseAnalytics analytics;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
 
     @Override
@@ -66,7 +66,9 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_unlock);
-        analytics = FirebaseAnalytics.getInstance( this );
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance( this );
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+        mFirebaseAnalytics.setCurrentScreen(this, "Phone unlock quiz", null);
 
         InitializeBannerAd();
 
@@ -125,7 +127,10 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
 
         moreVersesCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { mPresenter.onMoreSwitchStateChanged(isChecked); }
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mPresenter.onMoreSwitchStateChanged(isChecked);
+                mFirebaseAnalytics.logEvent("another_quiz_selected", null);
+            }
         });
 
         mPresenter.onRequestData();
@@ -137,7 +142,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
             int width = dm.widthPixels;
             mPrefs.setScreenWidth(width, getApplicationContext());
         }
-        analytics.setMinimumSessionDuration(500);
+        mFirebaseAnalytics.setMinimumSessionDuration(500);
     }
 
     private void hideUIControls() {

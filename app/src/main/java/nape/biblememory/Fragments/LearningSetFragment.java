@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.List;
 
 import nape.biblememory.Adapters.RecyclerViewAdapterMyVerses;
@@ -33,11 +35,14 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
     private List<ScriptureData> dataSet;
     private BaseCallback removeCallback;
     private LearningSetFragmentPresenter mPresenter;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         scriptureManager = new ScriptureManager(getActivity().getApplicationContext());
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity().getApplicationContext());
+        mFirebaseAnalytics.setCurrentScreen(getActivity(), "Settings", null);
     }
 
     @Override

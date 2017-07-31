@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.faithcomesbyhearing.dbt.model.Book;
 import com.faithcomesbyhearing.dbt.model.Verse;
 import com.faithcomesbyhearing.dbt.model.Volume;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +70,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     private String verseNum;
     private NavigationView navigationView;
     private FrameLayout startQuizFabFrame;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     private DBTApi REST;
     private BaseCallback<List<Verse>> selectedVerseCallback;
@@ -101,6 +103,8 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
         context = getApplicationContext();
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+
         vManager = new VerseOperations(getApplicationContext());
 
         setSlidingTabViewMain();
@@ -112,6 +116,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         startQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mFirebaseAnalytics.logEvent("start_quiz_Fab_selected", null);
                 if(vManager.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() > 0) {
                     Intent myIntent = new Intent(getApplicationContext(), PhoneUnlockActivity.class);
                     startActivity(myIntent);
@@ -218,9 +223,11 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_add_new_verse) {
+            mFirebaseAnalytics.logEvent("add_verse_from_nav_draw_selected", null);
             addVerseSelected();
         } else if (id == R.id.nav_start_quiz) {
             startQuiz.callOnClick();
+            mFirebaseAnalytics.logEvent("start_quiz_nav_draw_selected", null);
         } else if (id == R.id.nav_settings) {
             settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
         } else if (id == R.id.nav_home) {

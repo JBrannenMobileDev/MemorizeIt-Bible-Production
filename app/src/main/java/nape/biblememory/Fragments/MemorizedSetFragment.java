@@ -11,6 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,12 +43,15 @@ public class MemorizedSetFragment extends Fragment {
     private Spinner spinner;
     private UserPreferences mPrefs;
     List<Object> combinedList;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         scriptureManager = new ScriptureManager(getActivity().getApplicationContext());
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity().getApplicationContext());
+        mFirebaseAnalytics.setCurrentScreen(getActivity(), "Memorized verses tab", null);
     }
 
     @Override

@@ -9,6 +9,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -92,6 +94,7 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
     private Date endDateSunday;
     private boolean startDateSelected;
     private String selectedDayOfWeek;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
 
     @Override
@@ -102,6 +105,8 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
         setTitle("Settings");
         mPrefs = new UserPreferences();
         ButterKnife.bind(this);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+        mFirebaseAnalytics.setCurrentScreen(this, "Settings", null);
     }
 
     @Override
