@@ -2,7 +2,6 @@
 <resources>
     <string-array name="sort_options_array">
         <item>Book Name</item>
-        <item>Verse Group</item>
         <item>Newest</item>
         <item>Oldest</item>
     </string-array>

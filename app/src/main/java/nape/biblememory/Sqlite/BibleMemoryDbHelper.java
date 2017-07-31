@@ -27,7 +27,11 @@ public class BibleMemoryDbHelper extends SQLiteOpenHelper {
                     MemoryListContract.CurrentSetEntry.COLUMN_NAME_MEMORY_STAGE + INT_TYPE + COMMA_SEP +
                     MemoryListContract.CurrentSetEntry.COLUMN_NAME_MEMORY_SUB_STAGE + INT_TYPE + COMMA_SEP +
                     MemoryListContract.CurrentSetEntry.COLUMN_NAME_COUNT_VIEWED + INT_TYPE + COMMA_SEP +
-                    MemoryListContract.CurrentSetEntry.COLUMN_NAME_COUNT_CORRECT + INT_TYPE + " )";
+                    MemoryListContract.CurrentSetEntry.COLUMN_NAME_COUNT_CORRECT + INT_TYPE + COMMA_SEP +
+                    MemoryListContract.CurrentSetEntry.COLUMN_NAME_BOOK_NAME + TEXT_TYPE + COMMA_SEP +
+                    MemoryListContract.CurrentSetEntry.COLUMN_NAME_CHAPTER + TEXT_TYPE + COMMA_SEP +
+                    MemoryListContract.CurrentSetEntry.COLUMN_NAME_VERSE_NUMBER + TEXT_TYPE + COMMA_SEP +
+                    MemoryListContract.CurrentSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER + INT_TYPE + " )";
     private static final String SQL_CREATE_REMEMBERED_SET_ENTRIES =
             "CREATE TABLE " + MemoryListContract.RememberedSetEntry.TABLE_NAME + " (" +
                     MemoryListContract.RememberedSetEntry._ID + " INTEGER PRIMARY KEY," +
@@ -40,7 +44,11 @@ public class BibleMemoryDbHelper extends SQLiteOpenHelper {
                     MemoryListContract.RememberedSetEntry.COLUMN_NAME_MEMORY_STAGE + INT_TYPE + COMMA_SEP +
                     MemoryListContract.RememberedSetEntry.COLUMN_NAME_MEMORY_SUB_STAGE + INT_TYPE + COMMA_SEP +
                     MemoryListContract.RememberedSetEntry.COLUMN_NAME_COUNT_VIEWED + INT_TYPE + COMMA_SEP +
-                    MemoryListContract.RememberedSetEntry.COLUMN_NAME_COUNT_CORRECT + INT_TYPE + " )";
+                    MemoryListContract.RememberedSetEntry.COLUMN_NAME_COUNT_CORRECT + INT_TYPE + COMMA_SEP +
+                    MemoryListContract.RememberedSetEntry.COLUMN_NAME_BOOK_NAME + TEXT_TYPE + COMMA_SEP +
+                    MemoryListContract.RememberedSetEntry.COLUMN_NAME_CHAPTER + TEXT_TYPE  + COMMA_SEP +
+                    MemoryListContract.RememberedSetEntry.COLUMN_NAME_VERSE_NUMBER + TEXT_TYPE + COMMA_SEP +
+                    MemoryListContract.RememberedSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER + INT_TYPE + " )";
     private static final String SQL_CREATE_MEMORIZED_SET_ENTRIES =
             "CREATE TABLE " + MemoryListContract.MemorizedSetEntry.TABLE_NAME + " (" +
                     MemoryListContract.MemorizedSetEntry._ID + " INTEGER PRIMARY KEY," +
@@ -53,7 +61,11 @@ public class BibleMemoryDbHelper extends SQLiteOpenHelper {
                     MemoryListContract.MemorizedSetEntry.COLUMN_NAME_MEMORY_STAGE + INT_TYPE + COMMA_SEP +
                     MemoryListContract.MemorizedSetEntry.COLUMN_NAME_MEMORY_SUB_STAGE + INT_TYPE + COMMA_SEP +
                     MemoryListContract.MemorizedSetEntry.COLUMN_NAME_COUNT_VIEWED + INT_TYPE + COMMA_SEP +
-                    MemoryListContract.MemorizedSetEntry.COLUMN_NAME_COUNT_CORRECT + INT_TYPE + " )";
+                    MemoryListContract.MemorizedSetEntry.COLUMN_NAME_COUNT_CORRECT + INT_TYPE + COMMA_SEP +
+                    MemoryListContract.MemorizedSetEntry.COLUMN_NAME_BOOK_NAME + TEXT_TYPE + COMMA_SEP +
+                    MemoryListContract.MemorizedSetEntry.COLUMN_NAME_CHAPTER + TEXT_TYPE  + COMMA_SEP +
+                    MemoryListContract.MemorizedSetEntry.COLUMN_NAME_VERSE_NUMBER + TEXT_TYPE + COMMA_SEP +
+                    MemoryListContract.MemorizedSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER + INT_TYPE + " )";
     private static final String SQL_CREATE_LEARNING_SET_ENTRIES =
             "CREATE TABLE " + MemoryListContract.LearningSetEntry.TABLE_NAME + " (" +
                     MemoryListContract.LearningSetEntry._ID + " INTEGER PRIMARY KEY," +
@@ -66,7 +78,11 @@ public class BibleMemoryDbHelper extends SQLiteOpenHelper {
                     MemoryListContract.LearningSetEntry.COLUMN_NAME_MEMORY_STAGE + INT_TYPE + COMMA_SEP +
                     MemoryListContract.LearningSetEntry.COLUMN_NAME_MEMORY_SUB_STAGE + INT_TYPE + COMMA_SEP +
                     MemoryListContract.LearningSetEntry.COLUMN_NAME_COUNT_VIEWED + INT_TYPE + COMMA_SEP +
-                    MemoryListContract.LearningSetEntry.COLUMN_NAME_COUNT_CORRECT + INT_TYPE + " )";
+                    MemoryListContract.LearningSetEntry.COLUMN_NAME_COUNT_CORRECT + INT_TYPE + COMMA_SEP +
+                    MemoryListContract.LearningSetEntry.COLUMN_NAME_BOOK_NAME + TEXT_TYPE + COMMA_SEP +
+                    MemoryListContract.LearningSetEntry.COLUMN_NAME_CHAPTER + TEXT_TYPE  + COMMA_SEP +
+                    MemoryListContract.LearningSetEntry.COLUMN_NAME_VERSE_NUMBER + TEXT_TYPE + COMMA_SEP +
+                    MemoryListContract.LearningSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER + INT_TYPE + " )";
 
 
 

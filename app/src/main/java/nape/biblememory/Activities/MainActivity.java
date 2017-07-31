@@ -20,15 +20,20 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.faithcomesbyhearing.dbt.model.Book;
 import com.faithcomesbyhearing.dbt.model.Verse;
+import com.faithcomesbyhearing.dbt.model.Volume;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import nape.biblememory.Adapters.RecyclerViewAdapterBooks;
 import nape.biblememory.Adapters.ViewPagerAdapter;
 import nape.biblememory.Adapters.ViewPagerAdapterVerseSelector;
 import nape.biblememory.DBTApi.DBTApi;
 import nape.biblememory.Fragments.BooksFragment;
 import nape.biblememory.Fragments.ChapterFragment;
+import nape.biblememory.Fragments.Dialogs.InProgressEmptyAlertDialog;
 import nape.biblememory.Fragments.Dialogs.RemoveVerseFromInProgressAlertDialog;
 import nape.biblememory.Fragments.Dialogs.RemoveVerseFromNewVersesAlertDialog;
 import nape.biblememory.Fragments.MyVersesFragment;
@@ -51,7 +56,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     private ViewPagerAdapter adapterMain;
     private SlidingTabLayout tabsMain;
     private FrameLayout fragmentContainer;
-    private CharSequence mainTitles[]={"New Verses","In Progress","Memorized"};
+    private CharSequence mainTitles[]={"New verses","Quiz verses","Memorized"};
     private ViewPager pagerVerseSelector;
     private ViewPagerAdapterVerseSelector adapterVerseSelector;
     private SlidingTabLayout tabsVerseSelector;
@@ -69,6 +74,9 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     private BaseCallback<List<Verse>> selectedVerseCallback;
     private Context context;
     private VerseOperations vManager;
+    private List<Volume> volumeList;
+    private List<Book> newTestament;
+    private List<Book> oldTestament;
 
     private static final String BACK = "BACK";
     private static final String START_QUIZ = "START QUIZ";
@@ -91,6 +99,8 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        context = getApplicationContext();
+
         setSlidingTabViewMain();
 
         vManager = new VerseOperations(getApplicationContext());
@@ -100,8 +110,12 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         startQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(getApplicationContext(), PhoneUnlockActivity.class);
-                startActivity(myIntent);
+                if(vManager.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() > 0) {
+                    Intent myIntent = new Intent(getApplicationContext(), PhoneUnlockActivity.class);
+                    startActivity(myIntent);
+                }else{
+                    new InProgressEmptyAlertDialog().show(getSupportFragmentManager(), null);
+                }
             }
         });
     }
@@ -295,7 +309,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     @Override
     public void onVerseSelected(final String verseNumber) {
         REST = new DBTApi(getApplicationContext());
-        context = getApplicationContext();
         selectedVerseCallback = new BaseCallback<List<Verse>>() {
             @Override
             public void onResponse(List<Verse> response) {
@@ -328,8 +341,10 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     }
 
     @Override
-    public void onVerseAdded(){
-        onBackPressed();
+    public void onVerseAdded(boolean comingFromNewVerses){
+        if(!comingFromNewVerses) {
+            onBackPressed();
+        }
         adapterMain.refreshrecyclerViews();
     }
 
@@ -348,13 +363,13 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             }
         };
         String damId;
-        if(mPrefs.isBookLocationOT(context)){
+        if(mPrefs.isBookLocationOT(getApplicationContext())){
             damId = mPrefs.getDamIdOldTestament(context);
         }else{
             damId = mPrefs.getDamIdNewTestament(context);
         }
         String nextVerseNum = String.valueOf(Integer.valueOf(selectedVerseNum) + 1);
-        api.getVerse(nextVerseCallback, damId, mPrefs.getSelectedBookId(getApplicationContext()), nextVerseNum, mPrefs.getChapterId(getApplicationContext()));
+        api.getVerse(nextVerseCallback, damId, mPrefs.getSelectedBookId(getApplicationContext()), nextVerseNum, mPrefs.getSelectedChapter(getApplicationContext()));
     }
 
     @Override

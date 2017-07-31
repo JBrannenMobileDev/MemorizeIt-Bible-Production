@@ -20,6 +20,10 @@ public final class MemoryListContract {
         public static final String COLUMN_NAME_MEMORIZE_DATE = "memorizedate";
         public static final String COLUMN_NAME_REMEMBERED_DATE = "remembereddate";
         public static final String COLUMN_NAME_DATE_LAST_SEEN = "datelastseen";
+        public static final String COLUMN_NAME_BOOK_NAME = "bookname";
+        public static final String COLUMN_NAME_CHAPTER = "chapter";
+        public static final String COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER = "num";
+        public static final String COLUMN_NAME_VERSE_NUMBER = "versenumber";
     }
 
     public static abstract class LearningSetEntry implements BaseColumns {
@@ -35,6 +39,10 @@ public final class MemoryListContract {
         public static final String COLUMN_NAME_MEMORIZE_DATE = "memorizedate";
         public static final String COLUMN_NAME_REMEMBERED_DATE = "remembereddate";
         public static final String COLUMN_NAME_DATE_LAST_SEEN = "datelastseen";
+        public static final String COLUMN_NAME_BOOK_NAME = "bookname";
+        public static final String COLUMN_NAME_CHAPTER = "chapter";
+        public static final String COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER = "num";
+        public static final String COLUMN_NAME_VERSE_NUMBER = "versenumber";
     }
 
     public static abstract class RememberedSetEntry implements BaseColumns {
@@ -50,6 +58,10 @@ public final class MemoryListContract {
         public static final String COLUMN_NAME_MEMORIZE_DATE = "memorizedate";
         public static final String COLUMN_NAME_REMEMBERED_DATE = "remembereddate";
         public static final String COLUMN_NAME_DATE_LAST_SEEN = "datelastseen";
+        public static final String COLUMN_NAME_BOOK_NAME = "bookname";
+        public static final String COLUMN_NAME_CHAPTER = "chapter";
+        public static final String COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER = "num";
+        public static final String COLUMN_NAME_VERSE_NUMBER = "versenumber";
     }
 
     public static abstract class MemorizedSetEntry implements BaseColumns {
@@ -65,5 +77,9 @@ public final class MemoryListContract {
         public static final String COLUMN_NAME_MEMORIZE_DATE = "memorizedate";
         public static final String COLUMN_NAME_REMEMBERED_DATE = "remembereddate";
         public static final String COLUMN_NAME_DATE_LAST_SEEN = "datelastseen";
+        public static final String COLUMN_NAME_BOOK_NAME = "bookname";
+        public static final String COLUMN_NAME_CHAPTER = "chapter";
+        public static final String COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER = "num";
+        public static final String COLUMN_NAME_VERSE_NUMBER = "versenumber";
     }
 }

@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.faithcomesbyhearing.dbt.model.Verse;
 
+import java.util.List;
+
 import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.Models.ScriptureData;
@@ -39,10 +41,13 @@ public class VerseSelectedDialogFragment extends DialogFragment {
     private String previousVerseNum;
     private String verseText;
     private String verseLocation;
+    private String previousVerseLocation;
     private long numOfVersesInChapter;
     private addVerseDialogActions dialogActionsListener;
     private BaseCallback<Verse> includeNextVerseCallback;
-    private VerseOperations vOperations;
+    private String bookName;
+    private String chapter;
+    private boolean comingFromNewVerses;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,16 +60,19 @@ public class VerseSelectedDialogFragment extends DialogFragment {
         cancel = (Button) view.findViewById(R.id.cancelButton);
         addVerseToInProgress = (CheckBox) view.findViewById(R.id.addVerseToInProgress);
         mPrefs = new UserPreferences();
-        vOperations = new VerseOperations(getActivity().getApplicationContext());
-        if(vOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() > 2){
-            addVerseToInProgress.setVisibility(View.GONE);
-        }
         initialSelectedVerseNum = getArguments().getString("num");
         previousVerseNum = initialSelectedVerseNum;
         verseText = getArguments().getString("verseText");
         verseLocation = getArguments().getString("verseLocation");
+        previousVerseLocation = verseLocation;
         numOfVersesInChapter = getArguments().getLong("numOfVersesInChapter");
+        bookName = getArguments().getString("book_name");
+        chapter = getArguments().getString("chapter");
+        comingFromNewVerses = getArguments().getBoolean("comingFromNew");
         verseOperations = new VerseOperations(getActivity().getApplicationContext());
+        if(verseOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() > 2){
+            addVerseToInProgress.setVisibility(View.GONE);
+        }
         verse.setText(verseText);
         verseLocationTv.setText(verseLocation);
         dialogActionsListener = (addVerseDialogActions) getActivity();
@@ -81,15 +89,45 @@ public class VerseSelectedDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 ScriptureData verse = new ScriptureData();
+                boolean verseAlreadyExists = false;
                 verse.setVerse(verseText);
                 verse.setVerseLocation(verseLocation);
-                if(addVerseToInProgress.isChecked()) {
-                    vOperations.addVerse(verse, MemoryListContract.LearningSetEntry.TABLE_NAME);
-                }else{
-                    verseOperations.addVerse(verse, MemoryListContract.CurrentSetEntry.TABLE_NAME);
+                verse.setVerseNumber(initialSelectedVerseNum);
+                verse.setBookName(mPrefs.getSelectedBook(getActivity().getApplicationContext()));
+                verse.setChapter(mPrefs.getSelectedChapter(getActivity().getApplicationContext()));
+                List<ScriptureData> currentList = verseOperations.getVerseSet(MemoryListContract.CurrentSetEntry.TABLE_NAME);
+                List<ScriptureData> learningList = verseOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME);
+                List<ScriptureData> rememberedList = verseOperations.getVerseSet(MemoryListContract.RememberedSetEntry.TABLE_NAME);
+                for(ScriptureData verseCurrent : currentList){
+                    if(verseCurrent.getVerseLocation().equalsIgnoreCase(verse.getVerseLocation())){
+                        verseAlreadyExists = true;
+                    }
                 }
-                dialogActionsListener.onVerseAdded();
-                VerseSelectedDialogFragment.this.getDialog().cancel();
+                for(ScriptureData verseLearning : learningList){
+                    if(verseLearning.getVerseLocation().equalsIgnoreCase(verse.getVerseLocation())){
+                        verseAlreadyExists = true;
+                    }
+                }
+                for(ScriptureData verseRemembered : rememberedList){
+                    if(verseRemembered.getVerseLocation().equalsIgnoreCase(verse.getVerseLocation())){
+                        verseAlreadyExists = true;
+                    }
+                }
+
+                if(!verseAlreadyExists) {
+                    if (addVerseToInProgress.isChecked()) {
+                        verseOperations.addVerse(verse, MemoryListContract.LearningSetEntry.TABLE_NAME);
+                    } else {
+                        verseOperations.addVerse(verse, MemoryListContract.CurrentSetEntry.TABLE_NAME);
+                    }
+                    if (comingFromNewVerses) {
+                        verseOperations.removeVerse(previousVerseLocation, MemoryListContract.CurrentSetEntry.TABLE_NAME);
+                    }
+                    dialogActionsListener.onVerseAdded(comingFromNewVerses);
+                    VerseSelectedDialogFragment.this.getDialog().cancel();
+                }else{
+                    new VerseAlreadyExistsAlertDialog().show(getChildFragmentManager(), null);
+                }
             }
         });
 
@@ -133,12 +171,28 @@ public class VerseSelectedDialogFragment extends DialogFragment {
     }
 
     private String generateCombinedVerseLocations(String verseId) {
-        return mPrefs.getSelectedBook(getActivity().getApplicationContext()) + " " +
-                mPrefs.getSelectedChapter(getActivity().getApplicationContext()) + ":" + initialSelectedVerseNum + "-" + verseId;
+        if(!comingFromNewVerses) {
+            if (bookName != null && chapter != null) {
+                return bookName + " " + chapter + ":" + initialSelectedVerseNum + "-" + verseId;
+            }
+            return mPrefs.getSelectedBook(getActivity().getApplicationContext()) + " " +
+                    mPrefs.getSelectedChapter(getActivity().getApplicationContext()) + ":" + initialSelectedVerseNum + "-" + verseId;
+        }else{
+            return mPrefs.getSelectedBook(getActivity().getApplicationContext()) + " " +
+                    mPrefs.getSelectedChapter(getActivity().getApplicationContext()) + ":" + getStartVerseNum(initialSelectedVerseNum) + "-" + verseId;
+        }
+    }
+
+    private String getStartVerseNum(String initialSelectedVerseNum) {
+        String result = null;
+        if(!initialSelectedVerseNum.contains("-")){
+            return initialSelectedVerseNum;
+        }
+        return result;
     }
 
     public interface addVerseDialogActions {
-        void onVerseAdded();
+        void onVerseAdded(boolean comingFromNewVerses);
         void includeNextVerseSelected(String verseLocation, BaseCallback<Verse> callback, String selectedVerseNum);
     }
 }

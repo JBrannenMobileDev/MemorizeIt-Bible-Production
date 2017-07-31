@@ -13,6 +13,18 @@ public class ScriptureData {
     private int viewedCount;
     private int memoryStage;
     private int memorySubStage;
+    private String bookName;
+    private String chapter;
+    private long numOfVersesInChapter;
+    private String verseNumber;
+
+    public long getNumOfVersesInChapter() {
+        return numOfVersesInChapter;
+    }
+
+    public void setNumOfVersesInChapter(long numOfVersesInChapter) {
+        this.numOfVersesInChapter = numOfVersesInChapter;
+    }
 
     public ScriptureData(String verse, String verseLocation) {
         setVerse(verse);
@@ -22,6 +34,21 @@ public class ScriptureData {
     public ScriptureData() {
     }
 
+    public String getBookName() {
+        return bookName;
+    }
+
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
+    }
+
+    public String getChapter() {
+        return chapter;
+    }
+
+    public void setChapter(String chapter) {
+        this.chapter = chapter;
+    }
 
     public String getVerse() {
         return verse;
@@ -109,5 +136,13 @@ public class ScriptureData {
 
     public void setPrimary_key_id(int primary_key_id) {
         this.primary_key_id = primary_key_id;
+    }
+
+    public void setVerseNumber(String verseNumber) {
+        this.verseNumber = verseNumber;
+    }
+
+    public String getVerseNumber() {
+        return verseNumber;
     }
 }

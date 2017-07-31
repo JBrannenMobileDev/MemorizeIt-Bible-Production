@@ -22,13 +22,6 @@ public class ScriptureManager {
         int caseNumber;
         List<ScriptureData> scriptureListLearning = vOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME);
 
-        ScriptureData temp = getCurrentSetScripture();
-        if(scriptureListLearning.size() < 3 && temp != null){
-            vOperations.addVerse(temp, MemoryListContract.LearningSetEntry.TABLE_NAME);
-            vOperations.removeVerse(temp.getVerseLocation(), MemoryListContract.CurrentSetEntry.TABLE_NAME);
-        }
-
-        scriptureListLearning = vOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME);
         if(scriptureListLearning != null && scriptureListLearning.size() > 2 && scriptureListLearning.get(0).getVerse() != null && scriptureListLearning.get(1).getVerse() != null && scriptureListLearning.get(2).getVerse() != null) {
             Random generate = new Random();
             final int random = generate.nextInt(100) + 1;
@@ -116,12 +109,12 @@ public class ScriptureManager {
         vOperations.removeVerse(verseLocation, tableName);
     }
 
-    public void updateLerningList() {
+    public void updateLearningList() {
         List<ScriptureData> scriptureListCurrent = vOperations.getVerseSet(MemoryListContract.CurrentSetEntry.TABLE_NAME);
-        int size = scriptureListCurrent.size();
-        int randNum = generateRandomNumber(size);
-        vOperations.addVerse(scriptureListCurrent.get(randNum), MemoryListContract.LearningSetEntry.TABLE_NAME);
-        vOperations.removeVerse(scriptureListCurrent.get(randNum).getVerseLocation(), MemoryListContract.LearningSetEntry.TABLE_NAME);
+        if(scriptureListCurrent.size() > 0) {
+            vOperations.addVerse(scriptureListCurrent.get(0), MemoryListContract.LearningSetEntry.TABLE_NAME);
+            vOperations.removeVerse(scriptureListCurrent.get(0).getVerseLocation(), MemoryListContract.LearningSetEntry.TABLE_NAME);
+        }
     }
 
     public List<ScriptureData> getScriptureSet(String tableName){

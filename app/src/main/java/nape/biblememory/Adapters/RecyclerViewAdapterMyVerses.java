@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import nape.biblememory.Activities.BaseCallback;
+import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.Models.ScriptureData;
 import nape.biblememory.R;
 
@@ -23,6 +24,7 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
     private int mTabPosition;
     private BaseCallback removeCallback;
     private BaseCallback moveCallback;
+    private BaseCallback editCallback;
     public View selectedView;
     public boolean isViewSelected;
 
@@ -37,12 +39,15 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
         public TextView verse;
         public RelativeLayout removeLayout;
         public LinearLayout moveLayout;
-        public ViewHolder(View v, final int mPosition, final BaseCallback rCallback, final BaseCallback mCallback) {
+        public TextView editTv;
+
+        public ViewHolder(View v, final int mPosition, final BaseCallback rCallback, final BaseCallback mCallback, final BaseCallback eCallback) {
             super(v);
             verseLocation = (TextView) v.findViewById(R.id.verse_location);
             verse = (TextView) v.findViewById(R.id.verse);
             pb = (ProgressBar) v.findViewById(R.id.progressBar);
             progressPercent = (TextView) v.findViewById(R.id.progress_percent);
+            editTv = (TextView) v.findViewById(R.id.card_edit_tv);
 
             if(mPosition == 1){
                 removeLayout = (RelativeLayout) v.findViewById(R.id.linearLayoutRemove);
@@ -71,6 +76,15 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
                     }
                 });
             }
+
+            if(editTv != null){
+                editTv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        eCallback.onResponse(verseLocation.getText());
+                    }
+                });
+            }
             v.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -78,16 +92,23 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
 
                     if (v.equals(selectedView)) {
                         collapseCardView(selectedView, mPosition);
+                        if(editTv != null){
+                            editTv.setVisibility(View.GONE);
+                        }
                         selectedView = null;
                         isViewSelected = false;
                     }else{
                         if(isViewSelected) {
                             collapseCardView(selectedView, mPosition);
+                            if(editTv != null){
+                                editTv.setVisibility(View.GONE);
+                            }
                         }
                         isViewSelected = true;
                         switch(mPosition){
                             case 0:
                                 expandCardView(v,mPosition);
+//                                editTv.setVisibility(View.VISIBLE);
                                 break;
                             case 2:
                                 expandCardView(v, mPosition);
@@ -104,11 +125,12 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public RecyclerViewAdapterMyVerses(List<ScriptureData> dataset, int tabPosition, BaseCallback removeCallback, BaseCallback<ScriptureData> moveCallback) {
+    public RecyclerViewAdapterMyVerses(List<ScriptureData> dataset, int tabPosition, BaseCallback removeCallback, BaseCallback<ScriptureData> moveCallback, BaseCallback editCallback) {
         mDataset = dataset;
         mTabPosition = tabPosition;
         this.removeCallback = removeCallback;
         this.moveCallback = moveCallback;
+        this.editCallback = editCallback;
     }
 
     // Create new views (invoked by the layout manager)
@@ -129,7 +151,7 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
         }
 
         // set the view's size, margins, paddings and layout parameters
-        ViewHolder vh = new ViewHolder(v, mTabPosition, removeCallback, moveCallback);
+        ViewHolder vh = new ViewHolder(v, mTabPosition, removeCallback, moveCallback, editCallback);
         return vh;
     }
 

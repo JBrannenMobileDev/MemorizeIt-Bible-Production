@@ -24,4 +24,5 @@ public interface PhoneUnlockView{
     void setMoreSwitchTrackText(boolean state);
     void setSwitchTextInvisible();
     void setHintButtonVisibility(int value);
+    void showMemorizedAlert(boolean memorizedAndLearningListIsEmpty);
 }

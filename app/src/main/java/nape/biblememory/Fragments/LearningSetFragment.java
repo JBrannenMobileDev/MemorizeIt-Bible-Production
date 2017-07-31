@@ -37,7 +37,7 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        scriptureManager = new ScriptureManager(getContext());
+        scriptureManager = new ScriptureManager(getActivity().getApplicationContext());
     }
 
     @Override
@@ -53,7 +53,7 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
         mLayoutManager = new LinearLayoutManager(this.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mPresenter = new LearningSetFragmentPresenterImp(this, getContext());
+        mPresenter = new LearningSetFragmentPresenterImp(this, getActivity().getApplicationContext());
 
         removeCallback = new BaseCallback() {
             @Override
@@ -72,14 +72,14 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
         };
 
         dataSet = scriptureManager.getScriptureSet(MemoryListContract.LearningSetEntry.TABLE_NAME);
-        mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_1, removeCallback, null);
+        mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_1, removeCallback, null, null);
         mRecyclerView.setAdapter(mAdapter);
         return v;
     }
 
     public void RefreshRecyclerView(){
         dataSet = scriptureManager.getScriptureSet(MemoryListContract.LearningSetEntry.TABLE_NAME);
-        mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_1, removeCallback, null);
+        mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_1, removeCallback, null, null);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -92,7 +92,7 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            scriptureManager = new ScriptureManager(getContext());
+            scriptureManager = new ScriptureManager(getActivity().getApplicationContext());
             RefreshRecyclerView();
         }
     }

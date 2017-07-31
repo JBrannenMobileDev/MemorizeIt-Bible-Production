@@ -46,7 +46,7 @@ public class MemorizedSetFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        scriptureManager = new ScriptureManager(getContext());
+        scriptureManager = new ScriptureManager(getActivity().getApplicationContext());
     }
 
     @Override
@@ -302,18 +302,12 @@ public class MemorizedSetFragment extends Fragment {
 
     private String parseBookName(String verseLocation){
         String bookName = null;
-        if(verseLocation != null){
-            boolean parsedBookName = false;
-
-            int index = 0;
-            while(!parsedBookName){
-                if((verseLocation.charAt(index) == 1) || (verseLocation.charAt(index) == 2) || (verseLocation.charAt(index) == 3)){
-                    parsedBookName = false;
-                }else if(verseLocation.charAt(index) == ' '){
-                    bookName = verseLocation.substring(0,index);
-                    parsedBookName = true;
+        for (int i = 0; i < verseLocation.length(); i++){
+            char c = verseLocation.charAt(i);
+            if(Character.isSpaceChar(c)){
+                if(Character.isDigit(verseLocation.charAt(i+1))){
+                    bookName = verseLocation.substring(0, i);
                 }
-                index++;
             }
         }
         return bookName;

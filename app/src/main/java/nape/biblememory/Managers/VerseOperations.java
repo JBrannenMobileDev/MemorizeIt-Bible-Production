@@ -27,6 +27,17 @@ public class VerseOperations {
         scriptureDb_writable = dbHelper.getWritableDatabase();
     }
 
+    public ScriptureData getVerse(String tableName, String verseLocation){
+        List<ScriptureData> verseList = getVerseSet(tableName);
+        ScriptureData resultVerse = null;
+        for(ScriptureData verse : verseList){
+            if(verse.getVerseLocation().equalsIgnoreCase(verseLocation)){
+                resultVerse = verse;
+            }
+        }
+        return resultVerse;
+    }
+
     public List<ScriptureData> getVerseSet(String tableName) {
         List<ScriptureData> results = new ArrayList<>();
         ScriptureData verseObject;
@@ -45,7 +56,11 @@ public class VerseOperations {
                         MemoryListContract.CurrentSetEntry.COLUMN_NAME_MEMORIZE_DATE,
                         MemoryListContract.CurrentSetEntry.COLUMN_NAME_DATE_LAST_SEEN,
                         MemoryListContract.CurrentSetEntry.COLUMN_NAME_COUNT_CORRECT,
-                        MemoryListContract.CurrentSetEntry.COLUMN_NAME_COUNT_VIEWED},
+                        MemoryListContract.CurrentSetEntry.COLUMN_NAME_COUNT_VIEWED,
+                        MemoryListContract.CurrentSetEntry.COLUMN_NAME_BOOK_NAME,
+                        MemoryListContract.CurrentSetEntry.COLUMN_NAME_CHAPTER,
+                        MemoryListContract.CurrentSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER,
+                        MemoryListContract.CurrentSetEntry.COLUMN_NAME_VERSE_NUMBER},
                         null, null, null, null, null);
 
                 if (cursor != null) {
@@ -60,6 +75,10 @@ public class VerseOperations {
                     int countCorrectDateIndex = cursor.getColumnIndex(MemoryListContract.CurrentSetEntry.COLUMN_NAME_COUNT_CORRECT);
                     int countViewedDateIndex = cursor.getColumnIndex(MemoryListContract.CurrentSetEntry.COLUMN_NAME_COUNT_VIEWED);
                     int primaryKeyId = cursor.getColumnIndex(MemoryListContract.CurrentSetEntry.PRIMARY_KEY_ID);
+                    int bookIdIndex = cursor.getColumnIndex(MemoryListContract.CurrentSetEntry.COLUMN_NAME_BOOK_NAME);
+                    int chapterIdIndex = cursor.getColumnIndex(MemoryListContract.CurrentSetEntry.COLUMN_NAME_CHAPTER);
+                    int numofVersesIndex = cursor.getColumnIndex(MemoryListContract.CurrentSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER);
+                    int verseNumIndex = cursor.getColumnIndex(MemoryListContract.CurrentSetEntry.COLUMN_NAME_VERSE_NUMBER);
 
                     cursor.moveToFirst();
                     while (!cursor.isAfterLast()) {
@@ -75,6 +94,10 @@ public class VerseOperations {
                         verseObject.setLastSeenDate(cursor.getString(lastSeenDateIndex));
                         verseObject.setCorrectCount(cursor.getInt(countCorrectDateIndex));
                         verseObject.setViewedCount(cursor.getInt(countViewedDateIndex));
+                        verseObject.setBookName(cursor.getString(bookIdIndex));
+                        verseObject.setChapter(cursor.getString(chapterIdIndex));
+                        verseObject.setNumOfVersesInChapter(cursor.getLong(numofVersesIndex));
+                        verseObject.setVerseNumber(cursor.getString(verseNumIndex));
                         results.add(verseObject);
                         cursor.moveToNext();
                     }
@@ -94,7 +117,11 @@ public class VerseOperations {
                                 MemoryListContract.LearningSetEntry.COLUMN_NAME_MEMORIZE_DATE,
                                 MemoryListContract.LearningSetEntry.COLUMN_NAME_DATE_LAST_SEEN,
                                 MemoryListContract.LearningSetEntry.COLUMN_NAME_COUNT_CORRECT,
-                                MemoryListContract.LearningSetEntry.COLUMN_NAME_COUNT_VIEWED},
+                                MemoryListContract.LearningSetEntry.COLUMN_NAME_COUNT_VIEWED,
+                                MemoryListContract.LearningSetEntry.COLUMN_NAME_BOOK_NAME,
+                                MemoryListContract.LearningSetEntry.COLUMN_NAME_CHAPTER,
+                                MemoryListContract.LearningSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER,
+                                MemoryListContract.LearningSetEntry.COLUMN_NAME_VERSE_NUMBER},
                         null, null, null, null, null);
 
                 if (cursor != null) {
@@ -109,6 +136,10 @@ public class VerseOperations {
                     int countCorrectDateIndex = cursor.getColumnIndex(MemoryListContract.LearningSetEntry.COLUMN_NAME_COUNT_CORRECT);
                     int countViewedDateIndex = cursor.getColumnIndex(MemoryListContract.LearningSetEntry.COLUMN_NAME_COUNT_VIEWED);
                     int primaryKeyId = cursor.getColumnIndex(MemoryListContract.LearningSetEntry.PRIMARY_KEY_ID);
+                    int bookIdIndex = cursor.getColumnIndex(MemoryListContract.LearningSetEntry.COLUMN_NAME_BOOK_NAME);
+                    int chapterIdIndex = cursor.getColumnIndex(MemoryListContract.LearningSetEntry.COLUMN_NAME_CHAPTER);
+                    int numofVersesIndex = cursor.getColumnIndex(MemoryListContract.LearningSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER);
+                    int verseNumIndex = cursor.getColumnIndex(MemoryListContract.LearningSetEntry.COLUMN_NAME_VERSE_NUMBER);
 
                     cursor.moveToFirst();
                     while (!cursor.isAfterLast()) {
@@ -124,6 +155,10 @@ public class VerseOperations {
                         verseObject.setLastSeenDate(cursor.getString(lastSeenDateIndex));
                         verseObject.setCorrectCount(cursor.getInt(countCorrectDateIndex));
                         verseObject.setViewedCount(cursor.getInt(countViewedDateIndex));
+                        verseObject.setBookName(cursor.getString(bookIdIndex));
+                        verseObject.setChapter(cursor.getString(chapterIdIndex));
+                        verseObject.setNumOfVersesInChapter(cursor.getLong(numofVersesIndex));
+                        verseObject.setVerseNumber(cursor.getString(verseNumIndex));
                         results.add(verseObject);
                         cursor.moveToNext();
                     }
@@ -143,7 +178,11 @@ public class VerseOperations {
                                 MemoryListContract.MemorizedSetEntry.COLUMN_NAME_MEMORIZE_DATE,
                                 MemoryListContract.MemorizedSetEntry.COLUMN_NAME_DATE_LAST_SEEN,
                                 MemoryListContract.MemorizedSetEntry.COLUMN_NAME_COUNT_CORRECT,
-                                MemoryListContract.MemorizedSetEntry.COLUMN_NAME_COUNT_VIEWED},
+                                MemoryListContract.MemorizedSetEntry.COLUMN_NAME_COUNT_VIEWED,
+                                MemoryListContract.MemorizedSetEntry.COLUMN_NAME_BOOK_NAME,
+                                MemoryListContract.MemorizedSetEntry.COLUMN_NAME_CHAPTER,
+                                MemoryListContract.MemorizedSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER,
+                                MemoryListContract.MemorizedSetEntry.COLUMN_NAME_VERSE_NUMBER},
                         null, null, null, null, null);
 
                 if (cursor != null) {
@@ -158,6 +197,10 @@ public class VerseOperations {
                     int countCorrectDateIndex = cursor.getColumnIndex(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_COUNT_CORRECT);
                     int countViewedDateIndex = cursor.getColumnIndex(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_COUNT_VIEWED);
                     int primaryKeyId = cursor.getColumnIndex(MemoryListContract.MemorizedSetEntry.PRIMARY_KEY_ID);
+                    int bookIdIndex = cursor.getColumnIndex(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_BOOK_NAME);
+                    int chapterIdIndex = cursor.getColumnIndex(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_CHAPTER);
+                    int numofVersesIndex = cursor.getColumnIndex(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER);
+                    int verseNumIndex = cursor.getColumnIndex(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_VERSE_NUMBER);
 
                     cursor.moveToFirst();
                     while (!cursor.isAfterLast()) {
@@ -173,6 +216,10 @@ public class VerseOperations {
                         verseObject.setLastSeenDate(cursor.getString(lastSeenDateIndex));
                         verseObject.setCorrectCount(cursor.getInt(countCorrectDateIndex));
                         verseObject.setViewedCount(cursor.getInt(countViewedDateIndex));
+                        verseObject.setBookName(cursor.getString(bookIdIndex));
+                        verseObject.setChapter(cursor.getString(chapterIdIndex));
+                        verseObject.setNumOfVersesInChapter(cursor.getLong(numofVersesIndex));
+                        verseObject.setVerseNumber(cursor.getString(verseNumIndex));
                         results.add(verseObject);
                         cursor.moveToNext();
                     }
@@ -192,7 +239,11 @@ public class VerseOperations {
                                 MemoryListContract.RememberedSetEntry.COLUMN_NAME_MEMORIZE_DATE,
                                 MemoryListContract.RememberedSetEntry.COLUMN_NAME_DATE_LAST_SEEN,
                                 MemoryListContract.RememberedSetEntry.COLUMN_NAME_COUNT_CORRECT,
-                                MemoryListContract.RememberedSetEntry.COLUMN_NAME_COUNT_VIEWED},
+                                MemoryListContract.RememberedSetEntry.COLUMN_NAME_COUNT_VIEWED,
+                                MemoryListContract.RememberedSetEntry.COLUMN_NAME_BOOK_NAME,
+                                MemoryListContract.RememberedSetEntry.COLUMN_NAME_CHAPTER,
+                                MemoryListContract.RememberedSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER,
+                                MemoryListContract.RememberedSetEntry.COLUMN_NAME_VERSE_NUMBER},
                         null, null, null, null, null);
 
                 if (cursor != null) {
@@ -207,6 +258,10 @@ public class VerseOperations {
                     int countCorrectDateIndex = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.COLUMN_NAME_COUNT_CORRECT);
                     int countViewedDateIndex = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.COLUMN_NAME_COUNT_VIEWED);
                     int primaryKeyId = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.PRIMARY_KEY_ID);
+                    int bookIdIndex = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.COLUMN_NAME_BOOK_NAME);
+                    int chapterIdIndex = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.COLUMN_NAME_CHAPTER);
+                    int numofVersesIndex = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER);
+                    int verseNumIndex = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.COLUMN_NAME_VERSE_NUMBER);
 
                     cursor.moveToFirst();
                     while (!cursor.isAfterLast()) {
@@ -222,6 +277,10 @@ public class VerseOperations {
                         verseObject.setLastSeenDate(cursor.getString(lastSeenDateIndex));
                         verseObject.setCorrectCount(cursor.getInt(countCorrectDateIndex));
                         verseObject.setViewedCount(cursor.getInt(countViewedDateIndex));
+                        verseObject.setBookName(cursor.getString(bookIdIndex));
+                        verseObject.setChapter(cursor.getString(chapterIdIndex));
+                        verseObject.setNumOfVersesInChapter(cursor.getLong(numofVersesIndex));
+                        verseObject.setVerseNumber(cursor.getString(verseNumIndex));
                         results.add(verseObject);
                         cursor.moveToNext();
                     }
@@ -247,6 +306,10 @@ public class VerseOperations {
                 values.put(MemoryListContract.CurrentSetEntry.COLUMN_NAME_DATE_LAST_SEEN, scriptureData.getLastSeenDate());
                 values.put(MemoryListContract.CurrentSetEntry.COLUMN_NAME_REMEMBERED_DATE, scriptureData.getRemeberedDate());
                 values.put(MemoryListContract.CurrentSetEntry.COLUMN_NAME_MEMORIZE_DATE, scriptureData.getMemorizedDate());
+                values.put(MemoryListContract.CurrentSetEntry.COLUMN_NAME_BOOK_NAME, scriptureData.getBookName());
+                values.put(MemoryListContract.CurrentSetEntry.COLUMN_NAME_CHAPTER, scriptureData.getChapter());
+                values.put(MemoryListContract.CurrentSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER, scriptureData.getNumOfVersesInChapter());
+                values.put(MemoryListContract.CurrentSetEntry.COLUMN_NAME_VERSE_NUMBER, scriptureData.getVerseNumber());
                 break;
 
             case MemoryListContract.LearningSetEntry.TABLE_NAME:
@@ -260,6 +323,10 @@ public class VerseOperations {
                 values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_DATE_LAST_SEEN, scriptureData.getLastSeenDate());
                 values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_REMEMBERED_DATE, scriptureData.getRemeberedDate());
                 values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_MEMORIZE_DATE, scriptureData.getMemorizedDate());
+                values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_BOOK_NAME, scriptureData.getBookName());
+                values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_CHAPTER, scriptureData.getChapter());
+                values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER, scriptureData.getNumOfVersesInChapter());
+                values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_VERSE_NUMBER, scriptureData.getVerseNumber());
                 break;
 
             case MemoryListContract.RememberedSetEntry.TABLE_NAME:
@@ -273,6 +340,10 @@ public class VerseOperations {
                 values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_DATE_LAST_SEEN, scriptureData.getLastSeenDate());
                 values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_REMEMBERED_DATE, scriptureData.getRemeberedDate());
                 values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_MEMORIZE_DATE, scriptureData.getMemorizedDate());
+                values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_BOOK_NAME, scriptureData.getBookName());
+                values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_CHAPTER, scriptureData.getChapter());
+                values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER, scriptureData.getNumOfVersesInChapter());
+                values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_VERSE_NUMBER, scriptureData.getVerseNumber());
                 break;
 
             case MemoryListContract.MemorizedSetEntry.TABLE_NAME:
@@ -286,6 +357,10 @@ public class VerseOperations {
                 values.put(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_DATE_LAST_SEEN, scriptureData.getLastSeenDate());
                 values.put(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_REMEMBERED_DATE, scriptureData.getRemeberedDate());
                 values.put(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_MEMORIZE_DATE, scriptureData.getMemorizedDate());
+                values.put(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_BOOK_NAME, scriptureData.getBookName());
+                values.put(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_CHAPTER, scriptureData.getChapter());
+                values.put(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER, scriptureData.getNumOfVersesInChapter());
+                values.put(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_VERSE_NUMBER, scriptureData.getVerseNumber());
                 break;
 
         }

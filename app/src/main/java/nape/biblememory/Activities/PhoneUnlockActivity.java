@@ -19,6 +19,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
 import nape.biblememory.Fragments.Dialogs.FirstTimeUnlockDialog;
+import nape.biblememory.Fragments.Dialogs.VerseMemorizedAlertDialog;
 import nape.biblememory.Presenters.PhoneUnlockPresenter;
 import nape.biblememory.Presenters.PhoneUnlockPresenterImp;
 import nape.biblememory.UserPreferences;
@@ -28,7 +29,7 @@ import nape.biblememory.R;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 
-public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnlockView{
+public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnlockView, VerseMemorizedAlertDialog.YesSelected{
     private View mContentView;
     private View mControlsView;
     private TextView verse;
@@ -277,6 +278,15 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
         }
     }
 
+    @Override
+    public void showMemorizedAlert(boolean memorizedAndLearningListIsEmpty) {
+        VerseMemorizedAlertDialog alert = new VerseMemorizedAlertDialog();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("callOnFinish", memorizedAndLearningListIsEmpty);
+        alert.setArguments(bundle);
+        alert.show(getSupportFragmentManager(), null);
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -289,5 +299,15 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
         mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+    }
+
+    @Override
+    public void callOnFinished() {
+        finish();
+    }
+
+    @Override
+    public void onHideUIControls(){
+        hideUIControls();
     }
 }

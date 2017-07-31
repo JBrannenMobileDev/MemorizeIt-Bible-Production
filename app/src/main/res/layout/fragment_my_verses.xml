@@ -24,7 +24,7 @@
             android:id="@+id/current_set_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="75dp"
+            android:paddingBottom="145dp"
             android:scrollbars="vertical" />
     </ScrollView>
 

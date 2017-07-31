@@ -8,8 +8,10 @@ import android.view.View;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import nape.biblememory.Fragments.Dialogs.VerseMemorizedAlertDialog;
 import nape.biblememory.Managers.ModifyVerseText;
 import nape.biblememory.Managers.ScriptureManager;
+import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.Managers.VerseStageManager;
 import nape.biblememory.Models.ScriptureData;
 import nape.biblememory.Sqlite.MemoryListContract;
@@ -39,6 +41,8 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
 
     private ScriptureManager scriptureManager;
     private VerseStageManager stageManager;
+    private VerseOperations vOperations;
+    private boolean memorizedAndLearningListIsEmpty;
 
     private SimpleDateFormat dateFormat;
     private Calendar c;
@@ -47,6 +51,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         scriptureManager = new ScriptureManager(context);
         stageManager = new VerseStageManager();
         mPrefs = new UserPreferences();
+        vOperations = new VerseOperations(context);
         stringModifier = new ModifyVerseText();
         this.view = view;
         this.context = context;
@@ -158,9 +163,12 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                 scripture.setMemoryStage(stage + 1);
                 scriptureManager.updateScriptureStatus(scripture);
             } else if(stage == 7){
-                //TODO add congrats screen
                 moveVerseToRememberedList();
                 addCurrentVerseToLearningList();
+                if(vOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() < 1) {
+                    memorizedAndLearningListIsEmpty = true;
+                }
+                view.showMemorizedAlert(memorizedAndLearningListIsEmpty);
             } else {
                 scripture.setMemorySubStage(subStage + 1);
                 scriptureManager.updateScriptureStatus(scripture);
@@ -168,14 +176,20 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         }
 
         if(moreVerses){
-            resetVerseView();
+            if(vOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() > 0) {
+                resetVerseView();
+            }else{
+                if(!memorizedAndLearningListIsEmpty)
+                    view.onFinishActivity();
+            }
         }else{
-            view.onFinishActivity();
+            if(!memorizedAndLearningListIsEmpty)
+                view.onFinishActivity();
         }
     }
 
     private void addCurrentVerseToLearningList() {
-        scriptureManager.updateLerningList();
+        scriptureManager.updateLearningList();
     }
 
     private void moveVerseToRememberedList() {
@@ -318,7 +332,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
             if (scripture.getMemoryStage() != 7) {
                 view.setHintButtonVisibility(View.VISIBLE);
             }else{
-                SpannableStringBuilder finalStageTip = stringModifier.createFinalStageTip("Final Stage! \nUnderscores \nwill not be visible.");
+                SpannableStringBuilder finalStageTip = stringModifier.createFinalStageTip("Final Stage!");
                 view.setSpannableVerseText(finalStageTip);
             }
         }

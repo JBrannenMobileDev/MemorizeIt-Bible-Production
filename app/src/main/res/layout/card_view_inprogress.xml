@@ -22,21 +22,29 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_marginBottom="4dp">
+
             <TextView
                 android:id="@+id/verse_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="2dp"
                 android:textColor="@color/colorCloseButtonTextUnselected"
-                android:layout_margin="2dp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/verse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="17sp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="2dp"
                 android:textColor="@color/colorCloseButtonTextUnselected"
-                android:layout_margin="2dp" />
+                android:textSize="17sp" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -45,14 +53,15 @@
                 android:layout_marginTop="10dp">
 
                 <TextView
+                    android:id="@+id/progressTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="5dp"
                     android:text="Progress: "
-                    android:id="@+id/progressTextView"
                     android:textColor="@color/colorCloseButtonTextUnselected"
-                    android:textStyle="bold"
                     android:textSize="17dp"
-                    android:layout_gravity="bottom" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
