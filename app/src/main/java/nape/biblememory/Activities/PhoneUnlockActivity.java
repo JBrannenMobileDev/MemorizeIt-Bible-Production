@@ -9,7 +9,9 @@ import android.text.SpannableStringBuilder;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -35,8 +37,6 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
     private TextView verse;
     private TextView verseLocation;
     private TextView pageTitle;
-    private TextView switchTextOn;
-    private TextView switchTextOff;
     private TextView checkAnswerText;
     private TextView hintText;
     private Button close_more_button;
@@ -45,7 +45,8 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
     private FloatingActionButton noButton;
     private FloatingActionButton hintButton;
     private AdView mAdView;
-    private Switch moreVersesSwitch;
+    private CheckBox moreVersesCheckbox;
+    private FrameLayout moreVersesLayout;
     private LinearLayout verificationLayout;
     private UserPreferences mPrefs;
 
@@ -75,8 +76,6 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
         verse = (TextView) findViewById(R.id.verse);
         verseLocation = (TextView) findViewById(R.id.verse_location);
         pageTitle = (TextView) findViewById(R.id.title_text);
-        switchTextOn = (TextView) findViewById(R.id.switch_track_on_text);
-        switchTextOff = (TextView) findViewById(R.id.switch_track_off_text);
         checkAnswerText = (TextView) findViewById(R.id.check_answer_textview);
         hintText = (TextView) findViewById(R.id.hint_textview);
         verificationLayout = (LinearLayout) findViewById(R.id.verification_layout);
@@ -84,7 +83,8 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
         checkAnswerFAB = (FloatingActionButton) findViewById(R.id.check_answer_button_fab);
         yesButton = (FloatingActionButton) findViewById(R.id.yes_button_fab);
         noButton = (FloatingActionButton) findViewById(R.id.no_button_fab);
-        moreVersesSwitch = (Switch) findViewById(R.id.moreVersesSwitch);
+        moreVersesCheckbox = (CheckBox) findViewById(R.id.moreVersesSwitch);
+        moreVersesLayout = (FrameLayout) findViewById(R.id.moreVersesLayout);
         hintButton = (FloatingActionButton) findViewById(R.id.hint_button_fab);
 
         mPresenter = new PhoneUnlockPresenterImp(this, getApplicationContext());
@@ -123,7 +123,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
             }
         });
 
-        moreVersesSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        moreVersesCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { mPresenter.onMoreSwitchStateChanged(isChecked); }
         });
@@ -237,34 +237,17 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
     @Override
     public void setMoreSwitchVisibility(boolean visible) {
         if(visible) {
-            moreVersesSwitch.setVisibility(View.VISIBLE);
+            moreVersesCheckbox.setVisibility(View.VISIBLE);
+            moreVersesLayout.setVisibility(View.VISIBLE);
         }else{
-            moreVersesSwitch.setVisibility(View.GONE);
+            moreVersesLayout.setVisibility(View.GONE);
+            moreVersesCheckbox.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void setMoreVerseSwitchState(boolean state) {
-        moreVersesSwitch.setChecked(state);
-    }
-
-    @Override
-    public void setMoreSwitchTrackText(boolean state) {
-        if(state){
-            switchTextOn.setVisibility(View.INVISIBLE);
-            switchTextOff.setVisibility(View.VISIBLE);
-            switchTextOff.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCloseButtonTextUnselected));
-        }else{
-            switchTextOff.setVisibility(View.INVISIBLE);
-            switchTextOn.setVisibility(View.VISIBLE);
-            switchTextOn.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCloseButtonTextUnselected));
-        }
-    }
-
-    @Override
-    public void setSwitchTextInvisible() {
-        switchTextOn.setVisibility(View.INVISIBLE);
-        switchTextOff.setVisibility(View.INVISIBLE);
+        moreVersesCheckbox.setChecked(state);
     }
 
     @Override
@@ -285,6 +268,11 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
         bundle.putBoolean("callOnFinish", memorizedAndLearningListIsEmpty);
         alert.setArguments(bundle);
         alert.show(getSupportFragmentManager(), null);
+    }
+
+    @Override
+    public void setMoreVersesLayoutColor(int color) {
+        moreVersesLayout.setBackgroundResource(color);
     }
 
 

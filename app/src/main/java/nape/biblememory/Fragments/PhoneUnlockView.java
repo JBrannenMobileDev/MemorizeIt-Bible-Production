@@ -21,8 +21,7 @@ public interface PhoneUnlockView{
     void setCheckAnswerButtonFont();
     void setMoreSwitchVisibility(boolean visible);
     void setMoreVerseSwitchState(boolean state);
-    void setMoreSwitchTrackText(boolean state);
-    void setSwitchTextInvisible();
     void setHintButtonVisibility(int value);
     void showMemorizedAlert(boolean memorizedAndLearningListIsEmpty);
+    void setMoreVersesLayoutColor(int color);
 }

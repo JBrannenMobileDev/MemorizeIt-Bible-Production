@@ -75,10 +75,11 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
 
     @Override
     public void onMoreSwitchStateChanged(boolean isChecked) {
-        view.setMoreSwitchTrackText(isChecked);
         if(isChecked) {
+            view.setMoreVersesLayoutColor(R.color.colorProgressBg);
             moreVerses = true;
         }else{
+            view.setMoreVersesLayoutColor(R.color.colorAccent);
             moreVerses = false;
         }
     }
@@ -300,11 +301,9 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         view.setCheckAnswerButtonVisibility(View.GONE);
         view.setHintButtonVisibility(View.GONE);
         view.setVerificationLayoutVisibility(View.VISIBLE);
-        view.setMoreSwitchTrackText(moreVerses);
     }
 
     private void resetVerseView() {
-        view.setSwitchTextInvisible();
         view.setMoreSwitchVisibility(false);
         view.setVerseText(EMPTY_STRING);
         view.setVerseLocationText(EMPTY_STRING);
@@ -321,7 +320,6 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         setModifiedVerseText();
         scripture.setLastSeenDate(formattedDate);
         if(initialStage){
-            view.setMoreSwitchTrackText(moreVerses);
             view.setMoreSwitchVisibility(true);
             view.setDoneButtonFont();
             view.setCheckAnswerButtonText(R.string.done);

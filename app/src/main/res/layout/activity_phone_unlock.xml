@@ -38,14 +38,13 @@
 
         <com.google.android.gms.ads.AdView
             android:id="@+id/adView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
             ads:adSize="BANNER"
-            ads:adUnitId="@string/unlock_view_banner_ad"
-            android:layout_gravity="center_horizontal">
-        </com.google.android.gms.ads.AdView>
+            ads:adUnitId="@string/unlock_view_banner_ad"></com.google.android.gms.ads.AdView>
 
         <TextView
             android:layout_width="match_parent"
@@ -71,83 +70,44 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/colorProgressBg"
+            android:elevation="0dp"
             android:foregroundGravity="bottom">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
-                android:layout_alignParentEnd="false"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="false"
-                android:translationZ="5dp"
-                android:visibility="visible"
-                android:textAlignment="center">
-
-                <TextView
-                    android:layout_width="75dp"
-                    android:layout_height="50dp"
-                    android:text="OFF"
-                    android:id="@+id/switch_track_off_text"
-                    android:background="@android:color/transparent"
-                    android:textColor="@color/colorCloseButtonTextUnselected"
-                    android:textSize="25dp"
-                    android:visibility="invisible"
-                    android:textAlignment="center"
-                    android:gravity="center_vertical|center_horizontal" />
-
-                <TextView
-                    android:layout_width="75dp"
-                    android:layout_height="50dp"
-                    android:text="ON"
-                    android:id="@+id/switch_track_on_text"
-                    android:background="@android:color/transparent"
-                    android:textColor="@color/colorCloseButtonTextUnselected"
-                    android:textSize="25dp"
-                    android:visibility="invisible"
-                    android:textAlignment="center"
-                    android:gravity="center_vertical|center_horizontal" />
-            </LinearLayout>
-
-            <Switch
-                android:switchTextAppearance="@style/SwitchTextAppearanceTrue"
+            <FrameLayout
+                android:id="@+id/moreVersesLayout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="MORE VERSES"
-                android:id="@+id/moreVersesSwitch"
-                android:layout_weight="1"
-                android:checked="false"
-                android:enabled="true"
                 android:background="@color/colorAccent"
-                android:translationZ="4dp"
-                android:clickable="true"
-                android:textColor="#ffffff"
-                android:textSize="25dp"
-                android:textOff="OFF"
-                android:textOn="ON"
-                android:width="80dp"
-                android:switchMinWidth="150dp"
-                android:splitTrack="false"
-                android:showText="true"
-                android:singleLine="false"
-                android:thumb="@drawable/thumb"
-                android:track="@drawable/track"
-                android:thumbTextPadding="15dp"
-                android:textAlignment="center"
-                android:visibility="gone" />
+                android:elevation="4dp">
+
+                <CheckBox
+                    android:id="@+id/moreVersesSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="false"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:elevation="0dp"
+                    android:text="Another Quiz ?"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="24sp"
+                    android:visibility="gone" />
+            </FrameLayout>
 
             <Button
+                android:id="@+id/close_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Close"
-                android:id="@+id/close_button"
                 android:layout_gravity="bottom"
                 android:background="#007298"
+                android:elevation="4dp"
+                android:text="Close"
                 android:textColor="#014860"
                 android:textSize="25dp"
-                android:visibility="visible"
-                android:elevation="4dp"
-                android:translationZ="7dp" />
+                android:translationZ="7dp"
+                android:visibility="visible" />
 
         </RelativeLayout>
 
