@@ -3,7 +3,7 @@
     android:id="@+id/verseSelectedDialog"
     android:layout_width="match_parent"
     android:layout_height="300dp"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/colorWhite"
     android:orientation="vertical">
 
     <TextView
@@ -13,7 +13,7 @@
         android:gravity="center_vertical"
         android:text="Confirm Selected Verse"
         android:textAlignment="center"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/bgColor"
         android:textSize="18sp"
         android:textStyle="normal|bold"
         android:translationZ="2dp" />
@@ -28,7 +28,7 @@
         android:paddingRight="15dp"
         android:paddingTop="8dp"
         android:text="Book 2:33"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/bgColor"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -51,7 +51,7 @@
                 android:paddingRight="15dp"
                 android:paddingTop="5dp"
                 android:text="TextView"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/bgColor"
                 android:textSize="16sp" />
         </LinearLayout>
     </ScrollView>
@@ -64,15 +64,19 @@
 
         <TextView
             android:id="@+id/include_next_verse"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="17dp"
             android:layout_marginTop="10dp"
-            android:layout_weight="1"
+            android:background="@drawable/rounded_rectangle"
+            android:elevation="0dp"
             android:gravity="center_vertical"
-            android:paddingBottom="5dp"
             android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:text="Include next verse"
-            android:textColor="@color/colorHighlight"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -83,7 +87,7 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:text='Add verse to "In Progress" list'
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/bgColor"
             android:textSize="14sp" />
 
     </LinearLayout>
@@ -104,7 +108,7 @@
             android:capitalize="none"
             android:text="Cancel"
             android:textAllCaps="false"
-            android:textColor="@color/greyBg"
+            android:textColor="@color/bgColor"
             android:textSize="16sp" />
 
         <Button
@@ -116,7 +120,7 @@
             android:capitalize="none"
             android:text="Confirm"
             android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/bgColor"
             android:textSize="16sp" />
 
     </LinearLayout>
