@@ -131,7 +131,7 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
          */
         if(mPrefs.showQuizOnMonday(this)){
             mondaySwitch.setChecked(false);
-            mondayTv2.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+            mondayTv2.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
             disableMondayTimes();
             mondayTimeSwitch.setEnabled(false);
             hideMondayTimeLayout();
@@ -188,7 +188,7 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
          */
         if(mPrefs.showQuizOnTuesday(this)){
             tuesdaySwitch.setChecked(false);
-            tuesdayTv2.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+            tuesdayTv2.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
             disableTuesdayTimes();
             tuesdayTimeSwitch.setEnabled(false);
             hideTuesdayTimeLayout();
@@ -242,7 +242,7 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
          */
         if(mPrefs.showQuizOnWednesday(this)){
             wednesdaySwitch.setChecked(false);
-            wednesdayTv2.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+            wednesdayTv2.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
             disableWednesdayTimes();
             wednesdayTimeSwitch.setEnabled(false);
             hideWednesdayTimeLayout();
@@ -296,7 +296,7 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
          */
         if(mPrefs.showQuizOnThursday(this)){
             thursdaySwitch.setChecked(false);
-            thursdayTv2.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+            thursdayTv2.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
             disableThursdayTimes();
             thursdayTimeSwitch.setEnabled(false);
             hideThursdayTimeLayout();
@@ -353,7 +353,7 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
          */
         if(mPrefs.showQuizOnFriday(this)){
             fridaySwitch.setChecked(false);
-            fridayTv2.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+            fridayTv2.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
             disableFridayTimes();
             fridayTimeSwitch.setEnabled(false);
             hideFridayTimeLayout();
@@ -408,7 +408,7 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
          */
         if(mPrefs.showQuizOnSaturday(this)){
             saturdaySwitch.setChecked(false);
-            saturdayTv2.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+            saturdayTv2.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
             disableSaturdayTimes();
             saturdayTimeSwitch.setEnabled(false);
             hideSaturdayTimeLayout();
@@ -463,7 +463,7 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
          */
         if(mPrefs.showQuizOnSunday(this)){
             sundaySwitch.setChecked(false);
-            sundayTv2.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+            sundayTv2.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
             disableSundayTimes();
             sundayTimeSwitch.setEnabled(false);
             hideSundayTimeLayout();
@@ -569,7 +569,7 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
                     showMondayTimeLayout();
                 }else{
                     mPrefs.setShowQuizOnMonday(true, getApplicationContext());
-                    mondayTv2.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+                    mondayTv2.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
                     mondayTimeSwitch.setEnabled(false);
                     disableMondayTimes();
                     hideMondayTimeLayout();
@@ -627,7 +627,7 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
                     showTuesdayTimeLayout();
                 }else{
                     mPrefs.setShowQuizOnTuesday(true, getApplicationContext());
-                    tuesdayTv2.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+                    tuesdayTv2.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
                     tuesdayTimeSwitch.setEnabled(false);
                     disableTuesdayTimes();
                     hideTuesdayTimeLayout();
@@ -686,7 +686,7 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
                     showWednesdayTimeLayout();
                 }else{
                     mPrefs.setShowQuizOnWednesday(true, getApplicationContext());
-                    wednesdayTv2.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+                    wednesdayTv2.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
                     wednesdayTimeSwitch.setEnabled(false);
                     disableWednesdayTimes();
                     hideWednesdayTimeLayout();
@@ -745,7 +745,7 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
                     showThursdayTimeLayout();
                 }else{
                     mPrefs.setShowQuizOnThursday(true, getApplicationContext());
-                    thursdayTv2.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+                    thursdayTv2.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
                     thursdayTimeSwitch.setEnabled(false);
                     disableThursdayTimes();
                     hideThursdayTimeLayout();
@@ -804,7 +804,7 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
                     showFridayTimeLayout();
                 }else{
                     mPrefs.setShowQuizOnFriday(true, getApplicationContext());
-                    fridayTv2.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+                    fridayTv2.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
                     fridayTimeSwitch.setEnabled(false);
                     disableFridayTimes();
                     hideFridayTimeLayout();
@@ -863,7 +863,7 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
                     showSaturdayTimeLayout();
                 }else{
                     mPrefs.setShowQuizOnSaturday(true, getApplicationContext());
-                    saturdayTv2.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+                    saturdayTv2.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
                     saturdayTimeSwitch.setEnabled(false);
                     disableSaturdayTimes();
                     hideSaturdayTimeLayout();
@@ -922,7 +922,7 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
                     showSundayTimeLayout();
                 }else{
                     mPrefs.setShowQuizOnSunday(true, getApplicationContext());
-                    sundayTv2.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+                    sundayTv2.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
                     sundayTimeSwitch.setEnabled(false);
                     disableSundayTimes();
                     hideSundayTimeLayout();
@@ -1084,12 +1084,12 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
     }
 
     private void disableMondayTimes(){
-        mondayTv3.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
-        mondayTv4.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+        mondayTv3.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
+        mondayTv4.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
         mondayStartTimeTv.setEnabled(false);
         mondayEndTimeTv.setEnabled(false);
-        mondayStartTimeTv.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
-        mondayEndTimeTv.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+        mondayStartTimeTv.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
+        mondayEndTimeTv.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
     }
 
     private void enableTuesdayTimes(){
@@ -1102,12 +1102,12 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
     }
 
     private void disableTuesdayTimes(){
-        tuesdayTv3.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
-        tuesdayTv4.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+        tuesdayTv3.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
+        tuesdayTv4.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
         tuesdayStartTimeTv.setEnabled(false);
         tuesdayEndTimeTv.setEnabled(false);
-        tuesdayStartTimeTv.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
-        tuesdayEndTimeTv.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+        tuesdayStartTimeTv.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
+        tuesdayEndTimeTv.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
     }
 
     private void enableWednesdayTimes(){
@@ -1120,12 +1120,12 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
     }
 
     private void disableWednesdayTimes(){
-        wednesdayTv3.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
-        wednesdayTv4.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+        wednesdayTv3.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
+        wednesdayTv4.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
         wednesdayStartTimeTv.setEnabled(false);
         wednesdayEndTimeTv.setEnabled(false);
-        wednesdayStartTimeTv.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
-        wednesdayEndTimeTv.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+        wednesdayStartTimeTv.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
+        wednesdayEndTimeTv.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
     }
 
     private void enableThursdayTimes(){
@@ -1138,12 +1138,12 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
     }
 
     private void disableThursdayTimes(){
-        thursdayTv3.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
-        thursdayTv4.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+        thursdayTv3.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
+        thursdayTv4.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
         thursdayStartTimeTv.setEnabled(false);
         thursdayEndTimeTv.setEnabled(false);
-        thursdayStartTimeTv.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
-        thursdayEndTimeTv.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+        thursdayStartTimeTv.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
+        thursdayEndTimeTv.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
     }
 
     private void enableFridayTimes(){
@@ -1156,12 +1156,12 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
     }
 
     private void disableFridayTimes(){
-        fridayTv3.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
-        fridayTv4.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+        fridayTv3.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
+        fridayTv4.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
         fridayStartTimeTv.setEnabled(false);
         fridayEndTimeTv.setEnabled(false);
-        fridayStartTimeTv.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
-        fridayEndTimeTv.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+        fridayStartTimeTv.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
+        fridayEndTimeTv.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
     }
 
     private void enableSaturdayTimes(){
@@ -1174,12 +1174,12 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
     }
 
     private void disableSaturdayTimes(){
-        saturdayTv3.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
-        saturdayTv4.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+        saturdayTv3.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
+        saturdayTv4.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
         saturdayStartTimeTv.setEnabled(false);
         saturdayEndTimeTv.setEnabled(false);
-        saturdayStartTimeTv.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
-        saturdayEndTimeTv.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+        saturdayStartTimeTv.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
+        saturdayEndTimeTv.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
     }
 
     private void enableSundayTimes(){
@@ -1192,12 +1192,12 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
     }
 
     private void disableSundayTimes(){
-        sundayTv3.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
-        sundayTv4.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+        sundayTv3.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
+        sundayTv4.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
         sundayStartTimeTv.setEnabled(false);
         sundayEndTimeTv.setEnabled(false);
-        sundayStartTimeTv.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
-        sundayEndTimeTv.setTextColor(getResources().getColor(R.color.common_plus_signin_btn_text_dark_disabled));
+        sundayStartTimeTv.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
+        sundayEndTimeTv.setTextColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
     }
 
     @Override

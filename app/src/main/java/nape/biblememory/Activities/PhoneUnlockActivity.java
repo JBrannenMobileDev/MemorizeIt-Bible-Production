@@ -66,7 +66,6 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_unlock);
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance( this );
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
         mFirebaseAnalytics.setCurrentScreen(this, "Phone unlock quiz", null);
 

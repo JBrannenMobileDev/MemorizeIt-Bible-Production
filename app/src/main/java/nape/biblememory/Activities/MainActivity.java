@@ -48,6 +48,9 @@ import nape.biblememory.Views.SlidingTabLayout;
 import nape.biblememory.Fragments.Dialogs.VerseSelectedDialogFragment;
 import nape.biblememory.R;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
+
 public class MainActivity extends ActionBarActivity implements NavigationView.OnNavigationItemSelectedListener,
         MyVersesFragment.OnAddVerseSelectedListener, VerseSelection.FragmentToActivity, BooksFragment.BooksFragmentListener,
         ChapterFragment.ChaptersFragmentListener, VerseFragment.OnVerseSelected, VerseSelectedDialogFragment.addVerseDialogActions,
@@ -88,6 +91,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
         super.onCreate(savedInstanceState);
         mPrefs = new UserPreferences();
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -218,7 +222,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        Intent settingsIntent = null;
+        Intent intent = null;
 
         int id = item.getItemId();
 
@@ -229,15 +233,17 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             startQuiz.callOnClick();
             mFirebaseAnalytics.logEvent("start_quiz_nav_draw_selected", null);
         } else if (id == R.id.nav_settings) {
-            settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
+            intent = new Intent(getApplicationContext(), SettingsActivity.class);
         } else if (id == R.id.nav_home) {
             onBackPressedFromNewVerseSelector();
+        } else if(id == R.id.nav_support_the_dev){
+            intent = new Intent(getApplicationContext(), SupportTheDeveloper.class);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        if(id == R.id.nav_settings) {
-            startActivity(settingsIntent);
+        if(intent != null) {
+            startActivity(intent);
         }
         return true;
     }

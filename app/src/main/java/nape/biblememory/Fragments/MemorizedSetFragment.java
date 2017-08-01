@@ -1,6 +1,7 @@
 package nape.biblememory.Fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,7 +43,7 @@ public class MemorizedSetFragment extends Fragment {
     private List<String> bookDataSet;
     private BaseCallback bookSelectedCallback;
     private BaseCallback bookDeselectedCallback;
-    private Spinner spinner;
+    private MaterialSpinner spinner;
     private UserPreferences mPrefs;
     List<Object> combinedList;
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -64,7 +67,7 @@ public class MemorizedSetFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v =inflater.inflate(R.layout.fragment_memorized_set,container,false);
         verseListRecyclerView = (RecyclerView) v.findViewById(R.id.memorized_set_recycler_view);
-        spinner = (Spinner) v.findViewById(R.id.memorized_sort_spinner);
+        spinner = (MaterialSpinner) v.findViewById(R.id.memorized_sort_spinner);
         mPrefs = new UserPreferences();
 
         createBookSelectedCallback();
@@ -118,20 +121,19 @@ public class MemorizedSetFragment extends Fragment {
                 R.array.sort_options_array, R.layout.spinner_item_text);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setSelection(mPrefs.getMemorizedSpinnerPosition(getContext()));
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mPrefs.setMemorizedSpinnerPosition(position, getContext());
+        spinner.setItems("Newest", "Oldest", "Book Name");
+        spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+
+            @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                mPrefs.setMemorizedSpinnerPosition(position, getActivity().getApplicationContext());
                 setAdapterForRecyclerView();
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
         });
+
+        spinner.setSelectedIndex(mPrefs.getMemorizedSpinnerPosition(getActivity().getApplicationContext()));
     }
+
 
     private void updateAdapterForCollapseBook(String bookName){
         List<Object> tempVerseList;
@@ -223,19 +225,20 @@ public class MemorizedSetFragment extends Fragment {
         RecyclerViewSingleton.getInstance().listOfSelectedBooks = new ArrayList<>();
         List<Object> tempVerseList = new ArrayList<>();
         switch(mPrefs.getMemorizedSpinnerPosition(getContext())){
-            //Book Name
-            case 0:
-                tempVerseList = getBookGroupList(getAllMemorizedVerses());
-                break;
             //Newest
-            case 1:
+            case 0:
                 tempVerseList = getAllMemorizedVerses();
+                Collections.reverse(tempVerseList);
                 break;
 
             //Oldest
-            case 2:
+            case 1:
                 tempVerseList = getAllMemorizedVerses();
-                Collections.reverse(tempVerseList);
+                break;
+            //Book Name
+
+            case 2:
+                tempVerseList = getBookGroupList(getAllMemorizedVerses());
                 break;
         }
         verseListAdapter = new RecyclerViewAdapterMemorized(tempVerseList, bookSelectedCallback, bookDeselectedCallback);

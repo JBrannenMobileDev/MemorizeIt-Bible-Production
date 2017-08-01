@@ -12,6 +12,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="5fc2d73d02a73f7e0fd55dce4b250a432c743332" />
+
         <activity
             android:name=".Activities.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -44,8 +48,12 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".Activities.SettingsActivity"
-            android:parentActivityName=".Activities.MainActivity"></activity>
+        <activity
+            android:name=".Activities.SettingsActivity"
+            android:parentActivityName=".Activities.MainActivity" />
+        <activity
+            android:name=".Activities.SupportTheDeveloper"
+            android:parentActivityName=".Activities.MainActivity" />
     </application>
 
 </manifest>
