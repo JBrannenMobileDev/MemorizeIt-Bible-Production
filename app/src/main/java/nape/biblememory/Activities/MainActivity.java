@@ -1,9 +1,10 @@
 package nape.biblememory.Activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -18,17 +19,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.faithcomesbyhearing.dbt.model.Book;
 import com.faithcomesbyhearing.dbt.model.Verse;
 import com.faithcomesbyhearing.dbt.model.Volume;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import nape.biblememory.Adapters.RecyclerViewAdapterBooks;
 import nape.biblememory.Adapters.ViewPagerAdapter;
 import nape.biblememory.Adapters.ViewPagerAdapterVerseSelector;
 import nape.biblememory.DBTApi.DBTApi;
@@ -60,7 +59,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     private ViewPagerAdapter adapterMain;
     private SlidingTabLayout tabsMain;
     private FrameLayout fragmentContainer;
-    private CharSequence mainTitles[]={"New verses","Quiz verses","Memorized"};
+    private CharSequence mainTitles[]={"Upcoming verses","Quiz verses","Memorized"};
     private ViewPager pagerVerseSelector;
     private ViewPagerAdapterVerseSelector adapterVerseSelector;
     private SlidingTabLayout tabsVerseSelector;
@@ -238,6 +237,13 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             onBackPressedFromNewVerseSelector();
         } else if(id == R.id.nav_support_the_dev){
             intent = new Intent(getApplicationContext(), SupportTheDeveloper.class);
+        } else if(id == R.id.nav_share){
+            sendShareIntent();
+        } else if(id == R.id.nav_feedback){
+            intent = new Intent(android.content.Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:" + "MemoizeItBible@gmail.com"));
+        } else if(id == R.id.nav_rate){
+            sendRateThisAppIntent();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -246,6 +252,47 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             startActivity(intent);
         }
         return true;
+    }
+
+    private boolean MyStartActivity(Intent aIntent) {
+        try
+        {
+            startActivity(aIntent);
+            return true;
+        }
+        catch (ActivityNotFoundException e)
+        {
+            return false;
+        }
+    }
+
+    public void sendRateThisAppIntent() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        //Try Google play
+        intent.setData(Uri.parse("market://details?id=com.fitnow.loseit&hl=en"));
+        if (!MyStartActivity(intent)) {
+            //Market (Google play) app seems not installed, let's try to open a web browser
+            intent.setData(Uri.parse("https://play.google.com/store/apps/details?com.fitnow.loseit&hl=en"));
+            if (!MyStartActivity(intent)) {
+                //Well if this also fails, we have run out of options, inform the user.
+                Toast.makeText(this, "Could not open Android market, please install the market app.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void sendShareIntent(){
+        try {
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("text/plain");
+            i.putExtra(Intent.EXTRA_SUBJECT, "MemorizeIt Bible");
+            String sAux = "\nYou gotta try this app.\n\n";
+            String sAux2 = "If you have ever had a hard time memorizing bible verses, this app makes it easy!\n\n";
+            sAux = sAux + sAux2 + "https://play.google.com/store/apps/details?id=MemorizeItBible \n\n";
+            i.putExtra(Intent.EXTRA_TEXT, sAux);
+            startActivity(Intent.createChooser(i, "choose one"));
+        } catch(Exception e) {
+
+        }
     }
 
     @Override

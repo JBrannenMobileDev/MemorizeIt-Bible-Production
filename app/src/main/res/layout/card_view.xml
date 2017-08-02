@@ -89,7 +89,7 @@
                         android:layout_marginRight="5dp"
                         android:layout_toEndOf="@+id/imageView"
                         android:layout_weight="1"
-                        android:text="Move to In Progress" />
+                        android:text="Move to Quiz verses" />
 
                     <ImageView
                         android:id="@+id/imageView"

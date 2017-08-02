@@ -284,6 +284,19 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
     protected void onDestroy() {
         super.onDestroy();
         setMoreVerseSwitchState(false);
+        finish();
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        finish();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        finish();
     }
 
     private void InitializeBannerAd(){

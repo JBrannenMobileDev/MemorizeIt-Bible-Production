@@ -14,6 +14,7 @@
     <color name="circle_button">#016585</color>
     <color name="tabsScrollColor">#014860</color>
     <color name="greyBg">#d5d5d5</color>
+    <color name="greyBgDark">#bbbaba</color>
     <color name="colorProgressBg">#0d97c5</color>
     <color name="colorStartQuiz">#017faa</color>
     <color name="colorCardviewHighlight">#97ddf5</color>
