@@ -10,6 +10,7 @@ import android.widget.Button;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +22,7 @@ public class SupportTheDeveloper extends AppCompatActivity {
     @BindView(R.id.support_the_dev_view_ad_bt)Button viewAdBt;
     @BindView(R.id.support_the_dev_donate_bt)Button donateBt;
     private InterstitialAd mInterstitialAd;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,7 @@ public class SupportTheDeveloper extends AppCompatActivity {
         setContentView(R.layout.activity_support_the_developer);
         ButterKnife.bind(this);
         setTitle("Support the developer!");
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
@@ -56,6 +59,7 @@ public class SupportTheDeveloper extends AppCompatActivity {
         viewAdBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mFirebaseAnalytics.logEvent("view_ad_selected", null);
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
                 }
@@ -65,6 +69,7 @@ public class SupportTheDeveloper extends AppCompatActivity {
         shareBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mFirebaseAnalytics.logEvent("share_selected", null);
                 sendShareIntent();
             }
         });
@@ -72,7 +77,7 @@ public class SupportTheDeveloper extends AppCompatActivity {
         donateBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                mFirebaseAnalytics.logEvent("donate_selected", null);
             }
         });
     }

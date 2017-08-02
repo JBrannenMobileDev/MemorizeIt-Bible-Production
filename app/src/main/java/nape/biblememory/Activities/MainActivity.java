@@ -232,17 +232,23 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             startQuiz.callOnClick();
             mFirebaseAnalytics.logEvent("start_quiz_nav_draw_selected", null);
         } else if (id == R.id.nav_settings) {
+            mFirebaseAnalytics.logEvent("settings_nav_draw_selected", null);
             intent = new Intent(getApplicationContext(), SettingsActivity.class);
         } else if (id == R.id.nav_home) {
+            mFirebaseAnalytics.logEvent("home_nav_draw_selected", null);
             onBackPressedFromNewVerseSelector();
         } else if(id == R.id.nav_support_the_dev){
+            mFirebaseAnalytics.logEvent("support_dev_nav_draw_selected", null);
             intent = new Intent(getApplicationContext(), SupportTheDeveloper.class);
         } else if(id == R.id.nav_share){
+            mFirebaseAnalytics.logEvent("share_nav_draw_selected", null);
             sendShareIntent();
         } else if(id == R.id.nav_feedback){
+            mFirebaseAnalytics.logEvent("feedback_nav_draw_selected", null);
             intent = new Intent(android.content.Intent.ACTION_SENDTO);
             intent.setData(Uri.parse("mailto:" + "MemoizeItBible@gmail.com"));
         } else if(id == R.id.nav_rate){
+            mFirebaseAnalytics.logEvent("rate_nav_draw_selected", null);
             sendRateThisAppIntent();
         }
 
