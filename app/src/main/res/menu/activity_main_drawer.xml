@@ -25,7 +25,7 @@
 
     <group
         android:checkableBehavior="single"
-        android:id="@+id/menu_bottom">
+        android:id="@+id/menu_middle">
         <item
             android:id="@+id/nav_support_the_dev"
             android:icon="@drawable/ic_favorite_black_24dp"
@@ -42,6 +42,17 @@
             android:id="@+id/nav_feedback"
             android:icon="@drawable/ic_feedback_black_24dp"
             android:title="Feedback" />
+
     </group>
+
+    <group
+        android:checkableBehavior="single"
+        android:id="@+id/menu_bottom">
+    <item
+        android:id="@+id/nav_privacy_policy"
+        android:icon="@drawable/ic_error_black_24dp"
+        android:title="Privacy policy" />
+</group>
+
 
 </menu>

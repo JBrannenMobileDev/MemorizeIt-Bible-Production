@@ -32,7 +32,7 @@ public class RecyclerViewAdapterBooks extends RecyclerView.Adapter<RecyclerViewA
             bookNameTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    bookSelectedCallback.onResponse(bookNameTextView.getText());
+                    bookSelectedCallback.onResponse(bookNameTextView.getText().toString());
                 }
             });
         }

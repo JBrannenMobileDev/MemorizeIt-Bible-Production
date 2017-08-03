@@ -50,20 +50,21 @@
                 android:layout_marginLeft="2dp">
 
                 <TextView
+                    android:id="@+id/memorized_date_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Date Memorized:  "
+                    android:text="Date memorized:"
                     android:textColor="@color/colorCloseButtonTextUnselected"
-                    android:textSize="17dp"
-                    android:id="@+id/memorized_date_title" />
+                    android:textSize="17dp" />
 
                 <TextView
+                    android:id="@+id/memorized_date_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
                     android:text="Jan 15, 1988"
-                    android:id="@+id/memorized_date_textview"
-                    android:textSize="17dp"
-                    android:textColor="@color/colorCloseButtonTextUnselected" />
+                    android:textColor="@color/colorCloseButtonTextUnselected"
+                    android:textSize="17dp" />
 
             </LinearLayout>
 
@@ -78,10 +79,10 @@
                 android:id="@+id/last_seen_layout">
 
                 <TextView
+                    android:id="@+id/last_seen_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Last Seen:  "
-                    android:id="@+id/last_seen_title"
+                    android:text="Last reviewed:  "
                     android:textColor="@color/colorCloseButtonTextUnselected"
                     android:textSize="17dp" />
 

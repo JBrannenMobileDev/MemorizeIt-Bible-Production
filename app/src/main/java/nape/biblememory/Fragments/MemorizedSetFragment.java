@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.jaredrummler.materialspinner.MaterialSpinner;
@@ -45,7 +47,8 @@ public class MemorizedSetFragment extends Fragment {
     private BaseCallback bookDeselectedCallback;
     private MaterialSpinner spinner;
     private UserPreferences mPrefs;
-    List<Object> combinedList;
+    private List<Object> combinedList;
+    private TextView reviewBt;
     private FirebaseAnalytics mFirebaseAnalytics;
 
 
@@ -68,11 +71,19 @@ public class MemorizedSetFragment extends Fragment {
         View v =inflater.inflate(R.layout.fragment_memorized_set,container,false);
         verseListRecyclerView = (RecyclerView) v.findViewById(R.id.memorized_set_recycler_view);
         spinner = (MaterialSpinner) v.findViewById(R.id.memorized_sort_spinner);
+        reviewBt = (TextView) v.findViewById(R.id.memorized_review_tv);
         mPrefs = new UserPreferences();
 
         createBookSelectedCallback();
         initializeSpinner(v);
         initializeRecyclerView(v);
+
+        reviewBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity().getApplicationContext(), "This feature is in progess. The next app version will include this.", Toast.LENGTH_LONG).show();
+            }
+        });
 
         return v;
     }

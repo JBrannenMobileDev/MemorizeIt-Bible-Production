@@ -1,11 +1,14 @@
 package nape.biblememory.Activities;
 
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -21,6 +24,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.android.vending.billing.IInAppBillingService;
 import com.faithcomesbyhearing.dbt.model.Book;
 import com.faithcomesbyhearing.dbt.model.Verse;
 import com.faithcomesbyhearing.dbt.model.Volume;
@@ -82,6 +86,8 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     private List<Book> newTestament;
     private List<Book> oldTestament;
 
+
+
     private static final String BACK = "BACK";
     private static final String START_QUIZ = "START QUIZ";
 
@@ -128,6 +134,8 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                 }
             }
         });
+
+
     }
 
     @Override
@@ -135,6 +143,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         super.finish();
         overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
     }
+
 
     @Override
     public void onRestart(){
@@ -250,6 +259,9 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         } else if(id == R.id.nav_rate){
             mFirebaseAnalytics.logEvent("rate_nav_draw_selected", null);
             sendRateThisAppIntent();
+        } else if(id == R.id.nav_privacy_policy){
+            mFirebaseAnalytics.logEvent("privacy_policy_nav_draw_selected", null);
+            intent = new Intent(getApplicationContext(), PrivacyPolicyActivity.class);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

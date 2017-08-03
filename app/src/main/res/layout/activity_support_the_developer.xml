@@ -138,7 +138,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:text="View an ad. Every ad that is view generates fractions of a penny, but with enough views that can start to ad up!"
+                android:text="View an ad. Every Ad that is view generates fractions of a penny, but with enough views that can start to add up!"
                 android:textColor="@color/bgColor" />
 
             <TextView
@@ -199,7 +199,7 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:background="@color/colorProgressBg"
-            android:text="Donate $1"
+            android:text="Donate $"
             android:textColor="@color/colorWhite" />
     </LinearLayout>
 

@@ -28,6 +28,7 @@ import nape.biblememory.UserPreferences;
 import nape.biblememory.Fragments.PhoneUnlockView;
 import nape.biblememory.R;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 
@@ -68,6 +69,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
         setContentView(R.layout.activity_phone_unlock);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
         mFirebaseAnalytics.setCurrentScreen(this, "Phone unlock quiz", null);
+
 
         InitializeBannerAd();
 

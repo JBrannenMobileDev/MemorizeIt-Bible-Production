@@ -1,12 +1,17 @@
 package nape.biblememory.Activities;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.android.vending.billing.IInAppBillingService;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -23,6 +28,8 @@ public class SupportTheDeveloper extends AppCompatActivity {
     @BindView(R.id.support_the_dev_donate_bt)Button donateBt;
     private InterstitialAd mInterstitialAd;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private IInAppBillingService billingService;
+    private ServiceConnection billingServiceConnection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +87,34 @@ public class SupportTheDeveloper extends AppCompatActivity {
                 mFirebaseAnalytics.logEvent("donate_selected", null);
             }
         });
+
+
+        billingServiceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+                billingService = IInAppBillingService.Stub.asInterface(iBinder);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName componentName) {
+                billingService = null;
+            }
+        };
+
+        Intent serviceIntent =
+                new Intent("com.android.vending.billing.InAppBillingService.BIND");
+        serviceIntent.setPackage("com.android.vending");
+        bindService(serviceIntent, billingServiceConnection, Context.BIND_AUTO_CREATE);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (billingService != null) {
+            unbindService(billingServiceConnection);
+        }
+    }
+
 
     private void sendShareIntent(){
         try {
