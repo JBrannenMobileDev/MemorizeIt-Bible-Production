@@ -11,6 +11,7 @@ import java.util.List;
 
 import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.R;
+import nape.biblememory.Views.VerseFragmentCallback;
 
 
 /**
@@ -21,9 +22,9 @@ public class VersesGridviewAdapter extends BaseAdapter {
     private Context mContext;
     private List<String> mChapterNums;
     private int selectedPosition;
-    private BaseCallback vSelectedCallback;
+    private VerseFragmentCallback vSelectedCallback;
 
-    public VersesGridviewAdapter(Context c, List<String> chapterNums, int selectedPostion, BaseCallback verseSelectedCallback) {
+    public VersesGridviewAdapter(Context c, List<String> chapterNums, int selectedPostion, VerseFragmentCallback verseSelectedCallback) {
         vSelectedCallback = verseSelectedCallback;
         if(c != null) {
             mContext = c;
@@ -45,7 +46,7 @@ public class VersesGridviewAdapter extends BaseAdapter {
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
-        TextView tView;
+        final TextView tView;
 
         final float scale = mContext.getResources().getDisplayMetrics().density;
         int WH = (int) (45 * scale + 0.5f);
@@ -73,9 +74,10 @@ public class VersesGridviewAdapter extends BaseAdapter {
         tView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                tView.setBackgroundResource(R.drawable.chapter_circle);
+                tView.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
                 if(vSelectedCallback != null){
-                    vSelectedCallback.onResponse(String.valueOf(mChapterNums.get(position)));
+                    vSelectedCallback.onResponse(String.valueOf(mChapterNums.get(position)), position);
                 }
             }
         });

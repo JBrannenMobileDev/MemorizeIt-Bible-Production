@@ -565,7 +565,9 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
                     mPrefs.setShowQuizOnMonday(false, getApplicationContext());
                     mondayTv2.setTextColor(getResources().getColor(R.color.bgColor));
                     mondayTimeSwitch.setEnabled(true);
-                    enableMondayTimes();
+                    if(mondayTimeSwitch.isChecked()){
+                        enableMondayTimes();
+                    }
                     showMondayTimeLayout();
                 }else{
                     mPrefs.setShowQuizOnMonday(true, getApplicationContext());
@@ -623,7 +625,9 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
                     mPrefs.setShowQuizOnTuesday(false, getApplicationContext());
                     tuesdayTv2.setTextColor(getResources().getColor(R.color.bgColor));
                     tuesdayTimeSwitch.setEnabled(true);
-                    enableTuesdayTimes();
+                    if(tuesdayTimeSwitch.isChecked()){
+                        enableTuesdayTimes();
+                    }
                     showTuesdayTimeLayout();
                 }else{
                     mPrefs.setShowQuizOnTuesday(true, getApplicationContext());
@@ -682,7 +686,9 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
                     mPrefs.setShowQuizOnWednesday(false, getApplicationContext());
                     wednesdayTv2.setTextColor(getResources().getColor(R.color.bgColor));
                     wednesdayTimeSwitch.setEnabled(true);
-                    enableWednesdayTimes();
+                    if(wednesdayTimeSwitch.isChecked()) {
+                        enableWednesdayTimes();
+                    }
                     showWednesdayTimeLayout();
                 }else{
                     mPrefs.setShowQuizOnWednesday(true, getApplicationContext());
@@ -741,7 +747,9 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
                     mPrefs.setShowQuizOnThursday(false, getApplicationContext());
                     thursdayTv2.setTextColor(getResources().getColor(R.color.bgColor));
                     thursdayTimeSwitch.setEnabled(true);
-                    enableThursdayTimes();
+                    if(thursdayTimeSwitch.isChecked()) {
+                        enableThursdayTimes();
+                    }
                     showThursdayTimeLayout();
                 }else{
                     mPrefs.setShowQuizOnThursday(true, getApplicationContext());
@@ -800,7 +808,9 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
                     mPrefs.setShowQuizOnFriday(false, getApplicationContext());
                     fridayTv2.setTextColor(getResources().getColor(R.color.bgColor));
                     fridayTimeSwitch.setEnabled(true);
-                    enableFridayTimes();
+                    if(fridayTimeSwitch.isChecked()) {
+                        enableFridayTimes();
+                    }
                     showFridayTimeLayout();
                 }else{
                     mPrefs.setShowQuizOnFriday(true, getApplicationContext());
@@ -859,7 +869,9 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
                     mPrefs.setShowQuizOnSaturday(false, getApplicationContext());
                     saturdayTv2.setTextColor(getResources().getColor(R.color.bgColor));
                     saturdayTimeSwitch.setEnabled(true);
-                    enableSaturdayTimes();
+                    if(saturdayTimeSwitch.isChecked()) {
+                        enableSaturdayTimes();
+                    }
                     showSaturdayTimeLayout();
                 }else{
                     mPrefs.setShowQuizOnSaturday(true, getApplicationContext());
@@ -914,11 +926,13 @@ public class SettingsActivity extends AppCompatActivity implements TimeSelection
         sundaySwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(sundaySwitch.isChecked()){
+                if(sundaySwitch.isChecked()) {
                     mPrefs.setShowQuizOnSunday(false, getApplicationContext());
                     sundayTv2.setTextColor(getResources().getColor(R.color.bgColor));
                     sundayTimeSwitch.setEnabled(true);
+                if (sundayTimeSwitch.isChecked()){
                     enableSundayTimes();
+                }
                     showSundayTimeLayout();
                 }else{
                     mPrefs.setShowQuizOnSunday(true, getApplicationContext());

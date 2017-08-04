@@ -21,6 +21,7 @@ import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.DBTApi.DBTApi;
 import nape.biblememory.UserPreferences;
 import nape.biblememory.R;
+import nape.biblememory.Views.VerseFragmentCallback;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,13 +31,14 @@ public class VerseFragment extends Fragment {
     private GridView gridView;
     private long numOfVerses;
     private BaseCallback refreshDataCallback;
-    private BaseCallback verseSelectedCallback;
+    private VerseFragmentCallback verseSelectedCallback;
     private BaseCallback<List<Chapter>> chapterCallback;
     private UserPreferences mPrefs;
     private List<Chapter> chapterList;
     private String chapterId;
     private OnVerseSelected verseSelectedListener;
     private Context context;
+    private int previousSelectedVersePosition;
 
     public VerseFragment() {
     }
@@ -64,11 +66,18 @@ public class VerseFragment extends Fragment {
         context = getActivity().getApplicationContext();
         List<String> dataList = new ArrayList<>();
 
-        verseSelectedCallback = new BaseCallback() {
+        verseSelectedCallback = new VerseFragmentCallback() {
             @Override
-            public void onResponse(Object response) {
+            public void onResponse(Object response, int selectedPosition) {
                 mPrefs.setSelectedVerseNum((String) response, context);
                 verseSelectedListener.onVerseSelected((String) response);
+                previousSelectedVersePosition = selectedPosition;
+                setUserVisibleHint(true);
+            }
+
+            @Override
+            public void onResponse(Object response) {
+
             }
 
             @Override
@@ -102,7 +111,7 @@ public class VerseFragment extends Fragment {
                                     verseNumList.add(String.valueOf(i));
                                 }
                                 gridView = (GridView) v.findViewById(R.id.verses_gridview);
-                                gridView.setAdapter(new VersesGridviewAdapter(v.getContext(), verseNumList, 0, verseSelectedCallback));
+                                gridView.setAdapter(new VersesGridviewAdapter(v.getContext(), verseNumList, previousSelectedVersePosition, verseSelectedCallback));
                             }
 
                             @Override

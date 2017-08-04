@@ -39,7 +39,7 @@ public class RemoveVerseFromInProgressAlertDialog extends DialogFragment {
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Are you sure?");
-        builder.setMessage("Removing this verse will reset the memorization progress and move it to the New Verses list.");
+        builder.setMessage("Removing this verse will reset the memorization progress and move it to the Upcoming list.");
         builder.setPositiveButton("I am sure", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 mListener.onYesSelected(verseLocation);

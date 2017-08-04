@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "1086187881994",
-    "firebase_url": "https://rememberit-bible.firebaseio.com",
-    "project_id": "rememberit-bible",
-    "storage_bucket": "rememberit-bible.appspot.com"
+    "project_number": "139597576356",
+    "firebase_url": "https://memorizeit-bible.firebaseio.com",
+    "project_id": "memorizeit-bible",
+    "storage_bucket": "memorizeit-bible.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1086187881994:android:ddbfe4c38a475484",
+        "mobilesdk_app_id": "1:139597576356:android:ddbfe4c38a475484",
         "android_client_info": {
           "package_name": "nape.biblememory"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1086187881994-j2mvf6tcrs9g9m1141pi2cakaknm977c.apps.googleusercontent.com",
+          "client_id": "139597576356-u23o171420k8d30sj1i1sqkhggqq6boe.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC4ahc_ABejeOB-vkf-cU4L9Y6NOdGzeSc"
+          "current_key": "AIzaSyD6anDsJwcPAxRYkOrDo6PCNdxVSZ7Uy-s"
         }
       ],
       "services": {

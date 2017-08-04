@@ -19,8 +19,8 @@ public class InProgressEmptyAlertDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Cannot start quiz!");
-        builder.setMessage("In Progress list is empty. There needs to be at least 1 verse in the In Progress list to be able to start a quiz.");
+        builder.setTitle("Cannot start quiz");
+        builder.setMessage("Quiz verses list is empty. There needs to be at least 1 verse in the In Progress list to be able to start a quiz.");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dismiss();

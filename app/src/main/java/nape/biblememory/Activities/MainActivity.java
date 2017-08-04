@@ -112,7 +112,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
         context = getApplicationContext();
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         vManager = new VerseOperations(getApplicationContext());
 

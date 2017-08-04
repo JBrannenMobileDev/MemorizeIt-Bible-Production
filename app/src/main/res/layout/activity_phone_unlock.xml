@@ -31,88 +31,6 @@
         </LinearLayout>
     </FrameLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/adView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            ads:adSize="BANNER"
-            ads:adUnitId="@string/unlock_view_banner_ad"></com.google.android.gms.ads.AdView>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/title_text"
-            android:textColor="#ffffff"
-            android:textStyle="bold"
-            android:textSize="30dp"
-            android:textAlignment="center"
-            android:gravity="center_vertical"
-            android:background="@color/colorAccent"
-            android:elevation="4dp"/>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/hint"
-            android:visibility="visible"
-            android:background="@android:color/transparent"
-            android:layout_weight="1" />
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorProgressBg"
-            android:elevation="0dp"
-            android:foregroundGravity="bottom">
-
-            <FrameLayout
-                android:id="@+id/moreVersesLayout"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/colorAccent"
-                android:elevation="4dp">
-
-                <CheckBox
-                    android:id="@+id/moreVersesSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_centerHorizontal="false"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:elevation="0dp"
-                    android:text="Another Quiz ?"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="24sp"
-                    android:visibility="gone" />
-            </FrameLayout>
-
-            <Button
-                android:id="@+id/close_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="#007298"
-                android:elevation="4dp"
-                android:text="Close"
-                android:textColor="#014860"
-                android:textSize="25dp"
-                android:translationZ="7dp"
-                android:visibility="visible" />
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
     <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -306,5 +224,87 @@
         </LinearLayout>
 
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/unlock_view_banner_ad"></com.google.android.gms.ads.AdView>
+
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorAccent"
+            android:elevation="4dp"
+            android:gravity="center_vertical"
+            android:textAlignment="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#ffffff"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/hint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:visibility="visible" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorProgressBg"
+            android:elevation="0dp"
+            android:foregroundGravity="bottom">
+
+            <FrameLayout
+                android:id="@+id/moreVersesLayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorAccent"
+                android:elevation="4dp">
+
+                <CheckBox
+                    android:id="@+id/moreVersesSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="false"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:elevation="0dp"
+                    android:text="More verses"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="24sp"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+            <Button
+                android:id="@+id/close_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="#007298"
+                android:elevation="4dp"
+                android:text="Close"
+                android:textColor="#014860"
+                android:textSize="25dp"
+                android:translationZ="7dp"
+                android:visibility="visible" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </FrameLayout>

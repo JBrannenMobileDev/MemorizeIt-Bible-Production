@@ -15,7 +15,6 @@ buildscript {
 
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'
 
 repositories {
@@ -68,3 +67,4 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
 }
 
+apply plugin: 'com.google.gms.google-services'
