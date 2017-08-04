@@ -81,7 +81,7 @@ public class MemorizedSetFragment extends Fragment {
         reviewBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity().getApplicationContext(), "This feature is in progess. The next app version will include this.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity().getApplicationContext(), "This feature is in progress. The next app version will include this.", Toast.LENGTH_LONG).show();
             }
         });
 

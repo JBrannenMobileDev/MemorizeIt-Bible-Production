@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
 import com.google.android.gms.ads.AdListener;
@@ -85,6 +86,7 @@ public class SupportTheDeveloper extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mFirebaseAnalytics.logEvent("donate_selected", null);
+                Toast.makeText(getApplicationContext(), "This feature is in progress. The production app version will include this.", Toast.LENGTH_LONG).show();
             }
         });
 

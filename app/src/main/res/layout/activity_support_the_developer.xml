@@ -85,7 +85,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="20dp"
-                android:text="Although seeing this app idea come to life has been rewarding, it has also been time-consuming and challenging.  If this app has made bible memorization easier for you we would appretiate your support!"
+                android:text="Although seeing this app idea come to life has been rewarding, it has also been time-consuming and challenging.  If this app has made bible memorization easier for you we would appreciate your support!"
                 android:textColor="@color/bgColor"
                 android:textSize="14sp" />
 
