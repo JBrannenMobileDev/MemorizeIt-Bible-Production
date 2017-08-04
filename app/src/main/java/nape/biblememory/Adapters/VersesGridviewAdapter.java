@@ -52,11 +52,8 @@ public class VersesGridviewAdapter extends BaseAdapter {
         int WH = (int) (45 * scale + 0.5f);
         int padding = (int) (2 * scale + 0.5f);
 
-        if (convertView == null) {
-            tView = new TextView(mContext);
-        } else {
-            tView = (TextView) convertView;
-        }
+        tView = new TextView(mContext);
+
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(WH,WH);
         tView.setText(mChapterNums.get(position));
         tView.setTextSize(18);
