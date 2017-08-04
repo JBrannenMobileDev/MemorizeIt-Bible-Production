@@ -34,7 +34,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnlockView, VerseMemorizedAlertDialog.YesSelected{
     private View mContentView;
-    private View mControlsView;
     private TextView verse;
     private TextView verseLocation;
     private TextView pageTitle;
@@ -73,7 +72,6 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
 
         InitializeBannerAd();
 
-        mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.verse);
         firstTimeDialog = new FirstTimeUnlockDialog();
         verse = (TextView) findViewById(R.id.verse);
@@ -152,7 +150,6 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
         if (actionBar != null) {
             actionBar.hide();
         }
-        mControlsView.setVisibility(View.GONE);
         mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE

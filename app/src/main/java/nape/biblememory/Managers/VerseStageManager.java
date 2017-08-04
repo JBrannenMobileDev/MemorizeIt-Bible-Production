@@ -278,12 +278,12 @@ public class VerseStageManager {
         int endOfLine = verseContent.length() - 1;
         for (int i = 0; i < verseContent.length(); i++) {
             // if the char is a letter, word = true.
-            if ((verseContent.charAt(i) != ' ') && i != endOfLine) {
+            if ((Character.isLetter(verseContent.charAt(i))) && i != endOfLine) {
                 currentWordSize++;
                 word = true;
                 // if char isn't a letter and there have been letters before,
                 // counter goes up.
-            } else if ((verseContent.charAt(i) == ' ') && word) {
+            } else if ((!Character.isLetter(verseContent.charAt(i))) && word) {
                 wordCount++;
                 if(wordCount == wordNum) {
                     wordHolder = verseContent.substring(i - currentWordSize, i);
