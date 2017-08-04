@@ -87,7 +87,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     private List<Book> oldTestament;
 
 
-
     private static final String BACK = "BACK";
     private static final String START_QUIZ = "START QUIZ";
 
@@ -152,6 +151,13 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             navigationView.getMenu().getItem(0).setChecked(true);
         }
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+    }
+
+
 
     private void setSlidingTabViewMain() {
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
@@ -450,6 +456,17 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         }
         String nextVerseNum = String.valueOf(Integer.valueOf(selectedVerseNum) + 1);
         api.getVerse(nextVerseCallback, damId, mPrefs.getSelectedBookId(getApplicationContext()), nextVerseNum, mPrefs.getSelectedChapter(getApplicationContext()));
+    }
+
+    @Override
+    public void verseAddedToQuizVerses() {
+        pagerMain.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                pagerMain.setCurrentItem(1);
+            }
+        }, 300);
     }
 
     @Override

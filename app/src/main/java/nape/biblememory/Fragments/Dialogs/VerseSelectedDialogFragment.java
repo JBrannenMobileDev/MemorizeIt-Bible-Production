@@ -74,6 +74,8 @@ public class VerseSelectedDialogFragment extends DialogFragment {
         verseOperations = new VerseOperations(getActivity().getApplicationContext());
         if(verseOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() > 2){
             addVerseToInProgress.setVisibility(View.GONE);
+        }else{
+            addVerseToInProgress.setChecked(true);
         }
         verse.setText(verseText);
         verseLocationTv.setText(verseLocation);
@@ -126,6 +128,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
                     if (addVerseToInProgress.isChecked()) {
                         mFirebaseAnalytics.logEvent("verse_added_to_learning_list", bundle);
                         verseOperations.addVerse(verse, MemoryListContract.LearningSetEntry.TABLE_NAME);
+                        dialogActionsListener.verseAddedToQuizVerses();
                     } else {
                         verseOperations.addVerse(verse, MemoryListContract.CurrentSetEntry.TABLE_NAME);
                     }
@@ -206,5 +209,6 @@ public class VerseSelectedDialogFragment extends DialogFragment {
     public interface addVerseDialogActions {
         void onVerseAdded(boolean comingFromNewVerses);
         void includeNextVerseSelected(String verseLocation, BaseCallback<Verse> callback, String selectedVerseNum);
+        void verseAddedToQuizVerses();
     }
 }
