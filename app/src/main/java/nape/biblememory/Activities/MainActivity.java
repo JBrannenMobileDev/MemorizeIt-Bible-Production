@@ -398,6 +398,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         selectedVerseCallback = new BaseCallback<List<Verse>>() {
             @Override
             public void onResponse(List<Verse> response) {
+                adapterVerseSelector.setVerseGridViewVisible();
                 FragmentManager fm = getSupportFragmentManager();
                 VerseSelectedDialogFragment verseSelectedDialog = new VerseSelectedDialogFragment();
 

@@ -15,7 +15,7 @@ public class ViewPagerAdapterVerseSelector extends FragmentStatePagerAdapter {
 
     CharSequence Titles[]; // This will Store the Titles of the Tabs which are Going to be passed when ViewPagerAdapter is created
     int NumbOfTabs; // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created
-
+    private VerseFragment verseFragment;
 
     // Build a Constructor and assign the passed Values to appropriate values in the class
     public ViewPagerAdapterVerseSelector(FragmentManager fm, CharSequence mTitles[], int mNumbOfTabsumb) {
@@ -39,6 +39,7 @@ public class ViewPagerAdapterVerseSelector extends FragmentStatePagerAdapter {
                 break;
             case 2:
                 selectedFrag = new VerseFragment();
+                verseFragment = (VerseFragment)selectedFrag;
                 break;
             default:
                 selectedFrag = new BooksFragment();
@@ -58,5 +59,11 @@ public class ViewPagerAdapterVerseSelector extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return NumbOfTabs;
+    }
+
+    public void setVerseGridViewVisible() {
+        if(verseFragment != null){
+            verseFragment.setGridViewVisible();
+        }
     }
 }

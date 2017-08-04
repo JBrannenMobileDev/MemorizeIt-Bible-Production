@@ -60,17 +60,19 @@ public class VersesGridviewAdapter extends BaseAdapter {
         tView.setPadding(padding, padding, padding, padding);
         tView.setGravity(Gravity.CENTER);
         tView.setLayoutParams(lp);
-        if(position == selectedPosition) {
-            tView.setBackgroundResource(R.drawable.chapter_circle);
-            tView.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
-        }else{
-            tView.setBackgroundResource(R.color.colorWhite);
-            tView.setTextColor(mContext.getResources().getColor(R.color.view_by_text_color));
-        }
+
 
         tView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (position == selectedPosition) {
+                    tView.setBackgroundResource(R.drawable.chapter_circle);
+                    tView.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
+                } else {
+                    tView.setBackgroundResource(R.color.colorWhite);
+                    tView.setTextColor(mContext.getResources().getColor(R.color.view_by_text_color));
+                }
+                tView.setEnabled(false);
                 tView.setBackgroundResource(R.drawable.chapter_circle);
                 tView.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
                 if(vSelectedCallback != null){

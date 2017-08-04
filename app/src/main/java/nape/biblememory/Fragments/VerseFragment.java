@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 
 import com.faithcomesbyhearing.dbt.model.Chapter;
 import com.faithcomesbyhearing.dbt.model.Verse;
@@ -39,6 +40,7 @@ public class VerseFragment extends Fragment {
     private OnVerseSelected verseSelectedListener;
     private Context context;
     private int previousSelectedVersePosition;
+    private ProgressBar verseSelectedLoadingBar;
 
     public VerseFragment() {
     }
@@ -58,17 +60,24 @@ public class VerseFragment extends Fragment {
         }
     }
 
+    public void setGridViewVisible(){
+        gridView.setVisibility(View.VISIBLE);
+        verseSelectedLoadingBar.setVisibility(View.GONE);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_verse, container, false);
         context = getActivity().getApplicationContext();
+        verseSelectedLoadingBar = (ProgressBar) v.findViewById(R.id.verse_selected_loading_bar);
         List<String> dataList = new ArrayList<>();
 
         verseSelectedCallback = new VerseFragmentCallback() {
             @Override
             public void onResponse(Object response, int selectedPosition) {
+                verseSelectedLoadingBar.setVisibility(View.VISIBLE);
+                gridView.setVisibility(View.GONE);
                 mPrefs.setSelectedVerseNum((String) response, context);
                 verseSelectedListener.onVerseSelected((String) response);
                 previousSelectedVersePosition = selectedPosition;
