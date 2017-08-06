@@ -115,6 +115,21 @@
             android:layout_centerHorizontal="true"
             android:elevation="4dp">
 
+            <TextView
+                android:id="@+id/check_answer_textview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="25dp"
+                android:elevation="6dp"
+                android:gravity="center_vertical"
+                android:text="CHECK ANSWER"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/check_answer_button_fab"
                 android:layout_width="match_parent"
@@ -124,20 +139,6 @@
                 android:visibility="gone"
                 ads:elevation="4dp" />
 
-            <TextView
-                android:id="@+id/check_answer_textview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:layout_marginBottom="25dp"
-                android:elevation="4dp"
-                android:gravity="center_vertical"
-                android:text="CHECK ANSWER"
-                android:textAlignment="center"
-                android:textColor="#ffffff"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:visibility="gone" />
         </FrameLayout>
 
         <FrameLayout
@@ -150,6 +151,20 @@
             android:layout_toRightOf="@+id/fab_frame"
             android:elevation="4dp">
 
+            <TextView
+                android:id="@+id/hint_textview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:elevation="6dp"
+                android:gravity="center_vertical"
+                android:text="HINT"
+                android:textAlignment="center"
+                android:textColor="@color/colorGreenText"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/hint_button_fab"
                 android:layout_width="match_parent"
@@ -160,19 +175,6 @@
                 android:visibility="gone"
                 ads:elevation="4dp" />
 
-            <TextView
-                android:id="@+id/hint_textview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:elevation="4dp"
-                android:gravity="center_vertical"
-                android:text="HINT"
-                android:textAlignment="center"
-                android:textColor="@color/colorGreenText"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:visibility="gone" />
         </FrameLayout>
 
         <LinearLayout
@@ -201,7 +203,6 @@
                     android:layout_margin="@dimen/fab_margin"
                     android:background="@drawable/circle_button"
                     android:elevation="4dp"
-                    android:translationZ="50dp"
                     android:visibility="gone"
                     ads:elevation="4dp" />
 
@@ -210,14 +211,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
-                    android:elevation="4dp"
+                    android:elevation="6dp"
                     android:gravity="center_vertical"
                     android:text="YES"
                     android:textAlignment="center"
                     android:textColor="@color/colorGreenText"
                     android:textSize="30dp"
-                    android:textStyle="bold"
-                    android:translationZ="60dp" />
+                    android:textStyle="bold" />
             </FrameLayout>
 
             <FrameLayout
@@ -236,7 +236,6 @@
                     android:layout_margin="@dimen/fab_margin"
                     android:background="@drawable/circle_button"
                     android:elevation="4dp"
-                    android:translationZ="50dp"
                     android:visibility="gone"
                     ads:elevation="4dp" />
 
@@ -245,14 +244,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
-                    android:elevation="4dp"
+                    android:elevation="6dp"
                     android:gravity="center_vertical"
                     android:text="NO"
                     android:textAlignment="center"
                     android:textColor="@color/colorNoText"
                     android:textSize="30dp"
-                    android:textStyle="bold"
-                    android:translationZ="60dp" />
+                    android:textStyle="bold" />
             </FrameLayout>
 
         </LinearLayout>

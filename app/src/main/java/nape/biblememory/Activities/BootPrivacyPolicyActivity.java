@@ -1,7 +1,7 @@
 package nape.biblememory.Activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -11,7 +11,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import nape.biblememory.R;
 
-public class PrivacyPolicyActivity extends AppCompatActivity {
+public class BootPrivacyPolicyActivity extends AppCompatActivity {
 
     @BindView(R.id.privacy_policy_webview)WebView webView;
 
@@ -23,7 +23,7 @@ public class PrivacyPolicyActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setTitle("Privacy policy");
         FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        mFirebaseAnalytics.setCurrentScreen(this, "Privacy policy", null);
+        mFirebaseAnalytics.setCurrentScreen(this, "Boot privacy policy", null);
         webView.setWebViewClient(new WebViewClient());
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("https://termsfeed.com/privacy-policy/17cbea6f727c4cf2998b29f884876d8e");

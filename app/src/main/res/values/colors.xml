@@ -22,4 +22,5 @@
     <color name="view_by_view_background">#015d7a</color>
     <color name="testColor">#9dc9d7</color>
     <color name="divider_bar">#1f000000</color>
+    <color name="greyBgDarker">#989898</color>
 </resources>

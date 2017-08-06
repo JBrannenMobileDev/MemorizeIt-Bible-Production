@@ -1,14 +1,11 @@
 package nape.biblememory.Activities;
 
 import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -24,7 +21,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.android.vending.billing.IInAppBillingService;
 import com.faithcomesbyhearing.dbt.model.Book;
 import com.faithcomesbyhearing.dbt.model.Verse;
 import com.faithcomesbyhearing.dbt.model.Volume;
@@ -50,9 +46,6 @@ import nape.biblememory.UserPreferences;
 import nape.biblememory.Views.SlidingTabLayout;
 import nape.biblememory.Fragments.Dialogs.VerseSelectedDialogFragment;
 import nape.biblememory.R;
-
-import com.crashlytics.android.Crashlytics;
-import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends ActionBarActivity implements NavigationView.OnNavigationItemSelectedListener,
         MyVersesFragment.OnAddVerseSelectedListener, VerseSelection.FragmentToActivity, BooksFragment.BooksFragmentListener,
@@ -95,7 +88,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
         super.onCreate(savedInstanceState);
         mPrefs = new UserPreferences();
-        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -265,9 +257,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         } else if(id == R.id.nav_rate){
             mFirebaseAnalytics.logEvent("rate_nav_draw_selected", null);
             sendRateThisAppIntent();
-        } else if(id == R.id.nav_privacy_policy){
-            mFirebaseAnalytics.logEvent("privacy_policy_nav_draw_selected", null);
-            intent = new Intent(getApplicationContext(), PrivacyPolicyActivity.class);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -311,7 +300,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             i.putExtra(Intent.EXTRA_SUBJECT, "MemorizeIt Bible");
             String sAux = "\nYou gotta try this app.\n\n";
             String sAux2 = "If you have ever had a hard time memorizing bible verses, this app makes it easy!\n\n";
-            sAux = sAux + sAux2 + "https://play.google.com/store/apps/details?id=MemorizeItBible \n\n";
+            sAux = sAux + sAux2 + "https://play.google.com/store/apps/details?id=nape.biblememory&hl=en \n\n";
             i.putExtra(Intent.EXTRA_TEXT, sAux);
             startActivity(Intent.createChooser(i, "choose one"));
         } catch(Exception e) {

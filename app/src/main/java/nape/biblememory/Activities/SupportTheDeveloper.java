@@ -39,6 +39,7 @@ public class SupportTheDeveloper extends AppCompatActivity {
         ButterKnife.bind(this);
         setTitle("Support the developer!");
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+        mFirebaseAnalytics.setCurrentScreen(this, "Support the developer activity", null);
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
@@ -124,7 +125,7 @@ public class SupportTheDeveloper extends AppCompatActivity {
             i.setType("text/plain");
             i.putExtra(Intent.EXTRA_SUBJECT, "MemorizeIt Bible");
             String sAux = "\nLet me recommend you this application\n\n";
-            sAux = sAux + "https://play.google.com/store/apps/details?id=MemorizeItBible \n\n";
+            sAux = sAux + "https://play.google.com/store/apps/details?id=nape.biblememory&hl=en \n\n";
             i.putExtra(Intent.EXTRA_TEXT, sAux);
             startActivity(Intent.createChooser(i, "choose one"));
         } catch(Exception e) {

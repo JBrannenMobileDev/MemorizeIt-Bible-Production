@@ -42,7 +42,7 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
         super.onCreate(savedInstanceState);
         scriptureManager = new ScriptureManager(getActivity().getApplicationContext());
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity().getApplicationContext());
-        mFirebaseAnalytics.setCurrentScreen(getActivity(), "Settings", null);
+        mFirebaseAnalytics.setCurrentScreen(getActivity(), "Quiz verses view", null);
     }
 
     @Override

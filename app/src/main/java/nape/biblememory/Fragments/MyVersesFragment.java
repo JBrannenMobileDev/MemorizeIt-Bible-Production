@@ -49,7 +49,7 @@ public class MyVersesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         scriptureManager = new ScriptureManager(getActivity().getApplicationContext());
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity().getApplicationContext());
-        mFirebaseAnalytics.setCurrentScreen(getActivity(), "Settings", null);
+        mFirebaseAnalytics.setCurrentScreen(getActivity(), "Upcoming verses view", null);
     }
 
     @Override

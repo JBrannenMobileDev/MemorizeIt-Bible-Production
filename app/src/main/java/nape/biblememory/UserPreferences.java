@@ -3,9 +3,6 @@ package nape.biblememory;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import nape.biblememory.Activities.SettingsActivity;
-import nape.biblememory.UserPreferenceConstants;
-
 public class UserPreferences{
     private static final String APP_SETTINGS = "APP_SETTINGS";
 
@@ -494,5 +491,15 @@ public class UserPreferences{
 
     public boolean showQuizTimeOnSundayChecked(Context context) {
         return getSharedPreferences(context).getBoolean(UserPreferenceConstants.SUNDAY_TIME_SWITCH_CHECKED , false);
+    }
+
+    public void setFirstTimeSignIn(boolean b, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putBoolean(UserPreferenceConstants.FIRST_TIME_LOGIN, b);
+        editor.commit();
+    }
+
+    public boolean isFirstTimeLogind(Context context) {
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.FIRST_TIME_LOGIN , true);
     }
 }

@@ -45,14 +45,4 @@
 
     </group>
 
-    <group
-        android:checkableBehavior="single"
-        android:id="@+id/menu_bottom">
-    <item
-        android:id="@+id/nav_privacy_policy"
-        android:icon="@drawable/ic_error_black_24dp"
-        android:title="Privacy policy" />
-</group>
-
-
 </menu>

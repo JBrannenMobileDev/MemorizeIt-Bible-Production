@@ -57,7 +57,7 @@ public class MemorizedSetFragment extends Fragment {
         super.onCreate(savedInstanceState);
         scriptureManager = new ScriptureManager(getActivity().getApplicationContext());
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity().getApplicationContext());
-        mFirebaseAnalytics.setCurrentScreen(getActivity(), "Memorized verses tab", null);
+        mFirebaseAnalytics.setCurrentScreen(getActivity(), "Memorized verses view", null);
     }
 
     @Override
