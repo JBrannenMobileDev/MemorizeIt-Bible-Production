@@ -57,4 +57,5 @@ public class UserPreferenceConstants {
     public static final String USER_ID = "user_id";
     public static final String USER_EMAIL = "user_email";
     public static final String REBUILD_ERROR = "rebuild_error";
+    public static final String MIGRATED_FB = "migrated_firebase";
 }

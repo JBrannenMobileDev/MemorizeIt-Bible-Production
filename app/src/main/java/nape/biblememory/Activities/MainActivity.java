@@ -22,9 +22,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.faithcomesbyhearing.dbt.model.Book;
 import com.faithcomesbyhearing.dbt.model.Verse;
-import com.faithcomesbyhearing.dbt.model.Volume;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.List;
@@ -43,10 +41,8 @@ import nape.biblememory.Fragments.MyVersesFragment;
 import nape.biblememory.Fragments.VerseFragment;
 import nape.biblememory.Fragments.VerseSelection;
 import nape.biblememory.Managers.NetworkManager;
-import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.Models.ScriptureData;
 import nape.biblememory.data_store.DataStore;
-import nape.biblememory.data_store.Sqlite.MemoryListContract;
 import nape.biblememory.UserPreferences;
 import nape.biblememory.Views.SlidingTabLayout;
 import nape.biblememory.Fragments.Dialogs.VerseSelectedDialogFragment;
@@ -245,7 +241,8 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             mFirebaseAnalytics.logEvent("start_quiz_nav_draw_selected", null);
         } else if (id == R.id.nav_settings) {
             mFirebaseAnalytics.logEvent("settings_nav_draw_selected", null);
-            intent = new Intent(getApplicationContext(), SettingsActivity.class);
+            Intent settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivityForResult(settingsIntent, 1);
         } else if (id == R.id.nav_home) {
             mFirebaseAnalytics.logEvent("home_nav_draw_selected", null);
             onBackPressedFromNewVerseSelector();
@@ -270,6 +267,11 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             startActivity(intent);
         }
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        finish();
     }
 
     private boolean MyStartActivity(Intent aIntent) {

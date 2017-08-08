@@ -14,6 +14,7 @@ import java.util.List;
 
 import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.Models.ScriptureData;
+import nape.biblememory.Models.UserPreferencesModel;
 import nape.biblememory.UserPreferences;
 
 /**
@@ -30,6 +31,7 @@ public class FirebaseDb {
     private DatabaseReference upcomingVersesReference;
     private DatabaseReference quizVersesReference;
     private DatabaseReference memorizedVersesReference;
+    private DatabaseReference userPrefsReference;
 
     private UserPreferences mPrefs;
 
@@ -51,6 +53,11 @@ public class FirebaseDb {
     private List<User> getUsers(Context context) {
         List<User> userList = new ArrayList<>();
         return userList;
+    }
+
+    public void saveUserPrefs(UserPreferencesModel mPrefsModel, Context applicationContext) {
+        userPrefsReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(applicationContext)).child(Constants.FIREBASE_CHILD_USER_PREFS);
+        userPrefsReference.setValue(mPrefsModel);
     }
 
     public void saveUpcomingVerseToFirebase(ScriptureData verse, Context context){
@@ -175,6 +182,26 @@ public class FirebaseDb {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 memorizedList.add(new ScriptureData());
+            }
+        });
+    }
+
+    public void getUserPrefsFromFirebaseDb(Context context, final BaseCallback<UserPreferencesModel> userPrefsCallback){
+        userPrefsReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_USER_PREFS);
+        userPrefsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() != null) {
+                    userPrefsCallback.onResponse(dataSnapshot.getValue(UserPreferencesModel.class));
+                }else{
+                    userPrefsCallback.onFailure(new Exception("data does not exist"));
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                userPrefsCallback.onResponse(null);
             }
         });
     }

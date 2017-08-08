@@ -3,6 +3,9 @@ package nape.biblememory;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import nape.biblememory.Models.UserPreferencesModel;
+import nape.biblememory.data_store.DataStore;
+
 public class UserPreferences{
     private static final String APP_SETTINGS = "APP_SETTINGS";
 
@@ -12,6 +15,45 @@ public class UserPreferences{
     }
 
     public UserPreferences() {
+    }
+
+    public void nukeUserPrefs(Context context){
+        getSharedPreferences(context).edit().clear().commit();
+    }
+
+    public void setPrefs(UserPreferencesModel response, Context context) {
+        if(response != null) {
+            setStartQuizWhenPhoneUnlocks(response.isStartQuizWhenPhoneUnlocks(), context);
+            setShowQuizOnMonday(response.isShowQuizMonday(), context);
+            setShowQuizOnTuesday(response.isShowQuizTuesday(), context);
+            setShowQuizOnWednesday(response.isShowQuizWednesday(), context);
+            setShowQuizOnThursday(response.isShowQuizThursday(), context);
+            setShowQuizOnFriday(response.isShowQuizFriday(), context);
+            setShowQuizOnSaturday(response.isShowQuizSaturday(), context);
+            setShowQuizOnSunday(response.isShowQuizSunday(), context);
+            setShowQuizTimeOnMondayChecked(response.isShowQuizTimeMonday(), context);
+            setShowQuizTimeOnTuesdayChecked(response.isShowQuizTimeTuesday(), context);
+            setShowQuizTimeOnWednesdayChecked(response.isShowQuizTimeWednesday(), context);
+            setShowQuizTimeOnThursdayChecked(response.isShowQuizTimeThursday(), context);
+            setShowQuizTimeOnFridayChecked(response.isShowQuizTimeFriday(), context);
+            setShowQuizTimeOnSaturdayChecked(response.isShowQuizTimeSaturday(), context);
+            setShowQuizTimeOnSundayChecked(response.isShowQuizTimeSunday(), context);
+            setRebuildError(response.isRebuildError(), context);
+            setMigratedToFirebaseDb(response.isMigratedToFirebase(), context);
+            setSettingsStartTimeMonday(response.getMondayStartTime(), context);
+            setSettingsEndTimeMonday(response.getMondayEndTime(), context);
+            setSettingsEndTimeTuesday(response.getTuesdayEndTime(), context);
+            setSettingsEndTimeWednesday(response.getWednesdayEndTime(), context);
+            setSettingsEndTimeThursday(response.getThursdayEndTime(), context);
+            setSettingsEndTimeFriday(response.getFridayEndTime(), context);
+            setSettingsEndTimeSaturday(response.getSaturdayEndTime(), context);
+            setSettingsEndTimeSunday(response.getSundayEndTime(), context);
+        }else{
+            UserPreferencesModel prefsModel = new UserPreferencesModel();
+            prefsModel.initAllData(context, new UserPreferences());
+            DataStore.getInstance().saveUserPrefs(prefsModel, context);
+            setPrefs(prefsModel, context);
+        }
     }
 
     public static void setFirstTimeUnlock(boolean firstTime, Context context){
@@ -531,5 +573,15 @@ public class UserPreferences{
 
     public boolean isRebuildError(Context context) {
         return getSharedPreferences(context).getBoolean(UserPreferenceConstants.REBUILD_ERROR , false);
+    }
+
+    public void setMigratedToFirebaseDb(boolean b, Context context){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putBoolean(UserPreferenceConstants.MIGRATED_FB, b);
+        editor.commit();
+    }
+
+    public boolean isMigratedToFirebaseDb(Context context) {
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.MIGRATED_FB , false);
     }
 }

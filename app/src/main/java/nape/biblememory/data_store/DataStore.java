@@ -13,6 +13,7 @@ import nape.biblememory.Managers.NetworkManager;
 import nape.biblememory.Managers.ScriptureManager;
 import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.Models.ScriptureData;
+import nape.biblememory.Models.UserPreferencesModel;
 import nape.biblememory.UserPreferences;
 import nape.biblememory.data_store.FirebaseDb.FirebaseDb;
 import nape.biblememory.data_store.FirebaseDb.User;
@@ -32,62 +33,6 @@ public class DataStore {
     private ScriptureManager scriptureManager;
 
     private DataStore() {
-    }
-
-    public void migrateToFirebase(final Context context){
-        if(scriptureManager == null) {
-            scriptureManager = new ScriptureManager(context);
-        }
-        BaseCallback<List<ScriptureData>> upcomingCallback = new BaseCallback<List<ScriptureData>>() {
-            @Override
-            public void onResponse(List<ScriptureData> response) {
-                if(response.size() == 0){
-                    for(ScriptureData verse : scriptureManager.getScriptureSet(MemoryListContract.CurrentSetEntry.TABLE_NAME)){
-                        saveUpcomingVerse(verse, context);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-
-            }
-        };
-
-        BaseCallback<List<ScriptureData>> quizCallback = new BaseCallback<List<ScriptureData>>() {
-            @Override
-            public void onResponse(List<ScriptureData> response) {
-                if(response.size() == 0){
-                    for(ScriptureData verse : scriptureManager.getScriptureSet(MemoryListContract.LearningSetEntry.TABLE_NAME)){
-                        saveQuizVerse(verse, context);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-
-            }
-        };
-
-        BaseCallback<List<ScriptureData>> memorizedCallback = new BaseCallback<List<ScriptureData>>() {
-            @Override
-            public void onResponse(List<ScriptureData> response) {
-                if(response.size() == 0){
-                    for(ScriptureData verse : scriptureManager.getScriptureSet(MemoryListContract.MemorizedSetEntry.TABLE_NAME)){
-                        saveMemorizedVerse(verse, context);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-
-            }
-        };
-        getUpcomingVerses(upcomingCallback, context);
-        getQuizVerses(quizCallback, context);
-        getMemorizedVerses(memorizedCallback, context);
     }
 
     public void saveUser(User user, Context applicationContext){
@@ -295,6 +240,7 @@ public class DataStore {
 
     public void rebuildLocalDb(final Context context) {
         final UserPreferences mPrefs = new UserPreferences();
+        final UserPreferencesModel mPrefsModel = new UserPreferencesModel();
         if(scriptureManager == null) {
             scriptureManager = new ScriptureManager(context);
         }
@@ -323,13 +269,13 @@ public class DataStore {
                                     }
                                 }
                                 mPrefs.setRebuildError(false, context);
-                                context.startActivity(new Intent(context, MainActivity.class));
+                                mPrefsModel.initAllData(context, mPrefs);
+                                DataStore.getInstance().saveUserPrefs(mPrefsModel, context);
                             }
 
                             @Override
                             public void onFailure(Exception e) {
                                 mPrefs.setRebuildError(true, context);
-                                context.startActivity(new Intent(context, MainActivity.class));
                             }
                         };
                         getMemorizedVerses(memorizedCallback, context);
@@ -338,7 +284,6 @@ public class DataStore {
                     @Override
                     public void onFailure(Exception e) {
                         mPrefs.setRebuildError(true, context);
-                        context.startActivity(new Intent(context, MainActivity.class));
                     }
                 };
                 getQuizVerses(quizCallback, context);
@@ -347,9 +292,16 @@ public class DataStore {
             @Override
             public void onFailure(Exception e) {
                 mPrefs.setRebuildError(true, context);
-                context.startActivity(new Intent(context, MainActivity.class));
             }
         };
         getUpcomingVerses(upcomingCallback, context);
+    }
+
+    public void saveUserPrefs(UserPreferencesModel mPrefsModel, Context applicationContext) {
+        FirebaseDb.getInstance().saveUserPrefs(mPrefsModel, applicationContext);
+    }
+
+    public void getUserPrefs(Context context, BaseCallback<UserPreferencesModel> userPrefsCallback){
+        FirebaseDb.getInstance().getUserPrefsFromFirebaseDb(context, userPrefsCallback);
     }
 }

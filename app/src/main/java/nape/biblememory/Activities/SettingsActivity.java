@@ -16,6 +16,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import nape.biblememory.Fragments.Dialogs.TimeSelectionDialogFragment;
 import nape.biblememory.R;
 import nape.biblememory.UserPreferences;
 import nape.biblememory.data_store.Sqlite.BibleMemoryDbHelper;
@@ -68,8 +69,10 @@ public class SettingsActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 // user is now signed out
                                 mPrefs.setFirstTimeSignIn(true, getApplicationContext());
-//                                BibleMemoryDbHelper.deleteLocalDb(getApplicationContext());
-                                startActivity(new Intent(SettingsActivity.this, BootActivity.class));
+                                BibleMemoryDbHelper.deleteLocalDb(getApplicationContext());
+                                startActivity(new Intent(SettingsActivity.this, BootActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                                Intent returnIntent = new Intent();
+                                setResult(1,returnIntent);
                                 finish();
                             }
                         });

@@ -22,6 +22,7 @@ import java.util.Arrays;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import nape.biblememory.Managers.VerseOperations;
+import nape.biblememory.Models.UserPreferencesModel;
 import nape.biblememory.R;
 import nape.biblememory.UserPreferences;
 import nape.biblememory.data_store.DataStore;
@@ -51,18 +52,21 @@ public class BootActivity extends Activity {
         mFirebaseAnalytics.setCurrentScreen(this, "Settings", null);
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
-            mPrefs.setUserId(auth.getCurrentUser().getUid(), getApplicationContext());
-            mPrefs.setUserEmail(auth.getCurrentUser().getEmail(), getApplicationContext());
-            if(mPrefs.isRebuildError(getApplicationContext())){
-                VerseOperations vOps = new VerseOperations(getApplicationContext());
-                vOps.nukeDb();
-                mPrefs.setUserId(auth.getCurrentUser().getUid(), getApplicationContext());
-                DataStore.getInstance().rebuildLocalDb(getApplicationContext());
-            }else {
-                mPrefs.setUserId(auth.getCurrentUser().getUid(), getApplicationContext());
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            }
-            finish();
+            new VerseOperations(getApplicationContext()).nukeDb();
+            DataStore.getInstance().rebuildLocalDb(getApplicationContext());
+            BaseCallback<UserPreferencesModel> userPrefsCallback = new BaseCallback<UserPreferencesModel>() {
+                @Override
+                public void onResponse(UserPreferencesModel response) {
+                    mPrefs.setPrefs(response, getApplicationContext());
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                }
+            };
+            DataStore.getInstance().getUserPrefs(getApplicationContext(),userPrefsCallback);
         } else {
             if(!mPrefs.isFirstTimeLogind(getApplicationContext())){
                 startActivityForResult(
@@ -118,19 +122,27 @@ public class BootActivity extends Activity {
 
             // Successfully signed in
             if (resultCode == ResultCodes.OK) {
-                mPrefs.setFirstTimeSignIn(false, getApplicationContext());
-                mPrefs.setUserEmail(auth.getCurrentUser().getEmail(), getApplicationContext());
-                if(!mPrefs.getUserId(getApplicationContext()).equals(auth.getCurrentUser().getUid()) || mPrefs.isRebuildError(getApplicationContext())){
-                    VerseOperations vOps = new VerseOperations(getApplicationContext());
-                    vOps.nukeDb();
-                    mPrefs.setUserId(auth.getCurrentUser().getUid(), getApplicationContext());
-                    DataStore.getInstance().rebuildLocalDb(getApplicationContext());
-                }else {
-                    mPrefs.setUserId(auth.getCurrentUser().getUid(), getApplicationContext());
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                if(!mPrefs.getUserId(getApplicationContext()).equals(auth.getCurrentUser().getUid())){
+                    mPrefs.nukeUserPrefs(getApplicationContext());
+                    mPrefs.setUserEmail(auth.getCurrentUser().getEmail(), getApplicationContext());
                 }
+                mPrefs.setUserId(auth.getCurrentUser().getUid(), getApplicationContext());
+                mPrefs.setFirstTimeSignIn(false, getApplicationContext());
+                new VerseOperations(getApplicationContext()).nukeDb();
+                DataStore.getInstance().rebuildLocalDb(getApplicationContext());
+                BaseCallback<UserPreferencesModel> userPrefsCallback = new BaseCallback<UserPreferencesModel>() {
+                    @Override
+                    public void onResponse(UserPreferencesModel response) {
+                        mPrefs.setPrefs(response, getApplicationContext());
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    }
 
-                finish();
+                    @Override
+                    public void onFailure(Exception e) {
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    }
+                };
+                DataStore.getInstance().getUserPrefs(getApplicationContext(), userPrefsCallback);
                 return;
             } else {
                 // Sign in failed

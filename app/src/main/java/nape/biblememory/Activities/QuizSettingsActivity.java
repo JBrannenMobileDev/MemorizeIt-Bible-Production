@@ -18,8 +18,10 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import nape.biblememory.Fragments.Dialogs.TimeSelectionDialogFragment;
+import nape.biblememory.Models.UserPreferencesModel;
 import nape.biblememory.R;
 import nape.biblememory.UserPreferences;
+import nape.biblememory.data_store.DataStore;
 
 public class QuizSettingsActivity extends AppCompatActivity implements TimeSelectionDialogFragment.TimeSelectedListener {
 
@@ -95,6 +97,7 @@ public class QuizSettingsActivity extends AppCompatActivity implements TimeSelec
     private boolean startDateSelected;
     private String selectedDayOfWeek;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private UserPreferencesModel mPrefsModel;
 
 
     @Override
@@ -105,6 +108,7 @@ public class QuizSettingsActivity extends AppCompatActivity implements TimeSelec
         setTitle("Quiz Settings");
         mPrefs = new UserPreferences();
         ButterKnife.bind(this);
+        mPrefsModel = new UserPreferencesModel();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
         mFirebaseAnalytics.setCurrentScreen(this, "Quiz Settings", null);
     }
@@ -119,7 +123,16 @@ public class QuizSettingsActivity extends AppCompatActivity implements TimeSelec
     @Override
     public void finish(){
         super.finish();
+        mPrefsModel.initAllData(getApplicationContext(), mPrefs);
+        DataStore.getInstance().saveUserPrefs(mPrefsModel, getApplicationContext());
         overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_left);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        mPrefsModel.initAllData(getApplicationContext(), mPrefs);
+        DataStore.getInstance().saveUserPrefs(mPrefsModel, getApplicationContext());
     }
 
     private void initializeSettings() {
