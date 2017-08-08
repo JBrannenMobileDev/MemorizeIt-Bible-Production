@@ -16,9 +16,11 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.List;
 
 import nape.biblememory.Activities.BaseCallback;
+import nape.biblememory.data_store.DataStore;
+import nape.biblememory.data_store.FirebaseDb.Constants;
 import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.Models.ScriptureData;
-import nape.biblememory.Sqlite.MemoryListContract;
+import nape.biblememory.data_store.Sqlite.MemoryListContract;
 import nape.biblememory.UserPreferences;
 import nape.biblememory.R;
 
@@ -127,13 +129,13 @@ public class VerseSelectedDialogFragment extends DialogFragment {
                 if(!verseAlreadyExists) {
                     if (addVerseToInProgress.isChecked()) {
                         mFirebaseAnalytics.logEvent("verse_added_to_learning_list", bundle);
-                        verseOperations.addVerse(verse, MemoryListContract.LearningSetEntry.TABLE_NAME);
+                        DataStore.getInstance().saveQuizVerse(verse, getActivity().getApplicationContext());
                         dialogActionsListener.verseAddedToQuizVerses();
                     } else {
-                        verseOperations.addVerse(verse, MemoryListContract.CurrentSetEntry.TABLE_NAME);
+                        DataStore.getInstance().saveUpcomingVerse(verse, getActivity().getApplicationContext());
                     }
                     if (comingFromNewVerses) {
-                        verseOperations.removeVerse(previousVerseLocation, MemoryListContract.CurrentSetEntry.TABLE_NAME);
+                        DataStore.getInstance().deleteUpcomingVerse(new ScriptureData(null, previousVerseLocation), getActivity().getApplicationContext());
                     }
                     dialogActionsListener.onVerseAdded(comingFromNewVerses);
                     VerseSelectedDialogFragment.this.getDialog().cancel();

@@ -13,7 +13,7 @@ import java.util.Date;
 
 import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.Activities.PhoneUnlockActivity;
-import nape.biblememory.Sqlite.MemoryListContract;
+import nape.biblememory.data_store.Sqlite.MemoryListContract;
 import nape.biblememory.UserPreferences;
 
 

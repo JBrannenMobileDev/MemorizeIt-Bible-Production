@@ -7,22 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextClock;
-import android.widget.TextView;
 import android.widget.TimePicker;
-
-import com.faithcomesbyhearing.dbt.model.Verse;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import nape.biblememory.Activities.BaseCallback;
-import nape.biblememory.Managers.VerseOperations;
-import nape.biblememory.Models.ScriptureData;
 import nape.biblememory.R;
-import nape.biblememory.Sqlite.MemoryListContract;
-import nape.biblememory.UserPreferences;
 
 /**
  * Created by OWNER-PC on 12/19/2016.

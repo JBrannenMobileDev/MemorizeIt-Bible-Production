@@ -502,4 +502,34 @@ public class UserPreferences{
     public boolean isFirstTimeLogind(Context context) {
         return getSharedPreferences(context).getBoolean(UserPreferenceConstants.FIRST_TIME_LOGIN , true);
     }
+
+    public String getUserId(Context context){
+        return getSharedPreferences(context).getString(UserPreferenceConstants.USER_ID, "");
+    }
+
+    public void setUserId(String id, Context context){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putString(UserPreferenceConstants.USER_ID, id);
+        editor.commit();
+    }
+
+    public void setUserEmail(String email, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putString(UserPreferenceConstants.USER_EMAIL, email);
+        editor.commit();
+    }
+
+    public String getUserEmail(Context context){
+        return getSharedPreferences(context).getString(UserPreferenceConstants.USER_EMAIL, "");
+    }
+
+    public void setRebuildError(boolean b, Context context) {
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putBoolean(UserPreferenceConstants.REBUILD_ERROR, b);
+        editor.commit();
+    }
+
+    public boolean isRebuildError(Context context) {
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.REBUILD_ERROR , false);
+    }
 }

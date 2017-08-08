@@ -1,17 +1,13 @@
 package nape.biblememory.Fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,11 +20,10 @@ import java.util.List;
 
 import nape.biblememory.Adapters.RecyclerViewAdapterMemorized;
 import nape.biblememory.Activities.BaseCallback;
-import nape.biblememory.Managers.ScriptureManager;
 import nape.biblememory.Models.BookGroup;
 import nape.biblememory.Models.ScriptureData;
 import nape.biblememory.Singletons.RecyclerViewSingleton;
-import nape.biblememory.Sqlite.MemoryListContract;
+import nape.biblememory.data_store.DataStore;
 import nape.biblememory.UserPreferences;
 import nape.biblememory.R;
 
@@ -40,7 +35,6 @@ public class MemorizedSetFragment extends Fragment {
     private RecyclerView verseListRecyclerView;
     private RecyclerView.Adapter verseListAdapter;
     private RecyclerView.LayoutManager verseListLayoutManager;
-    private ScriptureManager scriptureManager;
     private List<ScriptureData> dataSet;
     private List<String> bookDataSet;
     private BaseCallback bookSelectedCallback;
@@ -50,12 +44,12 @@ public class MemorizedSetFragment extends Fragment {
     private List<Object> combinedList;
     private TextView reviewBt;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private List<Object> allMemorizedVerses;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        scriptureManager = new ScriptureManager(getActivity().getApplicationContext());
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity().getApplicationContext());
         mFirebaseAnalytics.setCurrentScreen(getActivity(), "Memorized verses view", null);
     }
@@ -63,6 +57,7 @@ public class MemorizedSetFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        getAllMemorizedVerses();
         RefreshRecyclerView();
     }
 
@@ -73,7 +68,8 @@ public class MemorizedSetFragment extends Fragment {
         spinner = (MaterialSpinner) v.findViewById(R.id.memorized_sort_spinner);
         reviewBt = (TextView) v.findViewById(R.id.memorized_review_tv);
         mPrefs = new UserPreferences();
-
+        allMemorizedVerses = new ArrayList<>();
+        getAllMemorizedVerses();
         createBookSelectedCallback();
         initializeSpinner(v);
         initializeRecyclerView(v);
@@ -122,9 +118,19 @@ public class MemorizedSetFragment extends Fragment {
     private void initializeRecyclerView(View v) {
         verseListLayoutManager = new LinearLayoutManager(v.getContext());
         verseListRecyclerView.setLayoutManager(verseListLayoutManager);
-        dataSet = scriptureManager.getScriptureSet(MemoryListContract.RememberedSetEntry.TABLE_NAME);
-        dataSet.addAll(scriptureManager.getScriptureSet(MemoryListContract.MemorizedSetEntry.TABLE_NAME));
-        setAdapterForRecyclerView();
+        BaseCallback<List<ScriptureData>> memorizedCallback = new BaseCallback<List<ScriptureData>>() {
+            @Override
+            public void onResponse(List<ScriptureData> response) {
+                dataSet = response;
+                setAdapterForRecyclerView();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+
     }
 
     private void initializeSpinner(View v) {
@@ -152,7 +158,7 @@ public class MemorizedSetFragment extends Fragment {
             tempVerseList = removeVersesFromBook(bookName, combinedList);
             combinedList = tempVerseList;
         }else{
-            tempVerseList = getBookGroupList(getAllMemorizedVerses());
+            tempVerseList = getBookGroupList(allMemorizedVerses);
         }
         verseListAdapter = new RecyclerViewAdapterMemorized(tempVerseList, bookSelectedCallback, bookDeselectedCallback);
         verseListRecyclerView.setAdapter(verseListAdapter);
@@ -160,13 +166,13 @@ public class MemorizedSetFragment extends Fragment {
 
     private void updateAdapterForExpandBook(String bookName){
         List<Object> bookList;
-        List<Object> verseList;
+        List<Object> verseList = null;
         if(combinedList != null) {
             bookList = combinedList;
         }else{
-            bookList = getBookGroupList(getAllMemorizedVerses());
+            bookList = getBookGroupList(verseList);
         }
-        verseList = getAllMemorizedVerses();
+        verseList = allMemorizedVerses;
         combinedList = createCombinedList(bookName, bookList, verseList);
 
         verseListAdapter = new RecyclerViewAdapterMemorized(combinedList, bookSelectedCallback, bookDeselectedCallback);
@@ -238,18 +244,18 @@ public class MemorizedSetFragment extends Fragment {
         switch(mPrefs.getMemorizedSpinnerPosition(getContext())){
             //Newest
             case 0:
-                tempVerseList = getAllMemorizedVerses();
+                tempVerseList = allMemorizedVerses;
                 Collections.reverse(tempVerseList);
                 break;
 
             //Oldest
             case 1:
-                tempVerseList = getAllMemorizedVerses();
+                tempVerseList = allMemorizedVerses;
                 break;
             //Book Name
 
             case 2:
-                tempVerseList = getBookGroupList(getAllMemorizedVerses());
+                tempVerseList = getBookGroupList(allMemorizedVerses);
                 break;
         }
         verseListAdapter = new RecyclerViewAdapterMemorized(tempVerseList, bookSelectedCallback, bookDeselectedCallback);
@@ -327,10 +333,20 @@ public class MemorizedSetFragment extends Fragment {
         return bookName;
     }
 
-    public List<Object> getAllMemorizedVerses() {
-        List<Object> versesList = new ArrayList<>();
-        versesList.addAll(scriptureManager.getScriptureSet(MemoryListContract.RememberedSetEntry.TABLE_NAME));
-        versesList.addAll(scriptureManager.getScriptureSet(MemoryListContract.MemorizedSetEntry.TABLE_NAME));
-        return versesList;
+    public void getAllMemorizedVerses() {
+        allMemorizedVerses = new ArrayList<>();
+
+        BaseCallback<List<ScriptureData>> memorizedCallback = new BaseCallback<List<ScriptureData>>() {
+            @Override
+            public void onResponse(List<ScriptureData> response) {
+                allMemorizedVerses.addAll(response);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+        DataStore.getInstance().getLocalMemorizedVerses(memorizedCallback, getActivity().getApplicationContext());
     }
 }

@@ -54,4 +54,7 @@ public class UserPreferenceConstants {
     public static final String SATURDAY_TIME_SWITCH_CHECKED = "saturday_time_switch";
     public static final String SUNDAY_TIME_SWITCH_CHECKED = "sunday_time_switch";
     public static final String FIRST_TIME_LOGIN = "first_time";
+    public static final String USER_ID = "user_id";
+    public static final String USER_EMAIL = "user_email";
+    public static final String REBUILD_ERROR = "rebuild_error";
 }

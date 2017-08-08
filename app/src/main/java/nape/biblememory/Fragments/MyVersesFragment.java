@@ -1,4 +1,5 @@
 package nape.biblememory.Fragments;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -16,13 +17,15 @@ import java.util.List;
 
 import nape.biblememory.Adapters.RecyclerViewAdapterMyVerses;
 import nape.biblememory.Activities.BaseCallback;
+import nape.biblememory.data_store.DataStore;
+import nape.biblememory.data_store.FirebaseDb.FirebaseDb;
 import nape.biblememory.Fragments.Dialogs.InProgressFullAlertDialog;
 import nape.biblememory.Fragments.Dialogs.RemoveVerseFromNewVersesAlertDialog;
 import nape.biblememory.Fragments.Dialogs.VerseSelectedDialogFragment;
 import nape.biblememory.Managers.ScriptureManager;
 import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.Models.ScriptureData;
-import nape.biblememory.Sqlite.MemoryListContract;
+import nape.biblememory.data_store.Sqlite.MemoryListContract;
 import nape.biblememory.Views.SlidingTabLayout;
 import nape.biblememory.R;
 
@@ -34,7 +37,6 @@ public class MyVersesFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ScriptureManager scriptureManager;
     private List<ScriptureData> dataSet;
     private BaseCallback removeCallback;
     private BaseCallback<ScriptureData> moveCallback;
@@ -42,12 +44,12 @@ public class MyVersesFragment extends Fragment {
     private FloatingActionButton addVerseButton;
     private VerseOperations vManager;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private Context appContext;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        scriptureManager = new ScriptureManager(getActivity().getApplicationContext());
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity().getApplicationContext());
         mFirebaseAnalytics.setCurrentScreen(getActivity(), "Upcoming verses view", null);
     }
@@ -61,6 +63,7 @@ public class MyVersesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View v =inflater.inflate(R.layout.fragment_my_verses,container,false);
 
+        appContext = getActivity().getApplicationContext();
         vManager = new VerseOperations(getActivity().getApplicationContext());
         addVerseButton = (FloatingActionButton) v.findViewById(R.id.add_verse_button_fab);
         addVerseButton.setOnClickListener(new View.OnClickListener() {
@@ -117,8 +120,8 @@ public class MyVersesFragment extends Fragment {
             @Override
             public void onResponse(ScriptureData response) {
                 if(vManager.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() < 3) {
-                    vManager.addVerse(response, MemoryListContract.LearningSetEntry.TABLE_NAME);
-                    vManager.removeVerse(response.getVerseLocation(), MemoryListContract.CurrentSetEntry.TABLE_NAME);
+                    DataStore.getInstance().saveQuizVerse(response, getActivity().getApplicationContext());
+                    DataStore.getInstance().deleteUpcomingVerse(response, getActivity().getApplicationContext());
                     refreshRecyclerView();
                 }else{
                     InProgressFullAlertDialog fullAlert = new InProgressFullAlertDialog();
@@ -154,10 +157,6 @@ public class MyVersesFragment extends Fragment {
 
             }
         };
-
-        dataSet = scriptureManager.getScriptureSet(MemoryListContract.CurrentSetEntry.TABLE_NAME);
-        mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_0, removeCallback, moveCallback, editCallback);
-        mRecyclerView.setAdapter(mAdapter);
         refreshRecyclerView();
         return v;
     }
@@ -172,10 +171,20 @@ public class MyVersesFragment extends Fragment {
 
     public void refreshRecyclerView(){
         if(mRecyclerView != null) {
-            scriptureManager = new ScriptureManager(getActivity().getApplicationContext());
-            dataSet = scriptureManager.getScriptureSet(MemoryListContract.CurrentSetEntry.TABLE_NAME);
-            mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_0, removeCallback, moveCallback, editCallback);
-            mRecyclerView.setAdapter(mAdapter);
+            BaseCallback<List<ScriptureData>> upcomingCallback = new BaseCallback<List<ScriptureData>>() {
+                    @Override
+                    public void onResponse(List<ScriptureData> response) {
+                        dataSet = response;
+                        mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_0, removeCallback, moveCallback, editCallback);
+                        mRecyclerView.setAdapter(mAdapter);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+
+                    }
+                };
+            DataStore.getInstance().getLocalUpcomingVerses(upcomingCallback, appContext);
         }
     }
 

@@ -1,4 +1,4 @@
-package nape.biblememory.Sqlite;
+package nape.biblememory.data_store.Sqlite;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,6 +10,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class BibleMemoryDbHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "RememberIt_Bible.db";
+
+    public static void deleteLocalDb(Context context){
+        context.deleteDatabase(DATABASE_NAME);
+    }
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String INT_TYPE = " INT";

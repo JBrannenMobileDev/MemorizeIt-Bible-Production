@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import nape.biblememory.Models.ScriptureData;
-import nape.biblememory.Sqlite.MemoryListContract;
+import nape.biblememory.data_store.Sqlite.MemoryListContract;
 
 
 public class ScriptureManager {
@@ -18,52 +18,7 @@ public class ScriptureManager {
         vOperations = new VerseOperations(context);
     }
 
-    public ScriptureData getLearningScripture(){
-        int caseNumber;
-        List<ScriptureData> scriptureListLearning = vOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME);
 
-        if(scriptureListLearning != null && scriptureListLearning.size() > 2 && scriptureListLearning.get(0).getVerse() != null && scriptureListLearning.get(1).getVerse() != null && scriptureListLearning.get(2).getVerse() != null) {
-            Random generate = new Random();
-            final int random = generate.nextInt(100) + 1;
-            caseNumber = calculateCaseNumber(random);
-            switch (caseNumber) {
-                case 1:
-                    return scriptureListLearning.get(0);
-                case 2:
-                    return scriptureListLearning.get(1);
-                case 3:
-                    return scriptureListLearning.get(2);
-                default:
-                    return scriptureListLearning.get(0);
-            }
-        }else if(scriptureListLearning != null && scriptureListLearning.size() == 2 && scriptureListLearning.get(0).getVerse() != null && scriptureListLearning.get(1).getVerse() != null){
-            Random generate = new Random();
-            final int random = generate.nextInt(100) + 1;
-            caseNumber = calculateCaseNumber(random);
-            switch (caseNumber) {
-                case 1:
-                    return scriptureListLearning.get(0);
-                case 2:
-                case 3:
-                    return scriptureListLearning.get(1);
-                default:
-                    return scriptureListLearning.get(0);
-            }
-        }else if(scriptureListLearning != null && scriptureListLearning.size() == 1 && scriptureListLearning.get(0).getVerse() != null){
-            Random generate = new Random();
-            final int random = generate.nextInt(100) + 1;
-            caseNumber = calculateCaseNumber(random);
-            switch (caseNumber) {
-                case 1:
-                case 2:
-                case 3:
-                    return scriptureListLearning.get(0);
-                default:
-                    return scriptureListLearning.get(0);
-            }
-        }
-        return new ScriptureData();
-    }
 
     public ScriptureData getCurrentSetScripture(){
         List<ScriptureData> scriptureListCurrentSet = vOperations.getVerseSet(MemoryListContract.CurrentSetEntry.TABLE_NAME);

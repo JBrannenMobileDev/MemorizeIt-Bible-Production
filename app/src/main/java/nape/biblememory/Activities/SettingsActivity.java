@@ -17,6 +17,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import nape.biblememory.R;
+import nape.biblememory.UserPreferences;
+import nape.biblememory.data_store.Sqlite.BibleMemoryDbHelper;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -25,6 +27,7 @@ public class SettingsActivity extends AppCompatActivity {
     @BindView(R.id.settings_sign_out)TextView signOutBt;
     private FirebaseAnalytics mFirebaseAnalytics;
     private Activity thisActivity;
+    private UserPreferences mPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
         thisActivity = this;
+        mPrefs = new UserPreferences();
         setTitle("Settings");
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         mFirebaseAnalytics.setCurrentScreen(this, "Settings", null);
@@ -63,6 +67,8 @@ public class SettingsActivity extends AppCompatActivity {
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             public void onComplete(@NonNull Task<Void> task) {
                                 // user is now signed out
+                                mPrefs.setFirstTimeSignIn(true, getApplicationContext());
+//                                BibleMemoryDbHelper.deleteLocalDb(getApplicationContext());
                                 startActivity(new Intent(SettingsActivity.this, BootActivity.class));
                                 finish();
                             }

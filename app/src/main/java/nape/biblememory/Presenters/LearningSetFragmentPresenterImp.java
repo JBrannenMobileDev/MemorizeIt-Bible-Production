@@ -6,7 +6,8 @@ import java.util.List;
 
 import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.Models.ScriptureData;
-import nape.biblememory.Sqlite.MemoryListContract;
+import nape.biblememory.data_store.DataStore;
+import nape.biblememory.data_store.Sqlite.MemoryListContract;
 import nape.biblememory.Fragments.LearningSetFragmentView;
 
 /**
@@ -37,9 +38,9 @@ public class LearningSetFragmentPresenterImp implements LearningSetFragmentPrese
         }
 
         if(scripture != null) {
-            vManager.addVerse(scripture, MemoryListContract.CurrentSetEntry.TABLE_NAME);
+            DataStore.getInstance().saveUpcomingVerse(scripture, context);
+            DataStore.getInstance().deleteQuizVerse(scripture, context);
+            mView.onRemoveClicked();
         }
-
-        mView.onRemoveClicked(vManager.removeVerse(verseLocation, MemoryListContract.LearningSetEntry.TABLE_NAME));
     }
 }

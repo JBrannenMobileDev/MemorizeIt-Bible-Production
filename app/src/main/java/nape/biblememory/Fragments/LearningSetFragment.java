@@ -1,4 +1,5 @@
 package nape.biblememory.Fragments;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,7 +20,9 @@ import nape.biblememory.Managers.ScriptureManager;
 import nape.biblememory.Models.ScriptureData;
 import nape.biblememory.Presenters.LearningSetFragmentPresenter;
 import nape.biblememory.Presenters.LearningSetFragmentPresenterImp;
-import nape.biblememory.Sqlite.MemoryListContract;
+import nape.biblememory.data_store.DataStore;
+import nape.biblememory.data_store.FirebaseDb.FirebaseDb;
+import nape.biblememory.data_store.Sqlite.MemoryListContract;
 import nape.biblememory.Views.SlidingTabLayout;
 import nape.biblememory.R;
 
@@ -31,18 +34,18 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ScriptureManager scriptureManager;
     private List<ScriptureData> dataSet;
     private BaseCallback removeCallback;
     private LearningSetFragmentPresenter mPresenter;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private Context appContext;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        scriptureManager = new ScriptureManager(getActivity().getApplicationContext());
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity().getApplicationContext());
         mFirebaseAnalytics.setCurrentScreen(getActivity(), "Quiz verses view", null);
+        appContext = getActivity().getApplicationContext();
     }
 
     @Override
@@ -75,21 +78,30 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
 
             }
         };
-
-        dataSet = scriptureManager.getScriptureSet(MemoryListContract.LearningSetEntry.TABLE_NAME);
-        mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_1, removeCallback, null, null);
-        mRecyclerView.setAdapter(mAdapter);
+        RefreshRecyclerView();
         return v;
     }
 
     public void RefreshRecyclerView(){
-        dataSet = scriptureManager.getScriptureSet(MemoryListContract.LearningSetEntry.TABLE_NAME);
-        mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_1, removeCallback, null, null);
-        mRecyclerView.setAdapter(mAdapter);
+
+        BaseCallback<List<ScriptureData>> learningCallback = new BaseCallback<List<ScriptureData>>() {
+            @Override
+            public void onResponse(List<ScriptureData> response) {
+                dataSet = response;
+                mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_1, removeCallback, null, null);
+                mRecyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+        DataStore.getInstance().getLocalQuizVerses(learningCallback, getActivity().getApplicationContext());
     }
 
     @Override
-    public void onRemoveClicked(Integer responseCode) {
+    public void onRemoveClicked() {
         RefreshRecyclerView();
     }
 
@@ -97,7 +109,6 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            scriptureManager = new ScriptureManager(getActivity().getApplicationContext());
             RefreshRecyclerView();
         }
     }

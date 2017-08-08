@@ -1,4 +1,4 @@
-package nape.biblememory.Sqlite;
+package nape.biblememory.data_store.Sqlite;
 
 import android.provider.BaseColumns;
 

@@ -10,17 +10,17 @@ import android.support.v7.app.AlertDialog;
  * Created by jbrannen on 6/14/17.
  */
 
-public class InProgressEmptyAlertDialog extends DialogFragment {
+public class NoInternetAlertDialog extends DialogFragment {
 
-    public InProgressEmptyAlertDialog(){
+    public NoInternetAlertDialog(){
 
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Cannot start quiz");
-        builder.setMessage("Quiz verses list is empty. There needs to be at least one verse in the In Progress list to be able to start a quiz.");
+        builder.setTitle("No internet connection");
+        builder.setMessage("New verses cannot be added without an internet connection.");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dismiss();

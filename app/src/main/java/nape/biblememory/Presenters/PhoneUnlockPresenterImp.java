@@ -7,14 +7,15 @@ import android.view.View;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
-import nape.biblememory.Fragments.Dialogs.VerseMemorizedAlertDialog;
+import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.Managers.ModifyVerseText;
-import nape.biblememory.Managers.ScriptureManager;
 import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.Managers.VerseStageManager;
 import nape.biblememory.Models.ScriptureData;
-import nape.biblememory.Sqlite.MemoryListContract;
+import nape.biblememory.data_store.DataStore;
+import nape.biblememory.data_store.Sqlite.MemoryListContract;
 import nape.biblememory.UseCases.UsecaseCallback;
 import nape.biblememory.UserPreferences;
 import nape.biblememory.Fragments.PhoneUnlockView;
@@ -39,7 +40,6 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
     private static final String EMPTY_STRING = "";
     private static final String CLOSE = "Close";
 
-    private ScriptureManager scriptureManager;
     private VerseStageManager stageManager;
     private VerseOperations vOperations;
     private boolean memorizedAndLearningListIsEmpty;
@@ -48,7 +48,6 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
     private Calendar c;
 
     public PhoneUnlockPresenterImp(PhoneUnlockView view, Context context){
-        scriptureManager = new ScriptureManager(context);
         stageManager = new VerseStageManager();
         mPrefs = new UserPreferences();
         vOperations = new VerseOperations(context);
@@ -65,12 +64,18 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
 
     @Override
     public void onRequestData() {
-        ScriptureData tempData = scriptureManager.getLearningScripture();
-        onSuccess(tempData);
+        BaseCallback<ScriptureData> quizVerseCallback = new BaseCallback<ScriptureData>() {
+            @Override
+            public void onResponse(ScriptureData response) {
+                onSuccess(response);
+            }
 
-        if(mPrefs.isFirstTimeUnlock(context)) {
-            mPrefs.setFirstTimeUnlock(false, context);
-        }
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+        DataStore.getInstance().getRandomQuizVerse(context, quizVerseCallback);
     }
 
     @Override
@@ -126,7 +131,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         if(initialStage){
             initialStage = false;
             scripture.setMemoryStage(1);
-            scriptureManager.updateScriptureStatus(scripture);
+            DataStore.getInstance().updateQuizVerse(scripture, context);
             if(moreVerses){
                 resetVerseView();
             }else {
@@ -158,21 +163,21 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
             if (subStage > 2 && stage > 0 && stage < 6) {
                 scripture.setMemorySubStage(0);
                 scripture.setMemoryStage(stage + 1);
-                scriptureManager.updateScriptureStatus(scripture);
+                DataStore.getInstance().updateQuizVerse(scripture, context);
             } else if(subStage > 0 && stage == 6){
                 scripture.setMemorySubStage(0);
                 scripture.setMemoryStage(stage + 1);
-                scriptureManager.updateScriptureStatus(scripture);
+                DataStore.getInstance().updateQuizVerse(scripture, context);
             } else if(stage == 7){
                 moveVerseToRememberedList();
-                addCurrentVerseToLearningList();
+                DataStore.getInstance().moveUpcomingVerseToQuiz(context);
                 if(vOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() < 1) {
                     memorizedAndLearningListIsEmpty = true;
                 }
                 view.showMemorizedAlert(memorizedAndLearningListIsEmpty);
             } else {
                 scripture.setMemorySubStage(subStage + 1);
-                scriptureManager.updateScriptureStatus(scripture);
+                DataStore.getInstance().updateQuizVerse(scripture, context);
             }
         }
 
@@ -189,22 +194,31 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         }
     }
 
-    private void addCurrentVerseToLearningList() {
-        scriptureManager.updateLearningList();
-    }
 
     private void moveVerseToRememberedList() {
         String formattedDate = dateFormat.format(c.getTime());
         scripture.setRemeberedDate(formattedDate);
-        ScriptureData newScripture = scriptureManager.getCurrentSetScripture();
-        scripture.setMemorySubStage(0);
-        scripture.setMemoryStage(0);
-        scriptureManager.addVerse(scripture, MemoryListContract.RememberedSetEntry.TABLE_NAME);
-        scriptureManager.removeVerse(scripture.getVerseLocation(), MemoryListContract.LearningSetEntry.TABLE_NAME);
-        if(newScripture != null && newScripture.getVerseLocation() != null && newScripture.getVerse() != null){
-            scriptureManager.addVerse(newScripture, MemoryListContract.LearningSetEntry.TABLE_NAME);
-            scriptureManager.removeVerse(newScripture.getVerseLocation(), MemoryListContract.CurrentSetEntry.TABLE_NAME);
-        }
+
+
+        BaseCallback<List<ScriptureData>> upcomingCallback = new BaseCallback<List<ScriptureData>>() {
+            @Override
+            public void onResponse(List<ScriptureData> response) {
+                scripture.setMemorySubStage(0);
+                scripture.setMemoryStage(0);
+                DataStore.getInstance().saveMemorizedVerse(scripture, context);
+                DataStore.getInstance().deleteQuizVerse(scripture, context);
+                if(response != null && response.get(0).getVerseLocation() != null && response.get(0).getVerse() != null){
+                    DataStore.getInstance().saveQuizVerse(response.get(0), context);
+                    DataStore.getInstance().deleteUpcomingVerse(response.get(0), context);
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+        DataStore.getInstance().getLocalUpcomingVerses(upcomingCallback, context);
     }
 
 
@@ -224,7 +238,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         }else{
             scripture.setMemorySubStage(subStage - 1);
         }
-        scriptureManager.updateScriptureStatus(scripture);
+        DataStore.getInstance().updateQuizVerse(scripture, context);
 
         if(moreVerses){
             resetVerseView();

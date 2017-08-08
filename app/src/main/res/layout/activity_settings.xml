@@ -42,7 +42,7 @@
         android:elevation="2dp"
         android:gravity="center_vertical"
         android:paddingLeft="20dp"
-        android:text="Privacey policy"
+        android:text="Privacy policy"
         android:textColor="@color/bgColor"
         android:textSize="18sp" />
 

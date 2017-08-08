@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.faithcomesbyhearing.dbt.model.Book;
@@ -34,14 +35,18 @@ import nape.biblememory.DBTApi.DBTApi;
 import nape.biblememory.Fragments.BooksFragment;
 import nape.biblememory.Fragments.ChapterFragment;
 import nape.biblememory.Fragments.Dialogs.InProgressEmptyAlertDialog;
+import nape.biblememory.Fragments.Dialogs.NoInternetAlertDialog;
+import nape.biblememory.Fragments.Dialogs.RebuildingDbErrorAlertDialog;
 import nape.biblememory.Fragments.Dialogs.RemoveVerseFromInProgressAlertDialog;
 import nape.biblememory.Fragments.Dialogs.RemoveVerseFromNewVersesAlertDialog;
 import nape.biblememory.Fragments.MyVersesFragment;
 import nape.biblememory.Fragments.VerseFragment;
 import nape.biblememory.Fragments.VerseSelection;
+import nape.biblememory.Managers.NetworkManager;
 import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.Models.ScriptureData;
-import nape.biblememory.Sqlite.MemoryListContract;
+import nape.biblememory.data_store.DataStore;
+import nape.biblememory.data_store.Sqlite.MemoryListContract;
 import nape.biblememory.UserPreferences;
 import nape.biblememory.Views.SlidingTabLayout;
 import nape.biblememory.Fragments.Dialogs.VerseSelectedDialogFragment;
@@ -56,7 +61,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     private ViewPagerAdapter adapterMain;
     private SlidingTabLayout tabsMain;
     private FrameLayout fragmentContainer;
-    private CharSequence mainTitles[]={"Upcoming verses","Quiz verses","Memorized"};
+    private CharSequence mainTitles[]={"Upcoming","Quiz verses","Memorized"};
     private ViewPager pagerVerseSelector;
     private ViewPagerAdapterVerseSelector adapterVerseSelector;
     private SlidingTabLayout tabsVerseSelector;
@@ -70,14 +75,12 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     private NavigationView navigationView;
     private FrameLayout startQuizFabFrame;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private TextView userEmail;
 
     private DBTApi REST;
     private BaseCallback<List<Verse>> selectedVerseCallback;
     private Context context;
-    private VerseOperations vManager;
-    private List<Volume> volumeList;
-    private List<Book> newTestament;
-    private List<Book> oldTestament;
+
 
 
     private static final String BACK = "BACK";
@@ -100,12 +103,12 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        View headerView = navigationView.getHeaderView(0);
+        userEmail = (TextView) headerView.findViewById(R.id.nav_drawer_user_email);
+        userEmail.setText(mPrefs.getUserEmail(getApplicationContext()));
         context = getApplicationContext();
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
-        vManager = new VerseOperations(getApplicationContext());
 
         setSlidingTabViewMain();
 
@@ -117,7 +120,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 mFirebaseAnalytics.logEvent("start_quiz_Fab_selected", null);
-                if(vManager.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() > 0) {
+                if(DataStore.getInstance().getLocalQuizListSize(getApplicationContext()) > 0) {
                     Intent myIntent = new Intent(getApplicationContext(), PhoneUnlockActivity.class);
                     startActivity(myIntent);
                 }else{
@@ -126,7 +129,9 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             }
         });
 
-
+        if(mPrefs.isRebuildError(getApplicationContext())){
+            new RebuildingDbErrorAlertDialog().show(getSupportFragmentManager(), null);
+        }
     }
 
     @Override
@@ -282,10 +287,10 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     public void sendRateThisAppIntent() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         //Try Google play
-        intent.setData(Uri.parse("market://details?id=com.fitnow.loseit&hl=en"));
+        intent.setData(Uri.parse("market://details?id=nape.biblememory&hl=en"));
         if (!MyStartActivity(intent)) {
             //Market (Google play) app seems not installed, let's try to open a web browser
-            intent.setData(Uri.parse("https://play.google.com/store/apps/details?com.fitnow.loseit&hl=en"));
+            intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=nape.biblememory&hl=en"));
             if (!MyStartActivity(intent)) {
                 //Well if this also fails, we have run out of options, inform the user.
                 Toast.makeText(this, "Could not open Android market, please install the market app.", Toast.LENGTH_SHORT).show();
@@ -310,12 +315,16 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
     @Override
     public void addVerseSelected() {
-        this.setTitle("Verse Selection");
-        pagerMain.setVisibility(View.GONE);
-        tabsMain.setVisibility(View.GONE);
-        setSlidingTabViewVerseSelector();
-        startQuiz.setVisibility(View.GONE);
-        startQuizFabFrame.setVisibility(View.GONE);
+        if(NetworkManager.getInstance().isInternet(getApplicationContext())) {
+            this.setTitle("Verse Selection");
+            pagerMain.setVisibility(View.GONE);
+            tabsMain.setVisibility(View.GONE);
+            setSlidingTabViewVerseSelector();
+            startQuiz.setVisibility(View.GONE);
+            startQuizFabFrame.setVisibility(View.GONE);
+        }else{
+            new NoInternetAlertDialog().show(getSupportFragmentManager(), null);
+        }
     }
 
     @Override
@@ -460,29 +469,42 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     }
 
     @Override
-    public void onYesSelected(String verseLocation) {
-        List<ScriptureData> scriptureList = vManager.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME);
-        ScriptureData scripture = null;
+    public void onYesSelected(final String verseLocation) {
+        BaseCallback<List<ScriptureData>> quizCallback = new BaseCallback<List<ScriptureData>>() {
+            @Override
+            public void onResponse(List<ScriptureData> response) {
+                List<ScriptureData> QuizScriptureList = response;
+                ScriptureData scripture = null;
 
-        for(ScriptureData verse : scriptureList){
-            if(verse.getVerseLocation() != null) {
-                if (verse.getVerseLocation().equalsIgnoreCase(verseLocation)) {
-                    scripture = verse;
+                for(ScriptureData verse : QuizScriptureList){
+                    if(verse.getVerseLocation() != null) {
+                        if (verse.getVerseLocation().equalsIgnoreCase(verseLocation)) {
+                            scripture = verse;
+                        }
+                    }
                 }
+
+                if(scripture != null) {
+                    DataStore.getInstance().saveUpcomingVerse(scripture, getApplicationContext());
+                }
+
+                ScriptureData verseToDelete = new ScriptureData("", verseLocation);
+                DataStore.getInstance().deleteQuizVerse(verseToDelete, getApplicationContext());
+                adapterMain.refreshrecyclerViews();
             }
-        }
 
-        if(scripture != null) {
-            vManager.addVerse(scripture, MemoryListContract.CurrentSetEntry.TABLE_NAME);
-        }
+            @Override
+            public void onFailure(Exception e) {
 
-        vManager.removeVerse(verseLocation, MemoryListContract.LearningSetEntry.TABLE_NAME);
-        adapterMain.refreshrecyclerViews();
+            }
+        };
+        DataStore.getInstance().getLocalQuizVerses(quizCallback, getApplicationContext());
     }
 
     @Override
     public void onRemoveFromNewSelected(String verseLocation) {
-        vManager.removeVerse(verseLocation, MemoryListContract.CurrentSetEntry.TABLE_NAME);
+        ScriptureData verse = new ScriptureData("", verseLocation);
+        DataStore.getInstance().deleteUpcomingVerse(verse, getApplicationContext());
         adapterMain.refreshrecyclerViews();
     }
 }

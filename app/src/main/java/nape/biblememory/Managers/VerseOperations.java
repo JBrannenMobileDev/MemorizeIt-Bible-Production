@@ -8,9 +8,11 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import nape.biblememory.data_store.FirebaseDb.Constants;
+import nape.biblememory.data_store.FirebaseDb.FirebaseDb;
 import nape.biblememory.Models.ScriptureData;
-import nape.biblememory.Sqlite.BibleMemoryDbHelper;
-import nape.biblememory.Sqlite.MemoryListContract;
+import nape.biblememory.data_store.Sqlite.BibleMemoryDbHelper;
+import nape.biblememory.data_store.Sqlite.MemoryListContract;
 
 /**
  * Created by Jonathan on 6/15/2016.
@@ -382,5 +384,11 @@ public class VerseOperations {
         return scriptureDb_writable.update(MemoryListContract.LearningSetEntry.TABLE_NAME, values,
                 MemoryListContract.LearningSetEntry.COLUMN_NAME_ENTRY_ID + " = ?",
                 new String[] { String.valueOf(scripture.getVerseLocation()) });
+    }
+
+    public void nukeDb(){
+        scriptureDb_writable.delete(MemoryListContract.CurrentSetEntry.TABLE_NAME, null, null);
+        scriptureDb_writable.delete(MemoryListContract.LearningSetEntry.TABLE_NAME, null, null);
+        scriptureDb_writable.delete(MemoryListContract.RememberedSetEntry.TABLE_NAME, null, null);
     }
 }

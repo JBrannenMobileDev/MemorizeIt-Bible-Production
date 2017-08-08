@@ -21,8 +21,11 @@ import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.R;
 import nape.biblememory.UserPreferences;
+import nape.biblememory.data_store.DataStore;
+import nape.biblememory.data_store.Sqlite.BibleMemoryDbHelper;
 
 import static android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
 import static android.view.View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
@@ -30,6 +33,8 @@ import static android.view.View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 public class BootActivity extends Activity {
     private static final int RC_SIGN_IN = 2884;
     private UserPreferences mPrefs;
+
+    private FirebaseAuth auth;
 
     @BindView(R.id.boot_button_layout)LinearLayout buttonLayout;
     @BindView(R.id.boot_sign_in_bt)Button signInBt;
@@ -44,9 +49,19 @@ public class BootActivity extends Activity {
         mPrefs = new UserPreferences();
         FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         mFirebaseAnalytics.setCurrentScreen(this, "Settings", null);
-        FirebaseAuth auth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            mPrefs.setUserId(auth.getCurrentUser().getUid(), getApplicationContext());
+            mPrefs.setUserEmail(auth.getCurrentUser().getEmail(), getApplicationContext());
+            if(mPrefs.isRebuildError(getApplicationContext())){
+                VerseOperations vOps = new VerseOperations(getApplicationContext());
+                vOps.nukeDb();
+                mPrefs.setUserId(auth.getCurrentUser().getUid(), getApplicationContext());
+                DataStore.getInstance().rebuildLocalDb(getApplicationContext());
+            }else {
+                mPrefs.setUserId(auth.getCurrentUser().getUid(), getApplicationContext());
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            }
             finish();
         } else {
             if(!mPrefs.isFirstTimeLogind(getApplicationContext())){
@@ -100,12 +115,21 @@ public class BootActivity extends Activity {
         // RC_SIGN_IN is the request code you passed into startActivityForResult(...) when starting the sign in flow.
         if (requestCode == RC_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
-//            mPrefs.setUserId(response.getIdpToken());
 
             // Successfully signed in
             if (resultCode == ResultCodes.OK) {
                 mPrefs.setFirstTimeSignIn(false, getApplicationContext());
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                mPrefs.setUserEmail(auth.getCurrentUser().getEmail(), getApplicationContext());
+                if(!mPrefs.getUserId(getApplicationContext()).equals(auth.getCurrentUser().getUid()) || mPrefs.isRebuildError(getApplicationContext())){
+                    VerseOperations vOps = new VerseOperations(getApplicationContext());
+                    vOps.nukeDb();
+                    mPrefs.setUserId(auth.getCurrentUser().getUid(), getApplicationContext());
+                    DataStore.getInstance().rebuildLocalDb(getApplicationContext());
+                }else {
+                    mPrefs.setUserId(auth.getCurrentUser().getUid(), getApplicationContext());
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                }
+
                 finish();
                 return;
             } else {
