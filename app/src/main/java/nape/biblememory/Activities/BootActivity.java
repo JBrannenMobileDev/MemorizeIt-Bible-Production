@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import nape.biblememory.Managers.NetworkManager;
 import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.Models.UserPreferencesModel;
 import nape.biblememory.R;
@@ -40,6 +42,7 @@ public class BootActivity extends Activity {
     @BindView(R.id.boot_button_layout)LinearLayout buttonLayout;
     @BindView(R.id.boot_sign_in_bt)Button signInBt;
     @BindView(R.id.boot_privacy_policy)TextView privacyPolicyTv;
+    @BindView(R.id.boot_progressbar)ProgressBar loadingCircle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +55,11 @@ public class BootActivity extends Activity {
         mFirebaseAnalytics.setCurrentScreen(this, "Settings", null);
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
-            new VerseOperations(getApplicationContext()).nukeDb();
-            DataStore.getInstance().rebuildLocalDb(getApplicationContext());
+            loadingCircle.setVisibility(View.VISIBLE);
+            if(NetworkManager.getInstance().isInternet(getApplicationContext())) {
+                new VerseOperations(getApplicationContext()).nukeDb();
+                DataStore.getInstance().rebuildLocalDb(getApplicationContext());
+            }
             BaseCallback<UserPreferencesModel> userPrefsCallback = new BaseCallback<UserPreferencesModel>() {
                 @Override
                 public void onResponse(UserPreferencesModel response) {
@@ -83,7 +89,7 @@ public class BootActivity extends Activity {
         signInBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                loadingCircle.setVisibility(View.VISIBLE);
                 startActivityForResult(
                         AuthUI.getInstance()
                                 .createSignInIntentBuilder()
@@ -147,18 +153,21 @@ public class BootActivity extends Activity {
             } else {
                 // Sign in failed
                 if (response == null) {
+                    loadingCircle.setVisibility(View.GONE);
                     Toast.makeText(this, "Sign in failed",Toast.LENGTH_SHORT).show();
                     buttonLayout.setVisibility(View.VISIBLE);
                     return;
                 }
 
                 if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
+                    loadingCircle.setVisibility(View.GONE);
                     Toast.makeText(this, "No network",Toast.LENGTH_SHORT).show();
                     buttonLayout.setVisibility(View.VISIBLE);
                     return;
                 }
 
                 if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
+                    loadingCircle.setVisibility(View.GONE);
                     Toast.makeText(this, "Unknown error",Toast.LENGTH_SHORT).show();
                     buttonLayout.setVisibility(View.VISIBLE);
                     return;
