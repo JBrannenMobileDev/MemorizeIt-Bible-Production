@@ -41,6 +41,12 @@ public class UserPreferences{
             setRebuildError(response.isRebuildError(), context);
             setMigratedToFirebaseDb(response.isMigratedToFirebase(), context);
             setSettingsStartTimeMonday(response.getMondayStartTime(), context);
+            setSettingsStartTimeTuesday(response.getTuesdayStartTime(), context);
+            setSettingsStartTimeWednesday(response.getWednesdayStartTime(), context);
+            setSettingsStartTimeThursday(response.getThursdayStartTime(), context);
+            setSettingsStartTimeFriday(response.getFridayStartTime(), context);
+            setSettingsStartTimeSaturday(response.getSaturdayStartTime(), context);
+            setSettingsStartTimeSunday(response.getSundayStartTime(), context);
             setSettingsEndTimeMonday(response.getMondayEndTime(), context);
             setSettingsEndTimeTuesday(response.getTuesdayEndTime(), context);
             setSettingsEndTimeWednesday(response.getWednesdayEndTime(), context);

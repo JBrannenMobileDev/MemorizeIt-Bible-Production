@@ -37,7 +37,7 @@ public class UnlockReceiver extends BroadcastReceiver {
                     } else {
                         Intent s = new Intent(context.getApplicationContext(), PhoneUnlockActivity.class);
                         s.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        VerseOperations vOperations = new VerseOperations(context.getApplicationContext());
+                        VerseOperations vOperations = VerseOperations.getInstance(context);
                         if (vOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() > 0 && mPrefs.isStartQuizWhenPhoneUnlock(context.getApplicationContext())) {
                             Calendar calendar = Calendar.getInstance();
                             boolean startQuiz = true;

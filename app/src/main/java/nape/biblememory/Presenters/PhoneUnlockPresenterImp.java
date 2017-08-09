@@ -50,7 +50,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
     public PhoneUnlockPresenterImp(PhoneUnlockView view, Context context){
         stageManager = new VerseStageManager();
         mPrefs = new UserPreferences();
-        vOperations = new VerseOperations(context);
+        vOperations = VerseOperations.getInstance(context);
         stringModifier = new ModifyVerseText();
         this.view = view;
         this.context = context;

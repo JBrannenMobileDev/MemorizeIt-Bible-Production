@@ -64,7 +64,7 @@ public class MyVersesFragment extends Fragment {
         final View v =inflater.inflate(R.layout.fragment_my_verses,container,false);
 
         appContext = getActivity().getApplicationContext();
-        vManager = new VerseOperations(getActivity().getApplicationContext());
+        vManager = VerseOperations.getInstance(getActivity().getApplicationContext());
         addVerseButton = (FloatingActionButton) v.findViewById(R.id.add_verse_button_fab);
         addVerseButton.setOnClickListener(new View.OnClickListener() {
             @Override

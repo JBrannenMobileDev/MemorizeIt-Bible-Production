@@ -8,7 +8,6 @@ import java.util.Random;
 
 import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.Activities.MainActivity;
-import nape.biblememory.Fragments.Dialogs.RebuildingDbErrorAlertDialog;
 import nape.biblememory.Managers.NetworkManager;
 import nape.biblememory.Managers.ScriptureManager;
 import nape.biblememory.Managers.VerseOperations;
@@ -44,39 +43,33 @@ public class DataStore {
     }
 
     public void saveUpcomingVerse(ScriptureData verse, Context applicationContext){
-        VerseOperations verseOperations = new VerseOperations(applicationContext);
         FirebaseDb.getInstance().saveUpcomingVerseToFirebase(verse, applicationContext);
-        verseOperations.addVerse(verse, MemoryListContract.CurrentSetEntry.TABLE_NAME);
+        VerseOperations.getInstance(applicationContext).addVerse(verse, MemoryListContract.CurrentSetEntry.TABLE_NAME);
     }
 
     public void saveQuizVerse(ScriptureData verse, Context applicationContext){
-        VerseOperations verseOperations = new VerseOperations(applicationContext);
         FirebaseDb.getInstance().saveQuizVerseToFirebase(verse, applicationContext);
-        verseOperations.addVerse(verse, MemoryListContract.LearningSetEntry.TABLE_NAME);
+        VerseOperations.getInstance(applicationContext).addVerse(verse, MemoryListContract.LearningSetEntry.TABLE_NAME);
     }
 
     public void saveMemorizedVerse(ScriptureData verse, Context applicationContext){
-        VerseOperations verseOperations = new VerseOperations(applicationContext);
         FirebaseDb.getInstance().saveMemorizedVerseToFirebase(verse, applicationContext);
-        verseOperations.addVerse(verse, MemoryListContract.RememberedSetEntry.TABLE_NAME);
+        VerseOperations.getInstance(applicationContext).addVerse(verse, MemoryListContract.RememberedSetEntry.TABLE_NAME);
     }
 
     public void deleteUpcomingVerse(ScriptureData verse, Context context){
         FirebaseDb.getInstance().deleteUpcomingVerse(verse, context);
-        VerseOperations vManager = new VerseOperations(context);
-        vManager.removeVerse(verse.getVerseLocation(), MemoryListContract.CurrentSetEntry.TABLE_NAME);
+        VerseOperations.getInstance(context).removeVerse(verse.getVerseLocation(), MemoryListContract.CurrentSetEntry.TABLE_NAME);
     }
 
     public void deleteQuizVerse(ScriptureData verse, Context context){
         FirebaseDb.getInstance().deleteQuizVerse(verse, context);
-        VerseOperations vManager = new VerseOperations(context);
-        vManager.removeVerse(verse.getVerseLocation(), MemoryListContract.LearningSetEntry.TABLE_NAME);
+        VerseOperations.getInstance(context).removeVerse(verse.getVerseLocation(), MemoryListContract.LearningSetEntry.TABLE_NAME);
     }
 
     public void deleteMemorizedVerse(ScriptureData verse, Context context){
         FirebaseDb.getInstance().deleteMemorizedVerse(verse, context);
-        VerseOperations vManager = new VerseOperations(context);
-        vManager.removeVerse(verse.getVerseLocation(), MemoryListContract.RememberedSetEntry.TABLE_NAME);
+        VerseOperations.getInstance(context).removeVerse(verse.getVerseLocation(), MemoryListContract.RememberedSetEntry.TABLE_NAME);
     }
 
     public void getUpcomingVerses(BaseCallback<List<ScriptureData>> upcomingCallback, Context applicationContext){
@@ -247,6 +240,7 @@ public class DataStore {
         BaseCallback<List<ScriptureData>> upcomingCallback = new BaseCallback<List<ScriptureData>>() {
             @Override
             public void onResponse(List<ScriptureData> response) {
+                VerseOperations.getInstance(context).nukeDb();
                 if(response.size() > 0){
                     for(ScriptureData verse : response){
                         scriptureManager.addVerse(verse, MemoryListContract.CurrentSetEntry.TABLE_NAME);
@@ -271,11 +265,13 @@ public class DataStore {
                                 mPrefs.setRebuildError(false, context);
                                 mPrefsModel.initAllData(context, mPrefs);
                                 DataStore.getInstance().saveUserPrefs(mPrefsModel, context);
+                                context.startActivity(new Intent(context, MainActivity.class));
                             }
 
                             @Override
                             public void onFailure(Exception e) {
                                 mPrefs.setRebuildError(true, context);
+                                context.startActivity(new Intent(context, MainActivity.class));
                             }
                         };
                         getMemorizedVerses(memorizedCallback, context);
@@ -284,6 +280,7 @@ public class DataStore {
                     @Override
                     public void onFailure(Exception e) {
                         mPrefs.setRebuildError(true, context);
+                        context.startActivity(new Intent(context, MainActivity.class));
                     }
                 };
                 getQuizVerses(quizCallback, context);
@@ -292,6 +289,7 @@ public class DataStore {
             @Override
             public void onFailure(Exception e) {
                 mPrefs.setRebuildError(true, context);
+                context.startActivity(new Intent(context, MainActivity.class));
             }
         };
         getUpcomingVerses(upcomingCallback, context);

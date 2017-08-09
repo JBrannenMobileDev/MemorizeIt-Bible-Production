@@ -73,7 +73,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
         bookName = getArguments().getString("book_name");
         chapter = getArguments().getString("chapter");
         comingFromNewVerses = getArguments().getBoolean("comingFromNew");
-        verseOperations = new VerseOperations(getActivity().getApplicationContext());
+        verseOperations = VerseOperations.getInstance(getActivity().getApplicationContext());
         if(verseOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() > 2){
             addVerseToInProgress.setVisibility(View.GONE);
         }else{

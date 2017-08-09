@@ -56,20 +56,25 @@ public class BootActivity extends Activity {
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
             loadingCircle.setVisibility(View.VISIBLE);
-            if(NetworkManager.getInstance().isInternet(getApplicationContext())) {
-                new VerseOperations(getApplicationContext()).nukeDb();
-                DataStore.getInstance().rebuildLocalDb(getApplicationContext());
-            }
+            mPrefs.setUserId(auth.getCurrentUser().getUid(), getApplicationContext());
             BaseCallback<UserPreferencesModel> userPrefsCallback = new BaseCallback<UserPreferencesModel>() {
                 @Override
                 public void onResponse(UserPreferencesModel response) {
                     mPrefs.setPrefs(response, getApplicationContext());
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    if(NetworkManager.getInstance().isInternet(getApplicationContext())) {
+                        DataStore.getInstance().rebuildLocalDb(getApplicationContext());
+                    }else{
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    }
                 }
 
                 @Override
                 public void onFailure(Exception e) {
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    if(NetworkManager.getInstance().isInternet(getApplicationContext())) {
+                        DataStore.getInstance().rebuildLocalDb(getApplicationContext());
+                    }else{
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    }
                 }
             };
             DataStore.getInstance().getUserPrefs(getApplicationContext(),userPrefsCallback);
@@ -134,18 +139,16 @@ public class BootActivity extends Activity {
                 }
                 mPrefs.setUserId(auth.getCurrentUser().getUid(), getApplicationContext());
                 mPrefs.setFirstTimeSignIn(false, getApplicationContext());
-                new VerseOperations(getApplicationContext()).nukeDb();
-                DataStore.getInstance().rebuildLocalDb(getApplicationContext());
                 BaseCallback<UserPreferencesModel> userPrefsCallback = new BaseCallback<UserPreferencesModel>() {
                     @Override
                     public void onResponse(UserPreferencesModel response) {
                         mPrefs.setPrefs(response, getApplicationContext());
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        DataStore.getInstance().rebuildLocalDb(getApplicationContext());
                     }
 
                     @Override
                     public void onFailure(Exception e) {
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        DataStore.getInstance().rebuildLocalDb(getApplicationContext());
                     }
                 };
                 DataStore.getInstance().getUserPrefs(getApplicationContext(), userPrefsCallback);

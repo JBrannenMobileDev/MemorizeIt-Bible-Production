@@ -15,7 +15,7 @@ public class ScriptureManager {
     private VerseOperations vOperations;
 
     public ScriptureManager(Context context){
-        vOperations = new VerseOperations(context);
+        vOperations = VerseOperations.getInstance(context);
     }
 
 

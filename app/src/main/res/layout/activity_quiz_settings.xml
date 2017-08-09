@@ -36,7 +36,7 @@
                 android:cursorVisible="false"
                 android:text="Launch quiz when phone is unlocked"
                 android:textColor="@color/bgColor"
-                android:textSize="18sp"
+                android:textSize="16dp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -58,7 +58,7 @@
                 android:paddingLeft="16dp"
                 android:text="Do not launch quiz on:"
                 android:textColor="@color/bgColor"
-                android:textSize="18sp"
+                android:textSize="16dp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -89,7 +89,7 @@
                         android:gravity="center_vertical"
                         android:text="Monday"
                         android:textColor="@color/bgColor"
-                        android:textSize="18sp"
+                        android:textSize="16dp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -102,7 +102,7 @@
                         android:gravity="center_vertical"
                         android:text="Between these times:"
                         android:textColor="@color/colorCloseButtonTextUnselected"
-                        android:textSize="18sp"
+                        android:textSize="16dp"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -229,7 +229,7 @@
                         android:gravity="center_vertical"
                         android:text="Tuesday"
                         android:textColor="@color/bgColor"
-                        android:textSize="18sp"
+                        android:textSize="16dp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -242,7 +242,7 @@
                         android:gravity="center_vertical"
                         android:text="Between these times:"
                         android:textColor="@color/colorCloseButtonTextUnselected"
-                        android:textSize="18sp"
+                        android:textSize="16dp"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -369,7 +369,7 @@
                         android:gravity="center_vertical"
                         android:text="Wednesday"
                         android:textColor="@color/bgColor"
-                        android:textSize="18sp"
+                        android:textSize="16dp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -382,7 +382,7 @@
                         android:gravity="center_vertical"
                         android:text="Between these times:"
                         android:textColor="@color/colorCloseButtonTextUnselected"
-                        android:textSize="18sp"
+                        android:textSize="16dp"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -509,7 +509,7 @@
                         android:gravity="center_vertical"
                         android:text="Thursday"
                         android:textColor="@color/bgColor"
-                        android:textSize="18sp"
+                        android:textSize="16dp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -522,7 +522,7 @@
                         android:gravity="center_vertical"
                         android:text="Between these times:"
                         android:textColor="@color/colorCloseButtonTextUnselected"
-                        android:textSize="18sp"
+                        android:textSize="16dp"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -649,7 +649,7 @@
                         android:gravity="center_vertical"
                         android:text="Friday"
                         android:textColor="@color/bgColor"
-                        android:textSize="18sp"
+                        android:textSize="16dp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -662,7 +662,7 @@
                         android:gravity="center_vertical"
                         android:text="Between these times:"
                         android:textColor="@color/colorCloseButtonTextUnselected"
-                        android:textSize="18sp"
+                        android:textSize="16dp"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -789,7 +789,7 @@
                         android:gravity="center_vertical"
                         android:text="Saturday"
                         android:textColor="@color/bgColor"
-                        android:textSize="18sp"
+                        android:textSize="16dp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -802,7 +802,7 @@
                         android:gravity="center_vertical"
                         android:text="Between these times:"
                         android:textColor="@color/colorCloseButtonTextUnselected"
-                        android:textSize="18sp"
+                        android:textSize="16dp"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -929,7 +929,7 @@
                         android:gravity="center_vertical"
                         android:text="Sunday"
                         android:textColor="@color/bgColor"
-                        android:textSize="18sp"
+                        android:textSize="16dp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -942,7 +942,7 @@
                         android:gravity="center_vertical"
                         android:text="Between these times:"
                         android:textColor="@color/colorCloseButtonTextUnselected"
-                        android:textSize="18sp"
+                        android:textSize="16dp"
                         android:textStyle="bold" />
 
                     <LinearLayout

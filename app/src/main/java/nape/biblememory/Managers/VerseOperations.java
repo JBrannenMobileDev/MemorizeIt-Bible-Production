@@ -18,12 +18,21 @@ import nape.biblememory.data_store.Sqlite.MemoryListContract;
  * Created by Jonathan on 6/15/2016.
  */
 public class VerseOperations {
+    private static VerseOperations ourInstance;
+    public static VerseOperations getInstance(Context applicationContext){
+        if(ourInstance == null){
+            ourInstance = new VerseOperations(applicationContext);
+        }
+        return ourInstance;
+    }
+
+
     private BibleMemoryDbHelper dbHelper;
     private SQLiteDatabase scriptureDb_writable;
     private SQLiteDatabase scriptureDb_readable;
     private static final String TAG = "VersoOperations";
 
-    public VerseOperations(Context context) {
+    private VerseOperations(Context context) {
         dbHelper = new BibleMemoryDbHelper(context);
         scriptureDb_readable = dbHelper.getReadableDatabase();
         scriptureDb_writable = dbHelper.getWritableDatabase();
@@ -44,7 +53,7 @@ public class VerseOperations {
         List<ScriptureData> results = new ArrayList<>();
         ScriptureData verseObject;
         Cursor cursor;
-        
+        scriptureDb_readable = dbHelper.getReadableDatabase();
         switch(tableName){
             case MemoryListContract.CurrentSetEntry.TABLE_NAME:
                 cursor = scriptureDb_readable.query(tableName,

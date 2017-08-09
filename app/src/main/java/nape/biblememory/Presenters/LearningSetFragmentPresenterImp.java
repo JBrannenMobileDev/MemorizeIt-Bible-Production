@@ -21,7 +21,7 @@ public class LearningSetFragmentPresenterImp implements LearningSetFragmentPrese
     public LearningSetFragmentPresenterImp(LearningSetFragmentView view, Context context){
         mView = view;
         this.context = context;
-        vManager = new VerseOperations(context);
+        vManager = VerseOperations.getInstance(context);
     }
 
     @Override
