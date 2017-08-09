@@ -51,9 +51,9 @@
             android:name=".Activities.PrivacyPolicyActivity"
             android:parentActivityName=".Activities.SettingsActivity" />
         <activity
-            android:name=".Activities.BootPrivacyPolicyActivity"
-            android:parentActivityName=".Activities.MainActivity" />
+            android:name=".Activities.BootPrivacyPolicyActivity" />
         <activity android:name=".Activities.BootActivity"
+            android:noHistory="true"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

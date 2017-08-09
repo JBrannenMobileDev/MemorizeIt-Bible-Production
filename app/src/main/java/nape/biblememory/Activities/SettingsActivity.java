@@ -42,6 +42,8 @@ public class SettingsActivity extends AppCompatActivity {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         mFirebaseAnalytics.setCurrentScreen(this, "Settings", null);
         initListeners();
+        Intent returnIntent = new Intent();
+        setResult(2,returnIntent);
     }
 
     private void initListeners() {

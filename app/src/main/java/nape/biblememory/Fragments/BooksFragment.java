@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.faithcomesbyhearing.dbt.model.Book;
 import com.faithcomesbyhearing.dbt.model.Volume;
@@ -38,6 +39,7 @@ public class BooksFragment extends Fragment {
     private List<Book> newTestament;
     private List<Book> oldTestament;
     private Context context;
+    private ProgressBar loadingBar;
 
     List<Volume> volumeList;
 
@@ -57,6 +59,7 @@ public class BooksFragment extends Fragment {
         mPrefs = new UserPreferences();
 
         context = getActivity().getApplicationContext();
+        loadingBar = (ProgressBar) v.findViewById(R.id.books_progressbar);
 
         mLayoutManager = new LinearLayoutManager(this.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -208,6 +211,7 @@ public class BooksFragment extends Fragment {
     }
 
     private void handleRESTResponse(BaseCallback bookSelectedCallback, List<String> response){
+        loadingBar.setVisibility(View.GONE);
         mAdapter = new RecyclerViewAdapterBooks(response, SlidingTabLayout.POSITION_1, bookSelectedCallback);
         mRecyclerView.setAdapter(mAdapter);
     }

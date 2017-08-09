@@ -114,6 +114,7 @@ public class VerseFragment extends Fragment {
                         BaseCallback<Integer> verseNumCallback = new BaseCallback<Integer>() {
                             @Override
                             public void onResponse(Integer response) {
+                                verseSelectedLoadingBar.setVisibility(View.GONE);
                                 numOfVerses = response;
                                 mPrefs.setNumberOfVerses(numOfVerses, context);
                                 for (int i = 1; i <= numOfVerses; i++) {

@@ -271,7 +271,9 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        finish();
+        if(resultCode == 1) {
+            finish();
+        }
     }
 
     private boolean MyStartActivity(Intent aIntent) {
