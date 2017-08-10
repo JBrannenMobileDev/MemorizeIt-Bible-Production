@@ -238,41 +238,41 @@ public class VerseOperations {
                 break;
 
 
-            case MemoryListContract.RememberedSetEntry.TABLE_NAME:
+            case MemoryListContract.ForgottenSetEntry.TABLE_NAME:
                 cursor = scriptureDb_readable.query(tableName,
                         new String[] { MemoryListContract.CurrentSetEntry.PRIMARY_KEY_ID,
-                                MemoryListContract.RememberedSetEntry.COLUMN_NAME_ENTRY_ID,
-                                MemoryListContract.RememberedSetEntry.COLUMN_NAME_VERSE_CONTENT,
-                                MemoryListContract.RememberedSetEntry.COLUMN_NAME_MEMORY_STAGE,
-                                MemoryListContract.RememberedSetEntry.COLUMN_NAME_MEMORY_SUB_STAGE,
-                                MemoryListContract.RememberedSetEntry.COLUMN_NAME_START_DATE,
-                                MemoryListContract.RememberedSetEntry.COLUMN_NAME_REMEMBERED_DATE,
-                                MemoryListContract.RememberedSetEntry.COLUMN_NAME_MEMORIZE_DATE,
-                                MemoryListContract.RememberedSetEntry.COLUMN_NAME_DATE_LAST_SEEN,
-                                MemoryListContract.RememberedSetEntry.COLUMN_NAME_COUNT_CORRECT,
-                                MemoryListContract.RememberedSetEntry.COLUMN_NAME_COUNT_VIEWED,
-                                MemoryListContract.RememberedSetEntry.COLUMN_NAME_BOOK_NAME,
-                                MemoryListContract.RememberedSetEntry.COLUMN_NAME_CHAPTER,
-                                MemoryListContract.RememberedSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER,
-                                MemoryListContract.RememberedSetEntry.COLUMN_NAME_VERSE_NUMBER},
+                                MemoryListContract.ForgottenSetEntry.COLUMN_NAME_ENTRY_ID,
+                                MemoryListContract.ForgottenSetEntry.COLUMN_NAME_VERSE_CONTENT,
+                                MemoryListContract.ForgottenSetEntry.COLUMN_NAME_MEMORY_STAGE,
+                                MemoryListContract.ForgottenSetEntry.COLUMN_NAME_MEMORY_SUB_STAGE,
+                                MemoryListContract.ForgottenSetEntry.COLUMN_NAME_START_DATE,
+                                MemoryListContract.ForgottenSetEntry.COLUMN_NAME_REMEMBERED_DATE,
+                                MemoryListContract.ForgottenSetEntry.COLUMN_NAME_MEMORIZE_DATE,
+                                MemoryListContract.ForgottenSetEntry.COLUMN_NAME_DATE_LAST_SEEN,
+                                MemoryListContract.ForgottenSetEntry.COLUMN_NAME_COUNT_CORRECT,
+                                MemoryListContract.ForgottenSetEntry.COLUMN_NAME_COUNT_VIEWED,
+                                MemoryListContract.ForgottenSetEntry.COLUMN_NAME_BOOK_NAME,
+                                MemoryListContract.ForgottenSetEntry.COLUMN_NAME_CHAPTER,
+                                MemoryListContract.ForgottenSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER,
+                                MemoryListContract.ForgottenSetEntry.COLUMN_NAME_VERSE_NUMBER},
                         null, null, null, null, null);
 
                 if (cursor != null) {
-                    int idIndex = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.COLUMN_NAME_ENTRY_ID);
-                    int vContentIndex = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.COLUMN_NAME_VERSE_CONTENT);
-                    int stageIndex = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.COLUMN_NAME_MEMORY_STAGE);
-                    int subStageIndex = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.COLUMN_NAME_MEMORY_SUB_STAGE);
-                    int startDateIndex = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.COLUMN_NAME_START_DATE);
-                    int rememberedDateIndex = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.COLUMN_NAME_REMEMBERED_DATE);
-                    int memorizedDateIndex = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.COLUMN_NAME_MEMORIZE_DATE);
-                    int lastSeenDateIndex = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.COLUMN_NAME_DATE_LAST_SEEN);
-                    int countCorrectDateIndex = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.COLUMN_NAME_COUNT_CORRECT);
-                    int countViewedDateIndex = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.COLUMN_NAME_COUNT_VIEWED);
-                    int primaryKeyId = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.PRIMARY_KEY_ID);
-                    int bookIdIndex = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.COLUMN_NAME_BOOK_NAME);
-                    int chapterIdIndex = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.COLUMN_NAME_CHAPTER);
-                    int numofVersesIndex = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER);
-                    int verseNumIndex = cursor.getColumnIndex(MemoryListContract.RememberedSetEntry.COLUMN_NAME_VERSE_NUMBER);
+                    int idIndex = cursor.getColumnIndex(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_ENTRY_ID);
+                    int vContentIndex = cursor.getColumnIndex(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_VERSE_CONTENT);
+                    int stageIndex = cursor.getColumnIndex(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_MEMORY_STAGE);
+                    int subStageIndex = cursor.getColumnIndex(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_MEMORY_SUB_STAGE);
+                    int startDateIndex = cursor.getColumnIndex(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_START_DATE);
+                    int rememberedDateIndex = cursor.getColumnIndex(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_REMEMBERED_DATE);
+                    int memorizedDateIndex = cursor.getColumnIndex(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_MEMORIZE_DATE);
+                    int lastSeenDateIndex = cursor.getColumnIndex(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_DATE_LAST_SEEN);
+                    int countCorrectDateIndex = cursor.getColumnIndex(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_COUNT_CORRECT);
+                    int countViewedDateIndex = cursor.getColumnIndex(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_COUNT_VIEWED);
+                    int primaryKeyId = cursor.getColumnIndex(MemoryListContract.ForgottenSetEntry.PRIMARY_KEY_ID);
+                    int bookIdIndex = cursor.getColumnIndex(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_BOOK_NAME);
+                    int chapterIdIndex = cursor.getColumnIndex(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_CHAPTER);
+                    int numofVersesIndex = cursor.getColumnIndex(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER);
+                    int verseNumIndex = cursor.getColumnIndex(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_VERSE_NUMBER);
 
                     cursor.moveToFirst();
                     while (!cursor.isAfterLast()) {
@@ -340,21 +340,21 @@ public class VerseOperations {
                 values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_VERSE_NUMBER, scriptureData.getVerseNumber());
                 break;
 
-            case MemoryListContract.RememberedSetEntry.TABLE_NAME:
-                values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_ENTRY_ID, scriptureData.getVerseLocation());
-                values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_VERSE_CONTENT, scriptureData.getVerse());
-                values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_MEMORY_STAGE, scriptureData.getMemoryStage());
-                values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_MEMORY_SUB_STAGE, scriptureData.getMemorySubStage());
-                values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_COUNT_VIEWED, scriptureData.getViewedCount());
-                values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_COUNT_CORRECT, scriptureData.getCorrectCount());
-                values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_START_DATE, scriptureData.getStartDate());
-                values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_DATE_LAST_SEEN, scriptureData.getLastSeenDate());
-                values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_REMEMBERED_DATE, scriptureData.getRemeberedDate());
-                values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_MEMORIZE_DATE, scriptureData.getMemorizedDate());
-                values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_BOOK_NAME, scriptureData.getBookName());
-                values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_CHAPTER, scriptureData.getChapter());
-                values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER, scriptureData.getNumOfVersesInChapter());
-                values.put(MemoryListContract.RememberedSetEntry.COLUMN_NAME_VERSE_NUMBER, scriptureData.getVerseNumber());
+            case MemoryListContract.ForgottenSetEntry.TABLE_NAME:
+                values.put(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_ENTRY_ID, scriptureData.getVerseLocation());
+                values.put(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_VERSE_CONTENT, scriptureData.getVerse());
+                values.put(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_MEMORY_STAGE, scriptureData.getMemoryStage());
+                values.put(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_MEMORY_SUB_STAGE, scriptureData.getMemorySubStage());
+                values.put(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_COUNT_VIEWED, scriptureData.getViewedCount());
+                values.put(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_COUNT_CORRECT, scriptureData.getCorrectCount());
+                values.put(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_START_DATE, scriptureData.getStartDate());
+                values.put(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_DATE_LAST_SEEN, scriptureData.getLastSeenDate());
+                values.put(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_REMEMBERED_DATE, scriptureData.getRemeberedDate());
+                values.put(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_MEMORIZE_DATE, scriptureData.getMemorizedDate());
+                values.put(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_BOOK_NAME, scriptureData.getBookName());
+                values.put(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_CHAPTER, scriptureData.getChapter());
+                values.put(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER, scriptureData.getNumOfVersesInChapter());
+                values.put(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_VERSE_NUMBER, scriptureData.getVerseNumber());
                 break;
 
             case MemoryListContract.MemorizedSetEntry.TABLE_NAME:
@@ -395,9 +395,21 @@ public class VerseOperations {
                 new String[] { String.valueOf(scripture.getVerseLocation()) });
     }
 
+    public Integer updateForgottenVerse(ScriptureData scripture) {
+        ContentValues values = new ContentValues();
+        values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_MEMORY_STAGE, scripture.getMemoryStage());
+        values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_MEMORY_SUB_STAGE, scripture.getMemorySubStage());
+
+        // updating row
+        return scriptureDb_writable.update(MemoryListContract.ForgottenSetEntry.TABLE_NAME, values,
+                MemoryListContract.ForgottenSetEntry.COLUMN_NAME_ENTRY_ID + " = ?",
+                new String[] { String.valueOf(scripture.getVerseLocation()) });
+    }
+
     public void nukeDb(){
         scriptureDb_writable.delete(MemoryListContract.CurrentSetEntry.TABLE_NAME, null, null);
         scriptureDb_writable.delete(MemoryListContract.LearningSetEntry.TABLE_NAME, null, null);
-        scriptureDb_writable.delete(MemoryListContract.RememberedSetEntry.TABLE_NAME, null, null);
+        scriptureDb_writable.delete(MemoryListContract.ForgottenSetEntry.TABLE_NAME, null, null);
+        scriptureDb_writable.delete(MemoryListContract.MemorizedSetEntry.TABLE_NAME, null, null);
     }
 }

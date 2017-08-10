@@ -56,6 +56,10 @@ public class ScriptureManager {
         vOperations.updateVerse(scripture);
     }
 
+    public void updateForgottenScriptureStatus(ScriptureData scripture) {
+        vOperations.updateForgottenVerse(scripture);
+    }
+
     public void addVerse(ScriptureData scripture, String tableName){
         vOperations.addVerse(scripture, tableName);
     }

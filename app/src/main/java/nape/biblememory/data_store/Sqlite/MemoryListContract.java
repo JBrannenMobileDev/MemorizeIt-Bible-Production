@@ -45,7 +45,7 @@ public final class MemoryListContract {
         public static final String COLUMN_NAME_VERSE_NUMBER = "versenumber";
     }
 
-    public static abstract class RememberedSetEntry implements BaseColumns {
+    public static abstract class ForgottenSetEntry implements BaseColumns {
         public static final String TABLE_NAME = "rememberedset";
         public static final String PRIMARY_KEY_ID = "_id";
         public static final String COLUMN_NAME_ENTRY_ID = "scriptureid";

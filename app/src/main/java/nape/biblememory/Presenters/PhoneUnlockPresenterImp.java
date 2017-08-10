@@ -47,6 +47,9 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
     private SimpleDateFormat dateFormat;
     private Calendar c;
 
+    private boolean reviewVerse;
+    private boolean forgottenVerse;
+
     public PhoneUnlockPresenterImp(PhoneUnlockView view, Context context){
         stageManager = new VerseStageManager();
         mPrefs = new UserPreferences();
@@ -57,6 +60,8 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         this.moreVerses = false;
         this.initialStage = false;
         this.hintClicked = false;
+        reviewVerse = false;
+        forgottenVerse = false;
         setMoreVersesSwitch(false);
         dateFormat = new SimpleDateFormat("MM-dd-yyyy");
         c = Calendar.getInstance();
@@ -64,7 +69,8 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
 
     @Override
     public void onRequestData() {
-        BaseCallback<ScriptureData> quizVerseCallback = new BaseCallback<ScriptureData>() {
+        int quizViewCount = mPrefs.getQuizViewCount(context);
+        final BaseCallback<ScriptureData> quizVerseCallback = new BaseCallback<ScriptureData>() {
             @Override
             public void onResponse(ScriptureData response) {
                 onSuccess(response);
@@ -75,7 +81,50 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
 
             }
         };
-        DataStore.getInstance().getRandomQuizVerse(context, quizVerseCallback);
+        if(quizViewCount >= 15){
+            mPrefs.setQuizViewCount(0, context);
+            BaseCallback<ScriptureData> forgottenVerseCallback = new BaseCallback<ScriptureData>() {
+                @Override
+                public void onResponse(ScriptureData response) {
+                    BaseCallback<ScriptureData> memroizedVerseAtCallback = new BaseCallback<ScriptureData>() {
+                        @Override
+                        public void onResponse(ScriptureData response) {
+                            if(response != null){
+                                mPrefs.setQuizReviewIndex(mPrefs.getQuizReviewIndex(context)+1, context);
+                                view.setReviewTitleVisibility(View.VISIBLE);
+                                reviewVerse = true;
+                                quizVerseCallback.onResponse(response);
+                            }else{
+                                DataStore.getInstance().getRandomQuizVerse(context, quizVerseCallback);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Exception e) {
+
+                        }
+                    };
+                    if(response != null){
+                        view.setReviewTitleVisibility(View.VISIBLE);
+                        view.setReviewTitleText("Review forgotten verse");
+                        view.setReviewTitleColor(R.color.colorNoText);
+                        forgottenVerse = true;
+                        quizVerseCallback.onResponse(response);
+                    }else{
+                        DataStore.getInstance().getLocalMeorizedVerseAt(mPrefs.getQuizReviewIndex(context), memroizedVerseAtCallback, context);
+                    }
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+
+                }
+            };
+            DataStore.getInstance().getLocalForgottenVerse(forgottenVerseCallback, context);
+        }else {
+            mPrefs.setQuizViewCount(quizViewCount + 1, context);
+            DataStore.getInstance().getRandomQuizVerse(context, quizVerseCallback);
+        }
     }
 
     @Override
@@ -155,29 +204,46 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         int subStage = scripture.getMemorySubStage();
 
         if(!hintClicked) {
-            if (stage == 0) {
-                scripture.setMemoryStage(stage + 1);
-            } else {
-                scripture.setMemorySubStage(subStage + 1);
-            }
-            if (subStage > 2 && stage > 0 && stage < 6) {
-                scripture.setMemorySubStage(0);
-                scripture.setMemoryStage(stage + 1);
-                DataStore.getInstance().updateQuizVerse(scripture, context);
-            } else if(subStage > 0 && stage == 6){
-                scripture.setMemorySubStage(0);
-                scripture.setMemoryStage(stage + 1);
-                DataStore.getInstance().updateQuizVerse(scripture, context);
-            } else if(stage == 7){
-                moveVerseToRememberedList();
-                DataStore.getInstance().moveUpcomingVerseToQuiz(context);
-                if(vOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() < 1) {
-                    memorizedAndLearningListIsEmpty = true;
+            if(reviewVerse) {
+                String formattedDate = dateFormat.format(c.getTime());
+                scripture.setLastSeenDate(formattedDate);
+            }else {
+                if (stage == 0) {
+                    scripture.setMemoryStage(stage + 1);
+                } else {
+                    scripture.setMemorySubStage(subStage + 1);
                 }
-                view.showMemorizedAlert(memorizedAndLearningListIsEmpty);
-            } else {
-                scripture.setMemorySubStage(subStage + 1);
-                DataStore.getInstance().updateQuizVerse(scripture, context);
+                if (subStage > 2 && stage > 0 && stage < 6) {
+                    scripture.setMemorySubStage(0);
+                    scripture.setMemoryStage(stage + 1);
+                    if(forgottenVerse){
+                        DataStore.getInstance().updateForgottenVerse(scripture, context);
+                    }else {
+                        DataStore.getInstance().updateQuizVerse(scripture, context);
+                    }
+                } else if (subStage > 0 && stage == 6) {
+                    scripture.setMemorySubStage(0);
+                    scripture.setMemoryStage(stage + 1);
+                    if(forgottenVerse){
+                        DataStore.getInstance().updateForgottenVerse(scripture, context);
+                    }else {
+                        DataStore.getInstance().updateQuizVerse(scripture, context);
+                    }
+                } else if (stage == 7) {
+                    if(forgottenVerse){
+                        moveForgottenVerseToQuizList();
+                    }else {
+                        moveVerseToRememberedList();
+                        DataStore.getInstance().moveUpcomingVerseToQuiz(context);
+                    }
+                    if (vOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() < 1) {
+                        memorizedAndLearningListIsEmpty = true;
+                    }
+                    view.showMemorizedAlert(memorizedAndLearningListIsEmpty);
+                } else {
+                    scripture.setMemorySubStage(subStage + 1);
+                    DataStore.getInstance().updateQuizVerse(scripture, context);
+                }
             }
         }
 
@@ -194,22 +260,26 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         }
     }
 
+    private void moveForgottenVerseToQuizList() {
+        DataStore.getInstance().saveMemorizedVerse(scripture, context);
+        DataStore.getInstance().deleteForgottenVerse(scripture, context);
+    }
+
 
     private void moveVerseToRememberedList() {
         String formattedDate = dateFormat.format(c.getTime());
         scripture.setRemeberedDate(formattedDate);
-
+        DataStore.getInstance().saveMemorizedVerse(scripture, context);
+        DataStore.getInstance().deleteQuizVerse(scripture, context);
 
         BaseCallback<List<ScriptureData>> upcomingCallback = new BaseCallback<List<ScriptureData>>() {
             @Override
             public void onResponse(List<ScriptureData> response) {
-                scripture.setMemorySubStage(0);
-                scripture.setMemoryStage(0);
-                DataStore.getInstance().saveMemorizedVerse(scripture, context);
-                DataStore.getInstance().deleteQuizVerse(scripture, context);
-                if(response != null && response.get(0).getVerseLocation() != null && response.get(0).getVerse() != null){
-                    DataStore.getInstance().saveQuizVerse(response.get(0), context);
-                    DataStore.getInstance().deleteUpcomingVerse(response.get(0), context);
+                if(response.size() > 0) {
+                    if (response != null && response.get(0).getVerseLocation() != null && response.get(0).getVerse() != null) {
+                        DataStore.getInstance().saveQuizVerse(response.get(0), context);
+                        DataStore.getInstance().deleteUpcomingVerse(response.get(0), context);
+                    }
                 }
             }
 
@@ -225,24 +295,34 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
     @Override
     public void onNoClicked() {
         setNoClickedVerseText();
+        String formattedDate = dateFormat.format(c.getTime());
         int stage = scripture.getMemoryStage();
         int subStage = scripture.getMemorySubStage();
-        if(subStage == 0){
-            if(stage == 1){
+        if (subStage == 0) {
+            if (stage == 1) {
                 scripture.setMemoryStage(0);
                 scripture.setMemorySubStage(0);
-            }else if(stage > 1) {
+            } else if (stage > 1) {
                 scripture.setMemorySubStage(2);
                 scripture.setMemoryStage(stage - 1);
             }
-        }else{
+        } else {
             scripture.setMemorySubStage(subStage - 1);
         }
-        DataStore.getInstance().updateQuizVerse(scripture, context);
+        if(forgottenVerse){
+            scripture.setLastSeenDate(formattedDate);
+            DataStore.getInstance().updateForgottenVerse(scripture, context);
+        }else if(reviewVerse){
+            scripture.setLastSeenDate(formattedDate);
+            DataStore.getInstance().saveForgottenVerse(scripture, context);
+            DataStore.getInstance().deleteMemorizedVerse(scripture, context);
+        }else {
+            DataStore.getInstance().updateQuizVerse(scripture, context);
+        }
 
-        if(moreVerses){
+        if (moreVerses) {
             resetVerseView();
-        }else{
+        } else {
             view.onFinishActivity();
         }
     }

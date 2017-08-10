@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 
 import com.faithcomesbyhearing.dbt.model.Chapter;
 import com.faithcomesbyhearing.dbt.model.Verse;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,7 @@ public class VerseFragment extends Fragment {
     private Context context;
     private int previousSelectedVersePosition;
     private ProgressBar verseSelectedLoadingBar;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     public VerseFragment() {
     }
@@ -72,6 +74,9 @@ public class VerseFragment extends Fragment {
         context = getActivity().getApplicationContext();
         verseSelectedLoadingBar = (ProgressBar) v.findViewById(R.id.verse_selected_loading_bar);
         List<String> dataList = new ArrayList<>();
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity().getApplicationContext());
+        mFirebaseAnalytics.setCurrentScreen(getActivity(), "Books_fragment", null);
 
         verseSelectedCallback = new VerseFragmentCallback() {
             @Override

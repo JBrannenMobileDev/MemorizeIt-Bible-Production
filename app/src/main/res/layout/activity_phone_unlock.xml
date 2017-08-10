@@ -14,19 +14,43 @@
          android:fitsSystemWindows. -->
 
     <LinearLayout
+        android:id="@+id/add_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <com.google.android.gms.ads.AdView
             android:id="@+id/adView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentBottom="false"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
+            android:elevation="4dp"
             ads:adSize="BANNER"
             ads:adUnitId="@string/unlock_view_banner_ad"></com.google.android.gms.ads.AdView>
+
+        <TextView
+            android:id="@+id/quiz_review_title"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="2dp"
+            android:background="@color/colorAccent"
+            android:elevation="4dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="Review memorized verse"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/colorGreenText"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/add_layout"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/title_text"
@@ -98,9 +122,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/add_layout"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="50dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:baselineAligned="true"
         android:clipToPadding="false"
         android:gravity="bottom"

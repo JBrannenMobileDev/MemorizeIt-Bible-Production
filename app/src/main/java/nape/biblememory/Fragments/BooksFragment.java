@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 
 import com.faithcomesbyhearing.dbt.model.Book;
 import com.faithcomesbyhearing.dbt.model.Volume;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,7 @@ public class BooksFragment extends Fragment {
     private List<Book> oldTestament;
     private Context context;
     private ProgressBar loadingBar;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     List<Volume> volumeList;
 
@@ -57,6 +59,9 @@ public class BooksFragment extends Fragment {
         mRecyclerView = (RecyclerView) v.findViewById(R.id.books_recycler_view);
 
         mPrefs = new UserPreferences();
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity().getApplicationContext());
+        mFirebaseAnalytics.setCurrentScreen(getActivity(), "Books_fragment", null);
 
         context = getActivity().getApplicationContext();
         loadingBar = (ProgressBar) v.findViewById(R.id.books_progressbar);

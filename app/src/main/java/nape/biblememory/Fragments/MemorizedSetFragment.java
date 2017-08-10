@@ -130,7 +130,7 @@ public class MemorizedSetFragment extends Fragment {
 
             }
         };
-
+        DataStore.getInstance().getLocalMemorizedVerses(memorizedCallback, getActivity().getApplicationContext());
     }
 
     private void initializeSpinner(View v) {
@@ -143,6 +143,7 @@ public class MemorizedSetFragment extends Fragment {
         spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
 
             @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                mFirebaseAnalytics.logEvent("memorized_view_by_selected", null);
                 mPrefs.setMemorizedSpinnerPosition(position, getActivity().getApplicationContext());
                 setAdapterForRecyclerView();
             }
@@ -239,6 +240,7 @@ public class MemorizedSetFragment extends Fragment {
     }
 
     private void setAdapterForRecyclerView() {
+        getAllMemorizedVerses();
         RecyclerViewSingleton.getInstance().listOfSelectedBooks = new ArrayList<>();
         List<Object> tempVerseList = new ArrayList<>();
         switch(mPrefs.getMemorizedSpinnerPosition(getContext())){
@@ -258,6 +260,7 @@ public class MemorizedSetFragment extends Fragment {
                 tempVerseList = getBookGroupList(allMemorizedVerses);
                 break;
         }
+        verseListRecyclerView.setAdapter(null);
         verseListAdapter = new RecyclerViewAdapterMemorized(tempVerseList, bookSelectedCallback, bookDeselectedCallback);
         verseListRecyclerView.setAdapter(verseListAdapter);
     }

@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,7 @@ public class ChapterFragment extends Fragment {
     private UserPreferences mPrefs;
     private String chaptNumSelected;
     private String bookNameForSavedView;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     public ChapterFragment() {
         // Required empty public constructor
@@ -37,6 +40,9 @@ public class ChapterFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_chapter, container, false);
         chaptNumSelected = "0";
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity().getApplicationContext());
+        mFirebaseAnalytics.setCurrentScreen(getActivity(), "Books_fragment", null);
 
         chapterSelectedCallback = new BaseCallback() {
             @Override

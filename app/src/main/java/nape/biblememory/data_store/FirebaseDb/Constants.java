@@ -10,4 +10,5 @@ public final class Constants {
     public static final String FIREBASE_CHILD_MEMORIZED_VERSES = "memorizedList";
     public static final String FIREBASE_CHILD_USERRS = "users";
     public static final String FIREBASE_CHILD_USER_PREFS = "UserPreferencesModel";
+    public static final String FIREBASE_CHILD_FORGOTTEN_VERSES = "forgottenList";
 }

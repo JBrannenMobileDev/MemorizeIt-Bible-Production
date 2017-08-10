@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class BibleMemoryDbHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "RememberIt_Bible.db";
-
     private static final String TEXT_TYPE = " TEXT";
     private static final String INT_TYPE = " INT";
     private static final String REAL_TYPE = " REAL";
@@ -33,22 +32,22 @@ public class BibleMemoryDbHelper extends SQLiteOpenHelper {
                     MemoryListContract.CurrentSetEntry.COLUMN_NAME_VERSE_NUMBER + TEXT_TYPE + COMMA_SEP +
                     MemoryListContract.CurrentSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER + INT_TYPE + " )";
     private static final String SQL_CREATE_REMEMBERED_SET_ENTRIES =
-            "CREATE TABLE " + MemoryListContract.RememberedSetEntry.TABLE_NAME + " (" +
-                    MemoryListContract.RememberedSetEntry._ID + " INTEGER PRIMARY KEY," +
-                    MemoryListContract.RememberedSetEntry.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
-                    MemoryListContract.RememberedSetEntry.COLUMN_NAME_DATE_LAST_SEEN + TEXT_TYPE + COMMA_SEP +
-                    MemoryListContract.RememberedSetEntry.COLUMN_NAME_MEMORIZE_DATE + TEXT_TYPE + COMMA_SEP +
-                    MemoryListContract.RememberedSetEntry.COLUMN_NAME_REMEMBERED_DATE + TEXT_TYPE + COMMA_SEP +
-                    MemoryListContract.RememberedSetEntry.COLUMN_NAME_START_DATE + TEXT_TYPE + COMMA_SEP +
-                    MemoryListContract.RememberedSetEntry.COLUMN_NAME_VERSE_CONTENT + TEXT_TYPE + COMMA_SEP +
-                    MemoryListContract.RememberedSetEntry.COLUMN_NAME_MEMORY_STAGE + INT_TYPE + COMMA_SEP +
-                    MemoryListContract.RememberedSetEntry.COLUMN_NAME_MEMORY_SUB_STAGE + INT_TYPE + COMMA_SEP +
-                    MemoryListContract.RememberedSetEntry.COLUMN_NAME_COUNT_VIEWED + INT_TYPE + COMMA_SEP +
-                    MemoryListContract.RememberedSetEntry.COLUMN_NAME_COUNT_CORRECT + INT_TYPE + COMMA_SEP +
-                    MemoryListContract.RememberedSetEntry.COLUMN_NAME_BOOK_NAME + TEXT_TYPE + COMMA_SEP +
-                    MemoryListContract.RememberedSetEntry.COLUMN_NAME_CHAPTER + TEXT_TYPE  + COMMA_SEP +
-                    MemoryListContract.RememberedSetEntry.COLUMN_NAME_VERSE_NUMBER + TEXT_TYPE + COMMA_SEP +
-                    MemoryListContract.RememberedSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER + INT_TYPE + " )";
+            "CREATE TABLE " + MemoryListContract.ForgottenSetEntry.TABLE_NAME + " (" +
+                    MemoryListContract.ForgottenSetEntry._ID + " INTEGER PRIMARY KEY," +
+                    MemoryListContract.ForgottenSetEntry.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
+                    MemoryListContract.ForgottenSetEntry.COLUMN_NAME_DATE_LAST_SEEN + TEXT_TYPE + COMMA_SEP +
+                    MemoryListContract.ForgottenSetEntry.COLUMN_NAME_MEMORIZE_DATE + TEXT_TYPE + COMMA_SEP +
+                    MemoryListContract.ForgottenSetEntry.COLUMN_NAME_REMEMBERED_DATE + TEXT_TYPE + COMMA_SEP +
+                    MemoryListContract.ForgottenSetEntry.COLUMN_NAME_START_DATE + TEXT_TYPE + COMMA_SEP +
+                    MemoryListContract.ForgottenSetEntry.COLUMN_NAME_VERSE_CONTENT + TEXT_TYPE + COMMA_SEP +
+                    MemoryListContract.ForgottenSetEntry.COLUMN_NAME_MEMORY_STAGE + INT_TYPE + COMMA_SEP +
+                    MemoryListContract.ForgottenSetEntry.COLUMN_NAME_MEMORY_SUB_STAGE + INT_TYPE + COMMA_SEP +
+                    MemoryListContract.ForgottenSetEntry.COLUMN_NAME_COUNT_VIEWED + INT_TYPE + COMMA_SEP +
+                    MemoryListContract.ForgottenSetEntry.COLUMN_NAME_COUNT_CORRECT + INT_TYPE + COMMA_SEP +
+                    MemoryListContract.ForgottenSetEntry.COLUMN_NAME_BOOK_NAME + TEXT_TYPE + COMMA_SEP +
+                    MemoryListContract.ForgottenSetEntry.COLUMN_NAME_CHAPTER + TEXT_TYPE  + COMMA_SEP +
+                    MemoryListContract.ForgottenSetEntry.COLUMN_NAME_VERSE_NUMBER + TEXT_TYPE + COMMA_SEP +
+                    MemoryListContract.ForgottenSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER + INT_TYPE + " )";
     private static final String SQL_CREATE_MEMORIZED_SET_ENTRIES =
             "CREATE TABLE " + MemoryListContract.MemorizedSetEntry.TABLE_NAME + " (" +
                     MemoryListContract.MemorizedSetEntry._ID + " INTEGER PRIMARY KEY," +
@@ -89,8 +88,8 @@ public class BibleMemoryDbHelper extends SQLiteOpenHelper {
 
     private static final String SQL_DELETE_CURRENT_SET_ENTRIES =
             "DROP TABLE IF EXISTS " + MemoryListContract.CurrentSetEntry.TABLE_NAME;
-    private static final String SQL_DELETE_REMEMBERED_SET_ENTRIES =
-            "DROP TABLE IF EXISTS " + MemoryListContract.RememberedSetEntry.TABLE_NAME;
+    private static final String SQL_DELETE_FORGOTTEN_SET_ENTRIES =
+            "DROP TABLE IF EXISTS " + MemoryListContract.ForgottenSetEntry.TABLE_NAME;
     private static final String SQL_DELETE_MEMORIZED_SET_ENTRIES =
             "DROP TABLE IF EXISTS " + MemoryListContract.MemorizedSetEntry.TABLE_NAME;
     private static final String SQL_DELETE_LEARNING_SET_ENTRIES =
@@ -113,7 +112,7 @@ public class BibleMemoryDbHelper extends SQLiteOpenHelper {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
         db.execSQL(SQL_DELETE_CURRENT_SET_ENTRIES);
-        db.execSQL(SQL_DELETE_REMEMBERED_SET_ENTRIES);
+        db.execSQL(SQL_DELETE_FORGOTTEN_SET_ENTRIES);
         db.execSQL(SQL_DELETE_MEMORIZED_SET_ENTRIES);
         db.execSQL(SQL_DELETE_LEARNING_SET_ENTRIES);
         onCreate(db);

@@ -24,4 +24,7 @@ public interface PhoneUnlockView{
     void setHintButtonVisibility(int value);
     void showMemorizedAlert(boolean memorizedAndLearningListIsEmpty);
     void setMoreVersesLayoutColor(int color);
+    void setReviewTitleVisibility(int visible);
+    void setReviewTitleText(String s);
+    void setReviewTitleColor(int colorNoText);
 }

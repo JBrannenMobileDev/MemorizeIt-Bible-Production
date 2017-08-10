@@ -39,6 +39,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
     private TextView pageTitle;
     private TextView checkAnswerText;
     private TextView hintText;
+    private TextView quizReviewTitle;
     private Button close_more_button;
     private FloatingActionButton checkAnswerFAB;
     private FloatingActionButton yesButton;
@@ -67,7 +68,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_unlock);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
-        mFirebaseAnalytics.setCurrentScreen(this, "Phone unlock quiz", null);
+        mFirebaseAnalytics.setCurrentScreen(this, "Phone_unlock_quiz", null);
 
 
         InitializeBannerAd();
@@ -79,6 +80,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
         pageTitle = (TextView) findViewById(R.id.title_text);
         checkAnswerText = (TextView) findViewById(R.id.check_answer_textview);
         hintText = (TextView) findViewById(R.id.hint_textview);
+        quizReviewTitle = (TextView) findViewById(R.id.quiz_review_title);
         verificationLayout = (LinearLayout) findViewById(R.id.verification_layout);
         close_more_button = (Button) findViewById(R.id.close_button);
         checkAnswerFAB = (FloatingActionButton) findViewById(R.id.check_answer_button_fab);
@@ -93,6 +95,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
         yesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mFirebaseAnalytics.logEvent("quiz_yes_selected", null);
                 mPresenter.onYesClicked();
             }
         });
@@ -100,19 +103,23 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
         noButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mFirebaseAnalytics.logEvent("quiz_no_selected", null);
                 mPresenter.onNoClicked();
             }
         });
 
         close_more_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {mPresenter.onCloseClicked();
+            public void onClick(View v) {
+                mFirebaseAnalytics.logEvent("quiz_close_selected", null);
+                mPresenter.onCloseClicked();
             }
         });
 
         hintButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mFirebaseAnalytics.logEvent("quiz_hint_selected", null);
                 mPresenter.onHintClicked();
             }
         });
@@ -120,6 +127,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
         checkAnswerFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mFirebaseAnalytics.logEvent("quiz_check_answer_selected", null);
                 mPresenter.onCheckAnswerClicked();
             }
         });
@@ -276,6 +284,21 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
     @Override
     public void setMoreVersesLayoutColor(int color) {
         moreVersesLayout.setBackgroundResource(color);
+    }
+
+    @Override
+    public void setReviewTitleVisibility(int visible) {
+        quizReviewTitle.setVisibility(visible);
+    }
+
+    @Override
+    public void setReviewTitleText(String s) {
+        quizReviewTitle.setText(s);
+    }
+
+    @Override
+    public void setReviewTitleColor(int colorNoText) {
+        quizReviewTitle.setTextColor(colorNoText);
     }
 
 

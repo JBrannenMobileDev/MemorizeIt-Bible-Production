@@ -590,4 +590,24 @@ public class UserPreferences{
     public boolean isMigratedToFirebaseDb(Context context) {
         return getSharedPreferences(context).getBoolean(UserPreferenceConstants.MIGRATED_FB , false);
     }
+
+    public int getQuizViewCount(Context context) {
+        return getSharedPreferences(context).getInt(UserPreferenceConstants.QUIZ_VIEW_COUNT, 0);
+    }
+
+    public void setQuizViewCount(int count, Context context){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putInt(UserPreferenceConstants.QUIZ_VIEW_COUNT, count);
+        editor.commit();
+    }
+
+    public void setQuizReviewIndex(int i, Context context) {
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putInt(UserPreferenceConstants.REVIEW_VERSE_INDEX, i);
+        editor.commit();
+    }
+
+    public int getQuizReviewIndex(Context context) {
+        return getSharedPreferences(context).getInt(UserPreferenceConstants.REVIEW_VERSE_INDEX, 0);
+    }
 }

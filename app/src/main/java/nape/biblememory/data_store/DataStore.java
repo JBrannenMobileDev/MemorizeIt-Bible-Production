@@ -54,7 +54,12 @@ public class DataStore {
 
     public void saveMemorizedVerse(ScriptureData verse, Context applicationContext){
         FirebaseDb.getInstance().saveMemorizedVerseToFirebase(verse, applicationContext);
-        VerseOperations.getInstance(applicationContext).addVerse(verse, MemoryListContract.RememberedSetEntry.TABLE_NAME);
+        VerseOperations.getInstance(applicationContext).addVerse(verse, MemoryListContract.MemorizedSetEntry.TABLE_NAME);
+    }
+
+    public void saveForgottenVerse(ScriptureData verse, Context applicationContext){
+        FirebaseDb.getInstance().saveForgottenVerseToFirebase(verse, applicationContext);
+        VerseOperations.getInstance(applicationContext).addVerse(verse, MemoryListContract.ForgottenSetEntry.TABLE_NAME);
     }
 
     public void deleteUpcomingVerse(ScriptureData verse, Context context){
@@ -69,7 +74,12 @@ public class DataStore {
 
     public void deleteMemorizedVerse(ScriptureData verse, Context context){
         FirebaseDb.getInstance().deleteMemorizedVerse(verse, context);
-        VerseOperations.getInstance(context).removeVerse(verse.getVerseLocation(), MemoryListContract.RememberedSetEntry.TABLE_NAME);
+        VerseOperations.getInstance(context).removeVerse(verse.getVerseLocation(), MemoryListContract.MemorizedSetEntry.TABLE_NAME);
+    }
+
+    public void deleteForgottenVerse(ScriptureData verse, Context context){
+        FirebaseDb.getInstance().deleteForgottenVerse(verse, context);
+        VerseOperations.getInstance(context).removeVerse(verse.getVerseLocation(), MemoryListContract.ForgottenSetEntry.TABLE_NAME);
     }
 
     public void getUpcomingVerses(BaseCallback<List<ScriptureData>> upcomingCallback, Context applicationContext){
@@ -101,7 +111,7 @@ public class DataStore {
             if(scriptureManager == null) {
                 scriptureManager = new ScriptureManager(applicationContext);
             }
-            memorizedCallback.onResponse(scriptureManager.getScriptureSet(MemoryListContract.RememberedSetEntry.TABLE_NAME));
+            memorizedCallback.onResponse(scriptureManager.getScriptureSet(MemoryListContract.MemorizedSetEntry.TABLE_NAME));
         }
     }
 
@@ -119,14 +129,59 @@ public class DataStore {
         quizCallback.onResponse(scriptureManager.getScriptureSet(MemoryListContract.LearningSetEntry.TABLE_NAME));
     }
 
+    public void getLocalForgottenVerse(final BaseCallback<ScriptureData> forgottenCallback, Context context){
+        if(scriptureManager == null){
+            scriptureManager = new ScriptureManager(context);
+        }
+        List<ScriptureData> forgottenList = scriptureManager.getScriptureSet(MemoryListContract.ForgottenSetEntry.TABLE_NAME);
+        if(forgottenList.size() > 0) {
+            forgottenCallback.onResponse(forgottenList.get(0));
+        }else{
+            forgottenCallback.onResponse(null);
+        }
+    }
+
     public void getLocalMemorizedVerses(BaseCallback<List<ScriptureData>> memorizedCallback, Context applicationContext){
         if(scriptureManager == null) {
             scriptureManager = new ScriptureManager(applicationContext);
         }
-        memorizedCallback.onResponse(scriptureManager.getScriptureSet(MemoryListContract.RememberedSetEntry.TABLE_NAME));
+        memorizedCallback.onResponse(scriptureManager.getScriptureSet(MemoryListContract.MemorizedSetEntry.TABLE_NAME));
+    }
+
+    public void getLocalMeorizedVerseAt(final int index, final BaseCallback<ScriptureData> memorizedCallback, final Context context){
+        final UserPreferences mPrefs = new UserPreferences();
+        if(scriptureManager == null) {
+            scriptureManager = new ScriptureManager(context);
+        }
+        BaseCallback<List<ScriptureData>> memorizedListCallback = new BaseCallback<List<ScriptureData>>() {
+            @Override
+            public void onResponse(List<ScriptureData> response) {
+                int listSize = response.size();
+                if(listSize > 0) {
+                    if (index >= listSize) {
+                        memorizedCallback.onResponse(response.get(0));
+                        mPrefs.setQuizReviewIndex(0, context);
+                    } else {
+                        memorizedCallback.onResponse(response.get(index));
+                    }
+                }else{
+                    memorizedCallback.onResponse(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+        getLocalMemorizedVerses(memorizedListCallback, context);
     }
 
     public void updateQuizVerse(ScriptureData verse, Context applcationContext){
+        if(scriptureManager == null){
+            scriptureManager = new ScriptureManager(applcationContext);
+        }
+        scriptureManager.updateScriptureStatus(verse);
         FirebaseDb.getInstance().updateQuizVerse(verse, applcationContext);
     }
 
@@ -146,6 +201,14 @@ public class DataStore {
             }
         };
         getLocalUpcomingVerses(upcomingCallback, context);
+    }
+
+    public void updateForgottenVerse(ScriptureData verse, Context applcationContext){
+        if(scriptureManager == null){
+            scriptureManager = new ScriptureManager(applcationContext);
+        }
+        scriptureManager.updateForgottenScriptureStatus(verse);
+        FirebaseDb.getInstance().updateForgottenVerse(verse, applcationContext);
     }
 
     public void getRandomQuizVerse(Context applicationContext, final BaseCallback<ScriptureData> verseCallback){
@@ -259,7 +322,7 @@ public class DataStore {
                             public void onResponse(List<ScriptureData> response) {
                                 if(response.size() > 0){
                                     for(ScriptureData verse : response){
-                                        scriptureManager.addVerse(verse, MemoryListContract.RememberedSetEntry.TABLE_NAME);
+                                        scriptureManager.addVerse(verse, MemoryListContract.MemorizedSetEntry.TABLE_NAME);
                                     }
                                 }
                                 mPrefs.setRebuildError(false, context);

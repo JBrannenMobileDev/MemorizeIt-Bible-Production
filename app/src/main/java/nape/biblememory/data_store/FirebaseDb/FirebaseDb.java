@@ -31,6 +31,7 @@ public class FirebaseDb {
     private DatabaseReference upcomingVersesReference;
     private DatabaseReference quizVersesReference;
     private DatabaseReference memorizedVersesReference;
+    private DatabaseReference forgottenVersesReference;
     private DatabaseReference userPrefsReference;
 
     private UserPreferences mPrefs;
@@ -56,23 +57,33 @@ public class FirebaseDb {
     }
 
     public void saveUserPrefs(UserPreferencesModel mPrefsModel, Context applicationContext) {
-        userPrefsReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(applicationContext)).child(Constants.FIREBASE_CHILD_USER_PREFS);
+        userPrefsReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(applicationContext)).
+                child(Constants.FIREBASE_CHILD_USER_PREFS);
         userPrefsReference.setValue(mPrefsModel);
     }
 
     public void saveUpcomingVerseToFirebase(ScriptureData verse, Context context){
-        upcomingVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_UPCOMING_VERSES);
+        upcomingVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                child(Constants.FIREBASE_CHILD_UPCOMING_VERSES);
         upcomingVersesReference.push().setValue(verse);
     }
 
     public void saveQuizVerseToFirebase(ScriptureData verse, Context context){
-        quizVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_QUIZ_VERSES);
+        quizVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                child(Constants.FIREBASE_CHILD_QUIZ_VERSES);
         quizVersesReference.push().setValue(verse);
     }
 
     public void saveMemorizedVerseToFirebase(ScriptureData verse, Context context){
-        memorizedVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_MEMORIZED_VERSES);
+        memorizedVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                child(Constants.FIREBASE_CHILD_MEMORIZED_VERSES);
         memorizedVersesReference.push().setValue(verse);
+    }
+
+    public void saveForgottenVerseToFirebase(ScriptureData verse, Context applicationContext) {
+        forgottenVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(applicationContext)).
+                child(Constants.FIREBASE_CHILD_FORGOTTEN_VERSES);
+        forgottenVersesReference.push().setValue(verse);
     }
 
     public void deleteUpcomingVerse(ScriptureData verse, final Context context) {
@@ -116,6 +127,25 @@ public class FirebaseDb {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot data : dataSnapshot.getChildren()) {
                     FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_MEMORIZED_VERSES).child(data.getKey()).removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void deleteForgottenVerse(ScriptureData verse, final Context context) {
+        forgottenVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                child(Constants.FIREBASE_CHILD_FORGOTTEN_VERSES);
+        forgottenVersesReference.orderByChild("verseLocation").equalTo(verse.getVerseLocation()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot data : dataSnapshot.getChildren()) {
+                    FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                            child(Constants.FIREBASE_CHILD_FORGOTTEN_VERSES).child(data.getKey()).removeValue();
                 }
             }
 
@@ -221,6 +251,32 @@ public class FirebaseDb {
                     result.put("memoryStage", verse.getMemoryStage());
                     result.put("memorySubStage", verse.getMemorySubStage());
                     FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_QUIZ_VERSES).child(data.getKey()).updateChildren(result);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void updateForgottenVerse(final ScriptureData verse, final Context context){
+        forgottenVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                child(Constants.FIREBASE_CHILD_FORGOTTEN_VERSES);
+        forgottenVersesReference.orderByChild("verseLocation").equalTo(verse.getVerseLocation()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot data : dataSnapshot.getChildren()) {
+                    HashMap<String, Object> result = new HashMap<>();
+                    result.put("verseLocation", verse.getVerseLocation());
+                    result.put("rememberedDate", verse.getRemeberedDate());
+                    result.put("lastSeenDate", verse.getLastSeenDate());
+                    result.put("correctCount", verse.getCorrectCount());
+                    result.put("viewedCount", verse.getViewedCount());
+                    result.put("memoryStage", verse.getMemoryStage());
+                    result.put("memorySubStage", verse.getMemorySubStage());
+                    FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_FORGOTTEN_VERSES).child(data.getKey()).updateChildren(result);
                 }
             }
 

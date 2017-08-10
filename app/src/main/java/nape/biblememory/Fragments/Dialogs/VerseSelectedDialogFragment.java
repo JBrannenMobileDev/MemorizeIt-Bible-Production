@@ -109,7 +109,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
                 mFirebaseAnalytics.logEvent("verse_added", bundle);
                 List<ScriptureData> currentList = verseOperations.getVerseSet(MemoryListContract.CurrentSetEntry.TABLE_NAME);
                 List<ScriptureData> learningList = verseOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME);
-                List<ScriptureData> rememberedList = verseOperations.getVerseSet(MemoryListContract.RememberedSetEntry.TABLE_NAME);
+                List<ScriptureData> rememberedList = verseOperations.getVerseSet(MemoryListContract.MemorizedSetEntry.TABLE_NAME);
                 for(ScriptureData verseCurrent : currentList){
                     if(verseCurrent.getVerseLocation().equalsIgnoreCase(verse.getVerseLocation())){
                         verseAlreadyExists = true;
