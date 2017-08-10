@@ -92,6 +92,8 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                             if(response != null){
                                 mPrefs.setQuizReviewIndex(mPrefs.getQuizReviewIndex(context)+1, context);
                                 view.setReviewTitleVisibility(View.VISIBLE);
+                                view.setReviewTitleText("Review memorized verse");
+                                view.setReviewTitleColor(R.color.colorGreenText);
                                 reviewVerse = true;
                                 quizVerseCallback.onResponse(response);
                             }else{
@@ -231,7 +233,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                     }
                 } else if (stage == 7) {
                     if(forgottenVerse){
-                        moveForgottenVerseToQuizList();
+                        moveForgottenVerseToMemorizedList();
                     }else {
                         moveVerseToRememberedList();
                         DataStore.getInstance().moveUpcomingVerseToQuiz(context);
@@ -260,7 +262,9 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         }
     }
 
-    private void moveForgottenVerseToQuizList() {
+    private void moveForgottenVerseToMemorizedList() {
+        String formattedDate = dateFormat.format(c.getTime());
+        scripture.setMemorizedDate(formattedDate);
         DataStore.getInstance().saveMemorizedVerse(scripture, context);
         DataStore.getInstance().deleteForgottenVerse(scripture, context);
     }
@@ -398,6 +402,9 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
     }
 
     private void resetVerseView() {
+        forgottenVerse = false;
+        reviewVerse = false;
+        view.setReviewTitleVisibility(View.GONE);
         view.setMoreSwitchVisibility(false);
         view.setVerseText(EMPTY_STRING);
         view.setVerseLocationText(EMPTY_STRING);

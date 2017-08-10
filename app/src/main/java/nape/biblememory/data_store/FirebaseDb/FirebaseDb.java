@@ -216,6 +216,27 @@ public class FirebaseDb {
         });
     }
 
+    public void getForgottenVersesFromFirebaseDb(Context applicationContext, final BaseCallback<List<ScriptureData>> forgottenCallback) {
+        final List<ScriptureData> forgottenList = new ArrayList<>();
+        forgottenVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(applicationContext)).
+                child(Constants.FIREBASE_CHILD_FORGOTTEN_VERSES);
+        forgottenVersesReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot data : dataSnapshot.getChildren()) {
+                    ScriptureData verse = data.getValue(ScriptureData.class);
+                    forgottenList.add(verse);
+                }
+                forgottenCallback.onResponse(forgottenList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                forgottenList.add(new ScriptureData());
+            }
+        });
+    }
+
     public void getUserPrefsFromFirebaseDb(Context context, final BaseCallback<UserPreferencesModel> userPrefsCallback){
         userPrefsReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_USER_PREFS);
         userPrefsReference.addListenerForSingleValueEvent(new ValueEventListener() {

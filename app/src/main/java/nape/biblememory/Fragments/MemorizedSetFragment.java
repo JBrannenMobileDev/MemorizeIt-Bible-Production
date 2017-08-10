@@ -2,6 +2,7 @@ package nape.biblememory.Fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -46,6 +47,16 @@ public class MemorizedSetFragment extends Fragment {
     private FirebaseAnalytics mFirebaseAnalytics;
     private List<Object> allMemorizedVerses;
 
+    private CardView forgottenVerseCardView;
+    private TextView verseLocation;
+    private TextView verse;
+    private TextView memorizedDateTitle;
+    private TextView lastSeenDateTitle;
+    private TextView memorizedDateText;
+    private TextView lastSeenDateText;
+    private TextView forgottenVerseTitle;
+    private TextView memorizedVerseTitle;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +70,7 @@ public class MemorizedSetFragment extends Fragment {
         super.onResume();
         getAllMemorizedVerses();
         RefreshRecyclerView();
+        initializeForgottenCardView();
     }
 
     @Override
@@ -68,11 +80,23 @@ public class MemorizedSetFragment extends Fragment {
         spinner = (MaterialSpinner) v.findViewById(R.id.memorized_sort_spinner);
         reviewBt = (TextView) v.findViewById(R.id.memorized_review_tv);
         mPrefs = new UserPreferences();
+
+        verseLocation = (TextView) v.findViewById(R.id.verse_location_forgotten);
+        forgottenVerseCardView = (CardView) v.findViewById(R.id.card_view_forgotten);
+        verse = (TextView) v.findViewById(R.id.verse_forgotten);
+        memorizedDateTitle = (TextView) v.findViewById(R.id.memorized_date_title_forgotten);
+        lastSeenDateTitle = (TextView) v.findViewById(R.id.last_seen_title_forgotten);
+        memorizedDateText = (TextView) v.findViewById(R.id.memorized_date_textview_forgotten);
+        lastSeenDateText = (TextView) v.findViewById(R.id.last_seen_textview_forgotten);
+        forgottenVerseTitle = (TextView) v.findViewById(R.id.forgotten_verse_title);
+        memorizedVerseTitle = (TextView) v.findViewById(R.id.memorized_verses_title);
+
         allMemorizedVerses = new ArrayList<>();
         getAllMemorizedVerses();
         createBookSelectedCallback();
         initializeSpinner(v);
         initializeRecyclerView(v);
+        initializeForgottenCardView();
 
         reviewBt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +105,67 @@ public class MemorizedSetFragment extends Fragment {
             }
         });
 
+        forgottenVerseCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(verse.getVisibility() == View.VISIBLE){
+                    collopaseCardView();
+                }else{
+                    expandCardView();
+                }
+            }
+        });
+
         return v;
+    }
+
+    private void initializeForgottenCardView() {
+        BaseCallback<ScriptureData> forgottenVerseCallback = new BaseCallback<ScriptureData>() {
+            @Override
+            public void onResponse(ScriptureData response) {
+                if(response != null) {
+                    populateCardView(response);
+                }else{
+                    hideForgotenCardView();
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+        DataStore.getInstance().getLocalForgottenVerse(forgottenVerseCallback, getActivity().getApplicationContext());
+    }
+
+    private void hideForgotenCardView() {
+        forgottenVerseCardView.setVisibility(View.GONE);
+        forgottenVerseTitle.setVisibility(View.GONE);
+        memorizedVerseTitle.setVisibility(View.GONE);
+    }
+
+    private void populateCardView(ScriptureData verse){
+        forgottenVerseCardView.setVisibility(View.VISIBLE);
+        forgottenVerseTitle.setVisibility(View.VISIBLE);
+        if(allMemorizedVerses.size() > 0) {
+            memorizedVerseTitle.setVisibility(View.VISIBLE);
+        }
+        this.verse.setText(verse.getVerse());
+        memorizedDateText.setText(verse.getRemeberedDate());
+        lastSeenDateText.setText(verse.getLastSeenDate());
+        verseLocation.setText(verse.getVerseLocation());
+    }
+
+    private void expandCardView() {
+        lastSeenDateTitle.setVisibility(View.VISIBLE);
+        lastSeenDateText.setVisibility(View.VISIBLE);
+        verse.setVisibility(View.VISIBLE);
+    }
+
+    private void collopaseCardView() {
+        lastSeenDateTitle.setVisibility(View.GONE);
+        lastSeenDateText.setVisibility(View.GONE);
+        verse.setVisibility(View.GONE);
     }
 
     public void RefreshRecyclerView(){
@@ -167,13 +251,9 @@ public class MemorizedSetFragment extends Fragment {
 
     private void updateAdapterForExpandBook(String bookName){
         List<Object> bookList;
-        List<Object> verseList = null;
-        if(combinedList != null) {
-            bookList = combinedList;
-        }else{
-            bookList = getBookGroupList(verseList);
-        }
+        List<Object> verseList;
         verseList = allMemorizedVerses;
+        bookList = getBookGroupList(verseList);
         combinedList = createCombinedList(bookName, bookList, verseList);
 
         verseListAdapter = new RecyclerViewAdapterMemorized(combinedList, bookSelectedCallback, bookDeselectedCallback);

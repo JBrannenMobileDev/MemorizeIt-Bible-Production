@@ -61,6 +61,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
     protected void onResume() {
         super.onResume();
         hideUIControls();
+        InitializeBannerAd();
     }
 
     @Override
@@ -298,7 +299,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
 
     @Override
     public void setReviewTitleColor(int colorNoText) {
-        quizReviewTitle.setTextColor(colorNoText);
+        quizReviewTitle.setTextColor(getResources().getColor(colorNoText));
     }
 
 

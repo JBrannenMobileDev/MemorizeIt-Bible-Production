@@ -115,6 +115,17 @@ public class DataStore {
         }
     }
 
+    public void getForgottenVerses(BaseCallback<List<ScriptureData>> forgottenCallback, Context applicationContext){
+        if(NetworkManager.getInstance().isInternet(applicationContext)){
+            FirebaseDb.getInstance().getForgottenVersesFromFirebaseDb(applicationContext, forgottenCallback);
+        }else{
+            if(scriptureManager == null) {
+                scriptureManager = new ScriptureManager(applicationContext);
+            }
+            forgottenCallback.onResponse(scriptureManager.getScriptureSet(MemoryListContract.ForgottenSetEntry.TABLE_NAME));
+        }
+    }
+
     public void getLocalUpcomingVerses(BaseCallback<List<ScriptureData>> upcomingCallback, Context applicationContext){
         if(scriptureManager == null) {
             scriptureManager = new ScriptureManager(applicationContext);
@@ -317,18 +328,35 @@ public class DataStore {
                                 scriptureManager.addVerse(verse, MemoryListContract.LearningSetEntry.TABLE_NAME);
                             }
                         }
-                        BaseCallback<List<ScriptureData>> memorizedCallback = new BaseCallback<List<ScriptureData>>() {
+                        BaseCallback<List<ScriptureData>> forgottenVersesCallback = new BaseCallback<List<ScriptureData>>() {
                             @Override
                             public void onResponse(List<ScriptureData> response) {
                                 if(response.size() > 0){
                                     for(ScriptureData verse : response){
-                                        scriptureManager.addVerse(verse, MemoryListContract.MemorizedSetEntry.TABLE_NAME);
+                                        scriptureManager.addVerse(verse, MemoryListContract.ForgottenSetEntry.TABLE_NAME);
                                     }
                                 }
-                                mPrefs.setRebuildError(false, context);
-                                mPrefsModel.initAllData(context, mPrefs);
-                                DataStore.getInstance().saveUserPrefs(mPrefsModel, context);
-                                context.startActivity(new Intent(context, MainActivity.class));
+                                BaseCallback<List<ScriptureData>> memorizedCallback = new BaseCallback<List<ScriptureData>>() {
+                                    @Override
+                                    public void onResponse(List<ScriptureData> response) {
+                                        if(response.size() > 0){
+                                            for(ScriptureData verse : response){
+                                                scriptureManager.addVerse(verse, MemoryListContract.MemorizedSetEntry.TABLE_NAME);
+                                            }
+                                        }
+                                        mPrefs.setRebuildError(false, context);
+                                        mPrefsModel.initAllData(context, mPrefs);
+                                        DataStore.getInstance().saveUserPrefs(mPrefsModel, context);
+                                        context.startActivity(new Intent(context, MainActivity.class));
+                                    }
+
+                                    @Override
+                                    public void onFailure(Exception e) {
+                                        mPrefs.setRebuildError(true, context);
+                                        context.startActivity(new Intent(context, MainActivity.class));
+                                    }
+                                };
+                                getMemorizedVerses(memorizedCallback, context);
                             }
 
                             @Override
@@ -337,7 +365,7 @@ public class DataStore {
                                 context.startActivity(new Intent(context, MainActivity.class));
                             }
                         };
-                        getMemorizedVerses(memorizedCallback, context);
+                        getForgottenVerses(forgottenVersesCallback, context);
                     }
 
                     @Override

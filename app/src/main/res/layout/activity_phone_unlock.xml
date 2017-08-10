@@ -36,7 +36,7 @@
             android:layout_height="50dp"
             android:layout_marginBottom="2dp"
             android:background="@color/colorAccent"
-            android:elevation="4dp"
+            android:elevation="8dp"
             android:gravity="center_vertical|center_horizontal"
             android:text="Review memorized verse"
             android:textAppearance="?android:attr/textAppearanceLarge"
