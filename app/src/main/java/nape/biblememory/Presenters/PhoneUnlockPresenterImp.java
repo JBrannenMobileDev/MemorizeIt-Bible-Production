@@ -49,6 +49,10 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
 
     private boolean reviewVerse;
     private boolean forgottenVerse;
+    private boolean isReviewMode;
+    private int reviewIndex;
+    private List<ScriptureData> reviewVersesList;
+    private List<ScriptureData> reviewForgottenVersesList;
 
     public PhoneUnlockPresenterImp(PhoneUnlockView view, Context context){
         stageManager = new VerseStageManager();
@@ -65,6 +69,8 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         setMoreVersesSwitch(false);
         dateFormat = new SimpleDateFormat("MM-dd-yyyy");
         c = Calendar.getInstance();
+        isReviewMode = false;
+        reviewIndex = 1;
     }
 
     @Override
@@ -130,6 +136,51 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
     }
 
     @Override
+    public void onRequestReviewData() {
+        isReviewMode = true;
+        BaseCallback<List<ScriptureData>> reviewForgottenVersesCallback = new BaseCallback<List<ScriptureData>>() {
+            @Override
+            public void onResponse(List<ScriptureData> response) {
+                if(response != null && response.size() > 0) {
+                    forgottenVerse = true;
+                    view.setReviewTitleVisibility(View.VISIBLE);
+                    view.setReviewTitleText("Review forgotten verse");
+                    view.setReviewTitleColor(R.color.colorNoText);
+                    reviewForgottenVersesList = response;
+                    onSuccess(response.get(0));
+                }else{
+                    BaseCallback<List<ScriptureData>> reviewVersesListCallback = new BaseCallback<List<ScriptureData>>() {
+                        @Override
+                        public void onResponse(List<ScriptureData> response) {
+                            if(response != null && response.size() > 0) {
+                                reviewVerse = true;
+                                view.setReviewTitleVisibility(View.VISIBLE);
+                                view.setReviewTitleText("Review memorized verse");
+                                view.setReviewTitleColor(R.color.colorGreenText);
+                                reviewVersesList = response;
+                                onSuccess(response.get(reviewIndex));
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Exception e) {
+
+                        }
+                    };
+                    DataStore.getInstance().getMemorizedVerses(reviewVersesListCallback, context);
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+        DataStore.getInstance().getForgottenVerses(reviewForgottenVersesCallback, context);
+    }
+
+
+    @Override
     public void onMoreSwitchStateChanged(boolean isChecked) {
         if(isChecked) {
             view.setMoreVersesLayoutColor(R.color.colorProgressBg);
@@ -152,7 +203,6 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         v.vibrate(110);
         view.setHintButtonVisibility(View.GONE);
     }
-
 
     @Override
     public void onSuccess(ScriptureData scripture) {
@@ -220,7 +270,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                     scripture.setMemoryStage(stage + 1);
                     if(forgottenVerse){
                         DataStore.getInstance().updateForgottenVerse(scripture, context);
-                    }else {
+                    }else if(!isReviewMode){
                         DataStore.getInstance().updateQuizVerse(scripture, context);
                     }
                 } else if (subStage > 0 && stage == 6) {
@@ -228,13 +278,13 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                     scripture.setMemoryStage(stage + 1);
                     if(forgottenVerse){
                         DataStore.getInstance().updateForgottenVerse(scripture, context);
-                    }else {
+                    }else if(!isReviewMode){
                         DataStore.getInstance().updateQuizVerse(scripture, context);
                     }
                 } else if (stage == 7) {
                     if(forgottenVerse){
                         moveForgottenVerseToMemorizedList();
-                    }else {
+                    }else if(!isReviewMode){
                         moveVerseToRememberedList();
                         DataStore.getInstance().moveUpcomingVerseToQuiz(context);
                     }
@@ -250,11 +300,15 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         }
 
         if(moreVerses){
-            if(vOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() > 0) {
-                resetVerseView();
+            if(!isReviewMode) {
+                if (vOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() > 0) {
+                    resetVerseView();
+                } else {
+                    if (!memorizedAndLearningListIsEmpty)
+                        view.onFinishActivity();
+                }
             }else{
-                if(!memorizedAndLearningListIsEmpty)
-                    view.onFinishActivity();
+                resetVerseView();
             }
         }else{
             if(!memorizedAndLearningListIsEmpty)
@@ -263,6 +317,8 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
     }
 
     private void moveForgottenVerseToMemorizedList() {
+        reviewForgottenVersesList = null;
+        forgottenVerse = false;
         String formattedDate = dateFormat.format(c.getTime());
         scripture.setMemorizedDate(formattedDate);
         DataStore.getInstance().saveMemorizedVerse(scripture, context);
@@ -411,7 +467,29 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         view.setCheckAnswerButtonFont();
         view.setBasebarText(CLOSE);
         view.setVerificationLayoutVisibility(View.GONE);
-        onRequestData();
+        if(isReviewMode){
+            if(reviewForgottenVersesList != null && reviewForgottenVersesList.size() > 0){
+                onRequestReviewData();
+            }else {
+                if(reviewVersesList == null){
+                    onRequestReviewData();
+                }else if(reviewIndex < reviewVersesList.size()) {
+                    view.setReviewTitleVisibility(View.VISIBLE);
+                    view.setReviewTitleText("Review memorized verse");
+                    view.setReviewTitleColor(R.color.colorGreenText);
+                    onSuccess(reviewVersesList.get(reviewIndex));
+                    reviewIndex++;
+                }else{
+                    view.setReviewTitleVisibility(View.VISIBLE);
+                    view.setReviewTitleText("Review memorized verse");
+                    view.setReviewTitleColor(R.color.colorGreenText);
+                    onSuccess(reviewVersesList.get(0));
+                    reviewIndex = 1;
+                }
+            }
+        }else {
+            onRequestData();
+        }
     }
 
 

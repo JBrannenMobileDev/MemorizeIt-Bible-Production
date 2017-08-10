@@ -1,4 +1,5 @@
 package nape.biblememory.Fragments;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import nape.biblememory.Activities.PhoneUnlockActivity;
 import nape.biblememory.Adapters.RecyclerViewAdapterMemorized;
 import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.Models.BookGroup;
@@ -102,6 +104,9 @@ public class MemorizedSetFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity().getApplicationContext(), "This feature is in progress. The next app version will include this.", Toast.LENGTH_LONG).show();
+//                Intent reviewIntent = new Intent(getActivity(), PhoneUnlockActivity.class);
+//                reviewIntent.putExtra("from_review", "from_review");
+//                startActivity(reviewIntent);
             }
         });
 

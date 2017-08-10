@@ -29,6 +29,7 @@
                 android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_rectangle"
+                android:enabled="true"
                 android:gravity="center_vertical"
                 android:text="Review verses"
                 android:textAlignment="center"

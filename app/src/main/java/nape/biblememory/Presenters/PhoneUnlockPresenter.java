@@ -9,4 +9,5 @@ public interface PhoneUnlockPresenter {
     void onRequestData();
     void onMoreSwitchStateChanged(boolean isChecked);
     void onHintClicked();
+    void onRequestReviewData();
 }

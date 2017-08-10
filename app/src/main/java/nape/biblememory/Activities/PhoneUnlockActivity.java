@@ -141,6 +141,12 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
             }
         });
 
+        if(getIntent().getStringExtra("from_review") != null){
+            if(getIntent().getStringExtra("from_review").equals("from_review")){
+                mPresenter.onRequestReviewData();
+            }
+        }
+
         mPresenter.onRequestData();
 
         mPrefs = new UserPreferences();
