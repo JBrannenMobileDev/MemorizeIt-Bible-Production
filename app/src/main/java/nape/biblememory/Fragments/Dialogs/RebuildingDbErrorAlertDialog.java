@@ -20,7 +20,7 @@ public class RebuildingDbErrorAlertDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Oops!");
-        builder.setMessage("There was a problem while loading verses from the cloud. When you have a better network connection try logging out and then logging in again to load your verses.");
+        builder.setMessage("There was a problem while loading verses from the cloud. When you have a better network connection try restarting the app to load your verses.");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dismiss();

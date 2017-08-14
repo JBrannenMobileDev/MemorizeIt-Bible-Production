@@ -48,12 +48,15 @@
             android:name=".Activities.SupportTheDeveloper"
             android:parentActivityName=".Activities.MainActivity" />
         <activity
+            android:name=".Activities.BibleVersionSettingsActivity"
+            android:parentActivityName=".Activities.SettingsActivity"/>
+        <activity
             android:name=".Activities.PrivacyPolicyActivity"
             android:parentActivityName=".Activities.SettingsActivity" />
         <activity
-            android:name=".Activities.BootPrivacyPolicyActivity" />
+            android:name=".Activities.BootPrivacyPolicyActivity"
+            android:parentActivityName=".Activities.BootActivity"/>
         <activity android:name=".Activities.BootActivity"
-            android:noHistory="true"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

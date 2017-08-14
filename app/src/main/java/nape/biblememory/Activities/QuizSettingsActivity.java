@@ -3,7 +3,9 @@ package nape.biblememory.Activities;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -536,9 +538,9 @@ public class QuizSettingsActivity extends AppCompatActivity implements TimeSelec
     }
 
     private void initializeListeners() {
-        launchQuizOnUnlock.setOnClickListener(new View.OnClickListener() {
+        launchQuizOnUnlock.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(launchQuizOnUnlock.isChecked()){
                     hideLayout.setVisibility(View.VISIBLE);
                 }else{
@@ -571,9 +573,9 @@ public class QuizSettingsActivity extends AppCompatActivity implements TimeSelec
             }
         });
 
-        mondaySwitch.setOnClickListener(new View.OnClickListener() {
+        mondaySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(mondaySwitch.isChecked()){
                     mPrefs.setShowQuizOnMonday(false, getApplicationContext());
                     mondayTv2.setTextColor(getResources().getColor(R.color.bgColor));
@@ -592,9 +594,9 @@ public class QuizSettingsActivity extends AppCompatActivity implements TimeSelec
             }
         });
 
-        mondayTimeSwitch.setOnClickListener(new View.OnClickListener() {
+        mondayTimeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(mondayTimeSwitch.isChecked()){
                     mPrefs.setShowQuizTimeOnMondayChecked(true, getApplicationContext());
                     enableMondayTimes();
@@ -631,9 +633,9 @@ public class QuizSettingsActivity extends AppCompatActivity implements TimeSelec
             }
         });
 
-        tuesdaySwitch.setOnClickListener(new View.OnClickListener() {
+        tuesdaySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(tuesdaySwitch.isChecked()){
                     mPrefs.setShowQuizOnTuesday(false, getApplicationContext());
                     tuesdayTv2.setTextColor(getResources().getColor(R.color.bgColor));
@@ -652,9 +654,9 @@ public class QuizSettingsActivity extends AppCompatActivity implements TimeSelec
             }
         });
 
-        tuesdayTimeSwitch.setOnClickListener(new View.OnClickListener() {
+        tuesdayTimeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(tuesdayTimeSwitch.isChecked()){
                     mPrefs.setShowQuizTimeOnTuesdayChecked(true, getApplicationContext());
                     enableTuesdayTimes();
@@ -692,9 +694,9 @@ public class QuizSettingsActivity extends AppCompatActivity implements TimeSelec
             }
         });
 
-        wednesdaySwitch.setOnClickListener(new View.OnClickListener() {
+        wednesdaySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(wednesdaySwitch.isChecked()){
                     mPrefs.setShowQuizOnWednesday(false, getApplicationContext());
                     wednesdayTv2.setTextColor(getResources().getColor(R.color.bgColor));
@@ -713,9 +715,9 @@ public class QuizSettingsActivity extends AppCompatActivity implements TimeSelec
             }
         });
 
-        wednesdayTimeSwitch.setOnClickListener(new View.OnClickListener() {
+        wednesdayTimeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(wednesdayTimeSwitch.isChecked()){
                     mPrefs.setShowQuizTimeOnWednesdayChecked(true, getApplicationContext());
                     enableWednesdayTimes();
@@ -753,9 +755,9 @@ public class QuizSettingsActivity extends AppCompatActivity implements TimeSelec
             }
         });
 
-        thursdaySwitch.setOnClickListener(new View.OnClickListener() {
+        thursdaySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(thursdaySwitch.isChecked()){
                     mPrefs.setShowQuizOnThursday(false, getApplicationContext());
                     thursdayTv2.setTextColor(getResources().getColor(R.color.bgColor));
@@ -774,9 +776,9 @@ public class QuizSettingsActivity extends AppCompatActivity implements TimeSelec
             }
         });
 
-        thursdayTimeSwitch.setOnClickListener(new View.OnClickListener() {
+        thursdayTimeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(thursdayTimeSwitch.isChecked()){
                     mPrefs.setShowQuizTimeOnThursdayChecked(true, getApplicationContext());
                     enableThursdayTimes();
@@ -814,9 +816,9 @@ public class QuizSettingsActivity extends AppCompatActivity implements TimeSelec
             }
         });
 
-        fridaySwitch.setOnClickListener(new View.OnClickListener() {
+        fridaySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(fridaySwitch.isChecked()){
                     mPrefs.setShowQuizOnFriday(false, getApplicationContext());
                     fridayTv2.setTextColor(getResources().getColor(R.color.bgColor));
@@ -835,9 +837,9 @@ public class QuizSettingsActivity extends AppCompatActivity implements TimeSelec
             }
         });
 
-        fridayTimeSwitch.setOnClickListener(new View.OnClickListener() {
+        fridayTimeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(fridayTimeSwitch.isChecked()){
                     mPrefs.setShowQuizTimeOnFridayChecked(true, getApplicationContext());
                     enableFridayTimes();
@@ -875,9 +877,9 @@ public class QuizSettingsActivity extends AppCompatActivity implements TimeSelec
             }
         });
 
-        saturdaySwitch.setOnClickListener(new View.OnClickListener() {
+        saturdaySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(saturdaySwitch.isChecked()){
                     mPrefs.setShowQuizOnSaturday(false, getApplicationContext());
                     saturdayTv2.setTextColor(getResources().getColor(R.color.bgColor));
@@ -896,9 +898,9 @@ public class QuizSettingsActivity extends AppCompatActivity implements TimeSelec
             }
         });
 
-        saturdayTimeSwitch.setOnClickListener(new View.OnClickListener() {
+        saturdayTimeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(saturdayTimeSwitch.isChecked()){
                     mPrefs.setShowQuizTimeOnSaturdayChecked(true, getApplicationContext());
                     enableSaturdayTimes();
@@ -936,9 +938,9 @@ public class QuizSettingsActivity extends AppCompatActivity implements TimeSelec
             }
         });
 
-        sundaySwitch.setOnClickListener(new View.OnClickListener() {
+        sundaySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(sundaySwitch.isChecked()) {
                     mPrefs.setShowQuizOnSunday(false, getApplicationContext());
                     sundayTv2.setTextColor(getResources().getColor(R.color.bgColor));
@@ -957,9 +959,9 @@ public class QuizSettingsActivity extends AppCompatActivity implements TimeSelec
             }
         });
 
-        sundayTimeSwitch.setOnClickListener(new View.OnClickListener() {
+        sundayTimeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(sundayTimeSwitch.isChecked()){
                     mPrefs.setShowQuizTimeOnSundayChecked(true, getApplicationContext());
                     enableSundayTimes();

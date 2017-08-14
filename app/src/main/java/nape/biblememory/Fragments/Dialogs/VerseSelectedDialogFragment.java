@@ -37,7 +37,6 @@ public class VerseSelectedDialogFragment extends DialogFragment {
     private Button cancel;
     private UserPreferences mPrefs;
     private VerseOperations verseOperations;
-    private CheckBox addVerseToInProgress;
 
     private String initialSelectedVerseNum;
     private long currentSelectedVerse;
@@ -51,6 +50,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
     private String bookName;
     private String chapter;
     private boolean comingFromNewVerses;
+    private boolean addVerseToInProgress;
     private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
@@ -62,7 +62,6 @@ public class VerseSelectedDialogFragment extends DialogFragment {
         includeNextVerseTv = (TextView) view.findViewById(R.id.include_next_verse);
         confirm = (Button) view.findViewById(R.id.addVerseButton);
         cancel = (Button) view.findViewById(R.id.cancelButton);
-        addVerseToInProgress = (CheckBox) view.findViewById(R.id.addVerseToInProgress);
         mPrefs = new UserPreferences();
         initialSelectedVerseNum = getArguments().getString("num");
         previousVerseNum = initialSelectedVerseNum;
@@ -75,9 +74,9 @@ public class VerseSelectedDialogFragment extends DialogFragment {
         comingFromNewVerses = getArguments().getBoolean("comingFromNew");
         verseOperations = VerseOperations.getInstance(getActivity().getApplicationContext());
         if(verseOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() > 2){
-            addVerseToInProgress.setVisibility(View.GONE);
+            addVerseToInProgress = false;
         }else{
-            addVerseToInProgress.setChecked(true);
+            addVerseToInProgress = true;
         }
         verse.setText(verseText);
         verseLocationTv.setText(verseLocation);
@@ -127,8 +126,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
                 }
 
                 if(!verseAlreadyExists) {
-                    if (addVerseToInProgress.isChecked()) {
-                        mFirebaseAnalytics.logEvent("verse_added_to_learning_list", bundle);
+                    if (addVerseToInProgress) {
                         DataStore.getInstance().saveQuizVerse(verse, getActivity().getApplicationContext());
                         dialogActionsListener.verseAddedToQuizVerses();
                     } else {

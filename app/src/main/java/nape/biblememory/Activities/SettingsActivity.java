@@ -27,6 +27,7 @@ public class SettingsActivity extends AppCompatActivity {
     @BindView(R.id.settings_quiz_settings_tv)TextView quizSettingsBt;
     @BindView(R.id.settings_privacy_policy)TextView privacyPolicyBt;
     @BindView(R.id.settings_sign_out)TextView signOutBt;
+    @BindView(R.id.settings_bible_version_settings_tv)TextView bibleVerseionSettingsBt;
     private FirebaseAnalytics mFirebaseAnalytics;
     private Activity thisActivity;
     private UserPreferences mPrefs;
@@ -60,6 +61,14 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 mFirebaseAnalytics.logEvent("privacy_policy_settings_selected", null);
                 startActivity(new Intent(getApplicationContext(), PrivacyPolicyActivity.class));
+            }
+        });
+
+        bibleVerseionSettingsBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mFirebaseAnalytics.logEvent("bible_version_settings_selected", null);
+                startActivity(new Intent(getApplicationContext(), BibleVersionSettingsActivity.class));
             }
         });
 

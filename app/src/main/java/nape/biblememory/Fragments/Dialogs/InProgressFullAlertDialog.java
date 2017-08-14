@@ -20,7 +20,7 @@ public class InProgressFullAlertDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Cannot move verse");
-        builder.setMessage("Quiz verses is full. There can be a maximum of 3 verses in the In Progress list at a time.");
+        builder.setMessage("Quiz verses is full. There can be a maximum of 3 verses in the Quiz verses list at a time.");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dismiss();

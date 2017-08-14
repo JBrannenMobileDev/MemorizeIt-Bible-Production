@@ -9,6 +9,31 @@
     tools:context="nape.biblememory.Activities.SettingsActivity">
 
     <TextView
+        android:id="@+id/settings_bible_version_settings_tv"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="85dp"
+        android:background="@color/colorWhite"
+        android:elevation="2dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:text="Bible version settings"
+        android:textColor="@color/bgColor"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="102dp"
+        android:backgroundTint="@color/greyBg"
+        android:elevation="2dp"
+        android:tint="@color/greyBg"
+        app:srcCompat="@mipmap/ic_arrow_forward_black_24dp" />
+
+    <TextView
         android:id="@+id/settings_quiz_settings_tv"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -37,7 +62,7 @@
         android:id="@+id/settings_privacy_policy"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginTop="85dp"
+        android:layout_marginTop="150dp"
         android:background="@color/colorWhite"
         android:elevation="2dp"
         android:gravity="center_vertical"
@@ -52,7 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="102dp"
+        android:layout_marginTop="167dp"
         android:backgroundTint="@color/greyBg"
         android:elevation="2dp"
         android:tint="@color/greyBg"
@@ -67,7 +92,6 @@
         android:background="@color/colorWhite"
         android:elevation="2dp"
         android:gravity="center_vertical"
-        android:paddingLeft="20dp"
         android:text="Sign out"
         android:textAlignment="center"
         android:textColor="@color/bgColor"
