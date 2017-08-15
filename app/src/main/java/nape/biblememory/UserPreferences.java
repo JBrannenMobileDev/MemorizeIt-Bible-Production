@@ -23,6 +23,9 @@ public class UserPreferences{
 
     public void setPrefs(UserPreferencesModel response, Context context) {
         if(response != null) {
+            setQuizViewCount(response.getQuizViewCount(), context);
+            setQuizReviewIndex(response.getQuizReviewIndex(), context);
+            setSelectedVersion(response.getSelectedBibleVersion(), context);
             setStartQuizWhenPhoneUnlocks(response.isStartQuizWhenPhoneUnlocks(), context);
             setShowQuizOnMonday(response.isShowQuizMonday(), context);
             setShowQuizOnTuesday(response.isShowQuizTuesday(), context);
@@ -173,7 +176,7 @@ public class UserPreferences{
     }
 
     public String getSelectedBibleLanguage(Context context){
-        return getSharedPreferences(context).getString(UserPreferenceConstants.SELECTED_BIBLE_LANGUAGE, "");
+        return getSharedPreferences(context).getString(UserPreferenceConstants.SELECTED_BIBLE_LANGUAGE, "English");
     }
 
     public void setSelectedBibleLanguage(String bibleLanguage, Context context){
@@ -185,15 +188,17 @@ public class UserPreferences{
     public void setSelectedVersion(String version, Context context){
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
         editor.putString(UserPreferenceConstants.SELECTED_BIBLE_VERSION, version);
+        editor.commit();
     }
 
     public String getSelectedVersion(Context context) {
-        return getSharedPreferences(context).getString(UserPreferenceConstants.SELECTED_BIBLE_VERSION, "ESV");
+        return getSharedPreferences(context).getString(UserPreferenceConstants.SELECTED_BIBLE_VERSION, "");
     }
 
     public void setDamIdNewTestament(String damId, Context context){
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
         editor.putString(UserPreferenceConstants.NEW_TEST_DAM_ID, damId);
+        editor.commit();
     }
 
     public String getDamIdNewTestament(Context context) {
@@ -203,6 +208,7 @@ public class UserPreferences{
     public void setDamIdOldTestament(String damId, Context context){
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
         editor.putString(UserPreferenceConstants.OLD_TEST_DAM_ID, damId);
+        editor.commit();
     }
 
     public String getDamIdOldTestament(Context context) {
@@ -212,6 +218,7 @@ public class UserPreferences{
     public void setDamId(String damId, Context context){
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
         editor.putString(UserPreferenceConstants.DAM_ID, damId);
+        editor.commit();
     }
 
     public String getDamId(Context context) {
@@ -221,6 +228,7 @@ public class UserPreferences{
     public void setSelectedVerseNum(String verseNum, Context context){
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
         editor.putString(UserPreferenceConstants.SELECTED_VERSE_NUM, verseNum);
+        editor.commit();
     }
 
     public String getSelectedVerseNum(Context context) {
@@ -240,6 +248,7 @@ public class UserPreferences{
     public void setChapterId(String chapterId, Context context) {
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
         editor.putString(UserPreferenceConstants.CHAPTER_ID, chapterId);
+        editor.commit();
     }
 
     public String getChapterId(Context context) {

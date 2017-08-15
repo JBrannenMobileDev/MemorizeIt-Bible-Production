@@ -2,18 +2,30 @@ package nape.biblememory.Activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import nape.biblememory.Models.UserPreferencesModel;
 import nape.biblememory.R;
+import nape.biblememory.UserPreferences;
+import nape.biblememory.data_store.DataStore;
 
 public class BibleVersionSettingsActivity extends AppCompatActivity {
 
 
+    @BindView(R.id.version_esv_checkbox)CheckBox esvCB;
+    @BindView(R.id.version_ceb_checkbox)CheckBox cebCB;
+    @BindView(R.id.version_web_checkbox)CheckBox webCB;
+    @BindView(R.id.version_kjv_checkbox)CheckBox kjvCB;
+    private UserPreferences mPrefs;
+    private UserPreferencesModel mPrefsModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +36,83 @@ public class BibleVersionSettingsActivity extends AppCompatActivity {
         setTitle("Bible version settings");
         FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         mFirebaseAnalytics.setCurrentScreen(this, "BibleVersionSettings", null);
-
+        mPrefs = new UserPreferences();
+        mPrefsModel = new UserPreferencesModel();
+        initCheckboxStates();
+        initListeners();
     }
 
     @Override
     public void finish(){
         super.finish();
         overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_right);
+        mPrefsModel.initAllData(getApplicationContext(), mPrefs);
+        DataStore.getInstance().saveUserPrefs(mPrefsModel, getApplicationContext());
+        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_left);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        mPrefsModel.initAllData(getApplicationContext(), mPrefs);
+        DataStore.getInstance().saveUserPrefs(mPrefsModel, getApplicationContext());
+    }
+
+    private void initCheckboxStates() {
+        switch(mPrefs.getSelectedVersion(getApplicationContext())){
+            case "ESV":
+                esvCB.setChecked(true);
+                break;
+            case "WEB":
+                webCB.setChecked(true);
+                break;
+            case "CEB":
+                cebCB.setChecked(true);
+                break;
+            case "KJV":
+                kjvCB.setChecked(true);
+        }
+    }
+
+    private void initListeners() {
+        esvCB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                webCB.setChecked(false);
+                cebCB.setChecked(false);
+                kjvCB.setChecked(false);
+                mPrefs.setSelectedVersion("ESV", getApplicationContext());
+            }
+        });
+
+        webCB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                esvCB.setChecked(false);
+                cebCB.setChecked(false);
+                kjvCB.setChecked(false);
+                mPrefs.setSelectedVersion("WEB", getApplicationContext());
+            }
+        });
+
+        cebCB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                esvCB.setChecked(false);
+                webCB.setChecked(false);
+                kjvCB.setChecked(false);
+                mPrefs.setSelectedVersion("CEB", getApplicationContext());
+            }
+        });
+
+        kjvCB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                esvCB.setChecked(false);
+                webCB.setChecked(false);
+                cebCB.setChecked(false);
+                mPrefs.setSelectedVersion("KJV", getApplicationContext());
+            }
+        });
     }
 }

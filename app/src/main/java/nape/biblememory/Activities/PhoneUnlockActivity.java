@@ -40,6 +40,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
     private TextView checkAnswerText;
     private TextView hintText;
     private TextView quizReviewTitle;
+    private TextView bibleVersionTv;
     private Button close_more_button;
     private FloatingActionButton checkAnswerFAB;
     private FloatingActionButton yesButton;
@@ -90,6 +91,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
         moreVersesCheckbox = (CheckBox) findViewById(R.id.moreVersesSwitch);
         moreVersesLayout = (FrameLayout) findViewById(R.id.moreVersesLayout);
         hintButton = (FloatingActionButton) findViewById(R.id.hint_button_fab);
+        bibleVersionTv = (TextView) findViewById(R.id.phone_unlock_bible_version_tv);
 
         mPresenter = new PhoneUnlockPresenterImp(this, getApplicationContext());
 
@@ -146,10 +148,8 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
                 mPresenter.onRequestReviewData();
             }
         }
-
-        mPresenter.onRequestData();
-
         mPrefs = new UserPreferences();
+        mPresenter.onRequestData();
         if(mPrefs.getScreenWidth(getApplicationContext()) == 0) {
             DisplayMetrics dm = new DisplayMetrics();
             this.getWindow().getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -225,6 +225,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
     @Override
     public void setVerseLocationText(String verseLocation) {
         this.verseLocation.setText(verseLocation);
+        bibleVersionTv.setText("(" + mPrefs.getSelectedVersion(getApplicationContext()) + ")");
     }
 
     @Override

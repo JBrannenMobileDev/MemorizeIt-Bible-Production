@@ -64,35 +64,43 @@ public class FirebaseDb {
 
     public void saveUpcomingVerseToFirebase(ScriptureData verse, Context context){
         upcomingVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                child(mPrefs.getSelectedVersion(context)).
                 child(Constants.FIREBASE_CHILD_UPCOMING_VERSES);
         upcomingVersesReference.push().setValue(verse);
     }
 
     public void saveQuizVerseToFirebase(ScriptureData verse, Context context){
         quizVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                child(mPrefs.getSelectedVersion(context)).
                 child(Constants.FIREBASE_CHILD_QUIZ_VERSES);
         quizVersesReference.push().setValue(verse);
     }
 
     public void saveMemorizedVerseToFirebase(ScriptureData verse, Context context){
         memorizedVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                child(mPrefs.getSelectedVersion(context)).
                 child(Constants.FIREBASE_CHILD_MEMORIZED_VERSES);
         memorizedVersesReference.push().setValue(verse);
     }
 
     public void saveForgottenVerseToFirebase(ScriptureData verse, Context applicationContext) {
         forgottenVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(applicationContext)).
+                child(mPrefs.getSelectedVersion(applicationContext)).
                 child(Constants.FIREBASE_CHILD_FORGOTTEN_VERSES);
         forgottenVersesReference.push().setValue(verse);
     }
 
     public void deleteUpcomingVerse(ScriptureData verse, final Context context) {
-        upcomingVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_UPCOMING_VERSES);
+        upcomingVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                child(mPrefs.getSelectedVersion(context)).
+                child(Constants.FIREBASE_CHILD_UPCOMING_VERSES);
         upcomingVersesReference.orderByChild("verseLocation").equalTo(verse.getVerseLocation()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot data : dataSnapshot.getChildren()) {
-                    FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_UPCOMING_VERSES).child(data.getKey()).removeValue();
+                    FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                            child(mPrefs.getSelectedVersion(context)).
+                            child(Constants.FIREBASE_CHILD_UPCOMING_VERSES).child(data.getKey()).removeValue();
                 }
             }
 
@@ -104,12 +112,16 @@ public class FirebaseDb {
     }
 
     public void deleteQuizVerse(ScriptureData verse, final Context context) {
-        quizVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_QUIZ_VERSES);
+        quizVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                child(mPrefs.getSelectedVersion(context)).
+                child(Constants.FIREBASE_CHILD_QUIZ_VERSES);
         quizVersesReference.orderByChild("verseLocation").equalTo(verse.getVerseLocation()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot data : dataSnapshot.getChildren()) {
-                    FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_QUIZ_VERSES).child(data.getKey()).removeValue();
+                    FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                            child(mPrefs.getSelectedVersion(context)).
+                            child(Constants.FIREBASE_CHILD_QUIZ_VERSES).child(data.getKey()).removeValue();
                 }
             }
 
@@ -121,12 +133,16 @@ public class FirebaseDb {
     }
 
     public void deleteMemorizedVerse(ScriptureData verse, final Context context) {
-        memorizedVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_MEMORIZED_VERSES);
+        memorizedVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                child(mPrefs.getSelectedVersion(context)).
+                child(Constants.FIREBASE_CHILD_MEMORIZED_VERSES);
         memorizedVersesReference.orderByChild("verseLocation").equalTo(verse.getVerseLocation()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot data : dataSnapshot.getChildren()) {
-                    FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_MEMORIZED_VERSES).child(data.getKey()).removeValue();
+                    FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                            child(mPrefs.getSelectedVersion(context)).
+                            child(Constants.FIREBASE_CHILD_MEMORIZED_VERSES).child(data.getKey()).removeValue();
                 }
             }
 
@@ -139,12 +155,14 @@ public class FirebaseDb {
 
     public void deleteForgottenVerse(ScriptureData verse, final Context context) {
         forgottenVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                child(mPrefs.getSelectedVersion(context)).
                 child(Constants.FIREBASE_CHILD_FORGOTTEN_VERSES);
         forgottenVersesReference.orderByChild("verseLocation").equalTo(verse.getVerseLocation()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot data : dataSnapshot.getChildren()) {
                     FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                            child(mPrefs.getSelectedVersion(context)).
                             child(Constants.FIREBASE_CHILD_FORGOTTEN_VERSES).child(data.getKey()).removeValue();
                 }
             }
@@ -158,7 +176,9 @@ public class FirebaseDb {
 
     public void getUpcomingVersesFromFirebaseDb(Context context, final BaseCallback<List<ScriptureData>> upcomingCallback){
         final List<ScriptureData> upcomingList = new ArrayList<>();
-        upcomingVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_UPCOMING_VERSES);
+        upcomingVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                child(mPrefs.getSelectedVersion(context)).
+                child(Constants.FIREBASE_CHILD_UPCOMING_VERSES);
         upcomingVersesReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -178,7 +198,9 @@ public class FirebaseDb {
 
     public void getQuizVersesFromFirebaseDb(Context applicationContext, final BaseCallback<List<ScriptureData>> quizCallback) {
         final List<ScriptureData> quizList = new ArrayList<>();
-        quizVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(applicationContext)).child(Constants.FIREBASE_CHILD_QUIZ_VERSES);
+        quizVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(applicationContext)).
+                child(mPrefs.getSelectedVersion(applicationContext)).
+                child(Constants.FIREBASE_CHILD_QUIZ_VERSES);
         quizVersesReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -198,7 +220,9 @@ public class FirebaseDb {
 
     public void getMemorizedVersesFromFirebaseDb(Context applicationContext, final BaseCallback<List<ScriptureData>> memorizedCallback) {
         final List<ScriptureData> memorizedList = new ArrayList<>();
-        memorizedVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(applicationContext)).child(Constants.FIREBASE_CHILD_MEMORIZED_VERSES);
+        memorizedVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(applicationContext)).
+                child(mPrefs.getSelectedVersion(applicationContext)).
+                child(Constants.FIREBASE_CHILD_MEMORIZED_VERSES);
         memorizedVersesReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -219,6 +243,7 @@ public class FirebaseDb {
     public void getForgottenVersesFromFirebaseDb(Context applicationContext, final BaseCallback<List<ScriptureData>> forgottenCallback) {
         final List<ScriptureData> forgottenList = new ArrayList<>();
         forgottenVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(applicationContext)).
+                child(mPrefs.getSelectedVersion(applicationContext)).
                 child(Constants.FIREBASE_CHILD_FORGOTTEN_VERSES);
         forgottenVersesReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -238,7 +263,9 @@ public class FirebaseDb {
     }
 
     public void getUserPrefsFromFirebaseDb(Context context, final BaseCallback<UserPreferencesModel> userPrefsCallback){
-        userPrefsReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_USER_PREFS);
+        userPrefsReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                child(mPrefs.getSelectedVersion(context)).
+                child(Constants.FIREBASE_CHILD_USER_PREFS);
         userPrefsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -258,7 +285,9 @@ public class FirebaseDb {
     }
 
     public void updateQuizVerse(final ScriptureData verse, final Context context){
-        quizVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_QUIZ_VERSES);
+        quizVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                child(mPrefs.getSelectedVersion(context)).
+                child(Constants.FIREBASE_CHILD_QUIZ_VERSES);
         quizVersesReference.orderByChild("verseLocation").equalTo(verse.getVerseLocation()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -271,7 +300,9 @@ public class FirebaseDb {
                     result.put("viewedCount", verse.getViewedCount());
                     result.put("memoryStage", verse.getMemoryStage());
                     result.put("memorySubStage", verse.getMemorySubStage());
-                    FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_QUIZ_VERSES).child(data.getKey()).updateChildren(result);
+                    FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                            child(mPrefs.getSelectedVersion(context)).
+                            child(Constants.FIREBASE_CHILD_QUIZ_VERSES).child(data.getKey()).updateChildren(result);
                 }
             }
 
@@ -284,6 +315,7 @@ public class FirebaseDb {
 
     public void updateForgottenVerse(final ScriptureData verse, final Context context){
         forgottenVersesReference = FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                child(mPrefs.getSelectedVersion(context)).
                 child(Constants.FIREBASE_CHILD_FORGOTTEN_VERSES);
         forgottenVersesReference.orderByChild("verseLocation").equalTo(verse.getVerseLocation()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -297,7 +329,9 @@ public class FirebaseDb {
                     result.put("viewedCount", verse.getViewedCount());
                     result.put("memoryStage", verse.getMemoryStage());
                     result.put("memorySubStage", verse.getMemorySubStage());
-                    FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_FORGOTTEN_VERSES).child(data.getKey()).updateChildren(result);
+                    FirebaseDatabase.getInstance().getReference().child(mPrefs.getUserId(context)).
+                            child(mPrefs.getSelectedVersion(context)).
+                            child(Constants.FIREBASE_CHILD_FORGOTTEN_VERSES).child(data.getKey()).updateChildren(result);
                 }
             }
 

@@ -40,11 +40,17 @@ public class UserPreferencesModel {
     private long saturdayEndTime;
     private long sundayStartTime;
     private long sundayEndTime;
+    private String selectedBibleVersion;
+    private int quizViewCount;
+    private int quizReviewIndex;
 
     public UserPreferencesModel() {
     }
 
     public void initAllData(Context context, UserPreferences mPrefs){
+        quizViewCount = mPrefs.getQuizViewCount(context);
+        quizReviewIndex = mPrefs.getQuizReviewIndex(context);
+        selectedBibleVersion = mPrefs.getSelectedVersion(context);
         startQuizWhenPhoneUnlocks = mPrefs.isStartQuizWhenPhoneUnlock(context);
         showQuizMonday = mPrefs.showQuizOnMonday(context);
         showQuizTuesday = mPrefs.showQuizOnTuesday(context);
@@ -76,6 +82,30 @@ public class UserPreferencesModel {
         saturdayEndTime = mPrefs.getSettingsEndTimeSaturday(context);
         sundayStartTime = mPrefs.getSettingsStartTimeSunday(context);
         sundayEndTime = mPrefs.getSettingsEndTimeSunday(context);
+    }
+
+    public String getSelectedBibleVersion() {
+        return selectedBibleVersion;
+    }
+
+    public void setSelectedBibleVersion(String selectedBibleVersion) {
+        this.selectedBibleVersion = selectedBibleVersion;
+    }
+
+    public int getQuizViewCount() {
+        return quizViewCount;
+    }
+
+    public void setQuizViewCount(int quizViewCount) {
+        this.quizViewCount = quizViewCount;
+    }
+
+    public int getQuizReviewIndex() {
+        return quizReviewIndex;
+    }
+
+    public void setQuizReviewIndex(int quizReviewIndex) {
+        this.quizReviewIndex = quizReviewIndex;
     }
 
     public boolean isStartQuizWhenPhoneUnlocks() {
