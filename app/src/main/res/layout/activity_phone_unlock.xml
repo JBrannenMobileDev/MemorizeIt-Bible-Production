@@ -142,8 +142,7 @@
             android:gravity="center_vertical"
             android:text="(Version)"
             android:textColor="@color/colorWhite"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textSize="24sp" />
 
         <FrameLayout
             android:id="@+id/fab_frame"

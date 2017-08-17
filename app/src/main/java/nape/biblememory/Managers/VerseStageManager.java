@@ -45,6 +45,13 @@ public class VerseStageManager {
     }
 
     public String createModifiedVerse(ScriptureData scripture) {
+        String verse = scripture.getVerse();
+        for (int i = 0 ; i<verse.length() ; i++) {
+            if (verse.charAt(i) == '\n' || verse.charAt(i) == '\t') {
+                verse = scripture.getVerse().substring(0, i-1);
+            }
+        }
+        scripture.setVerse(verse);
         String verseContent = "";
         int verseStage;
         if(scripture != null && scripture.getVerse() != null && scripture.getMemoryStage() >= 0) {
