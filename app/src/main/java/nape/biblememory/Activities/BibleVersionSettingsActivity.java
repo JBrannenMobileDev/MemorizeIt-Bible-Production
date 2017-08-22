@@ -21,7 +21,6 @@ public class BibleVersionSettingsActivity extends AppCompatActivity {
 
 
     @BindView(R.id.version_esv_checkbox)CheckBox esvCB;
-    @BindView(R.id.version_ceb_checkbox)CheckBox cebCB;
     @BindView(R.id.version_web_checkbox)CheckBox webCB;
     @BindView(R.id.version_kjv_checkbox)CheckBox kjvCB;
     private UserPreferences mPrefs;
@@ -66,9 +65,6 @@ public class BibleVersionSettingsActivity extends AppCompatActivity {
             case "WEB":
                 webCB.setChecked(true);
                 break;
-            case "CEB":
-                cebCB.setChecked(true);
-                break;
             case "KJV":
                 kjvCB.setChecked(true);
         }
@@ -78,40 +74,42 @@ public class BibleVersionSettingsActivity extends AppCompatActivity {
         esvCB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                webCB.setChecked(false);
-                cebCB.setChecked(false);
-                kjvCB.setChecked(false);
-                mPrefs.setSelectedVersion("ESV", getApplicationContext());
+                if(!esvCB.isChecked()){
+                    esvCB.setChecked(true);
+                    mPrefs.setSelectedVersion("ESV", getApplicationContext());
+                }else {
+                    webCB.setChecked(false);
+                    kjvCB.setChecked(false);
+                    mPrefs.setSelectedVersion("ESV", getApplicationContext());
+                }
             }
         });
 
         webCB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                esvCB.setChecked(false);
-                cebCB.setChecked(false);
-                kjvCB.setChecked(false);
-                mPrefs.setSelectedVersion("WEB", getApplicationContext());
-            }
-        });
-
-        cebCB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                esvCB.setChecked(false);
-                webCB.setChecked(false);
-                kjvCB.setChecked(false);
-                mPrefs.setSelectedVersion("CEB", getApplicationContext());
+                if(!webCB.isChecked()){
+                    esvCB.setChecked(true);
+                    mPrefs.setSelectedVersion("ESV", getApplicationContext());
+                }else {
+                    esvCB.setChecked(false);
+                    kjvCB.setChecked(false);
+                    mPrefs.setSelectedVersion("WEB", getApplicationContext());
+                }
             }
         });
 
         kjvCB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                esvCB.setChecked(false);
-                webCB.setChecked(false);
-                cebCB.setChecked(false);
-                mPrefs.setSelectedVersion("KJV", getApplicationContext());
+                if(!kjvCB.isChecked()){
+                    esvCB.setChecked(true);
+                    mPrefs.setSelectedVersion("ESV", getApplicationContext());
+                }else {
+                    esvCB.setChecked(false);
+                    webCB.setChecked(false);
+                    mPrefs.setSelectedVersion("KJV", getApplicationContext());
+                }
             }
         });
     }

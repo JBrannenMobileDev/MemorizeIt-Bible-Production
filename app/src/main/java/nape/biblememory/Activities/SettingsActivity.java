@@ -34,6 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_right);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
@@ -43,6 +44,7 @@ public class SettingsActivity extends AppCompatActivity {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         mFirebaseAnalytics.setCurrentScreen(this, "Settings", null);
         initListeners();
+        bibleVerseionSettingsBt.setText("Default bible version (" + mPrefs.getSelectedVersion(getApplicationContext()) + ")");
         Intent returnIntent = new Intent();
         setResult(2,returnIntent);
     }

@@ -29,27 +29,25 @@
 
                 <TextView
                     android:id="@+id/verse_location"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_marginTop="2dp"
-                    android:layout_weight="1"
                     android:textColor="@color/colorCloseButtonTextUnselected"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/card_edit_tv"
-                    android:layout_width="match_parent"
+                    android:id="@+id/verse_version"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:paddingRight="10dp"
-                    android:text="Edit"
-                    android:textAlignment="textEnd"
-                    android:textColor="@color/colorProgressBg"
-                    android:textSize="18sp"
-                    android:visibility="gone" />
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="2dp"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 

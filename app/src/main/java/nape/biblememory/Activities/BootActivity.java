@@ -24,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import nape.biblememory.Managers.NetworkManager;
 import nape.biblememory.Managers.VerseOperations;
+import nape.biblememory.Models.User;
 import nape.biblememory.Models.UserPreferencesModel;
 import nape.biblememory.R;
 import nape.biblememory.UserPreferences;
@@ -77,7 +78,11 @@ public class BootActivity extends Activity {
                     }
                 }
             };
-            DataStore.getInstance().getUserPrefs(getApplicationContext(),userPrefsCallback);
+            if(NetworkManager.getInstance().isInternet(getApplicationContext())) {
+                DataStore.getInstance().getUserPrefs(getApplicationContext(), userPrefsCallback);
+            }else{
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            }
         } else {
             if(!mPrefs.isFirstTimeLogind(getApplicationContext())){
                 startActivityForResult(
@@ -136,6 +141,7 @@ public class BootActivity extends Activity {
                 if(!mPrefs.getUserId(getApplicationContext()).equals(auth.getCurrentUser().getUid())){
                     mPrefs.nukeUserPrefs(getApplicationContext());
                     mPrefs.setUserEmail(auth.getCurrentUser().getEmail(), getApplicationContext());
+                    DataStore.getInstance().addNewUser(new User(auth.getCurrentUser().getDisplayName(), auth.getCurrentUser().getEmail(), auth.getCurrentUser().getUid(), 5));
                 }
                 mPrefs.setUserId(auth.getCurrentUser().getUid(), getApplicationContext());
                 mPrefs.setFirstTimeSignIn(false, getApplicationContext());

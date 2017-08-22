@@ -37,6 +37,7 @@ import nape.biblememory.Fragments.Dialogs.NoInternetAlertDialog;
 import nape.biblememory.Fragments.Dialogs.RebuildingDbErrorAlertDialog;
 import nape.biblememory.Fragments.Dialogs.RemoveVerseFromInProgressAlertDialog;
 import nape.biblememory.Fragments.Dialogs.RemoveVerseFromNewVersesAlertDialog;
+import nape.biblememory.Fragments.Dialogs.SelectVersionAlertDialog;
 import nape.biblememory.Fragments.MyVersesFragment;
 import nape.biblememory.Fragments.VerseFragment;
 import nape.biblememory.Fragments.VerseSelection;
@@ -51,7 +52,7 @@ import nape.biblememory.R;
 public class MainActivity extends ActionBarActivity implements NavigationView.OnNavigationItemSelectedListener,
         MyVersesFragment.OnAddVerseSelectedListener, VerseSelection.FragmentToActivity, BooksFragment.BooksFragmentListener,
         ChapterFragment.ChaptersFragmentListener, VerseFragment.OnVerseSelected, VerseSelectedDialogFragment.addVerseDialogActions,
-        RemoveVerseFromInProgressAlertDialog.YesSelected, RemoveVerseFromNewVersesAlertDialog.YesSelected{
+        RemoveVerseFromInProgressAlertDialog.YesSelected, RemoveVerseFromNewVersesAlertDialog.YesSelected, SelectVersionAlertDialog.VersionSelected{
 
     private ViewPager pagerMain;
     private ViewPagerAdapter adapterMain;
@@ -239,10 +240,14 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         } else if (id == R.id.nav_start_quiz) {
             startQuiz.callOnClick();
             mFirebaseAnalytics.logEvent("start_quiz_nav_draw_selected", null);
-        } else if (id == R.id.nav_settings) {
+        } else  if (id == R.id.nav_settings) {
             mFirebaseAnalytics.logEvent("settings_nav_draw_selected", null);
             Intent settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
             startActivityForResult(settingsIntent, 1);
+        } else if (id == R.id.nav_friends) {
+            mFirebaseAnalytics.logEvent("stats_nav_draw_selected", null);
+            Intent settingsIntent = new Intent(getApplicationContext(), FriendsActivity.class);
+            startActivity(settingsIntent);
         } else if (id == R.id.nav_home) {
             mFirebaseAnalytics.logEvent("home_nav_draw_selected", null);
             onBackPressedFromNewVerseSelector();
@@ -404,14 +409,16 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                 FragmentManager fm = getSupportFragmentManager();
                 VerseSelectedDialogFragment verseSelectedDialog = new VerseSelectedDialogFragment();
 
-                Bundle args = new Bundle();
-                args.putString("num", verseNumber);
-                args.putString("verseText", response.get(0).getVerseText());
-                args.putString("verseLocation", mPrefs.getSelectedBook(context) + " " + mPrefs.getSelectedChapter(context) + ":" + verseNumber);
-                args.putLong("numOfVersesInChapter", mPrefs.getNumberOfVerses(context));
-                verseSelectedDialog.setArguments(args);
+                if(response.size() > 0) {
+                    Bundle args = new Bundle();
+                    args.putString("num", verseNumber);
+                    args.putString("verseText", response.get(0).getVerseText());
+                    args.putString("verseLocation", mPrefs.getSelectedBook(context) + " " + mPrefs.getSelectedChapter(context) + ":" + verseNumber);
+                    args.putLong("numOfVersesInChapter", mPrefs.getNumberOfVerses(context));
+                    verseSelectedDialog.setArguments(args);
 
-                verseSelectedDialog.show(fm, "verseSelectedFragment");
+                    verseSelectedDialog.show(fm, "verseSelectedFragment");
+                }
             }
 
             @Override
@@ -422,9 +429,39 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
         String damId;
         if(mPrefs.isBookLocationOT(context)){
-            damId = mPrefs.getDamIdOldTestament(context);
-        }else{
-            damId = mPrefs.getDamIdNewTestament(context);
+            switch(mPrefs.getTempSelectedVersion(getApplicationContext())){
+                case "ESV":
+                    damId = getString(R.string.ESVVersionEnglishOldTestament);
+                    break;
+                case "WEB":
+                    damId = getString(R.string.WEBVersionEnglishOldTestament);
+                    break;
+                case "CEB":
+                    damId = getString(R.string.CEBVersionEnglishOldTestament);
+                    break;
+                case "KJV":
+                    damId = getString(R.string.KJVVersionEnglishOldTestament);
+                    break;
+                default:
+                    damId = getString(R.string.ESVVersionEnglishOldTestament);
+            }
+        }else {
+            switch (mPrefs.getTempSelectedVersion(getApplicationContext())) {
+                case "ESV":
+                    damId = getString(R.string.ESVVersionEnglishNewTestament);
+                    break;
+                case "WEB":
+                    damId = getString(R.string.WEBVersionEnglishNewTestament);
+                    break;
+                case "CEB":
+                    damId = getString(R.string.CEBVersionEnglishNewTestament);
+                    break;
+                case "KJV":
+                    damId = getString(R.string.KJVVersionEnglishNewTestament);
+                    break;
+                default:
+                    damId = getString(R.string.ESVVersionEnglishNewTestament);
+            }
         }
         REST.getVerse(selectedVerseCallback, damId, mPrefs.getSelectedBookId(context), verseNumber, mPrefs.getSelectedChapter(context));
     }
@@ -453,9 +490,39 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         };
         String damId;
         if(mPrefs.isBookLocationOT(getApplicationContext())){
-            damId = mPrefs.getDamIdOldTestament(context);
-        }else{
-            damId = mPrefs.getDamIdNewTestament(context);
+            switch(mPrefs.getTempSelectedVersion(getApplicationContext())){
+                case "ESV":
+                    damId = getString(R.string.ESVVersionEnglishOldTestament);
+                    break;
+                case "WEB":
+                    damId = getString(R.string.WEBVersionEnglishOldTestament);
+                    break;
+                case "CEB":
+                    damId = getString(R.string.CEBVersionEnglishOldTestament);
+                    break;
+                case "KJV":
+                    damId = getString(R.string.KJVVersionEnglishOldTestament);
+                    break;
+                default:
+                    damId = getString(R.string.ESVVersionEnglishOldTestament);
+            }
+        }else {
+            switch (mPrefs.getTempSelectedVersion(getApplicationContext())) {
+                case "ESV":
+                    damId = getString(R.string.ESVVersionEnglishNewTestament);
+                    break;
+                case "WEB":
+                    damId = getString(R.string.WEBVersionEnglishNewTestament);
+                    break;
+                case "CEB":
+                    damId = getString(R.string.CEBVersionEnglishNewTestament);
+                    break;
+                case "KJV":
+                    damId = getString(R.string.KJVVersionEnglishNewTestament);
+                    break;
+                default:
+                    damId = getString(R.string.ESVVersionEnglishNewTestament);
+            }
         }
         String nextVerseNum = String.valueOf(Integer.valueOf(selectedVerseNum) + 1);
         api.getVerse(nextVerseCallback, damId, mPrefs.getSelectedBookId(getApplicationContext()), nextVerseNum, mPrefs.getSelectedChapter(getApplicationContext()));
@@ -509,6 +576,12 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     public void onRemoveFromNewSelected(String verseLocation) {
         ScriptureData verse = new ScriptureData("", verseLocation);
         DataStore.getInstance().deleteUpcomingVerse(verse, getApplicationContext());
+        DataStore.getInstance().updateUserData(mPrefs.getUserId(getApplicationContext()), -1);
         adapterMain.refreshrecyclerViews();
+    }
+
+    @Override
+    public void onVersionSelectedFromDialog(String verseNum) {
+        onVerseSelected(verseNum);
     }
 }

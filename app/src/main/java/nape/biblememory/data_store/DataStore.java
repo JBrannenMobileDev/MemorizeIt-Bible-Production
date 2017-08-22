@@ -12,10 +12,10 @@ import nape.biblememory.Managers.NetworkManager;
 import nape.biblememory.Managers.ScriptureManager;
 import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.Models.ScriptureData;
+import nape.biblememory.Models.User;
 import nape.biblememory.Models.UserPreferencesModel;
 import nape.biblememory.UserPreferences;
 import nape.biblememory.data_store.FirebaseDb.FirebaseDb;
-import nape.biblememory.data_store.FirebaseDb.User;
 import nape.biblememory.data_store.Sqlite.MemoryListContract;
 
 /**
@@ -34,12 +34,16 @@ public class DataStore {
     private DataStore() {
     }
 
-    public void saveUser(User user, Context applicationContext){
-        FirebaseDb.getInstance().saveUser(user, applicationContext);
+    public void getUsers(Context application, BaseCallback<List<User>> usersCallback){
+        FirebaseDb.getInstance().getUsers(application, usersCallback);
     }
 
-    public void getUsers(Context application, BaseCallback<List<User>> usersCallback){
-        //TODO finish someday when needed
+    public void addNewUser(User user){
+        FirebaseDb.getInstance().addNewUser(user);
+    }
+
+    public void updateUserData(String UID, int updateAmount){
+        FirebaseDb.getInstance().updateUserdata(UID, updateAmount);
     }
 
     public void saveUpcomingVerse(ScriptureData verse, Context applicationContext){

@@ -51,6 +51,7 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
     @Override
     public void onResume() {
         super.onResume();
+        RefreshRecyclerView();
     }
 
     @Override

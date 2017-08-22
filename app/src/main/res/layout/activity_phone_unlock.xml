@@ -95,7 +95,7 @@
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:elevation="0dp"
-                    android:text="More verses"
+                    android:text="Another verse"
                     android:textAlignment="center"
                     android:textColor="@color/colorWhite"
                     android:textSize="24sp"

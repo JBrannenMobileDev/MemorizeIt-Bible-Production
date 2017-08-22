@@ -37,9 +37,9 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
         public TextView progressPercent;
         public TextView verseLocation;
         public TextView verse;
+        public TextView version;
         public RelativeLayout removeLayout;
         public LinearLayout moveLayout;
-        public TextView editTv;
 
         public ViewHolder(View v, final int mPosition, final BaseCallback rCallback, final BaseCallback mCallback, final BaseCallback eCallback) {
             super(v);
@@ -47,7 +47,7 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
             verse = (TextView) v.findViewById(R.id.verse);
             pb = (ProgressBar) v.findViewById(R.id.progressBar);
             progressPercent = (TextView) v.findViewById(R.id.progress_percent);
-            editTv = (TextView) v.findViewById(R.id.card_edit_tv);
+            version = (TextView) v.findViewById(R.id.verse_version);
 
             if(mPosition == 1){
                 removeLayout = (RelativeLayout) v.findViewById(R.id.linearLayoutRemove);
@@ -77,14 +77,6 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
                 });
             }
 
-            if(editTv != null){
-                editTv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        eCallback.onResponse(verseLocation.getText());
-                    }
-                });
-            }
             v.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -92,17 +84,11 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
 
                     if (v.equals(selectedView)) {
                         collapseCardView(selectedView, mPosition);
-                        if(editTv != null){
-                            editTv.setVisibility(View.GONE);
-                        }
                         selectedView = null;
                         isViewSelected = false;
                     }else{
                         if(isViewSelected) {
                             collapseCardView(selectedView, mPosition);
-                            if(editTv != null){
-                                editTv.setVisibility(View.GONE);
-                            }
                         }
                         isViewSelected = true;
                         switch(mPosition){
@@ -161,6 +147,7 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
         ScriptureData verse = mDataset.get(position);
         holder.verseLocation.setText(verse.getVerseLocation());
         holder.verse.setText(verse.getVerse());
+        holder.version.setText("(" + verse.getVersionCode() + ")");
         if(mTabPosition == 1) {
             int progress = calculateProgress(verse.getMemoryStage(), verse.getMemorySubStage());
             holder.pb.setProgress(progress);

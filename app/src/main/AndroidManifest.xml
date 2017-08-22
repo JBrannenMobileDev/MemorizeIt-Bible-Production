@@ -20,7 +20,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.PhoneUnlockActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -49,14 +49,15 @@
             android:parentActivityName=".Activities.MainActivity" />
         <activity
             android:name=".Activities.BibleVersionSettingsActivity"
-            android:parentActivityName=".Activities.SettingsActivity"/>
+            android:parentActivityName=".Activities.SettingsActivity" />
         <activity
             android:name=".Activities.PrivacyPolicyActivity"
             android:parentActivityName=".Activities.SettingsActivity" />
         <activity
             android:name=".Activities.BootPrivacyPolicyActivity"
-            android:parentActivityName=".Activities.BootActivity"/>
-        <activity android:name=".Activities.BootActivity"
+            android:parentActivityName=".Activities.BootActivity" />
+        <activity
+            android:name=".Activities.BootActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -64,8 +65,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.SettingsActivity"
-            android:parentActivityName=".Activities.MainActivity"></activity>
+        <activity
+            android:name=".Activities.SettingsActivity"
+            android:parentActivityName=".Activities.MainActivity" />
+        <activity android:name=".Activities.FriendsActivity"
+            android:parentActivityName=".Activities.MainActivity" />
     </application>
 
 </manifest>

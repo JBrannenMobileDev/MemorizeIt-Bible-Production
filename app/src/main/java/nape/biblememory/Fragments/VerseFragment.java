@@ -84,6 +84,7 @@ public class VerseFragment extends Fragment {
                 verseSelectedLoadingBar.setVisibility(View.VISIBLE);
                 gridView.setVisibility(View.GONE);
                 mPrefs.setSelectedVerseNum((String) response, context);
+                mPrefs.setTempSelectedVersion("", getActivity().getApplicationContext());
                 verseSelectedListener.onVerseSelected((String) response);
                 previousSelectedVersePosition = selectedPosition;
                 setUserVisibleHint(true);

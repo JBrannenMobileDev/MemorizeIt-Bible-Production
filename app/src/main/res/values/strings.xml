@@ -43,6 +43,15 @@
     <string name="title_activity_memorized_set">MemorizedSet</string>
     <string name="title_activity_unlock_quiz_settings">UnlockQuizSettings</string>
 
+    <string name="ESVVersionEnglishNewTestament">ENGESVN2ET</string>
+    <string name="ESVVersionEnglishOldTestament">ENGESVO2ET</string>
+    <string name="WEBVersionEnglishNewTestament">ENGWEBN2ET</string>
+    <string name="WEBVersionEnglishOldTestament">ENGWEBO2ET</string>
+    <string name="CEBVersionEnglishNewTestament">ENGCEBN2ET</string>
+    <string name="CEBVersionEnglishOldTestament">ENGCEBO2ET</string>
+    <string name="KJVVersionEnglishNewTestament">ENGKJVN2ET</string>
+    <string name="KJVVersionEnglishOldTestament">ENGKJVO2ET</string>
+
     <string-array name="books_of_the_bible">
         <item>Genesis</item>
         <item>Exodus</item>

@@ -60,4 +60,5 @@ public class UserPreferenceConstants {
     public static final String MIGRATED_FB = "migrated_firebase";
     public static final String QUIZ_VIEW_COUNT = "quiz_view_count";
     public static final String REVIEW_VERSE_INDEX = "review_verse_index";
+    public static final String SELECTED_BIBLE_VERSION_TEMP = "selected_version_temp";
 }

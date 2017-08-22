@@ -33,6 +33,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
     private TextView verse;
     private TextView verseLocationTv;
     private TextView includeNextVerseTv;
+    private TextView verseVersion;
     private Button confirm;
     private Button cancel;
     private UserPreferences mPrefs;
@@ -47,6 +48,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
     private long numOfVersesInChapter;
     private addVerseDialogActions dialogActionsListener;
     private BaseCallback<Verse> includeNextVerseCallback;
+    private BaseCallback<Verse> versionSelectedCallback;
     private String bookName;
     private String chapter;
     private boolean comingFromNewVerses;
@@ -62,6 +64,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
         includeNextVerseTv = (TextView) view.findViewById(R.id.include_next_verse);
         confirm = (Button) view.findViewById(R.id.addVerseButton);
         cancel = (Button) view.findViewById(R.id.cancelButton);
+        verseVersion = (TextView) view.findViewById(R.id.verseVersion);
         mPrefs = new UserPreferences();
         initialSelectedVerseNum = getArguments().getString("num");
         previousVerseNum = initialSelectedVerseNum;
@@ -80,6 +83,11 @@ public class VerseSelectedDialogFragment extends DialogFragment {
         }
         verse.setText(verseText);
         verseLocationTv.setText(verseLocation);
+        if(mPrefs.getTempSelectedVersion(getActivity().getApplicationContext()).equals("")) {
+            verseVersion.setText("(" + mPrefs.getSelectedVersion(getActivity().getApplicationContext()) + ")");
+        }else{
+            verseVersion.setText("(" + mPrefs.getTempSelectedVersion(getActivity().getApplicationContext()) + ")");
+        }
         dialogActionsListener = (addVerseDialogActions) getActivity();
         setOnclickListeners();
         currentSelectedVerse = Long.valueOf(initialSelectedVerseNum);
@@ -103,6 +111,11 @@ public class VerseSelectedDialogFragment extends DialogFragment {
                 verse.setVerseNumber(initialSelectedVerseNum);
                 verse.setBookName(mPrefs.getSelectedBook(getActivity().getApplicationContext()));
                 verse.setChapter(mPrefs.getSelectedChapter(getActivity().getApplicationContext()));
+                if(mPrefs.getTempSelectedVersion(getActivity().getApplicationContext()).equals("")) {
+                    verse.setVersionCode(mPrefs.getSelectedVersion(getActivity().getApplicationContext()));
+                }else{
+                    verse.setVersionCode(mPrefs.getTempSelectedVersion(getActivity().getApplicationContext()));
+                }
                 Bundle bundle = new Bundle();
                 bundle.putString("verse_added", verse.getVerseLocation());
                 mFirebaseAnalytics.logEvent("verse_added", bundle);
@@ -132,9 +145,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
                     } else {
                         DataStore.getInstance().saveUpcomingVerse(verse, getActivity().getApplicationContext());
                     }
-                    if (comingFromNewVerses) {
-                        DataStore.getInstance().deleteUpcomingVerse(new ScriptureData(null, previousVerseLocation), getActivity().getApplicationContext());
-                    }
+                    DataStore.getInstance().updateUserData(mPrefs.getUserId(getActivity().getApplicationContext()), 1);
                     dialogActionsListener.onVerseAdded(comingFromNewVerses);
                     VerseSelectedDialogFragment.this.getDialog().cancel();
                 }else{
@@ -179,6 +190,31 @@ public class VerseSelectedDialogFragment extends DialogFragment {
 
             }
         };
+
+        versionSelectedCallback = new BaseCallback<Verse>() {
+            @Override
+            public void onResponse(Verse response) {
+                verse.setText(response.getVerseText());
+                verseLocationTv.setText(response.getVerseId());
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+
+        verseVersion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SelectVersionAlertDialog selectVersionDialog = new SelectVersionAlertDialog();
+                Bundle bundle = new Bundle();
+                bundle.putString("verse_num", initialSelectedVerseNum);
+                selectVersionDialog.setArguments(bundle);
+                selectVersionDialog.show(getFragmentManager(), null);
+                dismiss();
+            }
+        });
     }
 
     private String removeExtrasSpaces(String s) {

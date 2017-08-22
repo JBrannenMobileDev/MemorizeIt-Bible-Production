@@ -17,6 +17,15 @@ public class ScriptureData {
     private String chapter;
     private long numOfVersesInChapter;
     private String verseNumber;
+    private String versionCode;
+
+    public String getVersionCode() {
+        return versionCode;
+    }
+
+    public void setVersionCode(String versionCode) {
+        this.versionCode = versionCode;
+    }
 
     public long getNumOfVersesInChapter() {
         return numOfVersesInChapter;

@@ -71,7 +71,8 @@ public class VerseOperations {
                         MemoryListContract.CurrentSetEntry.COLUMN_NAME_BOOK_NAME,
                         MemoryListContract.CurrentSetEntry.COLUMN_NAME_CHAPTER,
                         MemoryListContract.CurrentSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER,
-                        MemoryListContract.CurrentSetEntry.COLUMN_NAME_VERSE_NUMBER},
+                        MemoryListContract.CurrentSetEntry.COLUMN_NAME_VERSE_NUMBER,
+                        MemoryListContract.CurrentSetEntry.COLUMN_NAME_VERSION},
                         null, null, null, null, null);
 
                 if (cursor != null) {
@@ -90,6 +91,7 @@ public class VerseOperations {
                     int chapterIdIndex = cursor.getColumnIndex(MemoryListContract.CurrentSetEntry.COLUMN_NAME_CHAPTER);
                     int numofVersesIndex = cursor.getColumnIndex(MemoryListContract.CurrentSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER);
                     int verseNumIndex = cursor.getColumnIndex(MemoryListContract.CurrentSetEntry.COLUMN_NAME_VERSE_NUMBER);
+                    int version = cursor.getColumnIndex(MemoryListContract.CurrentSetEntry.COLUMN_NAME_VERSION);
 
                     cursor.moveToFirst();
                     while (!cursor.isAfterLast()) {
@@ -109,6 +111,7 @@ public class VerseOperations {
                         verseObject.setChapter(cursor.getString(chapterIdIndex));
                         verseObject.setNumOfVersesInChapter(cursor.getLong(numofVersesIndex));
                         verseObject.setVerseNumber(cursor.getString(verseNumIndex));
+                        verseObject.setVersionCode(cursor.getString(version));
                         results.add(verseObject);
                         cursor.moveToNext();
                     }
@@ -132,7 +135,8 @@ public class VerseOperations {
                                 MemoryListContract.LearningSetEntry.COLUMN_NAME_BOOK_NAME,
                                 MemoryListContract.LearningSetEntry.COLUMN_NAME_CHAPTER,
                                 MemoryListContract.LearningSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER,
-                                MemoryListContract.LearningSetEntry.COLUMN_NAME_VERSE_NUMBER},
+                                MemoryListContract.LearningSetEntry.COLUMN_NAME_VERSE_NUMBER,
+                                MemoryListContract.LearningSetEntry.COLUMN_NAME_VERSION},
                         null, null, null, null, null);
 
                 if (cursor != null) {
@@ -151,6 +155,7 @@ public class VerseOperations {
                     int chapterIdIndex = cursor.getColumnIndex(MemoryListContract.LearningSetEntry.COLUMN_NAME_CHAPTER);
                     int numofVersesIndex = cursor.getColumnIndex(MemoryListContract.LearningSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER);
                     int verseNumIndex = cursor.getColumnIndex(MemoryListContract.LearningSetEntry.COLUMN_NAME_VERSE_NUMBER);
+                    int version = cursor.getColumnIndex(MemoryListContract.LearningSetEntry.COLUMN_NAME_VERSION);
 
                     cursor.moveToFirst();
                     while (!cursor.isAfterLast()) {
@@ -170,6 +175,7 @@ public class VerseOperations {
                         verseObject.setChapter(cursor.getString(chapterIdIndex));
                         verseObject.setNumOfVersesInChapter(cursor.getLong(numofVersesIndex));
                         verseObject.setVerseNumber(cursor.getString(verseNumIndex));
+                        verseObject.setVersionCode(cursor.getString(version));
                         results.add(verseObject);
                         cursor.moveToNext();
                     }
@@ -193,7 +199,8 @@ public class VerseOperations {
                                 MemoryListContract.MemorizedSetEntry.COLUMN_NAME_BOOK_NAME,
                                 MemoryListContract.MemorizedSetEntry.COLUMN_NAME_CHAPTER,
                                 MemoryListContract.MemorizedSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER,
-                                MemoryListContract.MemorizedSetEntry.COLUMN_NAME_VERSE_NUMBER},
+                                MemoryListContract.MemorizedSetEntry.COLUMN_NAME_VERSE_NUMBER,
+                                MemoryListContract.MemorizedSetEntry.COLUMN_NAME_VERSION},
                         null, null, null, null, null);
 
                 if (cursor != null) {
@@ -212,6 +219,7 @@ public class VerseOperations {
                     int chapterIdIndex = cursor.getColumnIndex(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_CHAPTER);
                     int numofVersesIndex = cursor.getColumnIndex(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER);
                     int verseNumIndex = cursor.getColumnIndex(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_VERSE_NUMBER);
+                    int version = cursor.getColumnIndex(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_VERSION);
 
                     cursor.moveToFirst();
                     while (!cursor.isAfterLast()) {
@@ -231,6 +239,7 @@ public class VerseOperations {
                         verseObject.setChapter(cursor.getString(chapterIdIndex));
                         verseObject.setNumOfVersesInChapter(cursor.getLong(numofVersesIndex));
                         verseObject.setVerseNumber(cursor.getString(verseNumIndex));
+                        verseObject.setVersionCode(cursor.getString(version));
                         results.add(verseObject);
                         cursor.moveToNext();
                     }
@@ -254,7 +263,8 @@ public class VerseOperations {
                                 MemoryListContract.ForgottenSetEntry.COLUMN_NAME_BOOK_NAME,
                                 MemoryListContract.ForgottenSetEntry.COLUMN_NAME_CHAPTER,
                                 MemoryListContract.ForgottenSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER,
-                                MemoryListContract.ForgottenSetEntry.COLUMN_NAME_VERSE_NUMBER},
+                                MemoryListContract.ForgottenSetEntry.COLUMN_NAME_VERSE_NUMBER,
+                                MemoryListContract.ForgottenSetEntry.COLUMN_NAME_VERSION},
                         null, null, null, null, null);
 
                 if (cursor != null) {
@@ -273,6 +283,7 @@ public class VerseOperations {
                     int chapterIdIndex = cursor.getColumnIndex(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_CHAPTER);
                     int numofVersesIndex = cursor.getColumnIndex(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER);
                     int verseNumIndex = cursor.getColumnIndex(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_VERSE_NUMBER);
+                    int version = cursor.getColumnIndex(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_VERSION);
 
                     cursor.moveToFirst();
                     while (!cursor.isAfterLast()) {
@@ -292,6 +303,7 @@ public class VerseOperations {
                         verseObject.setChapter(cursor.getString(chapterIdIndex));
                         verseObject.setNumOfVersesInChapter(cursor.getLong(numofVersesIndex));
                         verseObject.setVerseNumber(cursor.getString(verseNumIndex));
+                        verseObject.setVersionCode(cursor.getString(version));
                         results.add(verseObject);
                         cursor.moveToNext();
                     }
@@ -321,6 +333,7 @@ public class VerseOperations {
                 values.put(MemoryListContract.CurrentSetEntry.COLUMN_NAME_CHAPTER, scriptureData.getChapter());
                 values.put(MemoryListContract.CurrentSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER, scriptureData.getNumOfVersesInChapter());
                 values.put(MemoryListContract.CurrentSetEntry.COLUMN_NAME_VERSE_NUMBER, scriptureData.getVerseNumber());
+                values.put(MemoryListContract.CurrentSetEntry.COLUMN_NAME_VERSION, scriptureData.getVersionCode());
                 break;
 
             case MemoryListContract.LearningSetEntry.TABLE_NAME:
@@ -338,6 +351,7 @@ public class VerseOperations {
                 values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_CHAPTER, scriptureData.getChapter());
                 values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER, scriptureData.getNumOfVersesInChapter());
                 values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_VERSE_NUMBER, scriptureData.getVerseNumber());
+                values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_VERSION, scriptureData.getVersionCode());
                 break;
 
             case MemoryListContract.ForgottenSetEntry.TABLE_NAME:
@@ -355,6 +369,7 @@ public class VerseOperations {
                 values.put(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_CHAPTER, scriptureData.getChapter());
                 values.put(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER, scriptureData.getNumOfVersesInChapter());
                 values.put(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_VERSE_NUMBER, scriptureData.getVerseNumber());
+                values.put(MemoryListContract.ForgottenSetEntry.COLUMN_NAME_VERSION, scriptureData.getVersionCode());
                 break;
 
             case MemoryListContract.MemorizedSetEntry.TABLE_NAME:
@@ -372,6 +387,7 @@ public class VerseOperations {
                 values.put(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_CHAPTER, scriptureData.getChapter());
                 values.put(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER, scriptureData.getNumOfVersesInChapter());
                 values.put(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_VERSE_NUMBER, scriptureData.getVerseNumber());
+                values.put(MemoryListContract.MemorizedSetEntry.COLUMN_NAME_VERSION, scriptureData.getVersionCode());
                 break;
 
         }

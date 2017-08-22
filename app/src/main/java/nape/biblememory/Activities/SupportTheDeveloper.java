@@ -54,7 +54,6 @@ public class SupportTheDeveloper extends AppCompatActivity {
             @Override
             public void onAdFailedToLoad(int i) {
                 super.onAdFailedToLoad(i);
-                finish();
             }
 
             @Override

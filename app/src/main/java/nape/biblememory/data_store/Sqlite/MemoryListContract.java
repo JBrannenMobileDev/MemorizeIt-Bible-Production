@@ -24,6 +24,7 @@ public final class MemoryListContract {
         public static final String COLUMN_NAME_CHAPTER = "chapter";
         public static final String COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER = "num";
         public static final String COLUMN_NAME_VERSE_NUMBER = "versenumber";
+        public static final String COLUMN_NAME_VERSION = "version";
     }
 
     public static abstract class LearningSetEntry implements BaseColumns {
@@ -43,6 +44,7 @@ public final class MemoryListContract {
         public static final String COLUMN_NAME_CHAPTER = "chapter";
         public static final String COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER = "num";
         public static final String COLUMN_NAME_VERSE_NUMBER = "versenumber";
+        public static final String COLUMN_NAME_VERSION = "version";
     }
 
     public static abstract class ForgottenSetEntry implements BaseColumns {
@@ -62,6 +64,7 @@ public final class MemoryListContract {
         public static final String COLUMN_NAME_CHAPTER = "chapter";
         public static final String COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER = "num";
         public static final String COLUMN_NAME_VERSE_NUMBER = "versenumber";
+        public static final String COLUMN_NAME_VERSION = "version";
     }
 
     public static abstract class MemorizedSetEntry implements BaseColumns {
@@ -81,5 +84,6 @@ public final class MemoryListContract {
         public static final String COLUMN_NAME_CHAPTER = "chapter";
         public static final String COLUMN_NAME_NUM_OF_VERSES_IN_CHAPTER = "num";
         public static final String COLUMN_NAME_VERSE_NUMBER = "versenumber";
+        public static final String COLUMN_NAME_VERSION = "version";
     }
 }
