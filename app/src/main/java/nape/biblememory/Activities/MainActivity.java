@@ -244,9 +244,9 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             mFirebaseAnalytics.logEvent("settings_nav_draw_selected", null);
             Intent settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
             startActivityForResult(settingsIntent, 1);
-        } else if (id == R.id.nav_friends) {
+        } else if (id == R.id.nav_social) {
             mFirebaseAnalytics.logEvent("stats_nav_draw_selected", null);
-            Intent settingsIntent = new Intent(getApplicationContext(), FriendsActivity.class);
+            Intent settingsIntent = new Intent(getApplicationContext(), SocialActivity.class);
             startActivity(settingsIntent);
         } else if (id == R.id.nav_home) {
             mFirebaseAnalytics.logEvent("home_nav_draw_selected", null);

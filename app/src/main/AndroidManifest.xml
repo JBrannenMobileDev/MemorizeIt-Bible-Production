@@ -43,21 +43,27 @@
 
         <activity
             android:name=".Activities.QuizSettingsActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName=".Activities.SettingsActivity" />
         <activity
             android:name=".Activities.SupportTheDeveloper"
+            android:screenOrientation="portrait"
             android:parentActivityName=".Activities.MainActivity" />
         <activity
             android:name=".Activities.BibleVersionSettingsActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName=".Activities.SettingsActivity" />
         <activity
             android:name=".Activities.PrivacyPolicyActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName=".Activities.SettingsActivity" />
         <activity
             android:name=".Activities.BootPrivacyPolicyActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName=".Activities.BootActivity" />
         <activity
             android:name=".Activities.BootActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -67,8 +73,11 @@
         </activity>
         <activity
             android:name=".Activities.SettingsActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName=".Activities.MainActivity" />
-        <activity android:name=".Activities.FriendsActivity"
+        <activity android:name=".Activities.SocialActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:parentActivityName=".Activities.MainActivity" />
     </application>
 

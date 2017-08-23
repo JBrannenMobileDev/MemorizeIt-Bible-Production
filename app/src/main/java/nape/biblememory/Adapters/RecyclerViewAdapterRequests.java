@@ -1,31 +1,23 @@
 package nape.biblememory.Adapters;
 
-import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
 
 import nape.biblememory.Activities.BaseCallback;
-import nape.biblememory.Models.BookGroup;
-import nape.biblememory.Models.Friend;
-import nape.biblememory.Models.ScriptureData;
 import nape.biblememory.Models.User;
 import nape.biblememory.R;
-import nape.biblememory.Singletons.RecyclerViewSingleton;
 
 import static nape.biblememory.R.id.add_friend_tv;
 
-public class RecyclerViewAdapterFriends extends RecyclerView.Adapter<RecyclerViewAdapterFriends.ViewHolder> {
+public class RecyclerViewAdapterRequests extends RecyclerView.Adapter<RecyclerViewAdapterRequests.ViewHolder> {
 
     private List<User> mDataSet;
     private BaseCallback friendSelectedCallback;
-    private BaseCallback removeFriendCallback;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
@@ -34,7 +26,7 @@ public class RecyclerViewAdapterFriends extends RecyclerView.Adapter<RecyclerVie
         private TextView addFriend;
 
 
-        public ViewHolder(View v, final BaseCallback<Integer> selectedCallback, BaseCallback<String> removeFriendCallback) {
+        public ViewHolder(View v, final BaseCallback<Integer> selectedCallback) {
             super(v);
             addFriend = (TextView) v.findViewById(add_friend_tv);
             name = (TextView) v.findViewById(R.id.friends_name_tv);
@@ -44,23 +36,23 @@ public class RecyclerViewAdapterFriends extends RecyclerView.Adapter<RecyclerVie
             addFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    selectedCallback.onResponse(getLayoutPosition());
                 }
             });
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public RecyclerViewAdapterFriends(List<User> dataset, BaseCallback<Integer> friendSelectedCallback, BaseCallback<Integer> removeFriendCallback) {
+    public RecyclerViewAdapterRequests(List<User> dataset, BaseCallback<Integer> friendSelectedCallback) {
         mDataSet = dataset;
         this.friendSelectedCallback = friendSelectedCallback;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public RecyclerViewAdapterFriends.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerViewAdapterRequests.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.requests_recycler_item, parent, false);
-        ViewHolder vh = new ViewHolder(v, friendSelectedCallback, removeFriendCallback);
+        ViewHolder vh = new ViewHolder(v, friendSelectedCallback);
         return vh;
     }
 

@@ -3,6 +3,7 @@ package nape.biblememory.data_store;
 import android.content.Context;
 import android.content.Intent;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -34,8 +35,44 @@ public class DataStore {
     private DataStore() {
     }
 
-    public void getUsers(Context application, BaseCallback<List<User>> usersCallback){
-        FirebaseDb.getInstance().getUsers(application, usersCallback);
+    public void addFriend(String uid, Context contex){
+        FirebaseDb.getInstance().addFriend(uid, contex);
+    }
+
+    public void deleteFriend(String uid, Context conext){
+        FirebaseDb.getInstance().deleteFriend(uid, conext);
+    }
+
+    public void getFriends(final BaseCallback<List<User>> usersCallback, Context context){
+        BaseCallback<List<String>> uidListCallback = new BaseCallback<List<String>>() {
+            @Override
+            public void onResponse(List<String> response) {
+                BaseCallback<List<User>> userCallback = new BaseCallback<List<User>>() {
+                    @Override
+                    public void onResponse(List<User> response) {
+                        if(response != null)
+                            usersCallback.onResponse(response);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+
+                    }
+                };
+                if(response != null)
+                    FirebaseDb.getInstance().getUsers(response, userCallback);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+        FirebaseDb.getInstance().getFriends(uidListCallback, context);
+    }
+
+    public void getUsers(BaseCallback<List<User>> usersCallback){
+        FirebaseDb.getInstance().getUsers(usersCallback);
     }
 
     public void addNewUser(User user){
@@ -351,13 +388,17 @@ public class DataStore {
                                         mPrefs.setRebuildError(false, context);
                                         mPrefsModel.initAllData(context, mPrefs);
                                         DataStore.getInstance().saveUserPrefs(mPrefsModel, context);
-                                        context.startActivity(new Intent(context, MainActivity.class));
+                                        Intent intent = new Intent(context, MainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        context.startActivity(intent);
                                     }
 
                                     @Override
                                     public void onFailure(Exception e) {
                                         mPrefs.setRebuildError(true, context);
-                                        context.startActivity(new Intent(context, MainActivity.class));
+                                        Intent intent = new Intent(context, MainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        context.startActivity(intent);
                                     }
                                 };
                                 getMemorizedVerses(memorizedCallback, context);
@@ -366,7 +407,9 @@ public class DataStore {
                             @Override
                             public void onFailure(Exception e) {
                                 mPrefs.setRebuildError(true, context);
-                                context.startActivity(new Intent(context, MainActivity.class));
+                                Intent intent = new Intent(context, MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(intent);
                             }
                         };
                         getForgottenVerses(forgottenVersesCallback, context);
@@ -375,7 +418,9 @@ public class DataStore {
                     @Override
                     public void onFailure(Exception e) {
                         mPrefs.setRebuildError(true, context);
-                        context.startActivity(new Intent(context, MainActivity.class));
+                        Intent intent = new Intent(context, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
                     }
                 };
                 getQuizVerses(quizCallback, context);
@@ -384,7 +429,9 @@ public class DataStore {
             @Override
             public void onFailure(Exception e) {
                 mPrefs.setRebuildError(true, context);
-                context.startActivity(new Intent(context, MainActivity.class));
+                Intent intent = new Intent(context, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             }
         };
         getUpcomingVerses(upcomingCallback, context);

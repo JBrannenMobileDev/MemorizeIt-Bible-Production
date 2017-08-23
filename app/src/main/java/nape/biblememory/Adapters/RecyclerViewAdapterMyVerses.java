@@ -147,7 +147,11 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
         ScriptureData verse = mDataset.get(position);
         holder.verseLocation.setText(verse.getVerseLocation());
         holder.verse.setText(verse.getVerse());
-        holder.version.setText("(" + verse.getVersionCode() + ")");
+        if(verse.getVersionCode() == null){
+            holder.version.setVisibility(View.INVISIBLE);
+        }else {
+            holder.version.setText("(" + verse.getVersionCode() + ")");
+        }
         if(mTabPosition == 1) {
             int progress = calculateProgress(verse.getMemoryStage(), verse.getMemorySubStage());
             holder.pb.setProgress(progress);

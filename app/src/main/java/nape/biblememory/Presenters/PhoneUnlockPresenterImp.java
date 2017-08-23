@@ -52,7 +52,9 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
     private boolean isReviewMode;
     private int reviewIndex;
     private List<ScriptureData> reviewVersesList;
-    private List<ScriptureData> reviewForgottenVersesList;
+    private ScriptureData reviewForgottenVerses;
+    private int quizViewCount;
+    private BaseCallback<ScriptureData> quizVerseCallback;
 
     public PhoneUnlockPresenterImp(PhoneUnlockView view, Context context){
         stageManager = new VerseStageManager();
@@ -75,8 +77,8 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
 
     @Override
     public void onRequestData() {
-        int quizViewCount = mPrefs.getQuizViewCount(context);
-        final BaseCallback<ScriptureData> quizVerseCallback = new BaseCallback<ScriptureData>() {
+        quizViewCount = mPrefs.getQuizViewCount(context);
+        quizVerseCallback = new BaseCallback<ScriptureData>() {
             @Override
             public void onResponse(ScriptureData response) {
                 onSuccess(response);
@@ -99,16 +101,16 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
     @Override
     public void onRequestReviewData() {
         isReviewMode = true;
-        BaseCallback<List<ScriptureData>> reviewForgottenVersesCallback = new BaseCallback<List<ScriptureData>>() {
+        BaseCallback<ScriptureData> reviewForgottenVersesCallback = new BaseCallback<ScriptureData>() {
             @Override
-            public void onResponse(List<ScriptureData> response) {
-                if(response != null && response.size() > 0) {
+            public void onResponse(ScriptureData response) {
+                if(response != null ) {
                     forgottenVerse = true;
                     view.setReviewTitleVisibility(View.VISIBLE);
                     view.setReviewTitleText("Review forgotten verse");
                     view.setReviewTitleColor(R.color.colorNoText);
-                    reviewForgottenVersesList = response;
-                    onSuccess(response.get(0));
+                    reviewForgottenVerses = response;
+                    onSuccess(response);
                 }else{
                     BaseCallback<List<ScriptureData>> reviewVersesListCallback = new BaseCallback<List<ScriptureData>>() {
                         @Override
@@ -120,24 +122,30 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                                 view.setReviewTitleColor(R.color.colorGreenText);
                                 reviewVersesList = response;
                                 onSuccess(response.get(reviewIndex));
+                            }else{
+                                onFailure(new Exception("reviewVersesResponse has size zero."));
                             }
                         }
 
                         @Override
                         public void onFailure(Exception e) {
-
+                            isReviewMode = false;
+                            mPrefs.setQuizViewCount(quizViewCount + 1, context);
+                            DataStore.getInstance().getRandomQuizVerse(context, quizVerseCallback);
                         }
                     };
-                    DataStore.getInstance().getMemorizedVerses(reviewVersesListCallback, context);
+                    DataStore.getInstance().getLocalMemorizedVerses(reviewVersesListCallback, context);
                 }
             }
 
             @Override
             public void onFailure(Exception e) {
-
+                isReviewMode = false;
+                mPrefs.setQuizViewCount(quizViewCount + 1, context);
+                DataStore.getInstance().getRandomQuizVerse(context, quizVerseCallback);
             }
         };
-        DataStore.getInstance().getForgottenVerses(reviewForgottenVersesCallback, context);
+        DataStore.getInstance().getLocalForgottenVerse(reviewForgottenVersesCallback, context);
     }
 
 
@@ -281,7 +289,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
     }
 
     private void moveForgottenVerseToMemorizedList() {
-        reviewForgottenVersesList = null;
+        reviewForgottenVerses = null;
         forgottenVerse = false;
         String formattedDate = dateFormat.format(c.getTime());
         scripture.setMemorizedDate(formattedDate);

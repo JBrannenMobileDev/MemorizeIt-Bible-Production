@@ -17,6 +17,9 @@ public class User {
         this.totalVerses = i;
     }
 
+    public User() {
+    }
+
     public String getName() {
         return name;
     }

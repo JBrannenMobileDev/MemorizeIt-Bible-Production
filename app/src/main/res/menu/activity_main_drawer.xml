@@ -18,9 +18,9 @@
             android:icon="@mipmap/ic_play_circle_filled_black_24dp"
             android:title="Start quiz" />
         <item
-            android:id="@+id/nav_friends"
-            android:icon="@drawable/ic_person_add_black_24dp"
-            android:title="Friends" />
+            android:id="@+id/nav_social"
+            android:icon="@mipmap/ic_people_black_24dp"
+            android:title="Social" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@mipmap/ic_settings_black_24dp"
