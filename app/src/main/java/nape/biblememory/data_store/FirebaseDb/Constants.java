@@ -13,4 +13,5 @@ public final class Constants {
     public static final String FIREBASE_CHILD_FORGOTTEN_VERSES = "forgottenList";
     public static final String FRIENDS = "friends";
     public static final String FIREBASE_CHILD_USER_DATA = "user_data";
+    public static final String FRIEND_REQUESTS = "friend_requests";
 }

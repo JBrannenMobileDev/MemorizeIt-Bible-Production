@@ -22,7 +22,6 @@ public class RecyclerViewAdapterRequests extends RecyclerView.Adapter<RecyclerVi
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private TextView email;
-        private TextView verseCount;
         private TextView addFriend;
 
 
@@ -31,7 +30,6 @@ public class RecyclerViewAdapterRequests extends RecyclerView.Adapter<RecyclerVi
             addFriend = (TextView) v.findViewById(add_friend_tv);
             name = (TextView) v.findViewById(R.id.friends_name_tv);
             email = (TextView) v.findViewById(R.id.friends_email_tv);
-            verseCount = (TextView) v.findViewById(R.id.friends_verse_count_tv);
 
             addFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -61,7 +59,6 @@ public class RecyclerViewAdapterRequests extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.name.setText(mDataSet.get(position).getName());
         holder.email.setText(mDataSet.get(position).getEmail());
-        holder.verseCount.setText(String.valueOf(mDataSet.get(position).getTotalVerses()));
     }
 
 

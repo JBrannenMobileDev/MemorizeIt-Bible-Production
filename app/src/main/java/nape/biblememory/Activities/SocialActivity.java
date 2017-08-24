@@ -1,16 +1,20 @@
 package nape.biblememory.Activities;
 
+import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import nape.biblememory.Adapters.ViewPagerSocialAdapter;
+import nape.biblememory.Fragments.Dialogs.FriendAddedAlertDialog;
 import nape.biblememory.R;
 import nape.biblememory.Views.SlidingTabLayout;
 
-public class SocialActivity extends AppCompatActivity {
+public class SocialActivity extends AppCompatActivity implements FriendAddedAlertDialog.requestTabActions{
     private static final int NUM_OF_TABS = 3;
     private static final CharSequence mainTitles[]={"Friends","Groups","Requests"};
 
@@ -46,5 +50,10 @@ public class SocialActivity extends AppCompatActivity {
         //added for test commit
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
+    }
+
+    @Override
+    public void onFriendAdded() {
+
     }
 }

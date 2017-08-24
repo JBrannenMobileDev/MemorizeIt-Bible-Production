@@ -30,6 +30,7 @@ public class FirebaseDb {
     }
 
     private DatabaseReference friendsReference;
+    private DatabaseReference friendsRequestReference;
     private DatabaseReference usersReference;
     private DatabaseReference upcomingVersesReference;
     private DatabaseReference quizVersesReference;
@@ -156,6 +157,60 @@ public class FirebaseDb {
         friendsReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).
                 child(mPrefs.getUserId(applicationContext)).child(Constants.FRIENDS);
         friendsReference.push().setValue(uid);
+    }
+
+    public void confirmFriendRequest(String requesterUid, Context context){
+        addFriend(requesterUid, context);
+        friendsReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).
+                child(requesterUid).child(Constants.FRIENDS);
+        friendsReference.push().setValue(mPrefs.getUserId(context));
+    }
+
+    public void sendFriendRequest(String uid, Context context){
+        friendsRequestReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).
+                child(uid).child(Constants.FRIEND_REQUESTS);
+        friendsRequestReference.push().setValue(mPrefs.getUserId(context));
+    }
+
+    public void deleteFriendRequest(String uid, final Context context){
+        friendsRequestReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).
+                child(mPrefs.getUserId(context)).child(Constants.FRIEND_REQUESTS);
+
+        friendsRequestReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot data : dataSnapshot.getChildren()) {
+                    FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).child(mPrefs.getUserId(context)).
+                            child(Constants.FRIEND_REQUESTS).child(data.getKey()).removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void getFriendRequests(final BaseCallback<List<String>> friendRequestCallback, Context context){
+        friendsRequestReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).
+                child(mPrefs.getUserId(context)).child(Constants.FRIEND_REQUESTS);
+        friendsRequestReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<String> uidList = new ArrayList<>();
+                for(DataSnapshot data : dataSnapshot.getChildren()) {
+                    String uid = data.getValue(String.class);
+                    uidList.add(uid);
+                }
+                friendRequestCallback.onResponse(uidList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void deleteFriend(String uid, final Context applicationContext){

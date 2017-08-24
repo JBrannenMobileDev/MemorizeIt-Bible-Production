@@ -25,33 +25,32 @@ public class RecyclerViewAdapterFriends extends RecyclerView.Adapter<RecyclerVie
 
     private List<User> mDataSet;
     private BaseCallback friendSelectedCallback;
-    private BaseCallback removeFriendCallback;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private TextView email;
         private TextView verseCount;
-        private TextView addFriend;
+        private RelativeLayout friendLayout;
 
 
-        public ViewHolder(View v, final BaseCallback<Integer> selectedCallback, BaseCallback<String> removeFriendCallback) {
+        public ViewHolder(View v, final BaseCallback<Integer> selectedCallback) {
             super(v);
-            addFriend = (TextView) v.findViewById(add_friend_tv);
+            friendLayout = (RelativeLayout) v.findViewById(R.id.friend_item_layout);
             name = (TextView) v.findViewById(R.id.friends_name_tv);
             email = (TextView) v.findViewById(R.id.friends_email_tv);
             verseCount = (TextView) v.findViewById(R.id.friends_verse_count_tv);
 
-            addFriend.setOnClickListener(new View.OnClickListener() {
+            friendLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    selectedCallback.onResponse(getLayoutPosition());
                 }
             });
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public RecyclerViewAdapterFriends(List<User> dataset, BaseCallback<Integer> friendSelectedCallback, BaseCallback<Integer> removeFriendCallback) {
+    public RecyclerViewAdapterFriends(List<User> dataset, BaseCallback<Integer> friendSelectedCallback) {
         mDataSet = dataset;
         this.friendSelectedCallback = friendSelectedCallback;
     }
@@ -59,8 +58,8 @@ public class RecyclerViewAdapterFriends extends RecyclerView.Adapter<RecyclerVie
     // Create new views (invoked by the layout manager)
     @Override
     public RecyclerViewAdapterFriends.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.requests_recycler_item, parent, false);
-        ViewHolder vh = new ViewHolder(v, friendSelectedCallback, removeFriendCallback);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.friends_recycler_item, parent, false);
+        ViewHolder vh = new ViewHolder(v, friendSelectedCallback);
         return vh;
     }
 

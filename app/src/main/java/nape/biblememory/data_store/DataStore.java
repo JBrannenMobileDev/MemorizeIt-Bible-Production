@@ -31,8 +31,18 @@ public class DataStore {
     }
 
     private ScriptureManager scriptureManager;
+    private List<BaseCallback> friendRequestsRegisteredCallbacks;
 
     private DataStore() {
+        friendRequestsRegisteredCallbacks = new ArrayList<>();
+    }
+
+    public void registerForFriendRequests(final BaseCallback<List<User>> requestsCallback){
+        friendRequestsRegisteredCallbacks.add(requestsCallback);
+    }
+
+    public void unregisterForFriendRequests(final BaseCallback<List<User>> requestsCallback){
+        friendRequestsRegisteredCallbacks.remove(requestsCallback);
     }
 
     public void addFriend(String uid, Context contex){
@@ -41,6 +51,52 @@ public class DataStore {
 
     public void deleteFriend(String uid, Context conext){
         FirebaseDb.getInstance().deleteFriend(uid, conext);
+    }
+
+    public void getFriendRequests(Context context){
+        BaseCallback<List<String>> uidListCallback = new BaseCallback<List<String>>() {
+            @Override
+            public void onResponse(List<String> response) {
+                BaseCallback<List<User>> userCallback = new BaseCallback<List<User>>() {
+                    @Override
+                    public void onResponse(List<User> response) {
+                        if(response != null) {
+                            if(friendRequestsRegisteredCallbacks != null && friendRequestsRegisteredCallbacks.size() > 0) {
+                                for(BaseCallback callback : friendRequestsRegisteredCallbacks){
+                                    callback.onResponse(response);
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+
+                    }
+                };
+                if(response != null)
+                    FirebaseDb.getInstance().getUsers(response, userCallback);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+        FirebaseDb.getInstance().getFriendRequests(uidListCallback, context);
+    }
+
+    public void deleteFriendRequest(String uid, Context context){
+        FirebaseDb.getInstance().deleteFriendRequest(uid, context);
+    }
+
+    public void confirmFriendRequest(String uid, Context context){
+        FirebaseDb.getInstance().confirmFriendRequest(uid, context);
+        FirebaseDb.getInstance().deleteFriendRequest(uid, context);
+    }
+
+    public void sendFriendRequest(String uid, Context context){
+        FirebaseDb.getInstance().sendFriendRequest(uid, context);
     }
 
     public void getFriends(final BaseCallback<List<User>> usersCallback, Context context){
