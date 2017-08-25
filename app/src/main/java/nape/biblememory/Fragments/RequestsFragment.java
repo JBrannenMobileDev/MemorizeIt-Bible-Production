@@ -66,6 +66,7 @@ public class RequestsFragment extends Fragment {
             @Override
             public void onResponse(Integer response) {
                 DataStore.getInstance().confirmFriendRequest(pendingUsersToDisplay.get(response).getUID(), getActivity().getApplicationContext());
+                DataStore.getInstance().getFriendRequests(getActivity().getApplicationContext());
             }
 
             @Override

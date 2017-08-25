@@ -1,67 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/request_item_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:background="@color/colorWhite"
+    android:orientation="horizontal">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="110dp"
         android:layout_marginTop="5dp"
-        android:elevation="4dp"
-        android:gravity="right|center_vertical"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/delete_request_tv"
-            android:layout_width="75dp"
-            android:layout_height="35dp"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/rounded_rectangle_grey_bg"
-            android:elevation="2dp"
-            android:gravity="center_vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="Delete"
-            android:textAlignment="center"
-            android:textColor="@color/greyBgDarker"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/confirm_request_tv"
-            android:layout_width="75dp"
-            android:layout_height="35dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/rounded_rectangle"
-            android:elevation="2dp"
-            android:gravity="center_vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="Confirm"
-            android:textAlignment="center"
-            android:textColor="@color/colorWhite"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/colorWhite"
+        android:layout_weight=".5"
         android:elevation="2dp"
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingBottom="5dp"
         android:paddingLeft="15dp"
-        android:paddingRight="15dp"
         android:paddingTop="5dp">
 
         <TextView
@@ -84,4 +38,50 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:elevation="4dp"
+        android:gravity="right|center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/delete_request_tv"
+            android:layout_width="100dp"
+            android:layout_height="45dp"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/rounded_rectangle_grey_bg"
+            android:elevation="2dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Delete"
+            android:textAlignment="center"
+            android:textColor="@color/greyBgDarker"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/confirm_request_tv"
+            android:layout_width="100dp"
+            android:layout_height="45dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/rounded_rectangle"
+            android:elevation="2dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Confirm"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>

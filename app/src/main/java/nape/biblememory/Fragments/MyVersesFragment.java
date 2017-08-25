@@ -64,7 +64,6 @@ public class MyVersesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();mPrefs = new UserPreferences();
-        DataStore.getInstance().registerForFriendRequests(friendRequestCallback);
 
         if(mPrefs.isSnackbarVisible(getActivity().getApplicationContext())) {
             float distance = TypedValue.applyDimension(
@@ -94,20 +93,6 @@ public class MyVersesFragment extends Fragment {
                 }
             }
         });
-
-        friendRequestCallback = new BaseCallback<List<User>>() {
-            @Override
-            public void onResponse(List<User> response) {
-                if(response != null && response.size() > 0){
-
-                }
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-
-            }
-        };
 
         mPrefs = new UserPreferences();
         if(mPrefs.isSnackbarVisible(getActivity().getApplicationContext())) {

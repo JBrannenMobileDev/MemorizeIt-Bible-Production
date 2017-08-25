@@ -207,7 +207,8 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     @Override
     public void onStop(){
         super.onStop();
-        snackbar.dismiss();
+        if(snackbar != null)
+            snackbar.dismiss();
     }
 
     private void setNavIconColors() {
