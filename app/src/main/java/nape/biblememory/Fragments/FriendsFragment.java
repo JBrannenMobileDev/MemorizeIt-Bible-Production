@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class FriendsFragment extends Fragment {
 
     @BindView(R.id.friends_recycler_view)RecyclerView recyclerView;
     @BindView(R.id.add_friend_fab)FloatingActionButton addFriendBt;
+    @BindView(R.id.empty_state_friends_fragment_tv)TextView emptyStateTv;
     private RecyclerView.LayoutManager layoutManager;
     private BaseCallback<Integer> friendSelectedCallback;
     private BaseCallback<List<User>> friendsCallback;
@@ -53,7 +56,7 @@ public class FriendsFragment extends Fragment {
         friendSelectedCallback = new BaseCallback<Integer>() {
             @Override
             public void onResponse(Integer response) {
-
+                Toast.makeText(getActivity().getApplicationContext(), "Friend details page is under construction.", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -65,8 +68,10 @@ public class FriendsFragment extends Fragment {
         friendsCallback = new BaseCallback<List<User>>() {
             @Override
             public void onResponse(List<User> response) {
-                if(response != null && response.size() > 0)
+                if(response != null && response.size() > 0) {
+                    emptyStateTv.setVisibility(View.GONE);
                     setRecyclerViewItems(response);
+                }
             }
 
             @Override

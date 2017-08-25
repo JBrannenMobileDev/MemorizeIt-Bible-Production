@@ -4,7 +4,17 @@
     android:layout_height="match_parent"
     tools:context="nape.biblememory.Fragments.GroupsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/empty_state_groups_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="false"
+        android:paddingLeft="65dp"
+        android:paddingRight="65dp"
+        android:paddingTop="150dp"
+        android:text="Groups are under construction. A future version of the app will include this feature."
+        android:textAlignment="center"
+        android:textSize="24sp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/groups_recycler_view"
