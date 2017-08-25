@@ -12,7 +12,7 @@
         android:layout_centerVertical="false"
         android:paddingLeft="65dp"
         android:paddingRight="65dp"
-        android:paddingTop="150dp"
+        android:paddingTop="75dp"
         android:text="Select the plus button to find a friend."
         android:textAlignment="center"
         android:textSize="24sp" />

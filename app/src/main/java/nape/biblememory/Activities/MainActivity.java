@@ -191,6 +191,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
                     // Changing message text color
                     snackbar.setActionTextColor(getResources().getColor(R.color.colorGreenText));
+                    snackbar.getView().setBackgroundColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
                     snackbar.show();
                 }
             }
