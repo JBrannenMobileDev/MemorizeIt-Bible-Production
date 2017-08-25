@@ -1,13 +1,17 @@
 package nape.biblememory.Fragments;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -20,6 +24,7 @@ import nape.biblememory.Managers.ScriptureManager;
 import nape.biblememory.Models.ScriptureData;
 import nape.biblememory.Presenters.LearningSetFragmentPresenter;
 import nape.biblememory.Presenters.LearningSetFragmentPresenterImp;
+import nape.biblememory.UserPreferences;
 import nape.biblememory.data_store.DataStore;
 import nape.biblememory.data_store.FirebaseDb.FirebaseDb;
 import nape.biblememory.data_store.Sqlite.MemoryListContract;
@@ -39,6 +44,9 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
     private LearningSetFragmentPresenter mPresenter;
     private FirebaseAnalytics mFirebaseAnalytics;
     private Context appContext;
+    private FloatingActionButton addVerseFab;
+    private UserPreferences mPrefs;
+    private TextView emptyStateTv;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +60,14 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
     public void onResume() {
         super.onResume();
         RefreshRecyclerView();
+        mPrefs = new UserPreferences();
+        if(mPrefs.isSnackbarVisible(getActivity().getApplicationContext())) {
+            float distance = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 40,
+                    getResources().getDisplayMetrics()
+            );
+            moveNewVerseFab(-distance);
+        }
     }
 
     @Override
@@ -59,8 +75,10 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
         View v =inflater.inflate(R.layout.fragment_learning_set,container,false);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.learning_set_recycler_view);
 
+        addVerseFab = (FloatingActionButton) v.findViewById(R.id.add_verse_Quiz_verses_fab);
         mLayoutManager = new LinearLayoutManager(this.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
+        emptyStateTv = (TextView) v.findViewById(R.id.empty_state_learning_tv);
 
         mPresenter = new LearningSetFragmentPresenterImp(this, getActivity().getApplicationContext());
 
@@ -80,6 +98,26 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
             }
         };
         RefreshRecyclerView();
+        addVerseFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                    ((LearningSetFragment.OnAddVerseSelectedListener) getActivity()).addVerseSelected();
+                    mFirebaseAnalytics.logEvent("add_verse_from_QuizVers_selected", null);
+                }catch (ClassCastException cce){
+
+                }
+            }
+        });
+
+        mPrefs = new UserPreferences();
+        if(mPrefs.isSnackbarVisible(getActivity().getApplicationContext())) {
+            float distance = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 40,
+                    getResources().getDisplayMetrics()
+            );
+            moveNewVerseFab(-distance);
+        }
         return v;
     }
 
@@ -89,8 +127,11 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
             @Override
             public void onResponse(List<ScriptureData> response) {
                 dataSet = response;
-                mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_1, removeCallback, null, null);
-                mRecyclerView.setAdapter(mAdapter);
+                if(response != null && response.size() > 0) {
+                    emptyStateTv.setVisibility(View.GONE);
+                    mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_1, removeCallback, null, null);
+                    mRecyclerView.setAdapter(mAdapter);
+                }
             }
 
             @Override
@@ -114,7 +155,11 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
         }
     }
 
-    public void onYesSelected(String verseLocation) {
-        mPresenter.onRemoveClicked(verseLocation);
+    public void moveNewVerseFab(float distance) {
+        addVerseFab.animate().translationY(distance);
+    }
+
+    public interface OnAddVerseSelectedListener{
+        void addVerseSelected();
     }
 }

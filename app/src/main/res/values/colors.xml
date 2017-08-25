@@ -23,4 +23,6 @@
     <color name="testColor">#9dc9d7</color>
     <color name="divider_bar">#1f000000</color>
     <color name="greyBgDarker">#989898</color>
+    <color name="red">#FFF90101</color>
+    <color name="greyIcon">#606060</color>
 </resources>

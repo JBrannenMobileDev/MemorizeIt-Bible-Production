@@ -43,24 +43,24 @@
 
         <activity
             android:name=".Activities.QuizSettingsActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".Activities.SettingsActivity" />
+            android:parentActivityName=".Activities.SettingsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.SupportTheDeveloper"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".Activities.MainActivity" />
+            android:parentActivityName=".Activities.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.BibleVersionSettingsActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".Activities.SettingsActivity" />
+            android:parentActivityName=".Activities.SettingsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.PrivacyPolicyActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".Activities.SettingsActivity" />
+            android:parentActivityName=".Activities.SettingsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.BootPrivacyPolicyActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".Activities.BootActivity" />
+            android:parentActivityName=".Activities.BootActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.BootActivity"
             android:screenOrientation="portrait"
@@ -73,12 +73,20 @@
         </activity>
         <activity
             android:name=".Activities.SettingsActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".Activities.MainActivity" />
-        <activity android:name=".Activities.SocialActivity"
-            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.SocialActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:parentActivityName=".Activities.MainActivity" />
+            android:parentActivityName=".Activities.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.AddFriendActivity"
+            android:parentActivityName=".Activities.SocialActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activities.LoginSuccessActivity"
+            android:launchMode="singleTask">
+        </activity>
     </application>
 
 </manifest>

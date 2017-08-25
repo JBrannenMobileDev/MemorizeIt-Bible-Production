@@ -1,22 +1,18 @@
 package nape.biblememory.Activities;
 
-import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import nape.biblememory.Adapters.ViewPagerSocialAdapter;
-import nape.biblememory.Fragments.Dialogs.FriendAddedAlertDialog;
 import nape.biblememory.R;
 import nape.biblememory.Views.SlidingTabLayout;
 
-public class SocialActivity extends AppCompatActivity implements FriendAddedAlertDialog.requestTabActions{
+public class SocialActivity extends AppCompatActivity{
     private static final int NUM_OF_TABS = 3;
-    private static final CharSequence mainTitles[]={"Friends","Groups","Requests"};
+    private static CharSequence mainTitles[]={"Friends","Groups","Requests"};
 
     @BindView(R.id.social_pager) ViewPager pager;
     @BindView(R.id.social_tabs) SlidingTabLayout tabs;
@@ -30,13 +26,12 @@ public class SocialActivity extends AppCompatActivity implements FriendAddedAler
         setContentView(R.layout.activity_social);
         ButterKnife.bind(this);
         setTitle("Social");
-        setSlidingTabViewMain();
+        setSlidingTabViewMain(getIntent().getBooleanExtra("coming_from_snackbar", false));
     }
 
-    private void setSlidingTabViewMain() {
+    private void setSlidingTabViewMain(boolean coming_from_snackbar) {
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         adapterMain =  new ViewPagerSocialAdapter(getSupportFragmentManager(),mainTitles,NUM_OF_TABS);
-
         pager.setAdapter(adapterMain);
 
         tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
@@ -47,13 +42,12 @@ public class SocialActivity extends AppCompatActivity implements FriendAddedAler
             public int getIndicatorColor(int position) {return getResources().getColor(R.color.tabsScrollColor);
             }
         });
+
         //added for test commit
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
-    }
-
-    @Override
-    public void onFriendAdded() {
-
+        if(coming_from_snackbar){
+            pager.setCurrentItem(2, true);
+        }
     }
 }

@@ -4,10 +4,14 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -15,6 +19,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,11 +43,13 @@ import nape.biblememory.Fragments.Dialogs.RebuildingDbErrorAlertDialog;
 import nape.biblememory.Fragments.Dialogs.RemoveVerseFromInProgressAlertDialog;
 import nape.biblememory.Fragments.Dialogs.RemoveVerseFromNewVersesAlertDialog;
 import nape.biblememory.Fragments.Dialogs.SelectVersionAlertDialog;
+import nape.biblememory.Fragments.LearningSetFragment;
 import nape.biblememory.Fragments.MyVersesFragment;
 import nape.biblememory.Fragments.VerseFragment;
 import nape.biblememory.Fragments.VerseSelection;
 import nape.biblememory.Managers.NetworkManager;
 import nape.biblememory.Models.ScriptureData;
+import nape.biblememory.Models.User;
 import nape.biblememory.data_store.DataStore;
 import nape.biblememory.UserPreferences;
 import nape.biblememory.Views.SlidingTabLayout;
@@ -51,7 +58,7 @@ import nape.biblememory.R;
 
 public class MainActivity extends ActionBarActivity implements NavigationView.OnNavigationItemSelectedListener,
         MyVersesFragment.OnAddVerseSelectedListener, VerseSelection.FragmentToActivity, BooksFragment.BooksFragmentListener,
-        ChapterFragment.ChaptersFragmentListener, VerseFragment.OnVerseSelected, VerseSelectedDialogFragment.addVerseDialogActions,
+        ChapterFragment.ChaptersFragmentListener, VerseFragment.OnVerseSelected, LearningSetFragment.OnAddVerseSelectedListener, VerseSelectedDialogFragment.addVerseDialogActions,
         RemoveVerseFromInProgressAlertDialog.YesSelected, RemoveVerseFromNewVersesAlertDialog.YesSelected, SelectVersionAlertDialog.VersionSelected{
 
     private ViewPager pagerMain;
@@ -73,10 +80,12 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     private FrameLayout startQuizFabFrame;
     private FirebaseAnalytics mFirebaseAnalytics;
     private TextView userEmail;
+    private CoordinatorLayout coordinatorLayout;
 
     private DBTApi REST;
     private BaseCallback<List<Verse>> selectedVerseCallback;
     private Context context;
+    private Snackbar snackbar;
 
 
 
@@ -85,7 +94,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_left);
         super.onCreate(savedInstanceState);
         mPrefs = new UserPreferences();
         setContentView(R.layout.activity_main);
@@ -98,8 +107,11 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_activity_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setItemIconTintList(null);
+        setNavIconColors();
         View headerView = navigationView.getHeaderView(0);
         userEmail = (TextView) headerView.findViewById(R.id.nav_drawer_user_email);
         userEmail.setText(mPrefs.getUserEmail(getApplicationContext()));
@@ -129,12 +141,133 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         if(mPrefs.isRebuildError(getApplicationContext())){
             new RebuildingDbErrorAlertDialog().show(getSupportFragmentManager(), null);
         }
+
+        BaseCallback<List<User>> friendRequestCallback = new BaseCallback<List<User>>() {
+            @Override
+            public void onResponse(List<User> response) {
+                if(response.size() > 0) {
+                    navigationView.getMenu()
+                            .findItem(R.id.nav_social)
+                            .getIcon()
+                            .setColorFilter(getResources().getColor(R.color.colorProgressBg), PorterDuff.Mode.SRC_IN);
+
+                    snackbar = Snackbar
+                            .make(coordinatorLayout, String.valueOf(response.size()) + " Friend request", Snackbar.LENGTH_INDEFINITE).
+                                    setAction("VIEW", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if(NetworkManager.getInstance().isInternet(getApplicationContext())) {
+                                        Intent intent = new Intent(getApplicationContext(), SocialActivity.class);
+                                        intent.putExtra("coming_from_snackbar", true);
+                                        startActivity(intent);
+                                    }else{
+                                        new NoInternetAlertDialog().show(getSupportFragmentManager(), null);
+                                    }
+                                }
+                            });
+
+                    snackbar.addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                        @Override
+                        public void onDismissed(Snackbar transientBottomBar, int event) {
+                            startQuizFabFrame.animate().translationY(0);
+                            adapterMain.moveNewVerseFab(0);
+                            mPrefs.setSnackbarVisible(false, getApplicationContext());
+                            super.onDismissed(transientBottomBar, event);
+                        }
+
+                        @Override
+                        public void onShown(Snackbar transientBottomBar) {
+                            float distance = TypedValue.applyDimension(
+                                    TypedValue.COMPLEX_UNIT_DIP, 40,
+                                    getResources().getDisplayMetrics()
+                            );
+                            startQuizFabFrame.animate().translationY(-distance);
+                            adapterMain.moveNewVerseFab(-distance);
+                            mPrefs.setSnackbarVisible(true, getApplicationContext());
+                            super.onShown(transientBottomBar);
+                        }
+                    });
+
+
+                    // Changing message text color
+                    snackbar.setActionTextColor(getResources().getColor(R.color.colorGreenText));
+                    snackbar.show();
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+        DataStore.getInstance().registerForFriendRequests(friendRequestCallback);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        snackbar.dismiss();
+    }
+
+    private void setNavIconColors() {
+        navigationView.getMenu()
+                .findItem(R.id.nav_home)
+                .getIcon()
+                .setColorFilter(getResources().getColor(R.color.greyIcon), PorterDuff.Mode.SRC_IN);
+        navigationView.getMenu()
+                .findItem(R.id.nav_add_new_verse)
+                .getIcon()
+                .setColorFilter(getResources().getColor(R.color.greyIcon), PorterDuff.Mode.SRC_IN);
+        navigationView.getMenu()
+                .findItem(R.id.nav_start_quiz)
+                .getIcon()
+                .setColorFilter(getResources().getColor(R.color.greyIcon), PorterDuff.Mode.SRC_IN);
+        navigationView.getMenu()
+                .findItem(R.id.nav_social)
+                .getIcon()
+                .setColorFilter(getResources().getColor(R.color.greyIcon), PorterDuff.Mode.SRC_IN);
+        navigationView.getMenu()
+                .findItem(R.id.nav_settings)
+                .getIcon()
+                .setColorFilter(getResources().getColor(R.color.greyIcon), PorterDuff.Mode.SRC_IN);
+        navigationView.getMenu()
+                .findItem(R.id.nav_support_the_dev)
+                .getIcon()
+                .setColorFilter(getResources().getColor(R.color.greyIcon), PorterDuff.Mode.SRC_IN);
+        BaseCallback<List<ScriptureData>> memorizedVersesCallback = new BaseCallback<List<ScriptureData>>() {
+            @Override
+            public void onResponse(List<ScriptureData> response) {
+                if(response != null && response.size() > 0){
+                    navigationView.getMenu()
+                            .findItem(R.id.nav_support_the_dev)
+                            .getIcon()
+                            .setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+        DataStore.getInstance().getLocalMemorizedVerses(memorizedVersesCallback, getApplicationContext());
+        navigationView.getMenu()
+                .findItem(R.id.nav_share)
+                .getIcon()
+                .setColorFilter(getResources().getColor(R.color.greyIcon), PorterDuff.Mode.SRC_IN);
+        navigationView.getMenu()
+                .findItem(R.id.nav_rate)
+                .getIcon()
+                .setColorFilter(getResources().getColor(R.color.greyIcon), PorterDuff.Mode.SRC_IN);
+        navigationView.getMenu()
+                .findItem(R.id.nav_feedback)
+                .getIcon()
+                .setColorFilter(getResources().getColor(R.color.greyIcon), PorterDuff.Mode.SRC_IN);
     }
 
     @Override
     public void finish(){
         super.finish();
-        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
     }
 
 
@@ -149,6 +282,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     @Override
     public void onResume(){
         super.onResume();
+        DataStore.getInstance().getFriendRequests(getApplicationContext());
     }
 
 
@@ -246,8 +380,12 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             startActivityForResult(settingsIntent, 1);
         } else if (id == R.id.nav_social) {
             mFirebaseAnalytics.logEvent("stats_nav_draw_selected", null);
-            Intent settingsIntent = new Intent(getApplicationContext(), SocialActivity.class);
-            startActivity(settingsIntent);
+            if(NetworkManager.getInstance().isInternet(getApplicationContext())) {
+                Intent settingsIntent = new Intent(getApplicationContext(), SocialActivity.class);
+                startActivity(settingsIntent);
+            }else{
+                new NoInternetAlertDialog().show(getSupportFragmentManager(), null);
+            }
         } else if (id == R.id.nav_home) {
             mFirebaseAnalytics.logEvent("home_nav_draw_selected", null);
             onBackPressedFromNewVerseSelector();
@@ -331,6 +469,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             setSlidingTabViewVerseSelector();
             startQuiz.setVisibility(View.GONE);
             startQuizFabFrame.setVisibility(View.GONE);
+            snackbar.dismiss();
         }else{
             new NoInternetAlertDialog().show(getSupportFragmentManager(), null);
         }
@@ -346,6 +485,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             onBackPressedFromNewVerseSelector();
             return;
         }
+        finish();
         super.onBackPressed();
     }
 
@@ -359,6 +499,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
     private void onBackPressedFromNewVerseSelector(){
         if(tabsVerseSelector != null) {
+            snackbar.show();
             tabsVerseSelector.setVisibility(View.GONE);
             pagerVerseSelector.setVisibility(View.GONE);
             pagerMain.setVisibility(View.VISIBLE);

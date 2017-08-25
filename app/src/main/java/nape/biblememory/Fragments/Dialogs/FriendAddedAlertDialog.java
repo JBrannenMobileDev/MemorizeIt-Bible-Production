@@ -16,24 +16,16 @@ public class FriendAddedAlertDialog extends DialogFragment {
 
     }
 
-    private requestTabActions mListener;
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        mListener = (requestTabActions)getActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         String userName = getArguments().getString("user_name");
         builder.setTitle("Friend request has been sent to " + userName);
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                mListener.onFriendAdded();
                 dismiss();
             }
         });
         return builder.create();
-    }
-
-    public interface requestTabActions{
-        void onFriendAdded();
     }
 }

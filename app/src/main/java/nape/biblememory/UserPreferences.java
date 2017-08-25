@@ -629,4 +629,13 @@ public class UserPreferences{
     public int getQuizReviewIndex(Context context) {
         return getSharedPreferences(context).getInt(UserPreferenceConstants.REVIEW_VERSE_INDEX, 0);
     }
+    public void setSnackbarVisible(boolean b, Context context){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putBoolean(UserPreferenceConstants.SNACKBAR_VISIBLE, b);
+        editor.commit();
+    }
+
+    public boolean isSnackbarVisible(Context context) {
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.SNACKBAR_VISIBLE , false);
+    }
 }

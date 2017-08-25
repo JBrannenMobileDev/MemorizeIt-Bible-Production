@@ -6,6 +6,18 @@
     android:id="@+id/memorized_fragment">
 
 
+    <TextView
+        android:id="@+id/empty_state_memorized_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="false"
+        android:paddingLeft="65dp"
+        android:paddingRight="65dp"
+        android:paddingTop="150dp"
+        android:text="Verses that are 100% memorized will appear here."
+        android:textAlignment="center"
+        android:textSize="24sp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

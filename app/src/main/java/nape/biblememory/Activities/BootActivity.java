@@ -65,7 +65,7 @@ public class BootActivity extends Activity {
                     if(NetworkManager.getInstance().isInternet(getApplicationContext())) {
                         DataStore.getInstance().rebuildLocalDb(getApplicationContext());
                     }else{
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        startActivity(new Intent(getApplicationContext(), LoginSuccessActivity.class));
                     }
                 }
 
@@ -74,14 +74,14 @@ public class BootActivity extends Activity {
                     if(NetworkManager.getInstance().isInternet(getApplicationContext())) {
                         DataStore.getInstance().rebuildLocalDb(getApplicationContext());
                     }else{
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        startActivity(new Intent(getApplicationContext(), LoginSuccessActivity.class));
                     }
                 }
             };
             if(NetworkManager.getInstance().isInternet(getApplicationContext())) {
                 DataStore.getInstance().getUserPrefs(getApplicationContext(), userPrefsCallback);
             }else{
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                startActivity(new Intent(getApplicationContext(), LoginSuccessActivity.class));
             }
         } else {
             if(!mPrefs.isFirstTimeLogind(getApplicationContext())){

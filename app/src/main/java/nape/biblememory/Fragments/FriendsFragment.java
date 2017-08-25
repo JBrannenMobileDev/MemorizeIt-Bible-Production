@@ -2,7 +2,9 @@ package nape.biblememory.Fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import nape.biblememory.Activities.AddFriendActivity;
 import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.Adapters.RecyclerViewAdapterFriends;
 import nape.biblememory.Models.User;
@@ -27,6 +30,7 @@ import nape.biblememory.data_store.DataStore;
 public class FriendsFragment extends Fragment {
 
     @BindView(R.id.friends_recycler_view)RecyclerView recyclerView;
+    @BindView(R.id.add_friend_fab)FloatingActionButton addFriendBt;
     private RecyclerView.LayoutManager layoutManager;
     private BaseCallback<Integer> friendSelectedCallback;
     private BaseCallback<List<User>> friendsCallback;
@@ -70,6 +74,13 @@ public class FriendsFragment extends Fragment {
 
             }
         };
+        addFriendBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), AddFriendActivity.class);
+                startActivity(intent);
+            }
+        });
         DataStore.getInstance().getFriends(friendsCallback, getActivity().getApplicationContext());
         return v;
     }

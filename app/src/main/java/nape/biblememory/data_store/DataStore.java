@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import nape.biblememory.Activities.BaseCallback;
-import nape.biblememory.Activities.MainActivity;
+import nape.biblememory.Activities.LoginSuccessActivity;
 import nape.biblememory.Managers.NetworkManager;
 import nape.biblememory.Managers.ScriptureManager;
 import nape.biblememory.Managers.VerseOperations;
@@ -444,7 +444,7 @@ public class DataStore {
                                         mPrefs.setRebuildError(false, context);
                                         mPrefsModel.initAllData(context, mPrefs);
                                         DataStore.getInstance().saveUserPrefs(mPrefsModel, context);
-                                        Intent intent = new Intent(context, MainActivity.class);
+                                        Intent intent = new Intent(context, LoginSuccessActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         context.startActivity(intent);
                                     }
@@ -452,7 +452,7 @@ public class DataStore {
                                     @Override
                                     public void onFailure(Exception e) {
                                         mPrefs.setRebuildError(true, context);
-                                        Intent intent = new Intent(context, MainActivity.class);
+                                        Intent intent = new Intent(context, LoginSuccessActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         context.startActivity(intent);
                                     }
@@ -463,7 +463,7 @@ public class DataStore {
                             @Override
                             public void onFailure(Exception e) {
                                 mPrefs.setRebuildError(true, context);
-                                Intent intent = new Intent(context, MainActivity.class);
+                                Intent intent = new Intent(context, LoginSuccessActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 context.startActivity(intent);
                             }
@@ -474,7 +474,7 @@ public class DataStore {
                     @Override
                     public void onFailure(Exception e) {
                         mPrefs.setRebuildError(true, context);
-                        Intent intent = new Intent(context, MainActivity.class);
+                        Intent intent = new Intent(context, LoginSuccessActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
@@ -485,7 +485,7 @@ public class DataStore {
             @Override
             public void onFailure(Exception e) {
                 mPrefs.setRebuildError(true, context);
-                Intent intent = new Intent(context, MainActivity.class);
+                Intent intent = new Intent(context, LoginSuccessActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }

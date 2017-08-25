@@ -1,9 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/learning_fragment">
 
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_verse_Quiz_verses_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="80dp"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/ic_add_white_24dp"
+        app:backgroundTint="@color/colorHighlight" />
+
+    <TextView
+        android:id="@+id/empty_state_learning_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="false"
+        android:paddingLeft="65dp"
+        android:paddingRight="65dp"
+        android:paddingTop="150dp"
+        android:text="Select the plus button to add a new verse."
+        android:textAlignment="center"
+        android:textSize="24sp" />
 
     <ScrollView
         android:layout_width="match_parent"

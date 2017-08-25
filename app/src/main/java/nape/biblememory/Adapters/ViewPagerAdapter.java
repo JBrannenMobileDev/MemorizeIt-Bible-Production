@@ -77,4 +77,14 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             memorizedSetFragment.RefreshRecyclerView();
         }
     }
+
+    public void moveNewVerseFab(float distance) {
+        if(myVersesFragment != null && myVersesFragment.isVisible()){
+            myVersesFragment.moveNewVerseFab(distance);
+        }
+
+        if(learningSetFragment != null && learningSetFragment.isVisible()){
+            learningSetFragment.moveNewVerseFab(distance);
+        }
+    }
 }

@@ -5,6 +5,18 @@
     android:layout_height="match_parent"
     android:id="@+id/my_verses_fragment">
 
+    <TextView
+        android:id="@+id/empty_state_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="false"
+        android:paddingLeft="65dp"
+        android:paddingRight="65dp"
+        android:paddingTop="150dp"
+        android:text="Select the plus button to add a new verse."
+        android:textAlignment="center"
+        android:textSize="24sp" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_verse_button_fab"
         android:layout_width="wrap_content"

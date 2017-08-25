@@ -58,6 +58,7 @@ public class MemorizedSetFragment extends Fragment {
     private TextView lastSeenDateText;
     private TextView forgottenVerseTitle;
     private TextView memorizedVerseTitle;
+    private TextView emptyState;
 
 
     @Override
@@ -92,6 +93,7 @@ public class MemorizedSetFragment extends Fragment {
         lastSeenDateText = (TextView) v.findViewById(R.id.last_seen_textview_forgotten);
         forgottenVerseTitle = (TextView) v.findViewById(R.id.forgotten_verse_title);
         memorizedVerseTitle = (TextView) v.findViewById(R.id.memorized_verses_title);
+        emptyState = (TextView) v.findViewById(R.id.empty_state_memorized_tv);
 
         allMemorizedVerses = new ArrayList<>();
         getAllMemorizedVerses();
@@ -129,6 +131,7 @@ public class MemorizedSetFragment extends Fragment {
             @Override
             public void onResponse(ScriptureData response) {
                 if(response != null) {
+                    emptyState.setVisibility(View.GONE);
                     populateCardView(response);
                 }else{
                     hideForgotenCardView();
@@ -211,7 +214,10 @@ public class MemorizedSetFragment extends Fragment {
             @Override
             public void onResponse(List<ScriptureData> response) {
                 dataSet = response;
-                setAdapterForRecyclerView();
+                if(response != null && response.size() > 0) {
+                    emptyState.setVisibility(View.GONE);
+                    setAdapterForRecyclerView();
+                }
             }
 
             @Override

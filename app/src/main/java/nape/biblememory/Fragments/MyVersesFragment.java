@@ -6,10 +6,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -17,6 +19,8 @@ import java.util.List;
 
 import nape.biblememory.Adapters.RecyclerViewAdapterMyVerses;
 import nape.biblememory.Activities.BaseCallback;
+import nape.biblememory.Models.User;
+import nape.biblememory.UserPreferences;
 import nape.biblememory.data_store.DataStore;
 import nape.biblememory.data_store.FirebaseDb.FirebaseDb;
 import nape.biblememory.Fragments.Dialogs.InProgressFullAlertDialog;
@@ -45,6 +49,9 @@ public class MyVersesFragment extends Fragment {
     private VerseOperations vManager;
     private FirebaseAnalytics mFirebaseAnalytics;
     private Context appContext;
+    private UserPreferences mPrefs;
+    private TextView emptyStateTv;
+    private BaseCallback<List<User>> friendRequestCallback;
 
 
     @Override
@@ -56,7 +63,16 @@ public class MyVersesFragment extends Fragment {
 
     @Override
     public void onResume() {
-        super.onResume();
+        super.onResume();mPrefs = new UserPreferences();
+        DataStore.getInstance().registerForFriendRequests(friendRequestCallback);
+
+        if(mPrefs.isSnackbarVisible(getActivity().getApplicationContext())) {
+            float distance = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 40,
+                    getResources().getDisplayMetrics()
+            );
+            moveNewVerseFab(-distance);
+        }
     }
 
     @Override
@@ -66,6 +82,7 @@ public class MyVersesFragment extends Fragment {
         appContext = getActivity().getApplicationContext();
         vManager = VerseOperations.getInstance(getActivity().getApplicationContext());
         addVerseButton = (FloatingActionButton) v.findViewById(R.id.add_verse_button_fab);
+        emptyStateTv = (TextView) v.findViewById(R.id.empty_state_tv);
         addVerseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,6 +94,29 @@ public class MyVersesFragment extends Fragment {
                 }
             }
         });
+
+        friendRequestCallback = new BaseCallback<List<User>>() {
+            @Override
+            public void onResponse(List<User> response) {
+                if(response != null && response.size() > 0){
+
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+
+        mPrefs = new UserPreferences();
+        if(mPrefs.isSnackbarVisible(getActivity().getApplicationContext())) {
+            float distance = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 40,
+                    getResources().getDisplayMetrics()
+            );
+            moveNewVerseFab(-distance);
+        }
 
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.current_set_recycler_view);
@@ -175,8 +215,11 @@ public class MyVersesFragment extends Fragment {
                     @Override
                     public void onResponse(List<ScriptureData> response) {
                         dataSet = response;
-                        mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_0, removeCallback, moveCallback, editCallback);
-                        mRecyclerView.setAdapter(mAdapter);
+                        if(response != null && response.size() > 0) {
+                            emptyStateTv.setVisibility(View.GONE);
+                            mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_0, removeCallback, moveCallback, editCallback);
+                            mRecyclerView.setAdapter(mAdapter);
+                        }
                     }
 
                     @Override
@@ -186,6 +229,10 @@ public class MyVersesFragment extends Fragment {
                 };
             DataStore.getInstance().getLocalUpcomingVerses(upcomingCallback, appContext);
         }
+    }
+
+    public void moveNewVerseFab(float distance) {
+        addVerseButton.animate().translationY(distance);
     }
 
     public interface OnAddVerseSelectedListener{

@@ -20,7 +20,7 @@ public class NoInternetAlertDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("No internet connection");
-        builder.setMessage("New verses cannot be added without an internet connection.");
+        builder.setMessage("This feature needs an internet connection to work.");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dismiss();
