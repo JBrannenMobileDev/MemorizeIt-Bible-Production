@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ import nape.biblememory.data_store.DataStore;
 public class RequestsFragment extends Fragment {
 
     @BindView(R.id.pending_requests_recycler_view)RecyclerView recyclerViewPending;
-
+    @BindView(R.id.empty_state_requests_tv)TextView emptyStateTv;
 
 
     private BaseCallback<Integer> deleteRequestCallback;
@@ -88,7 +89,8 @@ public class RequestsFragment extends Fragment {
         pendingRequestsCallback = new BaseCallback<List<User>>() {
             @Override
             public void onResponse(List<User> response) {
-                if(response != null) {
+                if(response != null && response.size() > 0) {
+                    emptyStateTv.setVisibility(View.GONE);
                     pendingUsersToDisplay = response;
                     setPendingRecyclerViewItems(response);
                 }
