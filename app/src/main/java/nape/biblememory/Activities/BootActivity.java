@@ -17,6 +17,7 @@ import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.ResultCodes;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 
@@ -141,7 +142,7 @@ public class BootActivity extends Activity {
                 if(!mPrefs.getUserId(getApplicationContext()).equals(auth.getCurrentUser().getUid())){
                     mPrefs.nukeUserPrefs(getApplicationContext());
                     mPrefs.setUserEmail(auth.getCurrentUser().getEmail(), getApplicationContext());
-                    DataStore.getInstance().addNewUser(new User(auth.getCurrentUser().getDisplayName(), auth.getCurrentUser().getEmail(), auth.getCurrentUser().getUid(), 5));
+                    DataStore.getInstance().addNewUser(new User(auth.getCurrentUser().getDisplayName(), auth.getCurrentUser().getEmail(), auth.getCurrentUser().getUid(), 0), getApplicationContext());
                 }
                 mPrefs.setUserId(auth.getCurrentUser().getUid(), getApplicationContext());
                 mPrefs.setFirstTimeSignIn(false, getApplicationContext());

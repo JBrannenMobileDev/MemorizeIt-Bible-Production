@@ -210,15 +210,15 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
         r = v.getResources();
         px7 = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                7,
+                0,
                 r.getDisplayMetrics()
         );
         px4 = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                4,
+                1,
                 r.getDisplayMetrics()
         );
-        CVLayoutParams.setMargins(px7,px4,px7,px4);
+        CVLayoutParams.setMargins(px7,px7,px7,px4);
 
         CardView card;
         switch(position){
@@ -249,17 +249,17 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
 
         px7 = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                7,
+                0,
                 r.getDisplayMetrics()
         );
 
         px4 = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                4,
+                1,
                 r.getDisplayMetrics()
         );
 
-        CVLayoutParams.setMargins(px7,px4,px7,px4);
+        CVLayoutParams.setMargins(px7,px7,px7,px4);
 
         CardView card;
         switch(position){

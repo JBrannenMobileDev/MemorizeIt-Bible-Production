@@ -13,7 +13,7 @@
         android:paddingLeft="65dp"
         android:paddingRight="65dp"
         android:paddingTop="75dp"
-        android:text="Select the plus button to add a new verse."
+        android:text="Select the plus button to add a new verse. \n \n Verses in this list can be move to the Quiz verses list When there is enough room."
         android:textAlignment="center"
         android:textSize="24sp" />
 
@@ -28,16 +28,30 @@
         android:src="@drawable/ic_add_white_24dp"
         app:backgroundTint="@color/colorHighlight" />
 
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/current_set_recycler_view"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="145dp"
-            android:scrollbars="vertical" />
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/current_set_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="180dp" />
+
+        </LinearLayout>
+
+
     </ScrollView>
 
 </RelativeLayout>

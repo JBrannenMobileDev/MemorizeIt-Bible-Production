@@ -202,6 +202,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             }
         };
         DataStore.getInstance().registerForFriendRequests(friendRequestCallback);
+        DataStore.getInstance().updateUserData(mPrefs.getUserId(getApplicationContext()), getApplicationContext());
     }
 
     @Override
@@ -471,7 +472,9 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             setSlidingTabViewVerseSelector();
             startQuiz.setVisibility(View.GONE);
             startQuizFabFrame.setVisibility(View.GONE);
-            snackbar.dismiss();
+            if(snackbar != null) {
+                snackbar.dismiss();
+            }
         }else{
             new NoInternetAlertDialog().show(getSupportFragmentManager(), null);
         }
@@ -501,7 +504,9 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
     private void onBackPressedFromNewVerseSelector(){
         if(tabsVerseSelector != null) {
-            snackbar.show();
+            if(snackbar != null) {
+                snackbar.show();
+            }
             tabsVerseSelector.setVisibility(View.GONE);
             pagerVerseSelector.setVisibility(View.GONE);
             pagerMain.setVisibility(View.VISIBLE);
@@ -719,7 +724,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     public void onRemoveFromNewSelected(String verseLocation) {
         ScriptureData verse = new ScriptureData("", verseLocation);
         DataStore.getInstance().deleteUpcomingVerse(verse, getApplicationContext());
-        DataStore.getInstance().updateUserData(mPrefs.getUserId(getApplicationContext()), -1);
+        DataStore.getInstance().updateSingleVerseUserData(mPrefs.getUserId(getApplicationContext()), -1);
         adapterMain.refreshrecyclerViews();
     }
 

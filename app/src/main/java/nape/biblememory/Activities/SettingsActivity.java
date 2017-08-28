@@ -94,4 +94,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         });
     }
+
+    @Override
+    public void finish(){
+        super.finish();
+        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_right);
+    }
 }

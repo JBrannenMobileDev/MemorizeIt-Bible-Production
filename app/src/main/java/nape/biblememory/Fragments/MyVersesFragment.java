@@ -200,8 +200,10 @@ public class MyVersesFragment extends Fragment {
                     @Override
                     public void onResponse(List<ScriptureData> response) {
                         dataSet = response;
-                        if(response != null && response.size() > 0) {
-                            emptyStateTv.setVisibility(View.GONE);
+                        if(response != null) {
+                            if(response.size() > 0) {
+                                emptyStateTv.setVisibility(View.GONE);
+                            }
                             mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_0, removeCallback, moveCallback, editCallback);
                             mRecyclerView.setAdapter(mAdapter);
                         }

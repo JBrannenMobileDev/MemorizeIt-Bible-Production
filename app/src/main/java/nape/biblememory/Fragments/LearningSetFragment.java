@@ -127,8 +127,10 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
             @Override
             public void onResponse(List<ScriptureData> response) {
                 dataSet = response;
-                if(response != null && response.size() > 0) {
-                    emptyStateTv.setVisibility(View.GONE);
+                if(response != null) {
+                    if(response.size() > 0) {
+                        emptyStateTv.setVisibility(View.GONE);
+                    }
                     mAdapter = new RecyclerViewAdapterMyVerses(dataSet, SlidingTabLayout.POSITION_1, removeCallback, null, null);
                     mRecyclerView.setAdapter(mAdapter);
                 }

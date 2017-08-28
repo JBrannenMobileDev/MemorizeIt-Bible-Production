@@ -90,7 +90,7 @@ public class RequestsFragment extends Fragment {
         pendingRequestsCallback = new BaseCallback<List<User>>() {
             @Override
             public void onResponse(List<User> response) {
-                if(response != null && response.size() > 0) {
+                if(response != null) {
                     emptyStateTv.setVisibility(View.GONE);
                     pendingUsersToDisplay = response;
                     setPendingRecyclerViewItems(response);

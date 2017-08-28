@@ -11,7 +11,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/app_icon"
+        android:icon="@mipmap/icon_blue"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -84,8 +84,13 @@
             android:name=".Activities.AddFriendActivity"
             android:parentActivityName=".Activities.SocialActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.LoginSuccessActivity"
-            android:launchMode="singleTask">
+        <activity
+            android:name=".Activities.LoginSuccessActivity"
+            android:launchMode="singleTask"></activity>
+        <activity
+            android:name=".Activities.FriendDetailsActivity"
+            android:parentActivityName=".Activities.SocialActivity"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

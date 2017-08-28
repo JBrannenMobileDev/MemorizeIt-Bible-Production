@@ -49,8 +49,20 @@ public class DataStore {
         FirebaseDb.getInstance().addFriend(uid, contex);
     }
 
-    public void deleteFriend(String uid, Context conext){
-        FirebaseDb.getInstance().deleteFriend(uid, conext);
+    public void deleteFriend(String uid, Context context){
+        FirebaseDb.getInstance().deleteFriend(uid, context);
+    }
+
+    public void unFollowFriend(String uid, Context context){
+        FirebaseDb.getInstance().unFlollowFriend(uid, context);
+    }
+
+    public void getPendingRequests(BaseCallback<List<String>> pendingCallback, Context context){
+        FirebaseDb.getInstance().getPendingRequests(pendingCallback, context);
+    }
+
+    public void addPendingRequest(String uid, Context context){
+        FirebaseDb.getInstance().addPendingRequest(uid, context);
     }
 
     public void getFriendRequests(Context context){
@@ -127,16 +139,92 @@ public class DataStore {
         FirebaseDb.getInstance().getFriends(uidListCallback, context);
     }
 
+    public void getFriendsString(final BaseCallback<List<String>> usersCallback, Context context){
+        BaseCallback<List<String>> uidListCallback = new BaseCallback<List<String>>() {
+            @Override
+            public void onResponse(List<String> response) {
+                usersCallback.onResponse(response);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+        FirebaseDb.getInstance().getFriends(uidListCallback, context);
+    }
+
     public void getUsers(BaseCallback<List<User>> usersCallback){
         FirebaseDb.getInstance().getUsers(usersCallback);
     }
 
-    public void addNewUser(User user){
-        FirebaseDb.getInstance().addNewUser(user);
+    public void addNewUser(User user, Context context){
+        FirebaseDb.getInstance().addNewUser(user, context);
     }
 
-    public void updateUserData(String UID, int updateAmount){
-        FirebaseDb.getInstance().updateUserdata(UID, updateAmount);
+    public void updateSingleVerseUserData(String UID, int updateAmount){
+        FirebaseDb.getInstance().updateSingleVerseUserdata(UID, updateAmount);
+    }
+
+    public void updateUserData(final String uid, final Context context){
+        BaseCallback<List<ScriptureData>> upcomingCallback = new BaseCallback<List<ScriptureData>>() {
+            int verseCount = 0;
+            @Override
+            public void onResponse(List<ScriptureData> response) {
+                if(response!= null){
+                    verseCount = verseCount + response.size();
+                }
+                BaseCallback<List<ScriptureData>> learningCallback = new BaseCallback<List<ScriptureData>>() {
+                    @Override
+                    public void onResponse(List<ScriptureData> response) {
+                        if(response != null){
+                            verseCount = verseCount + response.size();
+                        }
+                        BaseCallback<List<ScriptureData>> memorizedCallback = new BaseCallback<List<ScriptureData>>() {
+                            @Override
+                            public void onResponse(List<ScriptureData> response) {
+                                if(response != null){
+                                    verseCount = verseCount + response.size();
+                                }
+                                BaseCallback<List<ScriptureData>> forgottenCallback = new BaseCallback<List<ScriptureData>>() {
+                                    @Override
+                                    public void onResponse(List<ScriptureData> response) {
+                                        if(response != null){
+                                            verseCount = verseCount + response.size();
+                                        }
+                                        FirebaseDb.getInstance().updateUserdata(uid, verseCount);
+                                    }
+
+                                    @Override
+                                    public void onFailure(Exception e) {
+
+                                    }
+                                };
+                                getLocalForgottenVerses(forgottenCallback, context);
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+
+                            }
+                        };
+                        getLocalMemorizedVerses(memorizedCallback, context);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+
+                    }
+                };
+                getLocalQuizVerses(learningCallback, context);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+        getLocalUpcomingVerses(upcomingCallback, context);
     }
 
     public void saveUpcomingVerse(ScriptureData verse, Context applicationContext){
@@ -160,23 +248,23 @@ public class DataStore {
     }
 
     public void deleteUpcomingVerse(ScriptureData verse, Context context){
-        FirebaseDb.getInstance().deleteUpcomingVerse(verse, context);
         VerseOperations.getInstance(context).removeVerse(verse.getVerseLocation(), MemoryListContract.CurrentSetEntry.TABLE_NAME);
+        FirebaseDb.getInstance().deleteUpcomingVerse(verse, context);
     }
 
     public void deleteQuizVerse(ScriptureData verse, Context context){
-        FirebaseDb.getInstance().deleteQuizVerse(verse, context);
         VerseOperations.getInstance(context).removeVerse(verse.getVerseLocation(), MemoryListContract.LearningSetEntry.TABLE_NAME);
+        FirebaseDb.getInstance().deleteQuizVerse(verse, context);
     }
 
     public void deleteMemorizedVerse(ScriptureData verse, Context context){
-        FirebaseDb.getInstance().deleteMemorizedVerse(verse, context);
         VerseOperations.getInstance(context).removeVerse(verse.getVerseLocation(), MemoryListContract.MemorizedSetEntry.TABLE_NAME);
+        FirebaseDb.getInstance().deleteMemorizedVerse(verse, context);
     }
 
     public void deleteForgottenVerse(ScriptureData verse, Context context){
-        FirebaseDb.getInstance().deleteForgottenVerse(verse, context);
         VerseOperations.getInstance(context).removeVerse(verse.getVerseLocation(), MemoryListContract.ForgottenSetEntry.TABLE_NAME);
+        FirebaseDb.getInstance().deleteForgottenVerse(verse, context);
     }
 
     public void getUpcomingVerses(BaseCallback<List<ScriptureData>> upcomingCallback, Context applicationContext){
@@ -244,6 +332,18 @@ public class DataStore {
         List<ScriptureData> forgottenList = scriptureManager.getScriptureSet(MemoryListContract.ForgottenSetEntry.TABLE_NAME);
         if(forgottenList.size() > 0) {
             forgottenCallback.onResponse(forgottenList.get(0));
+        }else{
+            forgottenCallback.onResponse(null);
+        }
+    }
+
+    public void getLocalForgottenVerses(final BaseCallback<List<ScriptureData>> forgottenCallback, Context context){
+        if(scriptureManager == null){
+            scriptureManager = new ScriptureManager(context);
+        }
+        List<ScriptureData> forgottenList = scriptureManager.getScriptureSet(MemoryListContract.ForgottenSetEntry.TABLE_NAME);
+        if(forgottenList != null) {
+            forgottenCallback.onResponse(forgottenList);
         }else{
             forgottenCallback.onResponse(null);
         }
@@ -499,5 +599,66 @@ public class DataStore {
 
     public void getUserPrefs(Context context, BaseCallback<UserPreferencesModel> userPrefsCallback){
         FirebaseDb.getInstance().getUserPrefsFromFirebaseDb(context, userPrefsCallback);
+    }
+
+    public void getAllVerses(final String uid, final BaseCallback<List<ScriptureData>> allVersesCallback) {
+        final List<ScriptureData> allVerses = new ArrayList<>();
+        BaseCallback<List<ScriptureData>> upcomingCallback = new BaseCallback<List<ScriptureData>>() {
+            @Override
+            public void onResponse(List<ScriptureData> response) {
+                if(response!= null){
+                    allVerses.addAll(response);
+                }
+                BaseCallback<List<ScriptureData>> learningCallback = new BaseCallback<List<ScriptureData>>() {
+                    @Override
+                    public void onResponse(List<ScriptureData> response) {
+                        if(response != null){
+                            allVerses.addAll(response);
+                        }
+                        BaseCallback<List<ScriptureData>> memorizedCallback = new BaseCallback<List<ScriptureData>>() {
+                            @Override
+                            public void onResponse(List<ScriptureData> response) {
+                                if(response != null){
+                                    allVerses.addAll(response);
+                                }
+                                BaseCallback<List<ScriptureData>> forgottenCallback = new BaseCallback<List<ScriptureData>>() {
+                                    @Override
+                                    public void onResponse(List<ScriptureData> response) {
+                                        if(response != null){
+                                            allVerses.addAll(response);
+                                        }
+                                        allVersesCallback.onResponse(allVerses);
+                                    }
+
+                                    @Override
+                                    public void onFailure(Exception e) {
+
+                                    }
+                                };
+                                FirebaseDb.getInstance().getForgottenVersesFromFirebaseDb(forgottenCallback, uid);
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+
+                            }
+                        };
+                        FirebaseDb.getInstance().getMemorizedVersesFromFirebaseDb(memorizedCallback, uid);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+
+                    }
+                };
+                FirebaseDb.getInstance().getQuizVersesFromFirebaseDb(learningCallback, uid);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+        FirebaseDb.getInstance().getUpcomingVersesFromFirebaseDb(upcomingCallback, uid);
     }
 }

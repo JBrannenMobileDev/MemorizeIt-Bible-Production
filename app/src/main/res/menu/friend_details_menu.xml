@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Activities.UnlockActivity">
+
+    <item
+        android:id="@+id/action_copy_all"
+        android:orderInCategory="100"
+        android:title="Copy all"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_bless"
+        android:orderInCategory="100"
+        android:title="Give a blessing"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_unfollow"
+        android:orderInCategory="100"
+        android:title="Unfollow"
+        app:showAsAction="never" />
+
+</menu>

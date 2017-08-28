@@ -25,7 +25,7 @@
         android:paddingLeft="65dp"
         android:paddingRight="65dp"
         android:paddingTop="75dp"
-        android:text="Select the plus button to add a new verse."
+        android:text="Select the plus button to add a new verse. \n \n Verses in this list will be randomly selected for the quiz."
         android:textAlignment="center"
         android:textSize="24sp" />
 
@@ -47,7 +47,7 @@
             <TextView
                 android:id="@+id/textView7"
                 android:layout_width="match_parent"
-                android:layout_height="75dp" />
+                android:layout_height="180dp" />
 
         </LinearLayout>
 

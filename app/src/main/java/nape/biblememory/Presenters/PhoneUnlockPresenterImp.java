@@ -72,7 +72,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         dateFormat = new SimpleDateFormat("MM-dd-yyyy");
         c = Calendar.getInstance();
         isReviewMode = false;
-        reviewIndex = 1;
+        reviewIndex = 0;
     }
 
     @Override

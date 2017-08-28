@@ -10,17 +10,16 @@ import android.support.v7.app.AlertDialog;
  * Created by jbrannen on 6/14/17.
  */
 
-public class FriendAddedAlertDialog extends DialogFragment {
+public class BlessingSentAlertDialog extends DialogFragment {
 
-    public FriendAddedAlertDialog(){
+    public BlessingSentAlertDialog(){
 
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        String userName = getArguments().getString("user_name");
-        builder.setTitle("Friend request has been sent to " + userName);
+        builder.setTitle("In the name of Jesus Christ a blessing has been sent!");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dismiss();

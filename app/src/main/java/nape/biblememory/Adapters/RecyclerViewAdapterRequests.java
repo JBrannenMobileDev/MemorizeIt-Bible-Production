@@ -1,5 +1,6 @@
 package nape.biblememory.Adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,10 @@ import static nape.biblememory.R.id.add_friend_tv;
 public class RecyclerViewAdapterRequests extends RecyclerView.Adapter<RecyclerViewAdapterRequests.ViewHolder> {
 
     private List<User> mDataSet;
+    private List<String> usersPendingRequests;
+    private List<String> friendList;
     private BaseCallback friendSelectedCallback;
+    private Context context;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
@@ -41,9 +45,12 @@ public class RecyclerViewAdapterRequests extends RecyclerView.Adapter<RecyclerVi
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public RecyclerViewAdapterRequests(List<User> dataset, BaseCallback<Integer> friendSelectedCallback) {
+    public RecyclerViewAdapterRequests(List<User> dataset, BaseCallback<Integer> friendSelectedCallback, List<String> usersPendingRequests, Context context, List<String> friendsList) {
         mDataSet = dataset;
         this.friendSelectedCallback = friendSelectedCallback;
+        this.usersPendingRequests = usersPendingRequests;
+        this.context = context;
+        this.friendList = friendsList;
     }
 
     // Create new views (invoked by the layout manager)
@@ -57,6 +64,14 @@ public class RecyclerViewAdapterRequests extends RecyclerView.Adapter<RecyclerVi
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        if(usersPendingRequests.contains(mDataSet.get(position).getUID())){
+            holder.addFriend.setText("Requested");
+            holder.addFriend.setBackground(context.getResources().getDrawable(R.drawable.rounded_rectangle_grey_bg));
+        }
+        if(friendList.contains(mDataSet.get(position).getUID())){
+            holder.addFriend.setText("Following");
+            holder.addFriend.setBackground(context.getResources().getDrawable(R.drawable.rounded_rectangle_grey_bg));
+        }
         holder.name.setText(mDataSet.get(position).getName());
         holder.email.setText(mDataSet.get(position).getEmail());
     }

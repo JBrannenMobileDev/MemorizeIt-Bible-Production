@@ -214,8 +214,10 @@ public class MemorizedSetFragment extends Fragment {
             @Override
             public void onResponse(List<ScriptureData> response) {
                 dataSet = response;
-                if(response != null && response.size() > 0) {
-                    emptyState.setVisibility(View.GONE);
+                if(response != null) {
+                    if(response.size() > 0) {
+                        emptyState.setVisibility(View.GONE);
+                    }
                     setAdapterForRecyclerView();
                 }
             }

@@ -23,7 +23,6 @@ public class RecyclerViewAdapterPendingRequests extends RecyclerView.Adapter<Rec
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
-        private TextView email;
         private TextView confirm;
         private TextView delete;
 
@@ -33,12 +32,12 @@ public class RecyclerViewAdapterPendingRequests extends RecyclerView.Adapter<Rec
             confirm = (TextView) v.findViewById(confirm_request_tv);
             delete = (TextView) v.findViewById(R.id.delete_request_tv);
             name = (TextView) v.findViewById(R.id.friends_name_tv);
-            email = (TextView) v.findViewById(R.id.friends_email_tv);
 
             confirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     confirmCallback.onResponse(getLayoutPosition());
+
                 }
             });
 
@@ -70,7 +69,6 @@ public class RecyclerViewAdapterPendingRequests extends RecyclerView.Adapter<Rec
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.name.setText(mDataSet.get(position).getName());
-        holder.email.setText(mDataSet.get(position).getEmail());
     }
 
 

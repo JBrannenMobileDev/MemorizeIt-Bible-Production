@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.faithcomesbyhearing.dbt.model.Verse;
@@ -17,7 +16,6 @@ import java.util.List;
 
 import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.data_store.DataStore;
-import nape.biblememory.data_store.FirebaseDb.Constants;
 import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.Models.ScriptureData;
 import nape.biblememory.data_store.Sqlite.MemoryListContract;
@@ -145,7 +143,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
                     } else {
                         DataStore.getInstance().saveUpcomingVerse(verse, getActivity().getApplicationContext());
                     }
-                    DataStore.getInstance().updateUserData(mPrefs.getUserId(getActivity().getApplicationContext()), 1);
+                    DataStore.getInstance().updateSingleVerseUserData(mPrefs.getUserId(getActivity().getApplicationContext()), 1);
                     dialogActionsListener.onVerseAdded(comingFromNewVerses);
                     VerseSelectedDialogFragment.this.getDialog().cancel();
                 }else{
