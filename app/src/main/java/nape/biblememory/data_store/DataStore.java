@@ -661,4 +661,8 @@ public class DataStore {
         };
         FirebaseDb.getInstance().getUpcomingVersesFromFirebaseDb(upcomingCallback, uid);
     }
+
+    public void nukeAllData(Context context) {
+        FirebaseDb.getInstance().nukeDb(context);
+    }
 }

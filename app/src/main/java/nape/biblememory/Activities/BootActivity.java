@@ -56,7 +56,7 @@ public class BootActivity extends Activity {
         FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         mFirebaseAnalytics.setCurrentScreen(this, "Settings", null);
         auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() != null) {
+        if (auth.getCurrentUser() != null && !mPrefs.isFirstTimeLogind(getApplicationContext())) {
             loadingCircle.setVisibility(View.VISIBLE);
             mPrefs.setUserId(auth.getCurrentUser().getUid(), getApplicationContext());
             BaseCallback<UserPreferencesModel> userPrefsCallback = new BaseCallback<UserPreferencesModel>() {

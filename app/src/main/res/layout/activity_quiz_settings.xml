@@ -45,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="20dp"
+            android:layout_marginTop="5dp"
             android:background="@color/colorWhite"
             android:elevation="2dp"
             android:orientation="vertical">
@@ -52,12 +53,13 @@
             <TextView
                 android:id="@+id/textView5"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_height="60dp"
                 android:layout_weight="1"
+                android:background="@color/colorAccent"
+                android:gravity="center_vertical"
                 android:paddingLeft="16dp"
                 android:text="Do not launch quiz on:"
-                android:textColor="@color/bgColor"
+                android:textColor="@color/colorWhite"
                 android:textSize="16dp"
                 android:textStyle="bold" />
 

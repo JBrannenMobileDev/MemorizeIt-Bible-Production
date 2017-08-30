@@ -16,18 +16,21 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import nape.biblememory.Fragments.Dialogs.ClearAppDataAlertDialog;
 import nape.biblememory.Fragments.Dialogs.TimeSelectionDialogFragment;
 import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.R;
 import nape.biblememory.UserPreferences;
+import nape.biblememory.data_store.DataStore;
 import nape.biblememory.data_store.Sqlite.BibleMemoryDbHelper;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements ClearAppDataAlertDialog.YesSelected{
 
     @BindView(R.id.settings_quiz_settings_tv)TextView quizSettingsBt;
     @BindView(R.id.settings_privacy_policy)TextView privacyPolicyBt;
     @BindView(R.id.settings_sign_out)TextView signOutBt;
     @BindView(R.id.settings_bible_version_settings_tv)TextView bibleVerseionSettingsBt;
+    @BindView(R.id.settings_clear_app_data_tv)TextView clearDataTv;
     private FirebaseAnalytics mFirebaseAnalytics;
     private Activity thisActivity;
     private UserPreferences mPrefs;
@@ -81,17 +84,18 @@ public class SettingsActivity extends AppCompatActivity {
                         .signOut((FragmentActivity) thisActivity)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             public void onComplete(@NonNull Task<Void> task) {
-                                // user is now signed out
-                                VerseOperations.getInstance(getApplicationContext()).nukeDb();
-                                mPrefs.setFirstTimeSignIn(true, getApplicationContext());
-                                startActivity(new Intent(SettingsActivity.this, BootActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                                Intent returnIntent = new Intent();
-                                setResult(1,returnIntent);
-                                finish();
+                                signOut();
                             }
                         });
             }
 
+        });
+
+        clearDataTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new ClearAppDataAlertDialog().show(getSupportFragmentManager(), null);
+            }
         });
     }
 
@@ -99,5 +103,20 @@ public class SettingsActivity extends AppCompatActivity {
     public void finish(){
         super.finish();
         overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_right);
+    }
+
+    @Override
+    public void onClearAppDataSelected() {
+        DataStore.getInstance().nukeAllData(getApplicationContext());
+        signOut();
+    }
+
+    private void signOut(){
+        VerseOperations.getInstance(getApplicationContext()).nukeDb();
+        mPrefs.setFirstTimeSignIn(true, getApplicationContext());
+        startActivity(new Intent(SettingsActivity.this, BootActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        Intent returnIntent = new Intent();
+        setResult(1,returnIntent);
+        finish();
     }
 }

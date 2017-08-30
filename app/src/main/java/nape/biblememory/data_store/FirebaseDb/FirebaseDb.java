@@ -733,4 +733,9 @@ public class FirebaseDb {
             }
         });
     }
+
+    public void nukeDb(Context context) {
+        FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).child(mPrefs.getUserId(context)).removeValue();
+        FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USER_DATA).child(mPrefs.getUserId(context)).removeValue();
+    }
 }

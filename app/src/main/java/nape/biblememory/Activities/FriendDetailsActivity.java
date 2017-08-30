@@ -35,11 +35,13 @@ public class FriendDetailsActivity extends AppCompatActivity {
     private UserPreferences mPrefs;
     private String name;
     private String uid;
+    private boolean waitingForResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_right);
         super.onCreate(savedInstanceState);
+        waitingForResponse = false;
         setContentView(R.layout.activity_friend_details);
         ButterKnife.bind(this);
         mPrefs = new UserPreferences();
@@ -94,29 +96,33 @@ public class FriendDetailsActivity extends AppCompatActivity {
             @Override
             public void onResponse(Integer response) {
                 boolean alreadyHaveVerse = false;
-                for(ScriptureData verse : allMyVerses){
-                    if(verse.getVerseLocation().equalsIgnoreCase(allFriendVerses.get(response).getVerseLocation())){
-                        alreadyHaveVerse = true;
+                if(!waitingForResponse) {
+                    for (ScriptureData verse : allMyVerses) {
+                        if (verse.getVerseLocation().equalsIgnoreCase(allFriendVerses.get(response).getVerseLocation())) {
+                            alreadyHaveVerse = true;
+                        }
                     }
-                }
-                if(alreadyHaveVerse){
-                    Toast.makeText(getApplicationContext(), "You already have this verse.", Toast.LENGTH_SHORT).show();
-                }else {
-                    DataStore.getInstance().saveUpcomingVerse(allFriendVerses.get(response), getApplicationContext());
-                }
-                BaseCallback<List<ScriptureData>> allMyVersesCb = new BaseCallback<List<ScriptureData>>() {
-                    @Override
-                    public void onResponse(List<ScriptureData> response) {
-                        allMyVerses = response;
-                        initializeRecyclerView(allFriendVerses, response);
+                    if (alreadyHaveVerse) {
+                        Toast.makeText(getApplicationContext(), "You already have this verse.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        DataStore.getInstance().saveUpcomingVerse(allFriendVerses.get(response), getApplicationContext());
                     }
+                    BaseCallback<List<ScriptureData>> allMyVersesCb = new BaseCallback<List<ScriptureData>>() {
+                        @Override
+                        public void onResponse(List<ScriptureData> response) {
+                            allMyVerses = response;
+                            initializeRecyclerView(allFriendVerses, response);
+                            waitingForResponse = false;
+                        }
 
-                    @Override
-                    public void onFailure(Exception e) {
+                        @Override
+                        public void onFailure(Exception e) {
 
-                    }
-                };
-                DataStore.getInstance().getAllVerses(mPrefs.getUserId(getApplicationContext()), allMyVersesCb);
+                        }
+                    };
+                    DataStore.getInstance().getAllVerses(mPrefs.getUserId(getApplicationContext()), allMyVersesCb);
+                    waitingForResponse = true;
+                }
             }
 
             @Override
@@ -164,28 +170,31 @@ public class FriendDetailsActivity extends AppCompatActivity {
     }
 
     private void copyAllVerses() {
-        for(ScriptureData friendVerse : allFriendVerses){
-            boolean alreadyHaveVerse = false;
-            for(ScriptureData verse : allMyVerses){
-                if(verse.getVerseLocation().equalsIgnoreCase(friendVerse.getVerseLocation())){
-                    alreadyHaveVerse = true;
+        if(!waitingForResponse) {
+            for (ScriptureData friendVerse : allFriendVerses) {
+                boolean alreadyHaveVerse = false;
+                for (ScriptureData verse : allMyVerses) {
+                    if (verse.getVerseLocation().equalsIgnoreCase(friendVerse.getVerseLocation())) {
+                        alreadyHaveVerse = true;
+                    }
+                }
+                if (!alreadyHaveVerse) {
+                    DataStore.getInstance().saveUpcomingVerse(friendVerse, getApplicationContext());
                 }
             }
-            if(!alreadyHaveVerse){
-                DataStore.getInstance().saveUpcomingVerse(friendVerse, getApplicationContext());
-            }
+            BaseCallback<List<ScriptureData>> allMyVersesCb = new BaseCallback<List<ScriptureData>>() {
+                @Override
+                public void onResponse(List<ScriptureData> response) {
+                    initializeRecyclerView(allFriendVerses, response);
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+
+                }
+            };
+            DataStore.getInstance().getAllVerses(mPrefs.getUserId(getApplicationContext()), allMyVersesCb);
+            waitingForResponse = true;
         }
-        BaseCallback<List<ScriptureData>> allMyVersesCb = new BaseCallback<List<ScriptureData>>() {
-            @Override
-            public void onResponse(List<ScriptureData> response) {
-                initializeRecyclerView(allFriendVerses, response);
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-
-            }
-        };
-        DataStore.getInstance().getAllVerses(mPrefs.getUserId(getApplicationContext()), allMyVersesCb);
     }
 }

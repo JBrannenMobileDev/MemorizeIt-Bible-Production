@@ -157,7 +157,6 @@ public class VerseFragment extends Fragment {
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if(refreshDataCallback != null){
                 refreshDataCallback.onResponse(null);

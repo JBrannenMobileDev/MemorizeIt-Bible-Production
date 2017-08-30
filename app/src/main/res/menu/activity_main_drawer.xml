@@ -12,7 +12,7 @@
         <item
             android:id="@+id/nav_add_new_verse"
             android:icon="@mipmap/ic_add_box_black_24dp"
-            android:title="Add new verse" />
+            android:title="Add verse" />
         <item
             android:id="@+id/nav_start_quiz"
             android:icon="@mipmap/ic_play_circle_filled_black_24dp"

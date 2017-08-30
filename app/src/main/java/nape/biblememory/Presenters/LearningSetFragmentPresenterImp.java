@@ -38,7 +38,6 @@ public class LearningSetFragmentPresenterImp implements LearningSetFragmentPrese
         }
 
         if(scripture != null) {
-            DataStore.getInstance().saveUpcomingVerse(scripture, context);
             DataStore.getInstance().deleteQuizVerse(scripture, context);
             mView.onRemoveClicked();
         }

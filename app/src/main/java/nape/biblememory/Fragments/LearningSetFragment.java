@@ -20,6 +20,7 @@ import java.util.List;
 import nape.biblememory.Adapters.RecyclerViewAdapterMyVerses;
 import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.Fragments.Dialogs.RemoveVerseFromInProgressAlertDialog;
+import nape.biblememory.Fragments.Dialogs.RemoveVerseFromNewVersesAlertDialog;
 import nape.biblememory.Managers.ScriptureManager;
 import nape.biblememory.Models.ScriptureData;
 import nape.biblememory.Presenters.LearningSetFragmentPresenter;
@@ -87,7 +88,7 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
             public void onResponse(Object response) {
                 Bundle bundle = new Bundle();
                 bundle.putString("verse_location", (String)response);
-                RemoveVerseFromInProgressAlertDialog removeAlert = new RemoveVerseFromInProgressAlertDialog();
+                RemoveVerseFromNewVersesAlertDialog removeAlert = new RemoveVerseFromNewVersesAlertDialog();
                 removeAlert.setArguments(bundle);
                 removeAlert.show(getChildFragmentManager(), null);
             }
@@ -141,7 +142,7 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
 
             }
         };
-        DataStore.getInstance().getLocalQuizVerses(learningCallback, getActivity().getApplicationContext());
+        DataStore.getInstance().getLocalQuizVerses(learningCallback, appContext);
     }
 
     @Override
@@ -151,7 +152,6 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             RefreshRecyclerView();
         }

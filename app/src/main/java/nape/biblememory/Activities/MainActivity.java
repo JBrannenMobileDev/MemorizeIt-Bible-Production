@@ -298,6 +298,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         pagerMain = (ViewPager) findViewById(R.id.pager);
         pagerMain.setAdapter(adapterMain);
 
+
         // Assiging the Sliding Tab Layout View
         tabsMain = (SlidingTabLayout) findViewById(R.id.tabs);
         tabsMain.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
@@ -452,10 +453,9 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         try {
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("text/plain");
-            i.putExtra(Intent.EXTRA_SUBJECT, "MemorizeIt Bible");
-            String sAux = "\nYou gotta try this app.\n\n";
-            String sAux2 = "If you have ever had a hard time memorizing bible verses, this app makes it easy!\n\n";
-            sAux = sAux + sAux2 + "https://play.google.com/store/apps/details?id=nape.biblememory&hl=en \n\n";
+            i.putExtra(Intent.EXTRA_SUBJECT, "Check this out!");
+            String sAux = "\nI found this bible memory app that has been really useful. Every time you unlock your phone a short quiz pops up. \n\n";
+            sAux = sAux + "https://play.google.com/store/apps/details?id=nape.biblememory&hl=en \n\n";
             i.putExtra(Intent.EXTRA_TEXT, sAux);
             startActivity(Intent.createChooser(i, "choose one"));
         } catch(Exception e) {
@@ -724,6 +724,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     public void onRemoveFromNewSelected(String verseLocation) {
         ScriptureData verse = new ScriptureData("", verseLocation);
         DataStore.getInstance().deleteUpcomingVerse(verse, getApplicationContext());
+        DataStore.getInstance().deleteQuizVerse(verse, getApplicationContext());
         DataStore.getInstance().updateSingleVerseUserData(mPrefs.getUserId(getApplicationContext()), -1);
         adapterMain.refreshrecyclerViews();
     }
