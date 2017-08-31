@@ -1,7 +1,7 @@
 package nape.biblememory.Activities;
 
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,7 +13,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
@@ -22,13 +21,14 @@ import com.google.android.gms.ads.MobileAds;
 
 import nape.biblememory.Fragments.Dialogs.FirstTimeUnlockDialog;
 import nape.biblememory.Fragments.Dialogs.VerseMemorizedAlertDialog;
+import nape.biblememory.Models.ScriptureData;
 import nape.biblememory.Presenters.PhoneUnlockPresenter;
 import nape.biblememory.Presenters.PhoneUnlockPresenterImp;
 import nape.biblememory.UserPreferences;
 import nape.biblememory.Fragments.PhoneUnlockView;
 import nape.biblememory.R;
+import nape.biblememory.utils.DpConverterUtil;
 
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 
@@ -46,6 +46,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
     private FloatingActionButton yesButton;
     private FloatingActionButton noButton;
     private FloatingActionButton hintButton;
+    private FrameLayout hintLayout;
     private AdView mAdView;
     private CheckBox moreVersesCheckbox;
     private FrameLayout moreVersesLayout;
@@ -56,6 +57,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
     private FirstTimeUnlockDialog firstTimeDialog;
 
     private FirebaseAnalytics mFirebaseAnalytics;
+    private Handler handler;
 
 
     @Override
@@ -91,6 +93,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
         moreVersesCheckbox = (CheckBox) findViewById(R.id.moreVersesSwitch);
         moreVersesLayout = (FrameLayout) findViewById(R.id.moreVersesLayout);
         hintButton = (FloatingActionButton) findViewById(R.id.hint_button_fab);
+        hintLayout = (FrameLayout) findViewById(R.id.hint_fab_frame);
         bibleVersionTv = (TextView) findViewById(R.id.phone_unlock_bible_version_tv);
 
         mPresenter = new PhoneUnlockPresenterImp(this, getApplicationContext());
@@ -130,6 +133,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
         checkAnswerFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                handler.removeMessages(0);
                 mFirebaseAnalytics.logEvent("quiz_check_answer_selected", null);
                 mPresenter.onCheckAnswerClicked();
             }
@@ -270,10 +274,32 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
     }
 
     @Override
-    public void setHintButtonVisibility(int value) {
+    public void setHintButtonVisibility(int value, ScriptureData scripture) {
         if(value == View.VISIBLE){
-            hintButton.show();
-            hintText.setVisibility(View.VISIBLE);
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    if (!yesButton.isShown()) {
+                        hintButton.show();
+                        hintLayout.animate().translationY(DpConverterUtil.dpToPx(-100));
+                        hintButton.animate().scaleX(1.15f);
+                        hintButton.animate().scaleY(1.15f);
+                        hintText.animate().scaleX(1.15f);
+                        hintText.animate().scaleY(1.15f);
+                        hintText.setVisibility(View.VISIBLE);
+                        new Handler().postDelayed(new Runnable() {
+                            public void run() {
+                                hintLayout.animate().translationY(0);
+                                hintButton.animate().scaleX(1);
+                                hintButton.animate().scaleY(1);
+                                hintText.animate().scaleX(1);
+                                hintText.animate().scaleY(1);
+                            }
+                        }, 500);
+                    }
+                }
+            }, scripture.getVerse().length() * 90);
+
         }else if(value == View.GONE) {
             hintText.setVisibility(value);
             hintButton.hide();

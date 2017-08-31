@@ -170,7 +170,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         }
         Vibrator v = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
         v.vibrate(110);
-        view.setHintButtonVisibility(View.GONE);
+        view.setHintButtonVisibility(View.GONE, scripture);
     }
 
     @Override
@@ -410,7 +410,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         view.setTitlebarText(R.string.did_you_get_it);
         view.setMoreSwitchVisibility(true);
         view.setCheckAnswerButtonVisibility(View.GONE);
-        view.setHintButtonVisibility(View.GONE);
+        view.setHintButtonVisibility(View.GONE, scripture);
         view.setVerificationLayoutVisibility(View.VISIBLE);
     }
 
@@ -438,12 +438,12 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
             view.setMoreSwitchVisibility(true);
             view.setDoneButtonFont();
             view.setCheckAnswerButtonText(R.string.done);
-            view.setHintButtonVisibility(View.GONE);
+            view.setHintButtonVisibility(View.GONE, scripture);
         }else {
             view.setMoreSwitchVisibility(false);
             view.setCheckAnswerButtonText(R.string.check_answer);
             if (scripture.getMemoryStage() != 7) {
-                view.setHintButtonVisibility(View.VISIBLE);
+                view.setHintButtonVisibility(View.VISIBLE, scripture);
             }else{
                 SpannableStringBuilder finalStageTip = stringModifier.createFinalStageTip("Final Stage!");
                 view.setSpannableVerseText(finalStageTip);

@@ -65,7 +65,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     private ViewPagerAdapter adapterMain;
     private SlidingTabLayout tabsMain;
     private FrameLayout fragmentContainer;
-    private CharSequence mainTitles[]={"Upcoming","Quiz verses","Memorized"};
+    private CharSequence mainTitles[]={"Upcoming","In progress","Memorized"};
     private ViewPager pagerVerseSelector;
     private ViewPagerAdapterVerseSelector adapterVerseSelector;
     private SlidingTabLayout tabsVerseSelector;

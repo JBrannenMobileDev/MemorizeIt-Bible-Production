@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -93,7 +94,8 @@ public class RequestsFragment extends Fragment {
                 if(response != null) {
                     emptyStateTv.setVisibility(View.GONE);
                     pendingUsersToDisplay = response;
-                    setPendingRecyclerViewItems(response);
+                    Collections.sort(pendingUsersToDisplay);
+                    setPendingRecyclerViewItems(pendingUsersToDisplay);
                 }
             }
 

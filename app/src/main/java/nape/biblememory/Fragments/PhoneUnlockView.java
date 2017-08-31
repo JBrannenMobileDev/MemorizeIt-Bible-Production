@@ -2,6 +2,8 @@ package nape.biblememory.Fragments;
 
 import android.text.SpannableStringBuilder;
 
+import nape.biblememory.Models.ScriptureData;
+
 /**
  * Created by Jonathan on 5/1/2016.
  */
@@ -21,7 +23,7 @@ public interface PhoneUnlockView{
     void setCheckAnswerButtonFont();
     void setMoreSwitchVisibility(boolean visible);
     void setMoreVerseSwitchState(boolean state);
-    void setHintButtonVisibility(int value);
+    void setHintButtonVisibility(int value, ScriptureData scripture);
     void showMemorizedAlert(boolean memorizedAndLearningListIsEmpty);
     void setMoreVersesLayoutColor(int color);
     void setReviewTitleVisibility(int visible);

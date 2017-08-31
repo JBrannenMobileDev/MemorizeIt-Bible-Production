@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -45,6 +46,7 @@ public class RecyclerViewAdapterMemorized extends RecyclerView.Adapter<RecyclerV
         public TextView memorizedDateTextView;
         public TextView lastSeenDateTextView;
         public LinearLayout lastSeenLayout;
+        public ImageView expandArrow;
 
         public ViewHolder(View v, final BaseCallback eCallback, final BaseCallback cCallback) {
             super(v);
@@ -57,6 +59,7 @@ public class RecyclerViewAdapterMemorized extends RecyclerView.Adapter<RecyclerV
             versesTextView = (TextView) v.findViewById(R.id.verses_memorized_textview);
             memorizedDateTextView = (TextView) v.findViewById(R.id.memorized_date_textview);
             lastSeenDateTextView = (TextView) v.findViewById(R.id.last_seen_textview);
+            expandArrow = (ImageView) v.findViewById(R.id.expand_arrow_mem);
 
             v.setOnClickListener(new View.OnClickListener() {
 
@@ -79,14 +82,23 @@ public class RecyclerViewAdapterMemorized extends RecyclerView.Adapter<RecyclerV
                     }else {
                         if (v.equals(selectedView)) {
                             collapseCardView(selectedView);
+                            if(expandArrow != null){
+                                expandArrow.animate().rotation(0);
+                            }
                             selectedView = null;
                             isViewSelected = false;
                         } else {
                             if (isViewSelected) {
                                 collapseCardView(selectedView);
+                                if(expandArrow != null){
+                                    expandArrow.animate().rotation(0);
+                                }
                             }
                             isViewSelected = true;
                             expandCardView(v);
+                            if(expandArrow != null){
+                                expandArrow.animate().rotation(180f);
+                            }
                         }
 
                         if (isViewSelected) {

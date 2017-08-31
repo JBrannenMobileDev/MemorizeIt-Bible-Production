@@ -1,10 +1,12 @@
 package nape.biblememory.Models;
 
+import android.support.annotation.NonNull;
+
 /**
  * Created by jbrannen on 8/21/17.
  */
 
-public class User {
+public class User implements Comparable<User>{
     private String name;
     private String email;
     private String UID;
@@ -50,5 +52,10 @@ public class User {
 
     public void setTotalVerses(int totalVerses) {
         this.totalVerses = totalVerses;
+    }
+
+    @Override
+    public int compareTo(@NonNull User user) {
+        return this.name.compareToIgnoreCase(user.getName());
     }
 }

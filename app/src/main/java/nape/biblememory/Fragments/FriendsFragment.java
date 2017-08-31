@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -106,6 +107,7 @@ public class FriendsFragment extends Fragment {
                 }
             }
         }
+        Collections.sort(friendsList);
         setRecyclerViewItems(friendsList);
     }
 

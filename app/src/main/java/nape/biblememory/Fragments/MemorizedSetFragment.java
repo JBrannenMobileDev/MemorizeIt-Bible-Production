@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +60,7 @@ public class MemorizedSetFragment extends Fragment {
     private TextView forgottenVerseTitle;
     private TextView memorizedVerseTitle;
     private TextView emptyState;
+    private ImageView forgottenArrow;
 
 
     @Override
@@ -94,6 +96,7 @@ public class MemorizedSetFragment extends Fragment {
         forgottenVerseTitle = (TextView) v.findViewById(R.id.forgotten_verse_title);
         memorizedVerseTitle = (TextView) v.findViewById(R.id.memorized_verses_title);
         emptyState = (TextView) v.findViewById(R.id.empty_state_memorized_tv);
+        forgottenArrow = (ImageView) v.findViewById(R.id.expand_arrow_memorized);
 
         allMemorizedVerses = new ArrayList<>();
         getAllMemorizedVerses();
@@ -117,8 +120,10 @@ public class MemorizedSetFragment extends Fragment {
             public void onClick(View view) {
                 if(verse.getVisibility() == View.VISIBLE){
                     collopaseCardView();
+                    forgottenArrow.animate().rotation(0);
                 }else{
                     expandCardView();
+                    forgottenArrow.animate().rotation(180f);
                 }
             }
         });

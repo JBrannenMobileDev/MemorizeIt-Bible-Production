@@ -7,6 +7,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -40,6 +41,7 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
         public TextView version;
         public RelativeLayout removeLayout;
         public LinearLayout moveLayout;
+        public ImageView expandImage;
 
         public ViewHolder(View v, final int mPosition, final BaseCallback rCallback, final BaseCallback mCallback, final BaseCallback eCallback) {
             super(v);
@@ -48,6 +50,7 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
             pb = (ProgressBar) v.findViewById(R.id.progressBar);
             progressPercent = (TextView) v.findViewById(R.id.progress_percent);
             version = (TextView) v.findViewById(R.id.verse_version);
+            expandImage = (ImageView) v.findViewById(R.id.expand_image);
 
             if(mPosition == 1){
                 removeLayout = (RelativeLayout) v.findViewById(R.id.linearLayoutRemove);
@@ -84,16 +87,25 @@ public class RecyclerViewAdapterMyVerses extends RecyclerView.Adapter<RecyclerVi
 
                     if (v.equals(selectedView)) {
                         collapseCardView(selectedView, mPosition);
+                        if(expandImage != null) {
+                            expandImage.animate().rotation(0f);
+                        }
                         selectedView = null;
                         isViewSelected = false;
                     }else{
                         if(isViewSelected) {
                             collapseCardView(selectedView, mPosition);
+                            if(expandImage != null) {
+                                expandImage.animate().rotation(0f);
+                            }
                         }
                         isViewSelected = true;
                         switch(mPosition){
                             case 0:
                                 expandCardView(v,mPosition);
+                                if(expandImage != null) {
+                                    expandImage.animate().rotation(180f);
+                                }
 //                                editTv.setVisibility(View.VISIBLE);
                                 break;
                             case 2:
