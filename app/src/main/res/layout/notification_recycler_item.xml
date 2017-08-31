@@ -8,6 +8,20 @@
     android:elevation="2dp"
     android:gravity="center_vertical">
 
+    <TextView
+        android:id="@+id/notification_give_a_blessing"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/rounded_rectangle"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="Give a blessing"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

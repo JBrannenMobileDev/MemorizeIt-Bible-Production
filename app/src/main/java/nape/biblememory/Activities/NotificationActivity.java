@@ -72,7 +72,21 @@ public class NotificationActivity extends AppCompatActivity {
 
             }
         };
-        adapter = new RecyclerViewAdapterNotifications(response, friendSelectedCallback);
+
+        BaseCallback<Integer> giveABlessingCallback = new BaseCallback<Integer>() {
+            @Override
+            public void onResponse(Integer response) {
+                DataStore.getInstance().sendABlessing(usersThatBlessed.get(response).getUID(), getApplicationContext());
+                DataStore.getInstance().deleteFriendBlessing(usersThatBlessed.get(response).getUID(), getApplicationContext());
+                usersThatBlessed.remove(response);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+        adapter = new RecyclerViewAdapterNotifications(response, friendSelectedCallback, giveABlessingCallback);
         recyclerView.setAdapter(adapter);
     }
 
@@ -100,7 +114,7 @@ public class NotificationActivity extends AppCompatActivity {
             for(User user : usersThatBlessed){
                 DataStore.getInstance().deleteFriendBlessing(user.getUID(), getApplicationContext());
             }
-            adapter = new RecyclerViewAdapterNotifications(new ArrayList<User>(), null);
+            adapter = new RecyclerViewAdapterNotifications(new ArrayList<User>(), null, null);
             recyclerView.setAdapter(adapter);
             return true;
         }

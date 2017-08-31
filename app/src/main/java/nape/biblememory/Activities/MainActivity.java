@@ -193,6 +193,29 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                     snackbar.setActionTextColor(getResources().getColor(R.color.colorGreenText));
                     snackbar.getView().setBackgroundColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
                     snackbar.show();
+
+                    BaseCallback<List<User>> friendsThatBlessedCallbackForNavDrawer = new BaseCallback<List<User>>() {
+                        @Override
+                        public void onResponse(List<User> response) {
+                            if(response != null && response.size() > 0) {
+                                navigationView.getMenu()
+                                        .findItem(R.id.nav_social)
+                                        .getIcon()
+                                        .setColorFilter(getResources().getColor(R.color.colorGreenText), PorterDuff.Mode.SRC_IN);
+                            } else {
+                                navigationView.getMenu()
+                                        .findItem(R.id.nav_social)
+                                        .getIcon()
+                                        .setColorFilter(getResources().getColor(R.color.greyIcon), PorterDuff.Mode.SRC_IN);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Exception e) {
+
+                        }
+                    };
+                    DataStore.getInstance().getUsersThatBlessedMe(friendsThatBlessedCallbackForNavDrawer, getApplicationContext());
                 }else{
                     BaseCallback<List<User>> friendsThatBlessedCallback = new BaseCallback<List<User>>() {
                         @Override
@@ -209,7 +232,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                                                     @Override
                                                     public void onClick(View view) {
                                                         if(NetworkManager.getInstance().isInternet(getApplicationContext())) {
-                                                            Intent intent = new Intent(getApplicationContext(), SocialActivity.class);
+                                                            Intent intent = new Intent(getApplicationContext(), NotificationActivity.class);
                                                             startActivity(intent);
                                                         }else{
                                                             new NoInternetAlertDialog().show(getSupportFragmentManager(), null);

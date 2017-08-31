@@ -18,17 +18,27 @@ public class RecyclerViewAdapterNotifications extends RecyclerView.Adapter<Recyc
 
     private List<User> blessings;
     private BaseCallback<Integer> friendSelectedCallback;
+    private BaseCallback<Integer> giveABlessingCallback;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private TextView message;
+        private TextView giveBlessingBack;
 
 
 
-        public ViewHolder(View v, final BaseCallback<Integer> friendSelectedCallback) {
+        public ViewHolder(View v, final BaseCallback<Integer> friendSelectedCallback, final BaseCallback<Integer> giveABlessingCallback) {
             super(v);
             name = (TextView) v.findViewById(R.id.notification_friends_name_tv);
             message = (TextView) v.findViewById(R.id.notification_message_tv);
+            giveBlessingBack = (TextView) v.findViewById(R.id.notification_give_a_blessing);
+            giveBlessingBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    giveABlessingCallback.onResponse(getLayoutPosition());
+                    removeItem(getLayoutPosition());
+                }
+            });
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -39,16 +49,17 @@ public class RecyclerViewAdapterNotifications extends RecyclerView.Adapter<Recyc
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public RecyclerViewAdapterNotifications(List<User> blessings, BaseCallback<Integer> friendPositionSelectedCallback) {
+    public RecyclerViewAdapterNotifications(List<User> blessings, BaseCallback<Integer> friendPositionSelectedCallback, BaseCallback<Integer> giveABlessingCallback) {
         this.blessings = blessings;
         this.friendSelectedCallback = friendPositionSelectedCallback;
+        this.giveABlessingCallback = giveABlessingCallback;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
     public RecyclerViewAdapterNotifications.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.notification_recycler_item, parent, false);
-        ViewHolder vh = new ViewHolder(v, friendSelectedCallback);
+        ViewHolder vh = new ViewHolder(v, friendSelectedCallback, giveABlessingCallback);
         return vh;
     }
 
@@ -56,7 +67,7 @@ public class RecyclerViewAdapterNotifications extends RecyclerView.Adapter<Recyc
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.name.setText(blessings.get(position).getName());
-        holder.message.setText("sent you a blessing!");
+        holder.message.setText("gave you a blessing!");
     }
 
 
@@ -64,5 +75,11 @@ public class RecyclerViewAdapterNotifications extends RecyclerView.Adapter<Recyc
     @Override
     public int getItemCount() {
         return blessings.size();
+    }
+
+    private void removeItem(int position) {
+        blessings.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, blessings.size());
     }
 }
