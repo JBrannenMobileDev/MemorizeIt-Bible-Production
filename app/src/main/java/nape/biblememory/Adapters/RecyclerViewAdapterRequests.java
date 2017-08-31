@@ -25,7 +25,6 @@ public class RecyclerViewAdapterRequests extends RecyclerView.Adapter<RecyclerVi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
-        private TextView email;
         private TextView addFriend;
 
 
@@ -33,7 +32,6 @@ public class RecyclerViewAdapterRequests extends RecyclerView.Adapter<RecyclerVi
             super(v);
             addFriend = (TextView) v.findViewById(add_friend_tv);
             name = (TextView) v.findViewById(R.id.friends_name_tv);
-            email = (TextView) v.findViewById(R.id.friends_email_tv);
 
             addFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -73,7 +71,6 @@ public class RecyclerViewAdapterRequests extends RecyclerView.Adapter<RecyclerVi
             holder.addFriend.setBackground(context.getResources().getDrawable(R.drawable.rounded_rectangle_grey_bg));
         }
         holder.name.setText(mDataSet.get(position).getName());
-        holder.email.setText(mDataSet.get(position).getEmail());
     }
 
 

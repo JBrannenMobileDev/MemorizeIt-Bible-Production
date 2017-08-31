@@ -39,12 +39,11 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/rounded_rectangle"
                 android:enabled="true"
                 android:gravity="center_vertical"
                 android:text="Review verses"
                 android:textAlignment="center"
-                android:textColor="?attr/colorControlNormal"
+                android:textColor="@android:color/white"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 

@@ -37,6 +37,7 @@ public class FirebaseDb {
     private DatabaseReference memorizedVersesReference;
     private DatabaseReference forgottenVersesReference;
     private DatabaseReference userPrefsReference;
+    private DatabaseReference blessingReference;
 
     private UserPreferences mPrefs;
 
@@ -96,6 +97,41 @@ public class FirebaseDb {
             }
         };
         getUsers(usersCallback);
+    }
+
+    public void getUsersThatBlessed(final BaseCallback<List<User>> userDataCallback, Context context) {
+        final BaseCallback<List<String>> uidBlessed = new BaseCallback<List<String>>() {
+            @Override
+            public void onResponse(final List<String> response) {
+                if(response != null) {
+                    final List<User> users = new ArrayList<>();
+                    usersReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USER_DATA);
+                    usersReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                User user = data.getValue(User.class);
+                                if (response.contains(user.getUID())) {
+                                    users.add(user);
+                                }
+                            }
+                            userDataCallback.onResponse(users);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+        getBlessings(uidBlessed, context);
     }
 
     public void getUsers(final BaseCallback<List<User>> userDataCallback) {
@@ -210,6 +246,33 @@ public class FirebaseDb {
         friendsReference.push().setValue(uid);
     }
 
+    public void sendBlessing(String uidToSendTo, Context context){
+        blessingReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).
+                child(uidToSendTo).child(Constants.BLESSINGS);
+        blessingReference.push().setValue(mPrefs.getUserId(context));
+    }
+
+    public void getBlessings(final BaseCallback<List<String>> blessingCallback, Context context){
+        blessingReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).
+                child(mPrefs.getUserId(context)).child(Constants.BLESSINGS);
+        blessingReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<String> blessingList = new ArrayList<>();
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    String blessing = data.getValue(String.class);
+                    blessingList.add(blessing);
+                }
+                blessingCallback.onResponse(blessingList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public void getPendingRequests(final BaseCallback<List<String>> friendsCallback, Context context){
         friendsReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).
                 child(mPrefs.getUserId(context)).child(Constants.PENDING_REQUESTS);
@@ -242,6 +305,28 @@ public class FirebaseDb {
                     if(data.getValue().equals(mPrefs.getUserId(context))){
                         FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).child(uid).
                                 child(Constants.PENDING_REQUESTS).child(data.getKey()).removeValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void deleteBlessingNotification(final String uidToRemove, final Context context){
+        blessingReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).
+                child(mPrefs.getUserId(context)).child(Constants.BLESSINGS);
+
+        blessingReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot data : dataSnapshot.getChildren()) {
+                    if(data.getValue().equals(uidToRemove)){
+                        FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).child(mPrefs.getUserId(context)).
+                                child(Constants.BLESSINGS).child(data.getKey()).removeValue();
                     }
                 }
             }

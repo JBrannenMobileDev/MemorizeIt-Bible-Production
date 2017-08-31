@@ -51,6 +51,11 @@ public class FriendDetailsActivity extends AppCompatActivity {
         setTitle(name);
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
         DataStore.getInstance().getAllVerses(mPrefs.getUserId(getApplicationContext()), allMyVersesCallback);
     }
 
@@ -160,6 +165,7 @@ public class FriendDetailsActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.action_bless:
+                DataStore.getInstance().sendABlessing(uid, getApplicationContext());
                 Toast.makeText(this, "Blessing sent to " + name, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_copy_all:

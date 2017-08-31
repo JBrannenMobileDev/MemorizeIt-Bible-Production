@@ -193,6 +193,66 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                     snackbar.setActionTextColor(getResources().getColor(R.color.colorGreenText));
                     snackbar.getView().setBackgroundColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
                     snackbar.show();
+                }else{
+                    BaseCallback<List<User>> friendsThatBlessedCallback = new BaseCallback<List<User>>() {
+                        @Override
+                        public void onResponse(List<User> response) {
+                            if(response != null && response.size() > 0){
+                                navigationView.getMenu()
+                                        .findItem(R.id.nav_social)
+                                        .getIcon()
+                                        .setColorFilter(getResources().getColor(R.color.colorGreenText), PorterDuff.Mode.SRC_IN);
+
+                                snackbar = Snackbar
+                                        .make(coordinatorLayout, String.valueOf(response.size()) + " Blessing received!", Snackbar.LENGTH_INDEFINITE).
+                                                setAction("VIEW", new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View view) {
+                                                        if(NetworkManager.getInstance().isInternet(getApplicationContext())) {
+                                                            Intent intent = new Intent(getApplicationContext(), SocialActivity.class);
+                                                            startActivity(intent);
+                                                        }else{
+                                                            new NoInternetAlertDialog().show(getSupportFragmentManager(), null);
+                                                        }
+                                                    }
+                                                });
+
+                                snackbar.addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                                    @Override
+                                    public void onDismissed(Snackbar transientBottomBar, int event) {
+                                        startQuizFabFrame.animate().translationY(0);
+                                        adapterMain.moveNewVerseFab(0);
+                                        mPrefs.setSnackbarVisible(false, getApplicationContext());
+                                        super.onDismissed(transientBottomBar, event);
+                                    }
+
+                                    @Override
+                                    public void onShown(Snackbar transientBottomBar) {
+                                        float distance = TypedValue.applyDimension(
+                                                TypedValue.COMPLEX_UNIT_DIP, 40,
+                                                getResources().getDisplayMetrics()
+                                        );
+                                        startQuizFabFrame.animate().translationY(-distance);
+                                        adapterMain.moveNewVerseFab(-distance);
+                                        mPrefs.setSnackbarVisible(true, getApplicationContext());
+                                        super.onShown(transientBottomBar);
+                                    }
+                                });
+
+
+                                // Changing message text color
+                                snackbar.setActionTextColor(getResources().getColor(R.color.colorGreenText));
+                                snackbar.getView().setBackgroundColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
+                                snackbar.show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Exception e) {
+
+                        }
+                    };
+                    DataStore.getInstance().getUsersThatBlessedMe(friendsThatBlessedCallback, getApplicationContext());
                 }
             }
 
@@ -240,7 +300,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         BaseCallback<List<ScriptureData>> memorizedVersesCallback = new BaseCallback<List<ScriptureData>>() {
             @Override
             public void onResponse(List<ScriptureData> response) {
-                if(response != null && response.size() > 0){
+                if(response != null && response.size() > 5){
                     navigationView.getMenu()
                             .findItem(R.id.nav_support_the_dev)
                             .getIcon()

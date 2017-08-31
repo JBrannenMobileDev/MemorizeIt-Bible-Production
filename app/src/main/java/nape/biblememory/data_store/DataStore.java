@@ -158,6 +158,10 @@ public class DataStore {
         FirebaseDb.getInstance().getUsers(usersCallback);
     }
 
+    public void getUsersThatBlessedMe(BaseCallback<List<User>> usersThatBlessedCallback, Context context){
+        FirebaseDb.getInstance().getUsersThatBlessed(usersThatBlessedCallback, context);
+    }
+
     public void addNewUser(User user, Context context){
         FirebaseDb.getInstance().addNewUser(user, context);
     }
@@ -664,5 +668,13 @@ public class DataStore {
 
     public void nukeAllData(Context context) {
         FirebaseDb.getInstance().nukeDb(context);
+    }
+
+    public void sendABlessing(String userId, Context applicationContext) {
+        FirebaseDb.getInstance().sendBlessing(userId, applicationContext);
+    }
+
+    public void deleteFriendBlessing(String uidToDelete, Context applicationContext) {
+        FirebaseDb.getInstance().deleteBlessingNotification(uidToDelete, applicationContext);
     }
 }

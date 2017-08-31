@@ -7,6 +7,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -34,6 +35,7 @@ public class RecyclerViewAdapterFriendDetails extends RecyclerView.Adapter<Recyc
         public TextView verseLocation;
         public TextView verse;
         public TextView version;
+        public ImageView expandArrow;
 
         public ViewHolder(View v, final BaseCallback<Integer> copyVerseIndexCallback) {
             super(v);
@@ -41,6 +43,7 @@ public class RecyclerViewAdapterFriendDetails extends RecyclerView.Adapter<Recyc
             verse = (TextView) v.findViewById(R.id.verse);
             version = (TextView) v.findViewById(R.id.verse_version);
             copyLayout = (LinearLayout) v.findViewById(R.id.copy_verse_layout);
+            expandArrow = (ImageView) v.findViewById(R.id.friend_details_expand_arrow);
 
             copyLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -56,14 +59,17 @@ public class RecyclerViewAdapterFriendDetails extends RecyclerView.Adapter<Recyc
 
                     if (v.equals(selectedView)) {
                         collapseCardView(selectedView);
+                        expandArrow.animate().rotation(0);
                         selectedView = null;
                         isViewSelected = false;
                     }else{
                         if(isViewSelected) {
                             collapseCardView(selectedView);
+                            expandArrow.animate().rotation(0);
                         }
                         isViewSelected = true;
                         expandCardView(v);
+                        expandArrow.animate().rotation(180f);
                     }
 
                     if(isViewSelected){

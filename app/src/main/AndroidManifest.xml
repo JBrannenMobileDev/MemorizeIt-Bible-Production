@@ -86,12 +86,16 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.LoginSuccessActivity"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask" />
         <activity
             android:name=".Activities.FriendDetailsActivity"
             android:parentActivityName=".Activities.SocialActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".Activities.NotificationActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.SocialActivity"/>
+
     </application>
 
 </manifest>

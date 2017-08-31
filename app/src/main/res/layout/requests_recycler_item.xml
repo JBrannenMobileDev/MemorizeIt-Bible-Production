@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="50dp"
         android:layout_marginTop="1dp"
         android:background="@color/colorWhite"
         android:elevation="2dp"
@@ -21,20 +21,12 @@
         <TextView
             android:id="@+id/friends_name_tv"
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="Shawna Brannen"
             android:textColor="@color/bgColor"
             android:textSize="18sp"
             android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/friends_email_tv"
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:gravity="center_vertical"
-            android:text="shawnamccollom@gmail.com"
-            android:textSize="14sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -58,7 +50,7 @@
         android:gravity="center_vertical|center_horizontal"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="Follow"
+        android:text="Add friend"
         android:textColor="@color/colorWhite"
         android:textSize="14sp"
         android:textStyle="bold" />

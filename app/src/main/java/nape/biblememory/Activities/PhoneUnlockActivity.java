@@ -295,10 +295,10 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
                                 hintText.animate().scaleX(1);
                                 hintText.animate().scaleY(1);
                             }
-                        }, 500);
+                        }, 200);
                     }
                 }
-            }, scripture.getVerse().length() * 90);
+            }, scripture.getVerse().length() * 120);
 
         }else if(value == View.GONE) {
             hintText.setVisibility(value);
