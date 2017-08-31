@@ -57,8 +57,6 @@ public class MemorizedSetFragment extends Fragment {
     private TextView lastSeenDateTitle;
     private TextView memorizedDateText;
     private TextView lastSeenDateText;
-    private TextView forgottenVerseTitle;
-    private TextView memorizedVerseTitle;
     private TextView emptyState;
     private ImageView forgottenArrow;
 
@@ -93,8 +91,6 @@ public class MemorizedSetFragment extends Fragment {
         lastSeenDateTitle = (TextView) v.findViewById(R.id.last_seen_title_forgotten);
         memorizedDateText = (TextView) v.findViewById(R.id.memorized_date_textview_forgotten);
         lastSeenDateText = (TextView) v.findViewById(R.id.last_seen_textview_forgotten);
-        forgottenVerseTitle = (TextView) v.findViewById(R.id.forgotten_verse_title);
-        memorizedVerseTitle = (TextView) v.findViewById(R.id.memorized_verses_title);
         emptyState = (TextView) v.findViewById(R.id.empty_state_memorized_tv);
         forgottenArrow = (ImageView) v.findViewById(R.id.expand_arrow_memorized);
 
@@ -153,16 +149,10 @@ public class MemorizedSetFragment extends Fragment {
 
     private void hideForgotenCardView() {
         forgottenVerseCardView.setVisibility(View.GONE);
-        forgottenVerseTitle.setVisibility(View.GONE);
-        memorizedVerseTitle.setVisibility(View.GONE);
     }
 
     private void populateCardView(ScriptureData verse){
         forgottenVerseCardView.setVisibility(View.VISIBLE);
-        forgottenVerseTitle.setVisibility(View.VISIBLE);
-        if(allMemorizedVerses.size() > 0) {
-            memorizedVerseTitle.setVisibility(View.VISIBLE);
-        }
         this.verse.setText(verse.getVerse());
         memorizedDateText.setText(verse.getRemeberedDate());
         lastSeenDateText.setText(verse.getLastSeenDate());
