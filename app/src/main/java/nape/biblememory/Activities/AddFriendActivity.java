@@ -272,6 +272,7 @@ public class AddFriendActivity extends AppCompatActivity {
                             public void onResponse(List<User> response) {
                                 if (response != null) {
                                     allUsers = response;
+                                    Collections.sort(allUsers);
                                     dataReceived = true;
                                     requestLoadingCircle.setVisibility(View.GONE);
                                 }
