@@ -133,7 +133,9 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
         checkAnswerFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handler.removeMessages(0);
+                if(handler != null) {
+                    handler.removeMessages(0);
+                }
                 mFirebaseAnalytics.logEvent("quiz_check_answer_selected", null);
                 mPresenter.onCheckAnswerClicked();
             }
