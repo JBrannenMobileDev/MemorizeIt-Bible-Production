@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import nape.biblememory.Fragments.BooksFragment;
 import nape.biblememory.Fragments.ChapterFragment;
+import nape.biblememory.Fragments.VersesFragment;
 import nape.biblememory.Fragments.VerseFragment;
 
 /**

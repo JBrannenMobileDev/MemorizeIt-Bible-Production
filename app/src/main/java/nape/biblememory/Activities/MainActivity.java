@@ -55,6 +55,10 @@ import nape.biblememory.UserPreferences;
 import nape.biblememory.Views.SlidingTabLayout;
 import nape.biblememory.Fragments.Dialogs.VerseSelectedDialogFragment;
 import nape.biblememory.R;
+import tourguide.tourguide.Overlay;
+import tourguide.tourguide.Pointer;
+import tourguide.tourguide.ToolTip;
+import tourguide.tourguide.TourGuide;
 
 public class MainActivity extends ActionBarActivity implements NavigationView.OnNavigationItemSelectedListener,
         MyVersesFragment.OnAddVerseSelectedListener, VerseSelection.FragmentToActivity, BooksFragment.BooksFragmentListener,
@@ -65,13 +69,14 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     private ViewPagerAdapter adapterMain;
     private SlidingTabLayout tabsMain;
     private FrameLayout fragmentContainer;
-    private CharSequence mainTitles[]={"Upcoming","In progress","Memorized"};
+    private CharSequence mainTitles[]={"My verses","Memorized"};
     private ViewPager pagerVerseSelector;
     private ViewPagerAdapterVerseSelector adapterVerseSelector;
     private SlidingTabLayout tabsVerseSelector;
     private CharSequence VerseSelectorTitles[]={"BOOKS","CHAPTER","VERSE"};
     private int Numboftabs = 3;
     private FloatingActionButton startQuiz;
+    private FloatingActionButton addVerseFab;
     private UserPreferences mPrefs;
     private String bookName;
     private String chapterNum;
@@ -125,6 +130,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
         startQuizFabFrame = (FrameLayout) findViewById(R.id.start_quiz_fab_frame);
         startQuiz = (FloatingActionButton) findViewById(R.id.start_quiz_fab);
+        addVerseFab = (FloatingActionButton) findViewById(R.id.add_verse_fab);
         startQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,6 +141,21 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                 }else{
                     new InProgressEmptyAlertDialog().show(getSupportFragmentManager(), null);
                 }
+            }
+        });
+
+
+        final TourGuide mTourGuideHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+                .setPointer(new Pointer())
+                .setToolTip(new ToolTip().setTitle("Welcome!").setDescription("Click the plus button to add your first verse."))
+                .setOverlay(new Overlay())
+                .playOn(addVerseFab);
+
+        addVerseFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addVerseSelected();
+                mTourGuideHandler.cleanUp();
             }
         });
 
@@ -170,7 +191,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                         @Override
                         public void onDismissed(Snackbar transientBottomBar, int event) {
                             startQuizFabFrame.animate().translationY(0);
-                            adapterMain.moveNewVerseFab(0);
                             mPrefs.setSnackbarVisible(false, getApplicationContext());
                             super.onDismissed(transientBottomBar, event);
                         }
@@ -182,7 +202,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                                     getResources().getDisplayMetrics()
                             );
                             startQuizFabFrame.animate().translationY(-distance);
-                            adapterMain.moveNewVerseFab(-distance);
                             mPrefs.setSnackbarVisible(true, getApplicationContext());
                             super.onShown(transientBottomBar);
                         }
@@ -244,7 +263,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                                     @Override
                                     public void onDismissed(Snackbar transientBottomBar, int event) {
                                         startQuizFabFrame.animate().translationY(0);
-                                        adapterMain.moveNewVerseFab(0);
                                         mPrefs.setSnackbarVisible(false, getApplicationContext());
                                         super.onDismissed(transientBottomBar, event);
                                     }
@@ -256,7 +274,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                                                 getResources().getDisplayMetrics()
                                         );
                                         startQuizFabFrame.animate().translationY(-distance);
-                                        adapterMain.moveNewVerseFab(-distance);
                                         mPrefs.setSnackbarVisible(true, getApplicationContext());
                                         super.onShown(transientBottomBar);
                                     }
@@ -366,7 +383,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         DataStore.getInstance().getFriendRequests(getApplicationContext());
     }
@@ -375,7 +392,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
     private void setSlidingTabViewMain() {
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
-        adapterMain =  new ViewPagerAdapter(getSupportFragmentManager(),mainTitles,Numboftabs);
+        adapterMain =  new ViewPagerAdapter(getSupportFragmentManager(),mainTitles);
 
         // Assigning ViewPager View and setting the adapter
         pagerMain = (ViewPager) findViewById(R.id.pager);
@@ -396,6 +413,33 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         //added for test commit
         // Setting the ViewPager For the SlidingTabsLayout
         tabsMain.setViewPager(pagerMain);
+
+        pagerMain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if(position == 1){
+                    addVerseFab.hide();
+                }
+                if(position == 0){
+                    addVerseFab.show();
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 1){
+                    addVerseFab.hide();
+                }
+                if(position == 0){
+                    addVerseFab.show();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void setSlidingTabViewVerseSelector() {

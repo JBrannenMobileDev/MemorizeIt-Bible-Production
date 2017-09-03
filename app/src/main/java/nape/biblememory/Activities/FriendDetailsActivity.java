@@ -15,7 +15,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import nape.biblememory.Adapters.RecyclerViewAdapterFriendDetails;
-import nape.biblememory.Fragments.Dialogs.BlessingSentAlertDialog;
 import nape.biblememory.Models.ScriptureData;
 import nape.biblememory.R;
 import nape.biblememory.UserPreferences;

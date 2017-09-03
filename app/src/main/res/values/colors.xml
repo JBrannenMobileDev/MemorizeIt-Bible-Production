@@ -14,6 +14,7 @@
     <color name="circle_button">#016585</color>
     <color name="tabsScrollColor">#014860</color>
     <color name="greyBg">#d5d5d5</color>
+    <color name="greyBgLight">#f2f2f2</color>
     <color name="greyBgDark">#bbbaba</color>
     <color name="colorProgressBg">#0d97c5</color>
     <color name="colorStartQuiz">#017faa</color>
@@ -25,4 +26,7 @@
     <color name="greyBgDarker">#989898</color>
     <color name="red">#da0000</color>
     <color name="greyIcon">#606060</color>
+    <color name="gold">#ffd501</color>
+    <color name="colorGreenProgress">#93fdb9</color>
+    <color name="colorHighlightProgress">#eaf9fe</color>
 </resources>

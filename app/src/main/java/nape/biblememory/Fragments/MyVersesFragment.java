@@ -63,8 +63,8 @@ public class MyVersesFragment extends Fragment {
 
     @Override
     public void onResume() {
-        super.onResume();mPrefs = new UserPreferences();
-
+        super.onResume();
+        mPrefs = new UserPreferences();
         if(mPrefs.isSnackbarVisible(getActivity().getApplicationContext())) {
             float distance = TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP, 40,

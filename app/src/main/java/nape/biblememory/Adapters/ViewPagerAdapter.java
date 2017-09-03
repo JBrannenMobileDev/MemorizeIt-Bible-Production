@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import nape.biblememory.Fragments.MyVersesFragment;
 import nape.biblememory.Fragments.LearningSetFragment;
 import nape.biblememory.Fragments.MemorizedSetFragment;
+import nape.biblememory.Fragments.VersesFragment;
 
 /**
  * Created by hp1 on 21-01-2015.
@@ -13,18 +14,15 @@ import nape.biblememory.Fragments.MemorizedSetFragment;
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     CharSequence Titles[]; // This will Store the Titles of the Tabs which are Going to be passed when ViewPagerAdapter is created
-    int NumbOfTabs; // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created
+    private static final int NumbOfTabs = 2; // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created
 
-    private MyVersesFragment myVersesFragment;
-    private LearningSetFragment learningSetFragment;
+    private VersesFragment versesFragment;
     private MemorizedSetFragment memorizedSetFragment;
 
     // Build a Constructor and assign the passed Values to appropriate values in the class
-    public ViewPagerAdapter(FragmentManager fm, CharSequence mTitles[], int mNumbOfTabsumb) {
+    public ViewPagerAdapter(FragmentManager fm, CharSequence mTitles[]) {
         super(fm);
-
         this.Titles = mTitles;
-        this.NumbOfTabs = mNumbOfTabsumb;
 
     }
 
@@ -34,20 +32,16 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         Fragment selectedFrag;
         switch(position){
             case 0:
-                selectedFrag = new MyVersesFragment();
-                myVersesFragment = (MyVersesFragment) selectedFrag;
+                selectedFrag = new VersesFragment();
+                versesFragment = (VersesFragment) selectedFrag;
                 break;
             case 1:
-                selectedFrag = new LearningSetFragment();
-                learningSetFragment = (LearningSetFragment) selectedFrag;
-                break;
-            case 2:
                 selectedFrag = new MemorizedSetFragment();
                 memorizedSetFragment = (MemorizedSetFragment) selectedFrag;
                 break;
             default:
-                selectedFrag = new MyVersesFragment();
-                myVersesFragment = (MyVersesFragment) selectedFrag;
+                selectedFrag = new VersesFragment();
+                versesFragment = (VersesFragment) selectedFrag;
         }
         return selectedFrag;
     }
@@ -67,24 +61,8 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     public void refreshrecyclerViews(){
-        if(myVersesFragment != null && myVersesFragment.isVisible()){
-            myVersesFragment.refreshRecyclerView();
-        }
-        if(learningSetFragment != null && learningSetFragment.isVisible()){
-            learningSetFragment.RefreshRecyclerView();
-        }
         if(memorizedSetFragment != null && memorizedSetFragment.isVisible()){
             memorizedSetFragment.RefreshRecyclerView();
-        }
-    }
-
-    public void moveNewVerseFab(float distance) {
-        if(myVersesFragment != null && myVersesFragment.isVisible()){
-            myVersesFragment.moveNewVerseFab(distance);
-        }
-
-        if(learningSetFragment != null && learningSetFragment.isVisible()){
-            learningSetFragment.moveNewVerseFab(distance);
         }
     }
 }
