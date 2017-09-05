@@ -1,7 +1,10 @@
 package nape.biblememory.Models;
 
 
-public class ScriptureData {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ScriptureData implements Parcelable{
     private String verse;
     private String verseLocation;
     private String startDate;
@@ -18,6 +21,40 @@ public class ScriptureData {
     private long numOfVersesInChapter;
     private String verseNumber;
     private String versionCode;
+
+    protected ScriptureData(Parcel in) {
+        verse = in.readString();
+        verseLocation = in.readString();
+        startDate = in.readString();
+        remeberedDate = in.readString();
+        memorizedDate = in.readString();
+        lastSeenDate = in.readString();
+        primary_key_id = in.readInt();
+        correctCount = in.readInt();
+        viewedCount = in.readInt();
+        memoryStage = in.readInt();
+        memorySubStage = in.readInt();
+        bookName = in.readString();
+        chapter = in.readString();
+        numOfVersesInChapter = in.readLong();
+        verseNumber = in.readString();
+        versionCode = in.readString();
+    }
+
+    public ScriptureData(){
+    }
+
+    public static final Creator<ScriptureData> CREATOR = new Creator<ScriptureData>() {
+        @Override
+        public ScriptureData createFromParcel(Parcel in) {
+            return new ScriptureData(in);
+        }
+
+        @Override
+        public ScriptureData[] newArray(int size) {
+            return new ScriptureData[size];
+        }
+    };
 
     public String getVersionCode() {
         return versionCode;
@@ -38,9 +75,6 @@ public class ScriptureData {
     public ScriptureData(String verse, String verseLocation) {
         setVerse(verse);
         setVerseLocation(verseLocation);
-    }
-
-    public ScriptureData() {
     }
 
     public String getBookName() {
@@ -153,5 +187,30 @@ public class ScriptureData {
 
     public String getVerseNumber() {
         return verseNumber;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(verse);
+        dest.writeString(verseLocation);
+        dest.writeString(startDate);
+        dest.writeString(remeberedDate);
+        dest.writeString(memorizedDate);
+        dest.writeString(lastSeenDate);
+        dest.writeInt(primary_key_id);
+        dest.writeInt(correctCount);
+        dest.writeInt(viewedCount);
+        dest.writeInt(memoryStage);
+        dest.writeInt(memorySubStage);
+        dest.writeString(bookName);
+        dest.writeString(chapter);
+        dest.writeLong(numOfVersesInChapter);
+        dest.writeString(verseNumber);
+        dest.writeString(versionCode);
     }
 }

@@ -529,7 +529,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         } else if(id == R.id.nav_feedback){
             mFirebaseAnalytics.logEvent("feedback_nav_draw_selected", null);
             intent = new Intent(android.content.Intent.ACTION_SENDTO);
-            intent.setData(Uri.parse("mailto:" + "MemoizeItBible@gmail.com"));
+            intent.setData(Uri.parse("mailto:" + "MemorizeItBible@gmail.com"));
         } else if(id == R.id.nav_rate){
             mFirebaseAnalytics.logEvent("rate_nav_draw_selected", null);
             sendRateThisAppIntent();
@@ -801,17 +801,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         }
         String nextVerseNum = String.valueOf(Integer.valueOf(selectedVerseNum) + 1);
         api.getVerse(nextVerseCallback, damId, mPrefs.getSelectedBookId(getApplicationContext()), nextVerseNum, mPrefs.getSelectedChapter(getApplicationContext()));
-    }
-
-    @Override
-    public void verseAddedToQuizVerses() {
-        pagerMain.postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                pagerMain.setCurrentItem(1);
-            }
-        }, 300);
     }
 
     @Override

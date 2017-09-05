@@ -779,8 +779,74 @@ public class FirebaseDb {
                     result.put("memoryStage", verse.getMemoryStage());
                     result.put("memorySubStage", verse.getMemorySubStage());
                     result.put("versionCode", verse.getVersionCode());
+                    result.put("viewedCount", verse.getViewedCount());
+                    result.put("correctCount", verse.getCorrectCount());
                     FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).child(mPrefs.getUserId(context)).
                             child(Constants.FIREBASE_CHILD_QUIZ_VERSES).child(data.getKey()).updateChildren(result);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void updateQuizVerse(final ScriptureData locationToUpdate, final ScriptureData valueToSave, final Context context){
+        quizVersesReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).child(mPrefs.getUserId(context)).
+                child(Constants.FIREBASE_CHILD_QUIZ_VERSES);
+        quizVersesReference.orderByChild("verseLocation").equalTo(locationToUpdate.getVerseLocation()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot data : dataSnapshot.getChildren()) {
+                    HashMap<String, Object> result = new HashMap<>();
+                    result.put("bookName", valueToSave.getBookName());
+                    result.put("verse", valueToSave.getVerse());
+                    result.put("verseLocation", valueToSave.getVerseLocation());
+                    result.put("rememberedDate", valueToSave.getRemeberedDate());
+                    result.put("lastSeenDate", valueToSave.getLastSeenDate());
+                    result.put("correctCount", valueToSave.getCorrectCount());
+                    result.put("viewedCount", valueToSave.getViewedCount());
+                    result.put("memoryStage", valueToSave.getMemoryStage());
+                    result.put("memorySubStage", valueToSave.getMemorySubStage());
+                    result.put("versionCode", valueToSave.getVersionCode());
+                    result.put("viewedCount", valueToSave.getViewedCount());
+                    result.put("correctCount", valueToSave.getCorrectCount());
+                    FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).child(mPrefs.getUserId(context)).
+                            child(Constants.FIREBASE_CHILD_QUIZ_VERSES).child(data.getKey()).updateChildren(result);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void updateUpcomingVerse(final ScriptureData locationToUpdate, final ScriptureData valueToSave, final Context context){
+        quizVersesReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).child(mPrefs.getUserId(context)).
+                child(Constants.FIREBASE_CHILD_UPCOMING_VERSES);
+        quizVersesReference.orderByChild("verseLocation").equalTo(locationToUpdate.getVerseLocation()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot data : dataSnapshot.getChildren()) {
+                    HashMap<String, Object> result = new HashMap<>();
+                    result.put("bookName", valueToSave.getBookName());
+                    result.put("verse", valueToSave.getVerse());
+                    result.put("verseLocation", valueToSave.getVerseLocation());
+                    result.put("rememberedDate", valueToSave.getRemeberedDate());
+                    result.put("lastSeenDate", valueToSave.getLastSeenDate());
+                    result.put("correctCount", valueToSave.getCorrectCount());
+                    result.put("viewedCount", valueToSave.getViewedCount());
+                    result.put("memoryStage", valueToSave.getMemoryStage());
+                    result.put("memorySubStage", valueToSave.getMemorySubStage());
+                    result.put("versionCode", valueToSave.getVersionCode());
+                    result.put("viewedCount", valueToSave.getViewedCount());
+                    result.put("correctCount", valueToSave.getCorrectCount());
+                    FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).child(mPrefs.getUserId(context)).
+                            child(Constants.FIREBASE_CHILD_UPCOMING_VERSES).child(data.getKey()).updateChildren(result);
                 }
             }
 
@@ -807,6 +873,8 @@ public class FirebaseDb {
                     result.put("memoryStage", verse.getMemoryStage());
                     result.put("memorySubStage", verse.getMemorySubStage());
                     result.put("versionCode", verse.getVersionCode());
+                    result.put("viewedCount", verse.getViewedCount());
+                    result.put("correctCount", verse.getCorrectCount());
                     FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).child(mPrefs.getUserId(context)).
                             child(Constants.FIREBASE_CHILD_FORGOTTEN_VERSES).child(data.getKey()).updateChildren(result);
                 }

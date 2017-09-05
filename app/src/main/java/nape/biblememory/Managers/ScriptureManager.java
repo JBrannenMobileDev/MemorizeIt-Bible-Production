@@ -22,6 +22,10 @@ public class ScriptureManager {
         vOperations.updateVerse(scripture);
     }
 
+    public void updateScriptureStatus(ScriptureData locationToUpdate, ScriptureData valueToSave) {
+        vOperations.updateVerse(locationToUpdate, valueToSave);
+    }
+
     public void updateForgottenScriptureStatus(ScriptureData scripture) {
         vOperations.updateForgottenVerse(scripture);
     }

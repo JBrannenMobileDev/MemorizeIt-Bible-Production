@@ -411,6 +411,17 @@ public class VerseOperations {
                 new String[] { String.valueOf(scripture.getVerseLocation()) });
     }
 
+    public Integer updateVerse(ScriptureData locationToUpdate, ScriptureData valueToSave) {
+        ContentValues values = new ContentValues();
+        values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_MEMORY_STAGE, valueToSave.getMemoryStage());
+        values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_MEMORY_SUB_STAGE, valueToSave.getMemorySubStage());
+
+        // updating row
+        return scriptureDb_writable.update(MemoryListContract.LearningSetEntry.TABLE_NAME, values,
+                MemoryListContract.LearningSetEntry.COLUMN_NAME_ENTRY_ID + " = ?",
+                new String[] { String.valueOf(locationToUpdate.getVerseLocation()) });
+    }
+
     public Integer updateForgottenVerse(ScriptureData scripture) {
         ContentValues values = new ContentValues();
         values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_MEMORY_STAGE, scripture.getMemoryStage());

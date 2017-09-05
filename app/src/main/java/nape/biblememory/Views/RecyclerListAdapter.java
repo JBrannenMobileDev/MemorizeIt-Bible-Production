@@ -11,8 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,19 +30,22 @@ import nape.biblememory.R;
 public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemViewHolder>
         implements ItemTouchHelperAdapter {
 
-    private final List<ScriptureData> dataset;
+    private final List<ScriptureData> dataset = new ArrayList<>();
     private BaseCallback<List<ScriptureData>> dataChangedCallback;
+    private BaseCallback<ScriptureData> itemSelectedCallback;
     private final OnStartDragListener mDragStartListener;
     private static Context context;
     private VersesFragment fragment;
 
     public RecyclerListAdapter(List<ScriptureData> dataset, Context context, OnStartDragListener dragStartListener,
-                               VersesFragment fragment, BaseCallback<List<ScriptureData>> dataChangedCallback) {
+                               VersesFragment fragment, BaseCallback<List<ScriptureData>> dataChangedCallback,
+                               BaseCallback<ScriptureData> itemSelectedCallback) {
         mDragStartListener = dragStartListener;
-        this.dataset = dataset;
+        this.dataset.addAll(dataset);
         this.context = context;
         this.fragment = fragment;
         this.dataChangedCallback = dataChangedCallback;
+        this.itemSelectedCallback = itemSelectedCallback;
     }
 
 
@@ -92,16 +97,26 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         holder.verseLocation.setText(dataset.get(position).getVerseLocation());
         if(position > 2){
             holder.quizIcon.setVisibility(View.GONE);
+            holder.progressView.setVisibility(View.GONE);
             holder.itemLayout.setBackgroundResource(R.color.greyBgLight);
             holder.verseLocation.setTextColor(context.getResources().getColor(R.color.greyBgDark));
             holder.verse.setTextColor(context.getResources().getColor(R.color.greyBgDark));
         }else{
+            holder.progressView.setVisibility(View.VISIBLE);
+            holder.progressView.setText(String.valueOf(calculateProgress(dataset.get(position).getMemoryStage(), dataset.get(position).getMemorySubStage())) + "%");
             holder.quizIcon.setVisibility(View.VISIBLE);
             holder.quizIcon.setColorFilter(Color.argb(255, 255, 213, 1));
             holder.itemLayout.setBackgroundResource(R.color.colorWhite);
             holder.verseLocation.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
             holder.verse.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
         }
+
+        holder.itemLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemSelectedCallback.onResponse(dataset.get(position));
+            }
+        });
 
         holder.quizIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +166,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         public final ImageView quizIcon;
         public final FrameLayout itemLayout;
         public int mostRecentActionState;
+        public final TextView progressView;
 
         public ItemViewHolder(final View itemView) {
             super(itemView);
@@ -159,6 +175,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
             handleView = (ImageView) itemView.findViewById(R.id.sampleImage);
             quizIcon = (ImageView) itemView.findViewById(R.id.quiz_icon);
             itemLayout = (FrameLayout) itemView.findViewById(R.id.my_verses_layout);
+            progressView = (TextView) itemView.findViewById(R.id.progress_tv);
         }
 
         @Override
@@ -192,8 +209,8 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
             if (mostRecentActionState != ItemTouchHelper.ACTION_STATE_SWIPE) {
                 RecyclerListAdapter.this.notifyDataSetChanged();
-                RecyclerListAdapter.this.dataChangedCallback.onResponse(dataset);
             }
+            RecyclerListAdapter.this.dataChangedCallback.onResponse(dataset);
         }
     }
 }

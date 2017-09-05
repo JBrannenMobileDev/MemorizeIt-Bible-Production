@@ -139,7 +139,6 @@ public class VerseSelectedDialogFragment extends DialogFragment {
                 if(!verseAlreadyExists) {
                     if (addVerseToInProgress) {
                         DataStore.getInstance().saveQuizVerse(verse, getActivity().getApplicationContext());
-                        dialogActionsListener.verseAddedToQuizVerses();
                     } else {
                         DataStore.getInstance().saveUpcomingVerse(verse, getActivity().getApplicationContext());
                     }
@@ -243,6 +242,5 @@ public class VerseSelectedDialogFragment extends DialogFragment {
     public interface addVerseDialogActions {
         void onVerseAdded(boolean comingFromNewVerses);
         void includeNextVerseSelected(String verseLocation, BaseCallback<Verse> callback, String selectedVerseNum);
-        void verseAddedToQuizVerses();
     }
 }

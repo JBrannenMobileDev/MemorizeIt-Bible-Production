@@ -397,6 +397,14 @@ public class DataStore {
         FirebaseDb.getInstance().updateQuizVerse(verse, applcationContext);
     }
 
+    public void updateQuizVerse(ScriptureData locationToUpdate, ScriptureData valueToSave, Context applcationContext){
+        if(scriptureManager == null){
+            scriptureManager = new ScriptureManager(applcationContext);
+        }
+        scriptureManager.updateScriptureStatus(locationToUpdate, valueToSave);
+        FirebaseDb.getInstance().updateQuizVerse(locationToUpdate, valueToSave, applcationContext);
+    }
+
     public void moveUpcomingVerseToQuiz(final Context context){
         BaseCallback<List<ScriptureData>> upcomingCallback = new BaseCallback<List<ScriptureData>>() {
             @Override
@@ -676,5 +684,13 @@ public class DataStore {
 
     public void deleteFriendBlessing(String uidToDelete, Context applicationContext) {
         FirebaseDb.getInstance().deleteBlessingNotification(uidToDelete, applicationContext);
+    }
+
+    public void updateUpcomingVerse(ScriptureData locationToUpdate, ScriptureData valueToSave, Context applicationContext) {
+        if(scriptureManager == null){
+            scriptureManager = new ScriptureManager(applicationContext);
+        }
+        scriptureManager.updateScriptureStatus(locationToUpdate, valueToSave);
+        FirebaseDb.getInstance().updateUpcomingVerse(locationToUpdate, valueToSave, applicationContext);
     }
 }

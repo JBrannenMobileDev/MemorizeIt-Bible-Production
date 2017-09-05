@@ -77,7 +77,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.SocialActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
             android:parentActivityName=".Activities.MainActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -90,12 +89,14 @@
         <activity
             android:name=".Activities.FriendDetailsActivity"
             android:parentActivityName=".Activities.SocialActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".Activities.NotificationActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".Activities.SocialActivity"/>
-
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.NotificationActivity"
+            android:parentActivityName=".Activities.SocialActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activities.VerseDetailsActivity"
+            android:parentActivityName=".Activities.MainActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
