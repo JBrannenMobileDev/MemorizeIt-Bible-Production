@@ -1,6 +1,5 @@
 package nape.biblememory.Fragments;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -19,16 +18,12 @@ import java.util.List;
 
 import nape.biblememory.Adapters.RecyclerViewAdapterMyVerses;
 import nape.biblememory.Activities.BaseCallback;
-import nape.biblememory.Fragments.Dialogs.RemoveVerseFromInProgressAlertDialog;
-import nape.biblememory.Fragments.Dialogs.RemoveVerseFromNewVersesAlertDialog;
-import nape.biblememory.Managers.ScriptureManager;
+import nape.biblememory.Fragments.Dialogs.DeleteVerseAlertDialog;
 import nape.biblememory.Models.ScriptureData;
 import nape.biblememory.Presenters.LearningSetFragmentPresenter;
 import nape.biblememory.Presenters.LearningSetFragmentPresenterImp;
 import nape.biblememory.UserPreferences;
 import nape.biblememory.data_store.DataStore;
-import nape.biblememory.data_store.FirebaseDb.FirebaseDb;
-import nape.biblememory.data_store.Sqlite.MemoryListContract;
 import nape.biblememory.Views.SlidingTabLayout;
 import nape.biblememory.R;
 
@@ -88,7 +83,7 @@ public class LearningSetFragment extends Fragment implements LearningSetFragment
             public void onResponse(Object response) {
                 Bundle bundle = new Bundle();
                 bundle.putString("verse_location", (String)response);
-                RemoveVerseFromNewVersesAlertDialog removeAlert = new RemoveVerseFromNewVersesAlertDialog();
+                DeleteVerseAlertDialog removeAlert = new DeleteVerseAlertDialog();
                 removeAlert.setArguments(bundle);
                 removeAlert.show(getChildFragmentManager(), null);
             }

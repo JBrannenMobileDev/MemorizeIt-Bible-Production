@@ -7,14 +7,14 @@ import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import nape.biblememory.Fragments.Dialogs.DeleteVerseAlertDialog;
 import nape.biblememory.Models.ScriptureData;
 import nape.biblememory.R;
 
-public class VerseDetailsActivity extends AppCompatActivity {
+public class VerseDetailsActivity extends AppCompatActivity implements DeleteVerseAlertDialog.YesSelected{
 
     @BindView(R.id.verse_details_verse)TextView verseText;
     @BindView(R.id.verse_details_last_seen_tv)TextView lastSeen;
@@ -49,7 +49,11 @@ public class VerseDetailsActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_delete_verse) {
-
+            DeleteVerseAlertDialog deleteDialog = new DeleteVerseAlertDialog();
+            Bundle bundle = new Bundle();
+            bundle.putString("verse_location", verse.getVerseLocation());
+            deleteDialog.setArguments(bundle);
+            deleteDialog.show(getSupportFragmentManager(), null);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -59,8 +63,8 @@ public class VerseDetailsActivity extends AppCompatActivity {
         try {
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("text/plain");
-            i.putExtra(Intent.EXTRA_SUBJECT, verse.getVerseLocation());
-            String sAux = "\n" +verse.getVerseLocation() + "  " + verse.getVerse() + "Memorize It - Bible" + "\n\n";
+            i.putExtra(Intent.EXTRA_SUBJECT, verse.getVerseLocation() + "  " + "Memorize It - Bible");
+            String sAux = "\n" +verse.getVerseLocation() + "  " + verse.getVerse() + "\n\n";
             sAux = sAux + "Check out this bible verse memory app!  I am using it to memorize this verse.\n\n";
             sAux = sAux + "https://play.google.com/store/apps/details?id=nape.biblememory&hl=en \n\n";
             i.putExtra(Intent.EXTRA_TEXT, sAux);
@@ -116,5 +120,13 @@ public class VerseDetailsActivity extends AppCompatActivity {
         }
         progress = (progress/20)*100;
         return (int)progress;
+    }
+
+    @Override
+    public void onDeleteVerse(String verseLocation) {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("verse",verse);
+        setResult(1,returnIntent);
+        finish();
     }
 }

@@ -1,6 +1,7 @@
 package nape.biblememory.Fragments;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -42,6 +43,7 @@ public class VersesFragment extends Fragment implements OnStartDragListener, Ver
     private BaseCallback<List<ScriptureData>> orderChangedCallback;
     private BaseCallback<ScriptureData> itemSelectedCallback;
     private View view;
+    private RecyclerListAdapter adapter;
 
     public VersesFragment() {
     }
@@ -75,7 +77,7 @@ public class VersesFragment extends Fragment implements OnStartDragListener, Ver
             public void onResponse(ScriptureData verse) {
                 Intent intent = new Intent(getActivity(), VerseDetailsActivity.class);
                 intent.putExtra("verse", verse);
-                startActivity(intent);
+                startActivityForResult(intent, 2);
             }
 
             @Override
@@ -83,6 +85,10 @@ public class VersesFragment extends Fragment implements OnStartDragListener, Ver
 
             }
         };
+    }
+
+    public void onDeleteVerse(ScriptureData verse){
+        adapter.removeItem(verse);
     }
 
     @Override
@@ -103,7 +109,7 @@ public class VersesFragment extends Fragment implements OnStartDragListener, Ver
 
     @Override
     public void onReceivedRecyclerData(List<ScriptureData> myVerses) {
-        RecyclerListAdapter adapter = new RecyclerListAdapter(myVerses, getActivity(), this, this,
+        adapter = new RecyclerListAdapter(myVerses, getActivity(), this, this,
                 orderChangedCallback, itemSelectedCallback);
         RecyclerView recyclerView = (RecyclerView)view;
         recyclerView.setHasFixedSize(true);

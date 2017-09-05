@@ -7,6 +7,7 @@ import nape.biblememory.Fragments.MyVersesFragment;
 import nape.biblememory.Fragments.LearningSetFragment;
 import nape.biblememory.Fragments.MemorizedSetFragment;
 import nape.biblememory.Fragments.VersesFragment;
+import nape.biblememory.Models.ScriptureData;
 
 /**
  * Created by hp1 on 21-01-2015.
@@ -63,6 +64,12 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public void refreshrecyclerViews(){
         if(memorizedSetFragment != null && memorizedSetFragment.isVisible()){
             memorizedSetFragment.RefreshRecyclerView();
+        }
+    }
+
+    public void onVerseDeleted(ScriptureData verse) {
+        if(versesFragment != null){
+            versesFragment.onDeleteVerse(verse);
         }
     }
 }

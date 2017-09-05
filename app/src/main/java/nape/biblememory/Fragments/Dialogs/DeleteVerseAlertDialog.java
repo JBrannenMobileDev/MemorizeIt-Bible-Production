@@ -11,12 +11,12 @@ import android.support.v7.app.AlertDialog;
  * Created by jbrannen on 6/14/17.
  */
 
-public class RemoveVerseFromNewVersesAlertDialog extends DialogFragment {
+public class DeleteVerseAlertDialog extends DialogFragment {
 
     private YesSelected mListener;
     private String verseLocation;
 
-    public RemoveVerseFromNewVersesAlertDialog(){}
+    public DeleteVerseAlertDialog(){}
 
     @Override
     public void onAttach(Activity activity){
@@ -41,7 +41,7 @@ public class RemoveVerseFromNewVersesAlertDialog extends DialogFragment {
         builder.setTitle("Are you sure?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                mListener.onRemoveFromNewSelected(verseLocation);
+                mListener.onDeleteVerse(verseLocation);
                 dismiss();
             }
         });
@@ -55,6 +55,6 @@ public class RemoveVerseFromNewVersesAlertDialog extends DialogFragment {
     }
 
     public interface YesSelected {
-        void onRemoveFromNewSelected(String verseLocation);
+        void onDeleteVerse(String verseLocation);
     }
 }

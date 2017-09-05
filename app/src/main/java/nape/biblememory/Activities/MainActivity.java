@@ -41,7 +41,7 @@ import nape.biblememory.Fragments.Dialogs.InProgressEmptyAlertDialog;
 import nape.biblememory.Fragments.Dialogs.NoInternetAlertDialog;
 import nape.biblememory.Fragments.Dialogs.RebuildingDbErrorAlertDialog;
 import nape.biblememory.Fragments.Dialogs.RemoveVerseFromInProgressAlertDialog;
-import nape.biblememory.Fragments.Dialogs.RemoveVerseFromNewVersesAlertDialog;
+import nape.biblememory.Fragments.Dialogs.DeleteVerseAlertDialog;
 import nape.biblememory.Fragments.Dialogs.SelectVersionAlertDialog;
 import nape.biblememory.Fragments.LearningSetFragment;
 import nape.biblememory.Fragments.MyVersesFragment;
@@ -63,7 +63,7 @@ import tourguide.tourguide.TourGuide;
 public class MainActivity extends ActionBarActivity implements NavigationView.OnNavigationItemSelectedListener,
         MyVersesFragment.OnAddVerseSelectedListener, VerseSelection.FragmentToActivity, BooksFragment.BooksFragmentListener,
         ChapterFragment.ChaptersFragmentListener, VerseFragment.OnVerseSelected, LearningSetFragment.OnAddVerseSelectedListener, VerseSelectedDialogFragment.addVerseDialogActions,
-        RemoveVerseFromInProgressAlertDialog.YesSelected, RemoveVerseFromNewVersesAlertDialog.YesSelected, SelectVersionAlertDialog.VersionSelected{
+        RemoveVerseFromInProgressAlertDialog.YesSelected, DeleteVerseAlertDialog.YesSelected, SelectVersionAlertDialog.VersionSelected{
 
     private ViewPager pagerMain;
     private ViewPagerAdapter adapterMain;
@@ -145,17 +145,17 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         });
 
 
-        final TourGuide mTourGuideHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
-                .setPointer(new Pointer())
-                .setToolTip(new ToolTip().setTitle("Welcome!").setDescription("Click the plus button to add your first verse."))
-                .setOverlay(new Overlay())
-                .playOn(addVerseFab);
+//        final TourGuide mTourGuideHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+//                .setPointer(new Pointer())
+//                .setToolTip(new ToolTip().setTitle("Welcome!").setDescription("Click the plus button to add your first verse."))
+//                .setOverlay(new Overlay())
+//                .playOn(addVerseFab);
 
         addVerseFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addVerseSelected();
-                mTourGuideHandler.cleanUp();
+//                mTourGuideHandler.cleanUp();
             }
         });
 
@@ -545,8 +545,11 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == 1) {
+        if(resultCode == 2) {
             finish();
+        }
+        if(resultCode == 1){
+            adapterMain.onVerseDeleted((ScriptureData)data.getParcelableExtra("verse"));
         }
     }
 
@@ -837,7 +840,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     }
 
     @Override
-    public void onRemoveFromNewSelected(String verseLocation) {
+    public void onDeleteVerse(String verseLocation) {
         ScriptureData verse = new ScriptureData("", verseLocation);
         DataStore.getInstance().deleteUpcomingVerse(verse, getApplicationContext());
         DataStore.getInstance().deleteQuizVerse(verse, getApplicationContext());

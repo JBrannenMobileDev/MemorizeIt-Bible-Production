@@ -154,6 +154,16 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         return dataset.size();
     }
 
+    public void removeItem(ScriptureData result) {
+        for(int i = 0; i < dataset.size(); i++){
+            if(dataset.get(i).getVerseLocation().equalsIgnoreCase(result.getVerseLocation())){
+                dataset.remove(dataset.get(i));
+                notifyItemRemoved(i);
+                RecyclerListAdapter.this.dataChangedCallback.onResponse(dataset);
+            }
+        }
+    }
+
     /**
      * Simple example of a view holder that implements {@link ItemTouchHelperViewHolder} and has a
      * "handle" view that initiates a drag event when touched.
