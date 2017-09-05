@@ -693,4 +693,12 @@ public class DataStore {
         scriptureManager.updateScriptureStatus(locationToUpdate, valueToSave);
         FirebaseDb.getInstance().updateUpcomingVerse(locationToUpdate, valueToSave, applicationContext);
     }
+
+    public void addVerseMemorized(ScriptureData verse){
+        FirebaseDb.getInstance().addVerseMemorized(verse);
+    }
+
+    public void getAllMemorizedVerses(final BaseCallback<List<ScriptureData>> allMemorizedCallback){
+        FirebaseDb.getInstance().getAllMemorizedVerses(allMemorizedCallback);
+    }
 }

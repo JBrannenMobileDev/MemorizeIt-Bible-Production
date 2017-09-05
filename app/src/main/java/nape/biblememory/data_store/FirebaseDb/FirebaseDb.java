@@ -38,6 +38,7 @@ public class FirebaseDb {
     private DatabaseReference forgottenVersesReference;
     private DatabaseReference userPrefsReference;
     private DatabaseReference blessingReference;
+    private DatabaseReference allMemorizedReference;
 
     private UserPreferences mPrefs;
 
@@ -473,6 +474,31 @@ public class FirebaseDb {
         userPrefsReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).child(mPrefs.getUserId(applicationContext)).
                 child(Constants.FIREBASE_CHILD_USER_PREFS);
         userPrefsReference.setValue(mPrefsModel);
+    }
+
+    public void addVerseMemorized(ScriptureData verse){
+        upcomingVersesReference = FirebaseDatabase.getInstance().getReference().child(Constants.ALL_MEMORIZED_VERSES);
+        upcomingVersesReference.push().setValue(verse);
+    }
+
+    public void getAllMemorizedVerses(final BaseCallback<List<ScriptureData>> allMemorizedCallback){
+        final List<ScriptureData> memorizedList = new ArrayList<>();
+        allMemorizedReference = FirebaseDatabase.getInstance().getReference().child(Constants.ALL_MEMORIZED_VERSES);
+        allMemorizedReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot data : dataSnapshot.getChildren()) {
+                    ScriptureData verse = data.getValue(ScriptureData.class);
+                    memorizedList.add(verse);
+                }
+                allMemorizedCallback.onResponse(memorizedList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                memorizedList.add(new ScriptureData());
+            }
+        });
     }
 
     public void saveUpcomingVerseToFirebase(ScriptureData verse, Context context){

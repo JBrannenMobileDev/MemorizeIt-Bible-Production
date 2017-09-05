@@ -1,10 +1,12 @@
 package nape.biblememory.Views;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,7 +24,16 @@ import java.util.List;
 import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.Fragments.VersesFragment;
 import nape.biblememory.Models.ScriptureData;
+import nape.biblememory.Models.UserPreferencesModel;
 import nape.biblememory.R;
+import nape.biblememory.UserPreferences;
+import nape.biblememory.data_store.DataStore;
+import tourguide.tourguide.ChainTourGuide;
+import tourguide.tourguide.Overlay;
+import tourguide.tourguide.Pointer;
+import tourguide.tourguide.Sequence;
+import tourguide.tourguide.ToolTip;
+import tourguide.tourguide.TourGuide;
 
 /**
  * Created by jbrannen on 9/2/17.
@@ -34,10 +46,12 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     private BaseCallback<List<ScriptureData>> dataChangedCallback;
     private BaseCallback<ScriptureData> itemSelectedCallback;
     private final OnStartDragListener mDragStartListener;
-    private static Context context;
+    private static Activity context;
     private VersesFragment fragment;
+    private UserPreferences mPrefs;
+    private ChainTourGuide mTourGuideHandler;
 
-    public RecyclerListAdapter(List<ScriptureData> dataset, Context context, OnStartDragListener dragStartListener,
+    public RecyclerListAdapter(List<ScriptureData> dataset, Activity context, OnStartDragListener dragStartListener,
                                VersesFragment fragment, BaseCallback<List<ScriptureData>> dataChangedCallback,
                                BaseCallback<ScriptureData> itemSelectedCallback) {
         mDragStartListener = dragStartListener;
@@ -46,6 +60,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         this.fragment = fragment;
         this.dataChangedCallback = dataChangedCallback;
         this.itemSelectedCallback = itemSelectedCallback;
+        mPrefs = new UserPreferences();
     }
 
 
@@ -118,6 +133,43 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
             }
         });
 
+        if(mPrefs.isTourStep1Complete(context) && !mPrefs.isTourStep2Complete(context)) {
+            ChainTourGuide step1 = ChainTourGuide.init(context)
+                    .setToolTip(new ToolTip().setTitle("Tip 1").setDescription("All added verses will appear in this list.").
+                            setGravity(Gravity.BOTTOM).setBackgroundColor(context.getResources().getColor(R.color.colorProgressBg)))
+                    .playLater(holder.itemLayout);
+
+            ChainTourGuide step2 = ChainTourGuide.init(context).with(TourGuide.Technique.Click)
+                    .setToolTip(new ToolTip().setTitle("Tip 2").setDescription("The top 3 verses in the list will appear in the quiz.").
+                            setGravity(Gravity.BOTTOM).setBackgroundColor(context.getResources().getColor(R.color.colorProgressBg)))
+                    .playLater(holder.itemLayout);
+
+            ChainTourGuide step3 = ChainTourGuide.init(context).with(TourGuide.Technique.Click)
+                    .setToolTip(new ToolTip().setTitle("Tip 3").setDescription("To re-arrange the verses in this list you can long-click a verse.").
+                            setGravity(Gravity.BOTTOM).setBackgroundColor(context.getResources().getColor(R.color.colorProgressBg)))
+                    .playLater(holder.itemLayout);
+
+            Sequence sequence = new Sequence.SequenceBuilder()
+                    .add(step1, step2, step3)
+                    .setDefaultOverlay(new Overlay()
+                            .setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mTourGuideHandler.next();
+                                    mPrefs.setTourStep2Complete(true, context);
+                                    UserPreferencesModel model = new UserPreferencesModel();
+                                    model.initAllData(context, mPrefs);
+                                    DataStore.getInstance().saveUserPrefs(model, context);
+                                }
+                            })
+                    )
+                    .setDefaultPointer(null)
+                    .setContinueMethod(Sequence.ContinueMethod.OverlayListener)
+                    .build();
+
+            mTourGuideHandler = ChainTourGuide.init(context).playInSequence(sequence);
+        }
+
         holder.quizIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,6 +214,19 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
                 RecyclerListAdapter.this.dataChangedCallback.onResponse(dataset);
             }
         }
+    }
+
+    public void onVerseAdded(ScriptureData verse) {
+        if(verse != null) {
+            dataset.add(verse);
+            notifyItemInserted(dataset.size() - 1);
+        }else{
+            notifyDataSetChanged();
+        }
+    }
+
+    public void refreshDataSet() {
+        notifyDataSetChanged();
     }
 
     /**

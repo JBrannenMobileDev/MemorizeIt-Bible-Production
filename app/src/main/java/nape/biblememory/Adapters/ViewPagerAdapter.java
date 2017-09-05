@@ -65,11 +65,20 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         if(memorizedSetFragment != null && memorizedSetFragment.isVisible()){
             memorizedSetFragment.RefreshRecyclerView();
         }
+        if (versesFragment != null) {
+            versesFragment.onVerseAdded(null);
+        }
     }
 
     public void onVerseDeleted(ScriptureData verse) {
         if(versesFragment != null){
             versesFragment.onDeleteVerse(verse);
+        }
+    }
+
+    public void onVerseAdded(ScriptureData verse){
+        if (versesFragment != null) {
+            versesFragment.onVerseAdded(verse);
         }
     }
 }

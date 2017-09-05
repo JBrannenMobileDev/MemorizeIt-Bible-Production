@@ -23,6 +23,8 @@ public class UserPreferences{
 
     public void setPrefs(UserPreferencesModel response, Context context) {
         if(response != null) {
+            setTourStep1Complete(response.isTourStep1Complete(), context);
+            setTourStep2Complete(response.isTourStep2Complete(), context);
             setQuizViewCount(response.getQuizViewCount(), context);
             setQuizReviewIndex(response.getQuizReviewIndex(), context);
             setSelectedVersion(response.getSelectedBibleVersion(), context);
@@ -65,14 +67,34 @@ public class UserPreferences{
         }
     }
 
-    public static void setFirstTimeUnlock(boolean firstTime, Context context){
+    public static void setFirstTimeUser(boolean firstTime, Context context){
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
         editor.putBoolean(UserPreferenceConstants.FIRST_TIME_UNLOCK, firstTime);
         editor.commit();
     }
 
-    public static boolean isFirstTimeUnlock(Context context){
+    public static boolean isFirstTimeUser(Context context){
         return getSharedPreferences(context).getBoolean(UserPreferenceConstants.FIRST_TIME_UNLOCK , true);
+    }
+
+    public static void setTourStep1Complete(boolean firstTime, Context context){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putBoolean(UserPreferenceConstants.TOUR_STEP_1, firstTime);
+        editor.commit();
+    }
+
+    public static boolean isTourStep1Complete(Context context){
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.TOUR_STEP_1 , false);
+    }
+
+    public static void setTourStep2Complete(boolean firstTime, Context context){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putBoolean(UserPreferenceConstants.TOUR_STEP_2, firstTime);
+        editor.commit();
+    }
+
+    public static boolean isTourStep2Complete(Context context){
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.TOUR_STEP_2 , false);
     }
 
     public void setUnlockViewCount(int count, Context context){

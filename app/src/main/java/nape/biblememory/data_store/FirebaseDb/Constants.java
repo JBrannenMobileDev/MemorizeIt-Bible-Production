@@ -16,4 +16,5 @@ public final class Constants {
     public static final String FRIEND_REQUESTS = "friend_requests";
     public static final String PENDING_REQUESTS = "pending_requests";
     public static final String BLESSINGS = "blessings";
+    public static final String ALL_MEMORIZED_VERSES = "all_memorized_verses";
 }

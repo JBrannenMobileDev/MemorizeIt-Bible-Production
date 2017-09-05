@@ -26,6 +26,8 @@ public class UserPreferencesModel {
     private boolean showQuizTimeSunday;
     private boolean migratedToFirebase;
     private boolean rebuildError;
+    private boolean tourStep1Complete;
+    private boolean tourStep2Complete;
     private long mondayStartTime;
     private long mondayEndTime;
     private long tuesdayStartTime;
@@ -48,6 +50,8 @@ public class UserPreferencesModel {
     }
 
     public void initAllData(Context context, UserPreferences mPrefs){
+        tourStep1Complete = mPrefs.isTourStep1Complete(context);
+        tourStep2Complete = mPrefs.isTourStep2Complete(context);
         quizViewCount = mPrefs.getQuizViewCount(context);
         quizReviewIndex = mPrefs.getQuizReviewIndex(context);
         selectedBibleVersion = mPrefs.getSelectedVersion(context);
@@ -82,6 +86,22 @@ public class UserPreferencesModel {
         saturdayEndTime = mPrefs.getSettingsEndTimeSaturday(context);
         sundayStartTime = mPrefs.getSettingsStartTimeSunday(context);
         sundayEndTime = mPrefs.getSettingsEndTimeSunday(context);
+    }
+
+    public boolean isTourStep1Complete() {
+        return tourStep1Complete;
+    }
+
+    public void setTourStep1Complete(boolean tourStep1Complete) {
+        this.tourStep1Complete = tourStep1Complete;
+    }
+
+    public boolean isTourStep2Complete() {
+        return tourStep2Complete;
+    }
+
+    public void setTourStep2Complete(boolean tourStep2Complete) {
+        this.tourStep2Complete = tourStep2Complete;
     }
 
     public String getSelectedBibleVersion() {

@@ -48,6 +48,13 @@ public class VersesFragment extends Fragment implements OnStartDragListener, Ver
     public VersesFragment() {
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        presenter.fetchData();
+    }
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -90,12 +97,14 @@ public class VersesFragment extends Fragment implements OnStartDragListener, Ver
     public void onDeleteVerse(ScriptureData verse){
         adapter.removeItem(verse);
     }
+    public void onVerseAdded(ScriptureData verse){
+        adapter.onVerseAdded(verse);
+    }
 
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
-        presenter.fetchData();
     }
 
     @Override

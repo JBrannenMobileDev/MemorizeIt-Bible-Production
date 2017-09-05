@@ -62,4 +62,6 @@ public class UserPreferenceConstants {
     public static final String REVIEW_VERSE_INDEX = "review_verse_index";
     public static final String SELECTED_BIBLE_VERSION_TEMP = "selected_version_temp";
     public static final String SNACKBAR_VISIBLE = "snackbar_visible";
+    public static final String TOUR_STEP_1 = "tour_step_1";
+    public static final String TOUR_STEP_2 = "tour_step_2";
 }

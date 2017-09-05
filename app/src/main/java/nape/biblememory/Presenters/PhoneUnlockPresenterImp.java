@@ -223,6 +223,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         setYesClickedVerseText();
         int stage = scripture.getMemoryStage();
         int subStage = scripture.getMemorySubStage();
+        boolean verseMemorized = false;
 
         if(!hintClicked) {
             if(reviewVerse) {
@@ -255,11 +256,13 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                         moveForgottenVerseToMemorizedList();
                     }else if(!isReviewMode){
                         moveVerseToRememberedList();
+                        DataStore.getInstance().addVerseMemorized(scripture);
+                        verseMemorized = true;
                     }
                     if (vOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() < 1) {
                         memorizedAndLearningListIsEmpty = true;
                     }
-                    view.showMemorizedAlert(memorizedAndLearningListIsEmpty && !moreVerses);
+                    view.showMemorizedAlert(vOperations.getVerseSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size() < 1 && verseMemorized);
                 } else {
                     scripture.setMemorySubStage(subStage + 1);
                     DataStore.getInstance().updateQuizVerse(scripture, context);

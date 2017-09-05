@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +21,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,6 +52,7 @@ import nape.biblememory.Fragments.VerseSelection;
 import nape.biblememory.Managers.NetworkManager;
 import nape.biblememory.Models.ScriptureData;
 import nape.biblememory.Models.User;
+import nape.biblememory.Models.UserPreferencesModel;
 import nape.biblememory.data_store.DataStore;
 import nape.biblememory.UserPreferences;
 import nape.biblememory.Views.SlidingTabLayout;
@@ -91,6 +94,8 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     private BaseCallback<List<Verse>> selectedVerseCallback;
     private Context context;
     private Snackbar snackbar;
+
+    private TourGuide mTourGuideHandler;
 
 
 
@@ -144,18 +149,13 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             }
         });
 
-
-//        final TourGuide mTourGuideHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
-//                .setPointer(new Pointer())
-//                .setToolTip(new ToolTip().setTitle("Welcome!").setDescription("Click the plus button to add your first verse."))
-//                .setOverlay(new Overlay())
-//                .playOn(addVerseFab);
-
         addVerseFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addVerseSelected();
-//                mTourGuideHandler.cleanUp();
+                if(mTourGuideHandler != null) {
+                    mTourGuideHandler.cleanUp();
+                }
             }
         });
 
@@ -163,145 +163,157 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             new RebuildingDbErrorAlertDialog().show(getSupportFragmentManager(), null);
         }
 
-        BaseCallback<List<User>> friendRequestCallback = new BaseCallback<List<User>>() {
-            @Override
-            public void onResponse(List<User> response) {
-                if(response.size() > 0) {
-                    navigationView.getMenu()
-                            .findItem(R.id.nav_social)
-                            .getIcon()
-                            .setColorFilter(getResources().getColor(R.color.colorProgressBg), PorterDuff.Mode.SRC_IN);
 
-                    snackbar = Snackbar
-                            .make(coordinatorLayout, String.valueOf(response.size()) + " Friend request", Snackbar.LENGTH_INDEFINITE).
-                                    setAction("VIEW", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    if(NetworkManager.getInstance().isInternet(getApplicationContext())) {
-                                        Intent intent = new Intent(getApplicationContext(), SocialActivity.class);
-                                        intent.putExtra("coming_from_snackbar", true);
-                                        startActivity(intent);
-                                    }else{
-                                        new NoInternetAlertDialog().show(getSupportFragmentManager(), null);
-                                    }
+        if(!mPrefs.isFirstTimeUser(getApplicationContext())) {
+            BaseCallback<List<User>> friendRequestCallback = new BaseCallback<List<User>>() {
+                @Override
+                public void onResponse(List<User> response) {
+                    if (response.size() > 0) {
+                        navigationView.getMenu()
+                                .findItem(R.id.nav_social)
+                                .getIcon()
+                                .setColorFilter(getResources().getColor(R.color.colorProgressBg), PorterDuff.Mode.SRC_IN);
+
+                        snackbar = Snackbar
+                                .make(coordinatorLayout, String.valueOf(response.size()) + " Friend request", Snackbar.LENGTH_INDEFINITE).
+                                        setAction("VIEW", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                if (NetworkManager.getInstance().isInternet(getApplicationContext())) {
+                                                    Intent intent = new Intent(getApplicationContext(), SocialActivity.class);
+                                                    intent.putExtra("coming_from_snackbar", true);
+                                                    startActivity(intent);
+                                                } else {
+                                                    new NoInternetAlertDialog().show(getSupportFragmentManager(), null);
+                                                }
+                                            }
+                                        });
+
+                        snackbar.addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                            @Override
+                            public void onDismissed(Snackbar transientBottomBar, int event) {
+                                startQuizFabFrame.animate().translationY(0);
+                                mPrefs.setSnackbarVisible(false, getApplicationContext());
+                                super.onDismissed(transientBottomBar, event);
+                            }
+
+                            @Override
+                            public void onShown(Snackbar transientBottomBar) {
+                                float distance = TypedValue.applyDimension(
+                                        TypedValue.COMPLEX_UNIT_DIP, 40,
+                                        getResources().getDisplayMetrics()
+                                );
+                                startQuizFabFrame.animate().translationY(-distance);
+                                mPrefs.setSnackbarVisible(true, getApplicationContext());
+                                super.onShown(transientBottomBar);
+                            }
+                        });
+
+
+                        // Changing message text color
+                        snackbar.setActionTextColor(getResources().getColor(R.color.colorGreenText));
+                        snackbar.getView().setBackgroundColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
+                        snackbar.show();
+
+                        BaseCallback<List<User>> friendsThatBlessedCallbackForNavDrawer = new BaseCallback<List<User>>() {
+                            @Override
+                            public void onResponse(List<User> response) {
+                                if (response != null && response.size() > 0) {
+                                    navigationView.getMenu()
+                                            .findItem(R.id.nav_social)
+                                            .getIcon()
+                                            .setColorFilter(getResources().getColor(R.color.colorGreenText), PorterDuff.Mode.SRC_IN);
+                                } else {
+                                    navigationView.getMenu()
+                                            .findItem(R.id.nav_social)
+                                            .getIcon()
+                                            .setColorFilter(getResources().getColor(R.color.greyIcon), PorterDuff.Mode.SRC_IN);
                                 }
-                            });
-
-                    snackbar.addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                        @Override
-                        public void onDismissed(Snackbar transientBottomBar, int event) {
-                            startQuizFabFrame.animate().translationY(0);
-                            mPrefs.setSnackbarVisible(false, getApplicationContext());
-                            super.onDismissed(transientBottomBar, event);
-                        }
-
-                        @Override
-                        public void onShown(Snackbar transientBottomBar) {
-                            float distance = TypedValue.applyDimension(
-                                    TypedValue.COMPLEX_UNIT_DIP, 40,
-                                    getResources().getDisplayMetrics()
-                            );
-                            startQuizFabFrame.animate().translationY(-distance);
-                            mPrefs.setSnackbarVisible(true, getApplicationContext());
-                            super.onShown(transientBottomBar);
-                        }
-                    });
-
-
-                    // Changing message text color
-                    snackbar.setActionTextColor(getResources().getColor(R.color.colorGreenText));
-                    snackbar.getView().setBackgroundColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
-                    snackbar.show();
-
-                    BaseCallback<List<User>> friendsThatBlessedCallbackForNavDrawer = new BaseCallback<List<User>>() {
-                        @Override
-                        public void onResponse(List<User> response) {
-                            if(response != null && response.size() > 0) {
-                                navigationView.getMenu()
-                                        .findItem(R.id.nav_social)
-                                        .getIcon()
-                                        .setColorFilter(getResources().getColor(R.color.colorGreenText), PorterDuff.Mode.SRC_IN);
-                            } else {
-                                navigationView.getMenu()
-                                        .findItem(R.id.nav_social)
-                                        .getIcon()
-                                        .setColorFilter(getResources().getColor(R.color.greyIcon), PorterDuff.Mode.SRC_IN);
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Exception e) {
+                            @Override
+                            public void onFailure(Exception e) {
 
-                        }
-                    };
-                    DataStore.getInstance().getUsersThatBlessedMe(friendsThatBlessedCallbackForNavDrawer, getApplicationContext());
-                }else{
-                    BaseCallback<List<User>> friendsThatBlessedCallback = new BaseCallback<List<User>>() {
-                        @Override
-                        public void onResponse(List<User> response) {
-                            if(response != null && response.size() > 0){
-                                navigationView.getMenu()
-                                        .findItem(R.id.nav_social)
-                                        .getIcon()
-                                        .setColorFilter(getResources().getColor(R.color.colorGreenText), PorterDuff.Mode.SRC_IN);
+                            }
+                        };
+                        DataStore.getInstance().getUsersThatBlessedMe(friendsThatBlessedCallbackForNavDrawer, getApplicationContext());
+                    } else {
+                        BaseCallback<List<User>> friendsThatBlessedCallback = new BaseCallback<List<User>>() {
+                            @Override
+                            public void onResponse(List<User> response) {
+                                if (response != null && response.size() > 0) {
+                                    navigationView.getMenu()
+                                            .findItem(R.id.nav_social)
+                                            .getIcon()
+                                            .setColorFilter(getResources().getColor(R.color.colorGreenText), PorterDuff.Mode.SRC_IN);
 
-                                snackbar = Snackbar
-                                        .make(coordinatorLayout, String.valueOf(response.size()) + " Blessing received!", Snackbar.LENGTH_INDEFINITE).
-                                                setAction("VIEW", new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View view) {
-                                                        if(NetworkManager.getInstance().isInternet(getApplicationContext())) {
-                                                            Intent intent = new Intent(getApplicationContext(), NotificationActivity.class);
-                                                            startActivity(intent);
-                                                        }else{
-                                                            new NoInternetAlertDialog().show(getSupportFragmentManager(), null);
+                                    snackbar = Snackbar
+                                            .make(coordinatorLayout, String.valueOf(response.size()) + " Blessing received!", Snackbar.LENGTH_INDEFINITE).
+                                                    setAction("VIEW", new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View view) {
+                                                            if (NetworkManager.getInstance().isInternet(getApplicationContext())) {
+                                                                Intent intent = new Intent(getApplicationContext(), NotificationActivity.class);
+                                                                startActivity(intent);
+                                                            } else {
+                                                                new NoInternetAlertDialog().show(getSupportFragmentManager(), null);
+                                                            }
                                                         }
-                                                    }
-                                                });
+                                                    });
 
-                                snackbar.addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                                    @Override
-                                    public void onDismissed(Snackbar transientBottomBar, int event) {
-                                        startQuizFabFrame.animate().translationY(0);
-                                        mPrefs.setSnackbarVisible(false, getApplicationContext());
-                                        super.onDismissed(transientBottomBar, event);
-                                    }
+                                    snackbar.addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                                        @Override
+                                        public void onDismissed(Snackbar transientBottomBar, int event) {
+                                            startQuizFabFrame.animate().translationY(0);
+                                            mPrefs.setSnackbarVisible(false, getApplicationContext());
+                                            super.onDismissed(transientBottomBar, event);
+                                        }
 
-                                    @Override
-                                    public void onShown(Snackbar transientBottomBar) {
-                                        float distance = TypedValue.applyDimension(
-                                                TypedValue.COMPLEX_UNIT_DIP, 40,
-                                                getResources().getDisplayMetrics()
-                                        );
-                                        startQuizFabFrame.animate().translationY(-distance);
-                                        mPrefs.setSnackbarVisible(true, getApplicationContext());
-                                        super.onShown(transientBottomBar);
-                                    }
-                                });
+                                        @Override
+                                        public void onShown(Snackbar transientBottomBar) {
+                                            float distance = TypedValue.applyDimension(
+                                                    TypedValue.COMPLEX_UNIT_DIP, 40,
+                                                    getResources().getDisplayMetrics()
+                                            );
+                                            startQuizFabFrame.animate().translationY(-distance);
+                                            mPrefs.setSnackbarVisible(true, getApplicationContext());
+                                            super.onShown(transientBottomBar);
+                                        }
+                                    });
 
 
-                                // Changing message text color
-                                snackbar.setActionTextColor(getResources().getColor(R.color.colorGreenText));
-                                snackbar.getView().setBackgroundColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
-                                snackbar.show();
+                                    // Changing message text color
+                                    snackbar.setActionTextColor(getResources().getColor(R.color.colorGreenText));
+                                    snackbar.getView().setBackgroundColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
+                                    snackbar.show();
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Exception e) {
+                            @Override
+                            public void onFailure(Exception e) {
 
-                        }
-                    };
-                    DataStore.getInstance().getUsersThatBlessedMe(friendsThatBlessedCallback, getApplicationContext());
+                            }
+                        };
+                        DataStore.getInstance().getUsersThatBlessedMe(friendsThatBlessedCallback, getApplicationContext());
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Exception e) {
+                @Override
+                public void onFailure(Exception e) {
 
+                }
+            };
+            DataStore.getInstance().registerForFriendRequests(friendRequestCallback);
+        }else{
+            if(!mPrefs.isTourStep1Complete(getApplicationContext())) {
+                mTourGuideHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
+                        .setPointer(new Pointer())
+                        .setToolTip(new ToolTip().setTitle("Welcome!").setDescription("Click the plus button to add a verse.").
+                                setGravity(Gravity.TOP).setBackgroundColor(getResources().getColor(R.color.colorProgressBg)))
+                        .setOverlay(new Overlay())
+                        .playOn(addVerseFab);
             }
-        };
-        DataStore.getInstance().registerForFriendRequests(friendRequestCallback);
+        }
         DataStore.getInstance().updateUserData(mPrefs.getUserId(getApplicationContext()), getApplicationContext());
     }
 
@@ -386,6 +398,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     public void onResume() {
         super.onResume();
         DataStore.getInstance().getFriendRequests(getApplicationContext());
+        setSlidingTabViewMain();
     }
 
 
@@ -614,7 +627,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     public void onBackPressed(){
         this.setTitle("MemorizeIt-Bible");
 
-        navigationView.getMenu().getItem(0).setChecked(true);
+//        navigationView.getMenu().getItem(0).setChecked(true);
 
         if(pagerVerseSelector != null && pagerVerseSelector.getVisibility() == View.VISIBLE){
             onBackPressedFromNewVerseSelector();
@@ -645,6 +658,32 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             startQuizFabFrame.setVisibility(View.VISIBLE);
             setSlidingTabViewMain();
         }
+        BaseCallback<List<ScriptureData>> isVerseCallback = new BaseCallback<List<ScriptureData>>() {
+            @Override
+            public void onResponse(List<ScriptureData> response) {
+                if(response == null || response.size() == 0){
+                    ScriptureData newVerse = new ScriptureData();
+                    newVerse.setVerseLocation("James 4:7");
+                    newVerse.setVerse("Submit yourselves therefore to God. Resist the devil, and he will flee from you. ");
+                    newVerse.setVersionCode("ESV");
+                    DataStore.getInstance().saveQuizVerse(newVerse, getApplicationContext());
+                    adapterMain.onVerseAdded(newVerse);
+
+                }else{
+                    adapterMain.onVerseAdded(null);
+                }
+                mPrefs.setTourStep1Complete(true, getApplicationContext());
+                UserPreferencesModel model = new UserPreferencesModel();
+                model.initAllData(getApplicationContext(), mPrefs);
+                DataStore.getInstance().saveUserPrefs(model, getApplicationContext());
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+        DataStore.getInstance().getLocalQuizVerses(isVerseCallback, getApplicationContext());
     }
 
     @Override
