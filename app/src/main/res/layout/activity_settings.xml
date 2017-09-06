@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/greyBg"
     android:orientation="vertical"
-    tools:context="nape.biblememory.Activities.SettingsActivity">
+    tools:context=".view_layer.Activities.SettingsActivity">
 
     <TextView
         android:id="@+id/settings_bible_version_settings_tv"

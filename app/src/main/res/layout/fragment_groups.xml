@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="nape.biblememory.Fragments.GroupsFragment">
+    tools:context="nape.biblememory.view_layer.fragments.GroupsFragment">
 
     <TextView
         android:id="@+id/empty_state_groups_tv"

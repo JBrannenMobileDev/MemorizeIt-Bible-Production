@@ -3,10 +3,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import nape.biblememory.Fragments.MyVersesFragment;
-import nape.biblememory.Fragments.LearningSetFragment;
-import nape.biblememory.Fragments.MemorizedSetFragment;
-import nape.biblememory.Fragments.VersesFragment;
+import nape.biblememory.view_layer.fragments.MemorizedSetFragment;
+import nape.biblememory.view_layer.fragments.VersesFragment;
 import nape.biblememory.Models.ScriptureData;
 
 /**

@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import java.util.List;
 
 
-import nape.biblememory.Activities.BaseCallback;
+import nape.biblememory.view_layer.Activities.BaseCallback;
 import nape.biblememory.R;
 
 public class RecyclerViewAdapterBooks extends RecyclerView.Adapter<RecyclerViewAdapterBooks.ViewHolder> {

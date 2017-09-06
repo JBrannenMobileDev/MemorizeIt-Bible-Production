@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/greyBg"
     android:orientation="vertical"
-    tools:context="nape.biblememory.Activities.PrivacyPolicyActivity">
+    tools:context=".view_layer.Activities.PrivacyPolicyActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

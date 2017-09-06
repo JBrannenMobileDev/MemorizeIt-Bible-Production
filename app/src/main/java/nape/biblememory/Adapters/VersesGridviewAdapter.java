@@ -9,9 +9,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import nape.biblememory.Activities.BaseCallback;
 import nape.biblememory.R;
-import nape.biblememory.Views.VerseFragmentCallback;
+import nape.biblememory.view_layer.fragments.interfaces.VerseFragmentCallback;
 
 
 /**

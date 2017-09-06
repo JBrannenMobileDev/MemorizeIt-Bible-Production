@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="nape.biblememory.Activities.SupportTheDeveloper">
+    tools:context=".view_layer.Activities.SupportTheDeveloper">
 
     <ScrollView
         android:id="@+id/support_the_dev_scrollview"

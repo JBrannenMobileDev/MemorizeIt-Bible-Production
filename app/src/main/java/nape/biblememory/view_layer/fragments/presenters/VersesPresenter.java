@@ -5,7 +5,7 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.List;
 
-import nape.biblememory.Activities.BaseCallback;
+import nape.biblememory.view_layer.Activities.BaseCallback;
 import nape.biblememory.Models.ScriptureData;
 import nape.biblememory.data_store.DataStore;
 import nape.biblememory.view_layer.fragments.interfaces.VersesFragmentInterface;
@@ -34,21 +34,7 @@ public class VersesPresenter implements VersesPresenterInterface{
                 if(response != null){
                     myVerses.addAll(response);
                 }
-                BaseCallback<List<ScriptureData>> upcomingVersesCallback = new BaseCallback<List<ScriptureData>>() {
-                    @Override
-                    public void onResponse(List<ScriptureData> response) {
-                        if(response != null){
-                            myVerses.addAll(response);
-                        }
-                        fragment.onReceivedRecyclerData(myVerses);
-                    }
-
-                    @Override
-                    public void onFailure(Exception e) {
-                        fragment.onReceivedRecyclerData(myVerses);
-                    }
-                };
-                DataStore.getInstance().getLocalUpcomingVerses(upcomingVersesCallback, context.getApplicationContext().getApplicationContext());
+                fragment.onReceivedRecyclerData(myVerses);
             }
 
             @Override
@@ -63,24 +49,11 @@ public class VersesPresenter implements VersesPresenterInterface{
     public void onDatasetChanged(List<ScriptureData> response) {
         if(response.size() == myVerses.size()){
             for(int i = 0; i < response.size(); i++){
-                if(i < 3){
-                    DataStore.getInstance().updateQuizVerse(myVerses.get(i), response.get(i), context.getApplicationContext());
-                }else{
-                    DataStore.getInstance().updateUpcomingVerse(myVerses.get(i), response.get(i), context.getApplicationContext());
-                }
+                DataStore.getInstance().updateQuizVerse(myVerses.get(i), response.get(i), context.getApplicationContext());
             }
         }else {
             ScriptureData verseToRemove = getDeletedVerse(response);
-            int indextToRemove = myVerses.indexOf(verseToRemove);
-            if (indextToRemove < 3) {
-                DataStore.getInstance().deleteQuizVerse(verseToRemove, context);
-                if(response.size() > 3) {
-                    DataStore.getInstance().saveQuizVerse(response.get(2), context);
-                    DataStore.getInstance().deleteUpcomingVerse(response.get(2), context);
-                }
-            } else {
-                DataStore.getInstance().deleteUpcomingVerse(verseToRemove, context);
-            }
+            DataStore.getInstance().deleteQuizVerse(verseToRemove, context);
         }
     }
 

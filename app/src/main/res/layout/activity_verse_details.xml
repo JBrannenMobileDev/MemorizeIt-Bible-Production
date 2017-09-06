@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="nape.biblememory.Activities.VerseDetailsActivity">
+    tools:context=".view_layer.Activities.VerseDetailsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

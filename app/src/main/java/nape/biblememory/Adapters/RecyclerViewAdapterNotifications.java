@@ -8,11 +8,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import nape.biblememory.Activities.BaseCallback;
+import nape.biblememory.view_layer.Activities.BaseCallback;
 import nape.biblememory.Models.User;
 import nape.biblememory.R;
-
-import static nape.biblememory.R.id.confirm_request_tv;
 
 public class RecyclerViewAdapterNotifications extends RecyclerView.Adapter<RecyclerViewAdapterNotifications.ViewHolder> {
 

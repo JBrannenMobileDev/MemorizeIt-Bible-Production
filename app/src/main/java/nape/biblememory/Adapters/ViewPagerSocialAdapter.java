@@ -4,11 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import nape.biblememory.Fragments.FriendsFragment;
-import nape.biblememory.Fragments.GroupsFragment;
-import nape.biblememory.Fragments.MemorizedSetFragment;
-import nape.biblememory.Fragments.MyVersesFragment;
-import nape.biblememory.Fragments.RequestsFragment;
+import nape.biblememory.view_layer.fragments.FriendsFragment;
+import nape.biblememory.view_layer.fragments.GroupsFragment;
+import nape.biblememory.view_layer.fragments.RequestsFragment;
 
 /**
  * Created by hp1 on 21-01-2015.

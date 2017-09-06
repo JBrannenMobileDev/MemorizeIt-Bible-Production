@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".Activities.UnlockActivity">
+    tools:context=".view_layer.Activities.UnlockActivity">
 
     <item
         android:id="@+id/action_copy_all"

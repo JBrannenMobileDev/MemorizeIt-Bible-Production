@@ -15,7 +15,7 @@ import com.faithcomesbyhearing.dbt.model.Volume;
 import java.util.List;
 
 
-import nape.biblememory.Activities.BaseCallback;
+import nape.biblememory.view_layer.Activities.BaseCallback;
 import nape.biblememory.R;
 
 /**

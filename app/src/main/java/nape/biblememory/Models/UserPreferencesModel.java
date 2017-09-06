@@ -2,7 +2,7 @@ package nape.biblememory.Models;
 
 import android.content.Context;
 
-import nape.biblememory.UserPreferences;
+import nape.biblememory.utils.UserPreferences;
 
 /**
  * Created by jbrannen on 8/8/17.

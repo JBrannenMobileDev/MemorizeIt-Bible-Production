@@ -12,12 +12,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import nape.biblememory.Activities.BaseCallback;
-import nape.biblememory.Models.Friend;
+import nape.biblememory.view_layer.Activities.BaseCallback;
 import nape.biblememory.Models.ScriptureData;
 import nape.biblememory.Models.User;
 import nape.biblememory.Models.UserPreferencesModel;
-import nape.biblememory.UserPreferences;
+import nape.biblememory.utils.UserPreferences;
 
 /**
  * Created by jbrannen on 8/7/17.

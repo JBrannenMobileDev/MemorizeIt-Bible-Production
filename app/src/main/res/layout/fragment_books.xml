@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.BooksFragment">
+    tools:context=".view_layer.fragments.BooksFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

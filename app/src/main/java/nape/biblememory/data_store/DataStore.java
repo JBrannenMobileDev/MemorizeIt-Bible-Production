@@ -7,15 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import nape.biblememory.Activities.BaseCallback;
-import nape.biblememory.Activities.LoginSuccessActivity;
+import nape.biblememory.view_layer.Activities.BaseCallback;
+import nape.biblememory.view_layer.Activities.LoginSuccessActivity;
 import nape.biblememory.Managers.NetworkManager;
 import nape.biblememory.Managers.ScriptureManager;
 import nape.biblememory.Managers.VerseOperations;
 import nape.biblememory.Models.ScriptureData;
 import nape.biblememory.Models.User;
 import nape.biblememory.Models.UserPreferencesModel;
-import nape.biblememory.UserPreferences;
+import nape.biblememory.utils.UserPreferences;
 import nape.biblememory.data_store.FirebaseDb.FirebaseDb;
 import nape.biblememory.data_store.Sqlite.MemoryListContract;
 
@@ -171,40 +171,26 @@ public class DataStore {
     }
 
     public void updateUserData(final String uid, final Context context){
-        BaseCallback<List<ScriptureData>> upcomingCallback = new BaseCallback<List<ScriptureData>>() {
+        BaseCallback<List<ScriptureData>> learningCallback = new BaseCallback<List<ScriptureData>>() {
             int verseCount = 0;
             @Override
             public void onResponse(List<ScriptureData> response) {
-                if(response!= null){
+                if(response != null){
                     verseCount = verseCount + response.size();
                 }
-                BaseCallback<List<ScriptureData>> learningCallback = new BaseCallback<List<ScriptureData>>() {
+                BaseCallback<List<ScriptureData>> memorizedCallback = new BaseCallback<List<ScriptureData>>() {
                     @Override
                     public void onResponse(List<ScriptureData> response) {
                         if(response != null){
                             verseCount = verseCount + response.size();
                         }
-                        BaseCallback<List<ScriptureData>> memorizedCallback = new BaseCallback<List<ScriptureData>>() {
+                        BaseCallback<List<ScriptureData>> forgottenCallback = new BaseCallback<List<ScriptureData>>() {
                             @Override
                             public void onResponse(List<ScriptureData> response) {
                                 if(response != null){
                                     verseCount = verseCount + response.size();
                                 }
-                                BaseCallback<List<ScriptureData>> forgottenCallback = new BaseCallback<List<ScriptureData>>() {
-                                    @Override
-                                    public void onResponse(List<ScriptureData> response) {
-                                        if(response != null){
-                                            verseCount = verseCount + response.size();
-                                        }
-                                        FirebaseDb.getInstance().updateUserdata(uid, verseCount);
-                                    }
-
-                                    @Override
-                                    public void onFailure(Exception e) {
-
-                                    }
-                                };
-                                getLocalForgottenVerses(forgottenCallback, context);
+                                FirebaseDb.getInstance().updateUserdata(uid, verseCount);
                             }
 
                             @Override
@@ -212,7 +198,7 @@ public class DataStore {
 
                             }
                         };
-                        getLocalMemorizedVerses(memorizedCallback, context);
+                        getLocalForgottenVerses(forgottenCallback, context);
                     }
 
                     @Override
@@ -220,7 +206,7 @@ public class DataStore {
 
                     }
                 };
-                getLocalQuizVerses(learningCallback, context);
+                getLocalMemorizedVerses(memorizedCallback, context);
             }
 
             @Override
@@ -228,12 +214,7 @@ public class DataStore {
 
             }
         };
-        getLocalUpcomingVerses(upcomingCallback, context);
-    }
-
-    public void saveUpcomingVerse(ScriptureData verse, Context applicationContext){
-        FirebaseDb.getInstance().saveUpcomingVerseToFirebase(verse, applicationContext);
-        VerseOperations.getInstance(applicationContext).addVerse(verse, MemoryListContract.CurrentSetEntry.TABLE_NAME);
+        getLocalQuizVerses(learningCallback, context);
     }
 
     public void saveQuizVerse(ScriptureData verse, Context applicationContext){
@@ -251,11 +232,6 @@ public class DataStore {
         VerseOperations.getInstance(applicationContext).addVerse(verse, MemoryListContract.ForgottenSetEntry.TABLE_NAME);
     }
 
-    public void deleteUpcomingVerse(ScriptureData verse, Context context){
-        VerseOperations.getInstance(context).removeVerse(verse.getVerseLocation(), MemoryListContract.CurrentSetEntry.TABLE_NAME);
-        FirebaseDb.getInstance().deleteUpcomingVerse(verse, context);
-    }
-
     public void deleteQuizVerse(ScriptureData verse, Context context){
         VerseOperations.getInstance(context).removeVerse(verse.getVerseLocation(), MemoryListContract.LearningSetEntry.TABLE_NAME);
         FirebaseDb.getInstance().deleteQuizVerse(verse, context);
@@ -269,17 +245,6 @@ public class DataStore {
     public void deleteForgottenVerse(ScriptureData verse, Context context){
         VerseOperations.getInstance(context).removeVerse(verse.getVerseLocation(), MemoryListContract.ForgottenSetEntry.TABLE_NAME);
         FirebaseDb.getInstance().deleteForgottenVerse(verse, context);
-    }
-
-    public void getUpcomingVerses(BaseCallback<List<ScriptureData>> upcomingCallback, Context applicationContext){
-        if(NetworkManager.getInstance().isInternet(applicationContext)){
-            FirebaseDb.getInstance().getUpcomingVersesFromFirebaseDb(applicationContext, upcomingCallback);
-        }else{
-            if(scriptureManager == null) {
-                scriptureManager = new ScriptureManager(applicationContext);
-            }
-            upcomingCallback.onResponse(scriptureManager.getScriptureSet(MemoryListContract.CurrentSetEntry.TABLE_NAME));
-        }
     }
 
     public void getQuizVerses(BaseCallback<List<ScriptureData>> quizCallback, Context applicationContext){
@@ -313,13 +278,6 @@ public class DataStore {
             }
             forgottenCallback.onResponse(scriptureManager.getScriptureSet(MemoryListContract.ForgottenSetEntry.TABLE_NAME));
         }
-    }
-
-    public void getLocalUpcomingVerses(BaseCallback<List<ScriptureData>> upcomingCallback, Context applicationContext){
-        if(scriptureManager == null) {
-            scriptureManager = new ScriptureManager(applicationContext);
-        }
-        upcomingCallback.onResponse(scriptureManager.getScriptureSet(MemoryListContract.CurrentSetEntry.TABLE_NAME));
     }
 
     public void getLocalQuizVerses(BaseCallback<List<ScriptureData>> quizCallback, Context applicationContext){
@@ -403,24 +361,6 @@ public class DataStore {
         }
         scriptureManager.updateScriptureStatus(locationToUpdate, valueToSave);
         FirebaseDb.getInstance().updateQuizVerse(locationToUpdate, valueToSave, applcationContext);
-    }
-
-    public void moveUpcomingVerseToQuiz(final Context context){
-        BaseCallback<List<ScriptureData>> upcomingCallback = new BaseCallback<List<ScriptureData>>() {
-            @Override
-            public void onResponse(List<ScriptureData> response) {
-                if(response.size() > 0){
-                    saveQuizVerse(response.get(0), context);
-                    deleteUpcomingVerse(response.get(0), context);
-                }
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-
-            }
-        };
-        getLocalUpcomingVerses(upcomingCallback, context);
     }
 
     public void updateForgottenVerse(ScriptureData verse, Context applcationContext){
@@ -520,56 +460,37 @@ public class DataStore {
         if(scriptureManager == null) {
             scriptureManager = new ScriptureManager(context);
         }
-        BaseCallback<List<ScriptureData>> upcomingCallback = new BaseCallback<List<ScriptureData>>() {
+        BaseCallback<List<ScriptureData>> quizCallback = new BaseCallback<List<ScriptureData>>() {
             @Override
             public void onResponse(List<ScriptureData> response) {
                 VerseOperations.getInstance(context).nukeDb();
                 if(response.size() > 0){
                     for(ScriptureData verse : response){
-                        scriptureManager.addVerse(verse, MemoryListContract.CurrentSetEntry.TABLE_NAME);
+                        scriptureManager.addVerse(verse, MemoryListContract.LearningSetEntry.TABLE_NAME);
                     }
                 }
-                BaseCallback<List<ScriptureData>> quizCallback = new BaseCallback<List<ScriptureData>>() {
+                BaseCallback<List<ScriptureData>> forgottenVersesCallback = new BaseCallback<List<ScriptureData>>() {
                     @Override
                     public void onResponse(List<ScriptureData> response) {
                         if(response.size() > 0){
                             for(ScriptureData verse : response){
-                                scriptureManager.addVerse(verse, MemoryListContract.LearningSetEntry.TABLE_NAME);
+                                scriptureManager.addVerse(verse, MemoryListContract.ForgottenSetEntry.TABLE_NAME);
                             }
                         }
-                        BaseCallback<List<ScriptureData>> forgottenVersesCallback = new BaseCallback<List<ScriptureData>>() {
+                        BaseCallback<List<ScriptureData>> memorizedCallback = new BaseCallback<List<ScriptureData>>() {
                             @Override
                             public void onResponse(List<ScriptureData> response) {
                                 if(response.size() > 0){
                                     for(ScriptureData verse : response){
-                                        scriptureManager.addVerse(verse, MemoryListContract.ForgottenSetEntry.TABLE_NAME);
+                                        scriptureManager.addVerse(verse, MemoryListContract.MemorizedSetEntry.TABLE_NAME);
                                     }
                                 }
-                                BaseCallback<List<ScriptureData>> memorizedCallback = new BaseCallback<List<ScriptureData>>() {
-                                    @Override
-                                    public void onResponse(List<ScriptureData> response) {
-                                        if(response.size() > 0){
-                                            for(ScriptureData verse : response){
-                                                scriptureManager.addVerse(verse, MemoryListContract.MemorizedSetEntry.TABLE_NAME);
-                                            }
-                                        }
-                                        mPrefs.setRebuildError(false, context);
-                                        mPrefsModel.initAllData(context, mPrefs);
-                                        DataStore.getInstance().saveUserPrefs(mPrefsModel, context);
-                                        Intent intent = new Intent(context, LoginSuccessActivity.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        context.startActivity(intent);
-                                    }
-
-                                    @Override
-                                    public void onFailure(Exception e) {
-                                        mPrefs.setRebuildError(true, context);
-                                        Intent intent = new Intent(context, LoginSuccessActivity.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        context.startActivity(intent);
-                                    }
-                                };
-                                getMemorizedVerses(memorizedCallback, context);
+                                mPrefs.setRebuildError(false, context);
+                                mPrefsModel.initAllData(context, mPrefs);
+                                DataStore.getInstance().saveUserPrefs(mPrefsModel, context);
+                                Intent intent = new Intent(context, LoginSuccessActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(intent);
                             }
 
                             @Override
@@ -580,7 +501,7 @@ public class DataStore {
                                 context.startActivity(intent);
                             }
                         };
-                        getForgottenVerses(forgottenVersesCallback, context);
+                        getMemorizedVerses(memorizedCallback, context);
                     }
 
                     @Override
@@ -591,7 +512,7 @@ public class DataStore {
                         context.startActivity(intent);
                     }
                 };
-                getQuizVerses(quizCallback, context);
+                getForgottenVerses(forgottenVersesCallback, context);
             }
 
             @Override
@@ -602,7 +523,7 @@ public class DataStore {
                 context.startActivity(intent);
             }
         };
-        getUpcomingVerses(upcomingCallback, context);
+        getQuizVerses(quizCallback, context);
     }
 
     public void saveUserPrefs(UserPreferencesModel mPrefsModel, Context applicationContext) {
@@ -684,14 +605,6 @@ public class DataStore {
 
     public void deleteFriendBlessing(String uidToDelete, Context applicationContext) {
         FirebaseDb.getInstance().deleteBlessingNotification(uidToDelete, applicationContext);
-    }
-
-    public void updateUpcomingVerse(ScriptureData locationToUpdate, ScriptureData valueToSave, Context applicationContext) {
-        if(scriptureManager == null){
-            scriptureManager = new ScriptureManager(applicationContext);
-        }
-        scriptureManager.updateScriptureStatus(locationToUpdate, valueToSave);
-        FirebaseDb.getInstance().updateUpcomingVerse(locationToUpdate, valueToSave, applicationContext);
     }
 
     public void addVerseMemorized(ScriptureData verse){

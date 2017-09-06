@@ -16,13 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activities.MainActivity"
+            android:name=".view_layer.Activities.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activities.PhoneUnlockActivity"
+            android:name=".view_layer.Activities.PhoneUnlockActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_phone_unlock"
             android:screenOrientation="portrait"
@@ -42,27 +42,27 @@
         </receiver>
 
         <activity
-            android:name=".Activities.QuizSettingsActivity"
-            android:parentActivityName=".Activities.SettingsActivity"
+            android:name=".view_layer.Activities.QuizSettingsActivity"
+            android:parentActivityName=".view_layer.Activities.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.SupportTheDeveloper"
-            android:parentActivityName=".Activities.MainActivity"
+            android:name=".view_layer.Activities.SupportTheDeveloper"
+            android:parentActivityName=".view_layer.Activities.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.BibleVersionSettingsActivity"
-            android:parentActivityName=".Activities.SettingsActivity"
+            android:name=".view_layer.Activities.BibleVersionSettingsActivity"
+            android:parentActivityName=".view_layer.Activities.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.PrivacyPolicyActivity"
-            android:parentActivityName=".Activities.SettingsActivity"
+            android:name=".view_layer.Activities.PrivacyPolicyActivity"
+            android:parentActivityName=".view_layer.Activities.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.BootPrivacyPolicyActivity"
-            android:parentActivityName=".Activities.BootActivity"
+            android:name=".view_layer.Activities.BootPrivacyPolicyActivity"
+            android:parentActivityName=".view_layer.Activities.BootActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.BootActivity"
+            android:name=".view_layer.Activities.BootActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
@@ -72,30 +72,30 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.SettingsActivity"
-            android:parentActivityName=".Activities.MainActivity"
+            android:name=".view_layer.Activities.SettingsActivity"
+            android:parentActivityName=".view_layer.Activities.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.SocialActivity"
-            android:parentActivityName=".Activities.MainActivity"
+            android:name=".view_layer.Activities.SocialActivity"
+            android:parentActivityName=".view_layer.Activities.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.AddFriendActivity"
-            android:parentActivityName=".Activities.SocialActivity"
+            android:name=".view_layer.Activities.AddFriendActivity"
+            android:parentActivityName=".view_layer.Activities.SocialActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.LoginSuccessActivity"
+            android:name=".view_layer.Activities.LoginSuccessActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".Activities.FriendDetailsActivity"
-            android:parentActivityName=".Activities.SocialActivity"
+            android:name=".view_layer.Activities.FriendDetailsActivity"
+            android:parentActivityName=".view_layer.Activities.SocialActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.NotificationActivity"
-            android:parentActivityName=".Activities.SocialActivity"
+            android:name=".view_layer.Activities.NotificationActivity"
+            android:parentActivityName=".view_layer.Activities.SocialActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.VerseDetailsActivity"
-            android:parentActivityName=".Activities.MainActivity"
+        <activity android:name=".view_layer.Activities.VerseDetailsActivity"
+            android:parentActivityName=".view_layer.Activities.MainActivity"
             android:screenOrientation="portrait" />
     </application>
 

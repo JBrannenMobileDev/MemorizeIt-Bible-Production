@@ -12,9 +12,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import nape.biblememory.Managers.VerseOperations;
-import nape.biblememory.Activities.PhoneUnlockActivity;
+import nape.biblememory.view_layer.Activities.PhoneUnlockActivity;
 import nape.biblememory.data_store.Sqlite.MemoryListContract;
-import nape.biblememory.UserPreferences;
+import nape.biblememory.utils.UserPreferences;
 
 
 public class UnlockReceiver extends BroadcastReceiver {

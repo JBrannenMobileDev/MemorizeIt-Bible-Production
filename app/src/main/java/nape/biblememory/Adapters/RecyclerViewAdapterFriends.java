@@ -1,25 +1,17 @@
 package nape.biblememory.Adapters;
 
-import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
 
-import nape.biblememory.Activities.BaseCallback;
-import nape.biblememory.Models.BookGroup;
-import nape.biblememory.Models.Friend;
-import nape.biblememory.Models.ScriptureData;
+import nape.biblememory.view_layer.Activities.BaseCallback;
 import nape.biblememory.Models.User;
 import nape.biblememory.R;
-import nape.biblememory.Singletons.RecyclerViewSingleton;
-
-import static nape.biblememory.R.id.add_friend_tv;
 
 public class RecyclerViewAdapterFriends extends RecyclerView.Adapter<RecyclerViewAdapterFriends.ViewHolder> {
 

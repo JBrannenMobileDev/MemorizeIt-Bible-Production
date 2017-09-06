@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import nape.biblememory.Activities.BaseCallback;
+import nape.biblememory.view_layer.Activities.BaseCallback;
 import nape.biblememory.Models.ScriptureData;
 import nape.biblememory.R;
 

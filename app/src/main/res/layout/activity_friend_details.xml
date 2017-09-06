@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/greyBg"
-    tools:context="nape.biblememory.Activities.FriendDetailsActivity">
+    tools:context=".view_layer.Activities.FriendDetailsActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/friend_details_recycler_view"

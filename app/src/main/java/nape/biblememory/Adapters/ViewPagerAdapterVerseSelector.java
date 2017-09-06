@@ -4,10 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import nape.biblememory.Fragments.BooksFragment;
-import nape.biblememory.Fragments.ChapterFragment;
-import nape.biblememory.Fragments.VersesFragment;
-import nape.biblememory.Fragments.VerseFragment;
+import nape.biblememory.view_layer.fragments.BooksFragment;
+import nape.biblememory.view_layer.fragments.ChapterFragment;
+import nape.biblememory.view_layer.fragments.VerseFragment;
 
 /**
  * Created by hp1 on 21-01-2015.
