@@ -43,7 +43,6 @@ import nape.biblememory.view_layer.fragments.Dialogs.NoInternetAlertDialog;
 import nape.biblememory.view_layer.fragments.Dialogs.RebuildingDbErrorAlertDialog;
 import nape.biblememory.view_layer.fragments.Dialogs.DeleteVerseAlertDialog;
 import nape.biblememory.view_layer.fragments.Dialogs.SelectVersionAlertDialog;
-import nape.biblememory.view_layer.fragments.LearningSetFragment;
 import nape.biblememory.view_layer.fragments.VerseFragment;
 import nape.biblememory.view_layer.fragments.VerseSelection;
 import nape.biblememory.Managers.NetworkManager;
@@ -62,7 +61,7 @@ import tourguide.tourguide.TourGuide;
 
 public class MainActivity extends ActionBarActivity implements NavigationView.OnNavigationItemSelectedListener,
         VerseSelection.FragmentToActivity, BooksFragment.BooksFragmentListener,
-        ChapterFragment.ChaptersFragmentListener, VerseFragment.OnVerseSelected, LearningSetFragment.OnAddVerseSelectedListener, VerseSelectedDialogFragment.addVerseDialogActions,
+        ChapterFragment.ChaptersFragmentListener, VerseFragment.OnVerseSelected, VerseSelectedDialogFragment.addVerseDialogActions,
         DeleteVerseAlertDialog.YesSelected, SelectVersionAlertDialog.VersionSelected{
 
     private ViewPager pagerMain;
@@ -137,12 +136,25 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 mFirebaseAnalytics.logEvent("start_quiz_Fab_selected", null);
-                if(DataStore.getInstance().getLocalQuizListSize(getApplicationContext()) > 0) {
-                    Intent myIntent = new Intent(getApplicationContext(), PhoneUnlockActivity.class);
-                    startActivity(myIntent);
-                }else{
-                    new InProgressEmptyAlertDialog().show(getSupportFragmentManager(), null);
-                }
+                BaseCallback<List<ScriptureData>> quizListCallback = new BaseCallback<List<ScriptureData>>() {
+                    @Override
+                    public void onResponse(List<ScriptureData> response) {
+                        if(response != null) {
+                            if (response.size() > 0) {
+                                Intent myIntent = new Intent(getApplicationContext(), PhoneUnlockActivity.class);
+                                startActivity(myIntent);
+                            } else {
+                                new InProgressEmptyAlertDialog().show(getSupportFragmentManager(), null);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+
+                    }
+                };
+                DataStore.getInstance().getQuizVerses(quizListCallback, getApplicationContext());
             }
         });
 
@@ -362,7 +374,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
             }
         };
-        DataStore.getInstance().getLocalMemorizedVerses(memorizedVersesCallback, getApplicationContext());
+        DataStore.getInstance().getMemorizedVerses(memorizedVersesCallback, getApplicationContext());
         navigationView.getMenu()
                 .findItem(R.id.nav_share)
                 .getIcon()
@@ -603,7 +615,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         }
     }
 
-    @Override
     public void addVerseSelected() {
         if(NetworkManager.getInstance().isInternet(getApplicationContext())) {
             this.setTitle("Verse Selection");
@@ -680,7 +691,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
             }
         };
-        DataStore.getInstance().getLocalQuizVerses(isVerseCallback, getApplicationContext());
+        DataStore.getInstance().getQuizVerses(isVerseCallback, getApplicationContext());
     }
 
     @Override

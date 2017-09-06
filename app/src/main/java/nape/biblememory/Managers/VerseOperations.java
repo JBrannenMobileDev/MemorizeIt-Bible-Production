@@ -413,6 +413,16 @@ public class VerseOperations {
 
     public Integer updateVerse(ScriptureData locationToUpdate, ScriptureData valueToSave) {
         ContentValues values = new ContentValues();
+        values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_VERSION, valueToSave.getVersionCode());
+        values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_VERSE_NUMBER, valueToSave.getVerseNumber());
+        values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_ENTRY_ID, valueToSave.getVerseLocation());
+        values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_VERSE_CONTENT, valueToSave.getVerse());
+        values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_START_DATE, valueToSave.getStartDate());
+        values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_DATE_LAST_SEEN, valueToSave.getLastSeenDate());
+        values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_COUNT_VIEWED, valueToSave.getViewedCount());
+        values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_COUNT_CORRECT, valueToSave.getCorrectCount());
+        values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_CHAPTER, valueToSave.getChapter());
+        values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_BOOK_NAME, valueToSave.getBookName());
         values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_MEMORY_STAGE, valueToSave.getMemoryStage());
         values.put(MemoryListContract.LearningSetEntry.COLUMN_NAME_MEMORY_SUB_STAGE, valueToSave.getMemorySubStage());
 

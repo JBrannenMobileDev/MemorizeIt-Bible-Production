@@ -126,12 +126,12 @@ public class MemorizedSetFragment extends Fragment {
     }
 
     private void initializeForgottenCardView() {
-        BaseCallback<ScriptureData> forgottenVerseCallback = new BaseCallback<ScriptureData>() {
+        BaseCallback<List<ScriptureData>> forgottenVerseCallback = new BaseCallback<List<ScriptureData>>() {
             @Override
-            public void onResponse(ScriptureData response) {
-                if(response != null) {
+            public void onResponse(List<ScriptureData> response) {
+                if(response != null && response.size() > 0) {
                     emptyState.setVisibility(View.GONE);
-                    populateCardView(response);
+                    populateCardView(response.get(0));
                 }else{
                     hideForgotenCardView();
                 }
@@ -142,7 +142,7 @@ public class MemorizedSetFragment extends Fragment {
 
             }
         };
-        DataStore.getInstance().getLocalForgottenVerse(forgottenVerseCallback, getActivity().getApplicationContext());
+        DataStore.getInstance().getForgottenVerses(forgottenVerseCallback, getActivity().getApplicationContext());
     }
 
     private void hideForgotenCardView() {
@@ -220,7 +220,7 @@ public class MemorizedSetFragment extends Fragment {
 
             }
         };
-        DataStore.getInstance().getLocalMemorizedVerses(memorizedCallback, getActivity().getApplicationContext());
+        DataStore.getInstance().getMemorizedVerses(memorizedCallback, getActivity().getApplicationContext());
     }
 
     private void initializeSpinner(View v) {
@@ -436,6 +436,6 @@ public class MemorizedSetFragment extends Fragment {
 
             }
         };
-        DataStore.getInstance().getLocalMemorizedVerses(memorizedCallback, getActivity().getApplicationContext());
+        DataStore.getInstance().getMemorizedVerses(memorizedCallback, getActivity().getApplicationContext());
     }
 }

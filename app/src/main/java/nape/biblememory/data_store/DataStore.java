@@ -198,7 +198,7 @@ public class DataStore {
 
                             }
                         };
-                        getLocalForgottenVerses(forgottenCallback, context);
+                        getForgottenVerses(forgottenCallback, context);
                     }
 
                     @Override
@@ -206,7 +206,7 @@ public class DataStore {
 
                     }
                 };
-                getLocalMemorizedVerses(memorizedCallback, context);
+                getMemorizedVerses(memorizedCallback, context);
             }
 
             @Override
@@ -214,7 +214,7 @@ public class DataStore {
 
             }
         };
-        getLocalQuizVerses(learningCallback, context);
+        getQuizVerses(learningCallback, context);
     }
 
     public void saveQuizVerse(ScriptureData verse, Context applicationContext){
@@ -278,73 +278,6 @@ public class DataStore {
             }
             forgottenCallback.onResponse(scriptureManager.getScriptureSet(MemoryListContract.ForgottenSetEntry.TABLE_NAME));
         }
-    }
-
-    public void getLocalQuizVerses(BaseCallback<List<ScriptureData>> quizCallback, Context applicationContext){
-        if(scriptureManager == null) {
-            scriptureManager = new ScriptureManager(applicationContext);
-        }
-        quizCallback.onResponse(scriptureManager.getScriptureSet(MemoryListContract.LearningSetEntry.TABLE_NAME));
-    }
-
-    public void getLocalForgottenVerse(final BaseCallback<ScriptureData> forgottenCallback, Context context){
-        if(scriptureManager == null){
-            scriptureManager = new ScriptureManager(context);
-        }
-        List<ScriptureData> forgottenList = scriptureManager.getScriptureSet(MemoryListContract.ForgottenSetEntry.TABLE_NAME);
-        if(forgottenList.size() > 0) {
-            forgottenCallback.onResponse(forgottenList.get(0));
-        }else{
-            forgottenCallback.onResponse(null);
-        }
-    }
-
-    public void getLocalForgottenVerses(final BaseCallback<List<ScriptureData>> forgottenCallback, Context context){
-        if(scriptureManager == null){
-            scriptureManager = new ScriptureManager(context);
-        }
-        List<ScriptureData> forgottenList = scriptureManager.getScriptureSet(MemoryListContract.ForgottenSetEntry.TABLE_NAME);
-        if(forgottenList != null) {
-            forgottenCallback.onResponse(forgottenList);
-        }else{
-            forgottenCallback.onResponse(null);
-        }
-    }
-
-    public void getLocalMemorizedVerses(BaseCallback<List<ScriptureData>> memorizedCallback, Context applicationContext){
-        if(scriptureManager == null) {
-            scriptureManager = new ScriptureManager(applicationContext);
-        }
-        memorizedCallback.onResponse(scriptureManager.getScriptureSet(MemoryListContract.MemorizedSetEntry.TABLE_NAME));
-    }
-
-    public void getLocalMeorizedVerseAt(final int index, final BaseCallback<ScriptureData> memorizedCallback, final Context context){
-        final UserPreferences mPrefs = new UserPreferences();
-        if(scriptureManager == null) {
-            scriptureManager = new ScriptureManager(context);
-        }
-        BaseCallback<List<ScriptureData>> memorizedListCallback = new BaseCallback<List<ScriptureData>>() {
-            @Override
-            public void onResponse(List<ScriptureData> response) {
-                int listSize = response.size();
-                if(listSize > 0) {
-                    if (index >= listSize) {
-                        memorizedCallback.onResponse(response.get(0));
-                        mPrefs.setQuizReviewIndex(0, context);
-                    } else {
-                        memorizedCallback.onResponse(response.get(index));
-                    }
-                }else{
-                    memorizedCallback.onResponse(null);
-                }
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-
-            }
-        };
-        getLocalMemorizedVerses(memorizedListCallback, context);
     }
 
     public void updateQuizVerse(ScriptureData verse, Context applcationContext){
@@ -434,7 +367,7 @@ public class DataStore {
 
             }
         };
-        getLocalQuizVerses(quizVersesCallback, applicationContext);
+        getQuizVerses(quizVersesCallback, applicationContext);
     }
 
     private int calculateCaseNumber(int random) {
@@ -445,13 +378,6 @@ public class DataStore {
         }else {
             return 3;
         }
-    }
-
-    public int getLocalQuizListSize(final Context context) {
-        if(scriptureManager == null) {
-            scriptureManager = new ScriptureManager(context);
-        }
-        return scriptureManager.getScriptureSet(MemoryListContract.LearningSetEntry.TABLE_NAME).size();
     }
 
     public void rebuildLocalDb(final Context context) {

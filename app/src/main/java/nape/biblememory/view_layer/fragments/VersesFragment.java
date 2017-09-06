@@ -90,10 +90,12 @@ public class VersesFragment extends Fragment implements OnStartDragListener, Ver
     }
 
     public void onDeleteVerse(ScriptureData verse){
-        adapter.removeItem(verse);
+        if(adapter != null)
+            adapter.removeItem(verse);
     }
     public void onVerseAdded(ScriptureData verse){
-        adapter.onVerseAdded(verse);
+        if(adapter != null)
+            adapter.onVerseAdded(verse);
     }
 
     @Override

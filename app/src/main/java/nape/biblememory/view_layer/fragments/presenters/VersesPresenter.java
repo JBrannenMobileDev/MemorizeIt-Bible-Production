@@ -42,7 +42,7 @@ public class VersesPresenter implements VersesPresenterInterface{
                 fragment.onReceivedRecyclerData(myVerses);
             }
         };
-        DataStore.getInstance().getLocalQuizVerses(QuizVersesCallback, context.getApplicationContext().getApplicationContext());
+        DataStore.getInstance().getQuizVerses(QuizVersesCallback, context.getApplicationContext().getApplicationContext());
     }
 
     @Override

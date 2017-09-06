@@ -102,16 +102,16 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
     @Override
     public void onRequestReviewData() {
         isReviewMode = true;
-        BaseCallback<ScriptureData> reviewForgottenVersesCallback = new BaseCallback<ScriptureData>() {
+        BaseCallback<List<ScriptureData>> reviewForgottenVersesCallback = new BaseCallback<List<ScriptureData>>() {
             @Override
-            public void onResponse(ScriptureData response) {
-                if(response != null ) {
+            public void onResponse(List<ScriptureData> response) {
+                if(response != null && response.size() > 0) {
                     forgottenVerse = true;
                     view.setReviewTitleVisibility(View.VISIBLE);
                     view.setReviewTitleText("Review forgotten verse");
                     view.setReviewTitleColor(R.color.colorNoText);
-                    reviewForgottenVerses = response;
-                    onSuccess(response);
+                    reviewForgottenVerses = response.get(0);
+                    onSuccess(response.get(0));
                 }else{
                     BaseCallback<List<ScriptureData>> reviewVersesListCallback = new BaseCallback<List<ScriptureData>>() {
                         @Override
@@ -135,7 +135,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                             DataStore.getInstance().getRandomQuizVerse(context, quizVerseCallback);
                         }
                     };
-                    DataStore.getInstance().getLocalMemorizedVerses(reviewVersesListCallback, context);
+                    DataStore.getInstance().getMemorizedVerses(reviewVersesListCallback, context);
                 }
             }
 
@@ -146,7 +146,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                 DataStore.getInstance().getRandomQuizVerse(context, quizVerseCallback);
             }
         };
-        DataStore.getInstance().getLocalForgottenVerse(reviewForgottenVersesCallback, context);
+        DataStore.getInstance().getForgottenVerses(reviewForgottenVersesCallback, context);
     }
 
 
