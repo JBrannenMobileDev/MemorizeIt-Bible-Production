@@ -172,6 +172,9 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             new RebuildingDbErrorAlertDialog().show(getSupportFragmentManager(), null);
         }
 
+        if(mPrefs.isTourStep1Complete(getApplicationContext()) && mPrefs.isTourStep2Complete(getApplicationContext())){
+            mPrefs.setFirstTimeUser(false, context);
+        }
 
         if(!mPrefs.isFirstTimeUser(getApplicationContext())) {
             BaseCallback<List<User>> friendRequestCallback = new BaseCallback<List<User>>() {
