@@ -317,7 +317,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                         .playOn(addVerseFab);
             }
         }
-//        DataStore.getInstance().updateUserData(mPrefs.getUserId(getApplicationContext()), getApplicationContext());
+        DataStore.getInstance().updateUserData(mPrefs.getUserId(getApplicationContext()), getApplicationContext());
     }
 
     private void initData() {

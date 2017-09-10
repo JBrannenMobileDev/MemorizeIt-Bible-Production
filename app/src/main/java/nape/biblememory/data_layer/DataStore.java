@@ -207,52 +207,41 @@ public class DataStore {
         FirebaseDb.getInstance().updateSingleVerseUserdata(UID, updateAmount);
     }
 
-//    public void updateUserData(final String uid, final Context context){
-//        BaseCallback<List<ScriptureData>> learningCallback = new BaseCallback<List<ScriptureData>>() {
-//            int verseCount = 0;
-//            @Override
-//            public void onResponse(List<ScriptureData> response) {
-//                if(response != null){
-//                    verseCount = verseCount + response.size();
-//                }
-//                BaseCallback<List<ScriptureData>> memorizedCallback = new BaseCallback<List<ScriptureData>>() {
-//                    @Override
-//                    public void onResponse(List<ScriptureData> response) {
-//                        if(response != null){
-//                            verseCount = verseCount + response.size();
-//                        }
-//                        BaseCallback<List<ScriptureData>> forgottenCallback = new BaseCallback<List<ScriptureData>>() {
-//                            @Override
-//                            public void onResponse(List<ScriptureData> response) {
-//                                if(response != null){
-//                                    verseCount = verseCount + response.size();
-//                                }
-//                                FirebaseDb.getInstance().updateUserdata(uid, verseCount);
-//                            }
-//
-//                            @Override
-//                            public void onFailure(Exception e) {
-//
-//                            }
-//                        };
-//                        getForgottenVerses(forgottenCallback, context);
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Exception e) {
-//
-//                    }
-//                };
-//                getMemorizedVerses(memorizedCallback, context);
-//            }
-//
-//            @Override
-//            public void onFailure(Exception e) {
-//
-//            }
-//        };
-//        getQuizVerses(learningCallback, context);
-//    }
+    public void updateUserData(final String uid, final Context context){
+        BaseCallback<List<ScriptureData>> memorizedCallback = new BaseCallback<List<ScriptureData>>() {
+            int verseCount = 0;
+            @Override
+            public void onResponse(List<ScriptureData> response) {
+                if(response != null){
+                    verseCount = verseCount + response.size();
+                }
+                BaseCallback<List<ScriptureData>> forgottenCallback = new BaseCallback<List<ScriptureData>>() {
+                    @Override
+                    public void onResponse(List<ScriptureData> response) {
+                        if(response != null){
+                            verseCount = verseCount + response.size();
+                        }
+                        Realm realm = Realm.getDefaultInstance();
+                        verseCount = verseCount + realm.where(MyVerse.class).findAll().size();
+                        realm.close();
+                        FirebaseDb.getInstance().updateUserdata(uid, verseCount);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+
+                    }
+                };
+                getForgottenVerses(forgottenCallback, context);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+        getMemorizedVerses(memorizedCallback, context);
+    }
 
     public void saveQuizVerse(ScriptureData verse, Context applicationContext){
         FirebaseDb.getInstance().saveQuizVerseToFirebase(verse, applicationContext);
@@ -340,44 +329,50 @@ public class DataStore {
     public void getRandomQuizVerse(final BaseCallback<MyVerse> verseCallback){
         Realm realm = Realm.getDefaultInstance();
         RealmResults<MyVerse> quizList = realm.where(MyVerse.class).findAll().sort("listPosition", Sort.ASCENDING);
+        List<MyVerse> goldStartList = new ArrayList<>();
+        for(MyVerse verseToAdd : quizList){
+            if(verseToAdd.getGoldStar() == 1){
+                goldStartList.add(verseToAdd);
+            }
+        }
         realm.close();
 
         int caseNumber;
         MyVerse resultVerse = null;
 
-        if(quizList != null && quizList.size() > 2 && quizList.get(0).getVerse() != null && quizList.get(1).getVerse() != null && quizList.get(2).getVerse() != null) {
+        if(goldStartList != null && goldStartList.size() > 2 && goldStartList.get(0).getVerse() != null && goldStartList.get(1).getVerse() != null && goldStartList.get(2).getVerse() != null) {
             Random generate = new Random();
             final int random = generate.nextInt(100) + 1;
             caseNumber = calculateCaseNumber(random);
             switch (caseNumber) {
                 case 1:
-                    resultVerse = quizList.get(0);
+                    resultVerse = goldStartList.get(0);
                     break;
                 case 2:
-                    resultVerse = quizList.get(1);
+                    resultVerse = goldStartList.get(1);
                     break;
                 case 3:
-                    resultVerse = quizList.get(2);
+                    resultVerse = goldStartList.get(2);
                     break;
                 default:
-                    resultVerse = quizList.get(0);
+                    resultVerse = goldStartList.get(0);
             }
-        }else if(quizList != null && quizList.size() == 2 && quizList.get(0).getVerse() != null && quizList.get(1).getVerse() != null){
+        }else if(goldStartList != null && goldStartList.size() == 2 && goldStartList.get(0).getVerse() != null && goldStartList.get(1).getVerse() != null){
             Random generate = new Random();
             final int random = generate.nextInt(100) + 1;
             caseNumber = calculateCaseNumber(random);
             switch (caseNumber) {
                 case 1:
-                    resultVerse = quizList.get(0);
+                    resultVerse = goldStartList.get(0);
                     break;
                 case 2:
                 case 3:
-                    resultVerse = quizList.get(1);
+                    resultVerse = goldStartList.get(1);
                     break;
                 default:
-                    resultVerse = quizList.get(0);
+                    resultVerse = goldStartList.get(0);
             }
-        }else if(quizList != null && quizList.size() == 1 && quizList.get(0).getVerse() != null){
+        }else if(goldStartList != null && goldStartList.size() == 1 && goldStartList.get(0).getVerse() != null){
             Random generate = new Random();
             final int random = generate.nextInt(100) + 1;
             caseNumber = calculateCaseNumber(random);
@@ -385,10 +380,10 @@ public class DataStore {
                 case 1:
                 case 2:
                 case 3:
-                    resultVerse = quizList.get(0);
+                    resultVerse = goldStartList.get(0);
                     break;
                 default:
-                    resultVerse = quizList.get(0);
+                    resultVerse = goldStartList.get(0);
             }
         }
         verseCallback.onResponse(resultVerse);

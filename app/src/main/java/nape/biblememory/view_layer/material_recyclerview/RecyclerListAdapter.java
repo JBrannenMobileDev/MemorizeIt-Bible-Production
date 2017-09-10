@@ -130,17 +130,17 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         if(mPrefs.isTourStep1Complete(context) && !mPrefs.isTourStep2Complete(context)) {
             ChainTourGuide step1 = ChainTourGuide.init(context)
                     .setToolTip(new ToolTip().setTitle("Tip 1").setDescription("All added verses will appear in this list.").
-                            setGravity(Gravity.BOTTOM).setBackgroundColor(context.getResources().getColor(R.color.colorProgressBg)))
+                            setGravity(Gravity.BOTTOM).setBackgroundColor(context.getResources().getColor(R.color.colorAccent)))
                     .playLater(holder.itemLayout);
 
             ChainTourGuide step2 = ChainTourGuide.init(context).with(TourGuide.Technique.Click)
-                    .setToolTip(new ToolTip().setTitle("Tip 2").setDescription("The top 3 verses in the list will appear in the quiz.").
+                    .setToolTip(new ToolTip().setTitle("Tip 2").setDescription("Verses marked with the gold star will appear in the quiz.").
                             setGravity(Gravity.BOTTOM).setBackgroundColor(context.getResources().getColor(R.color.colorProgressBg)))
                     .playLater(holder.itemLayout);
 
             ChainTourGuide step3 = ChainTourGuide.init(context).with(TourGuide.Technique.Click)
                     .setToolTip(new ToolTip().setTitle("Tip 3").setDescription("To re-arrange the verses in this list you can long-click a verse.").
-                            setGravity(Gravity.BOTTOM).setBackgroundColor(context.getResources().getColor(R.color.colorProgressBg)))
+                            setGravity(Gravity.BOTTOM).setBackgroundColor(context.getResources().getColor(R.color.bgColor)))
                     .playLater(holder.itemLayout);
 
             Sequence sequence = new Sequence.SequenceBuilder()
@@ -167,33 +167,21 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         holder.quizIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!alread3Start()) {
-                    if (dataset.get(position).isGoldStar() == 1) {
-                        dataset.get(position).setGoldStar(0);
-                        holder.quizIcon.setColorFilter(context.getResources().getColor(R.color.greyBgDark));
-                        holder.progressView.setTextColor(context.getResources().getColor(R.color.greyBgDark));
-                        if (dataset.size() > 1) {
-                            if (dataset.size() == 2) {
-                                onItemMove(holder.getLayoutPosition(), 1);
-                            } else if (dataset.size() == 3) {
-                                onItemMove(holder.getLayoutPosition(), 2);
-                            } else {
-                                dataset.get(3).setGoldStar(0);
-                                onItemMove(holder.getLayoutPosition(), 3);
-                            }
-                        }
-                    } else {
-
+                if (dataset.get(position).isGoldStar() == 1) {
+                    dataset.get(position).setGoldStar(0);
+                    holder.quizIcon.setColorFilter(context.getResources().getColor(R.color.greyBgDark));
+                    holder.progressView.setTextColor(context.getResources().getColor(R.color.greyBgDark));
+                    RecyclerListAdapter.this.dataChangedCallback.onResponse(dataset);
+                } else {
+                    if(alread3Start()) {
+                        fragment.showStarAlert();
+                    }  else {
                         holder.progressView.setTextColor(context.getResources().getColor(R.color.colorProgressBg));
                         dataset.get(position).setGoldStar(1);
-                        if(dataset.size() > 3) {
-                            dataset.get(2).setGoldStar(0);
-                        }
                         holder.quizIcon.setColorFilter(context.getResources().getColor(R.color.gold));
                         onItemMove(holder.getLayoutPosition(), 0);
+                        RecyclerListAdapter.this.dataChangedCallback.onResponse(dataset);
                     }
-                }  else{
-                    fragment.showStarAlert();
                 }
             }
         });
@@ -237,25 +225,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     @Override
     public int getItemCount() {
         return dataset.size();
-    }
-
-    public void removeItem(ScriptureData result) {
-        for(int i = 0; i < dataset.size(); i++){
-            if(dataset.get(i).getVerseLocation().equalsIgnoreCase(result.getVerseLocation())){
-                dataset.remove(dataset.get(i));
-                notifyItemRemoved(i);
-                RecyclerListAdapter.this.dataChangedCallback.onResponse(dataset);
-            }
-        }
-    }
-
-    public void onVerseAdded(ScriptureData verse) {
-        if(verse != null) {
-            dataset.add(verse);
-            notifyItemInserted(dataset.size() - 1);
-        }else{
-            notifyDataSetChanged();
-        }
     }
 
     /**

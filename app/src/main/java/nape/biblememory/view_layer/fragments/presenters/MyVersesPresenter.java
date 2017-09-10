@@ -3,6 +3,7 @@ package nape.biblememory.view_layer.fragments.presenters;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.realm.Realm;
@@ -35,7 +36,15 @@ public class MyVersesPresenter implements MyVersesPresenterInterface {
     @Override
     public void fetchData() {
         myVersesRealm = realm.where(MyVerse.class).findAll().sort("listPosition", Sort.ASCENDING);
-        myVerses = new ArrayList<>(myVersesRealm);
+        List<MyVerse> tempList = new ArrayList<>(myVersesRealm);
+        myVerses = new ArrayList<>();
+        for(int i = 0; i < tempList.size(); i++){
+            if(tempList.get(i).getGoldStar() == 1){
+                myVerses.add(tempList.get(i));
+                tempList.remove(i);
+            }
+        }
+        myVerses.addAll(tempList);
         fragment.onReceivedRecyclerData(myVerses);
     }
 
@@ -86,7 +95,6 @@ public class MyVersesPresenter implements MyVersesPresenterInterface {
             for (int i = 0; i < listToUpdate.size(); i++) {
                 DataStore.getInstance().updateQuizVerse(myVersesRealm.get(i), listToUpdate.get(i), context.getApplicationContext());
             }
-            realm.close();
         }
     }
 }

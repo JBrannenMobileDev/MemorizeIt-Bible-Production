@@ -27,6 +27,7 @@
     <color name="red">#da0000</color>
     <color name="greyIcon">#606060</color>
     <color name="gold">#ffd501</color>
+    <color name="yellow">#ffe601</color>
     <color name="colorGreenProgress">#93fdb9</color>
     <color name="colorHighlightProgress">#eaf9fe</color>
 </resources>

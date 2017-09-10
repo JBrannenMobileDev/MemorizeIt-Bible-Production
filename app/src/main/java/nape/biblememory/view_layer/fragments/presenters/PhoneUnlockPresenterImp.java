@@ -418,13 +418,13 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         forgottenVerse = false;
         reviewVerse = false;
         isReviewMode = false;
+        view.setCheckAnswerButtonFont();
         view.setReviewTitleVisibility(View.GONE);
         view.setVerseText(EMPTY_STRING);
         view.setVerseLocationText(EMPTY_STRING);
-        view.setCheckAnswerButtonFont();
         view.setBasebarText(CLOSE);
         view.setVerificationLayoutVisibility(View.GONE);
-        view.setTitlebarTextColor(context.getResources().getColor(R.color.gold));
+        view.setTitlebarTextColor(context.getResources().getColor(R.color.colorWhite));
         onRequestData();
     }
 
@@ -435,8 +435,8 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         setModifiedVerseText();
         scripture.setLastSeenDate(formattedDate);
         if(initialStage){
-            view.setDoneButtonFont();
             view.setCheckAnswerButtonText(R.string.done);
+            view.setDoneButtonFont();
             view.setHintButtonVisibility(View.GONE, scripture.toMyVerse());
         }else {
             view.setCheckAnswerButtonText(R.string.check_answer);
