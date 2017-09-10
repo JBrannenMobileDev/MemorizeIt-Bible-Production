@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/greyBg"
     android:orientation="vertical"
-    tools:context=".view_layer.Activities.SettingsActivity">
+    tools:context=".view_layer.activities.SettingsActivity">
 
-    <nape.biblememory.view_layer.Views.SlidingTabLayout
+    <nape.biblememory.view_layer.views.SlidingTabLayout
         android:id="@+id/social_tabs"
         android:layout_width="match_parent"
         android:layout_height="53dp"

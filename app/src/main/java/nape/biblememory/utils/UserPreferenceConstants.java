@@ -64,4 +64,10 @@ public class UserPreferenceConstants {
     public static final String SNACKBAR_VISIBLE = "snackbar_visible";
     public static final String TOUR_STEP_1 = "tour_step_1";
     public static final String TOUR_STEP_2 = "tour_step_2";
+    public static final String RANDOM_VERSE = "random_verse";
+    public static final String RANDOM_VERSE_LOCATION = "random_verse_location";
+    public static final String RANDOM_VERSE_LAST_SEEN = "random_verse_last_seen";
+    public static final String RANDOM_VERSE_VERSION = "random_verse_version";
+    public static final String RANDOM_VERSE_MEMORY_STAGE = "random_verse_memory_stage";
+    public static final String RANDOM_VERSE_MEMORY_SUB_STAGE = "random_verse_memory_sub_stage";
 }

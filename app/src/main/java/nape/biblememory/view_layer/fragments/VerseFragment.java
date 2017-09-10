@@ -18,9 +18,9 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.ArrayList;
 import java.util.List;
 
-import nape.biblememory.Adapters.VersesGridviewAdapter;
-import nape.biblememory.view_layer.Activities.BaseCallback;
-import nape.biblememory.DBTApi.DBTApi;
+import nape.biblememory.view_layer.adapters.VersesGridviewAdapter;
+import nape.biblememory.view_layer.activities.BaseCallback;
+import nape.biblememory.data_layer.dbt_api.DBTApi;
 import nape.biblememory.utils.UserPreferences;
 import nape.biblememory.R;
 import nape.biblememory.view_layer.fragments.interfaces.VerseFragmentCallback;

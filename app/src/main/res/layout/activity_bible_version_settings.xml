@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/greyBg"
     android:orientation="vertical"
-    tools:context=".view_layer.Activities.PrivacyPolicyActivity">
+    tools:context=".view_layer.activities.PrivacyPolicyActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

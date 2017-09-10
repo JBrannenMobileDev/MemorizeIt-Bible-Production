@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/greyBg"
-    tools:context=".view_layer.Activities.AddFriendActivity">
+    tools:context=".view_layer.activities.AddFriendActivity">
 
     <!-- TODO: Update blank fragment layout -->
 

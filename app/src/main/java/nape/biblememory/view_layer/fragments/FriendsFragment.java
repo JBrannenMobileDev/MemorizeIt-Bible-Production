@@ -19,13 +19,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import nape.biblememory.view_layer.Activities.AddFriendActivity;
-import nape.biblememory.view_layer.Activities.BaseCallback;
-import nape.biblememory.view_layer.Activities.FriendDetailsActivity;
-import nape.biblememory.Adapters.RecyclerViewAdapterFriends;
-import nape.biblememory.Models.User;
+import nape.biblememory.view_layer.activities.AddFriendActivity;
+import nape.biblememory.view_layer.activities.BaseCallback;
+import nape.biblememory.view_layer.activities.FriendDetailsActivity;
+import nape.biblememory.view_layer.adapters.RecyclerViewAdapterFriends;
+import nape.biblememory.models.User;
 import nape.biblememory.R;
-import nape.biblememory.data_store.DataStore;
+import nape.biblememory.data_layer.DataStore;
 
 /**
  * A simple {@link Fragment} subclass.

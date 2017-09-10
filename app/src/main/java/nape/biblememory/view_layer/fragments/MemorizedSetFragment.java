@@ -20,12 +20,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import nape.biblememory.Adapters.RecyclerViewAdapterMemorized;
-import nape.biblememory.view_layer.Activities.BaseCallback;
-import nape.biblememory.Models.BookGroup;
-import nape.biblememory.Models.ScriptureData;
-import nape.biblememory.Singletons.RecyclerViewSingleton;
-import nape.biblememory.data_store.DataStore;
+import nape.biblememory.view_layer.adapters.RecyclerViewAdapterMemorized;
+import nape.biblememory.view_layer.activities.BaseCallback;
+import nape.biblememory.models.BookGroup;
+import nape.biblememory.models.ScriptureData;
+import nape.biblememory.view_layer.RecyclerViewSingleton;
+import nape.biblememory.data_layer.DataStore;
 import nape.biblememory.utils.UserPreferences;
 import nape.biblememory.R;
 

@@ -1,6 +1,6 @@
 package nape.biblememory.view_layer.fragments.interfaces;
 
-import nape.biblememory.view_layer.Activities.BaseCallback;
+import nape.biblememory.view_layer.activities.BaseCallback;
 
 /**
  * Created by jbrannen on 8/4/17.

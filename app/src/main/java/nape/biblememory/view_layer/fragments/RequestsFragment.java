@@ -16,11 +16,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import nape.biblememory.view_layer.Activities.BaseCallback;
-import nape.biblememory.Adapters.RecyclerViewAdapterPendingRequests;
-import nape.biblememory.Models.User;
+import nape.biblememory.view_layer.activities.BaseCallback;
+import nape.biblememory.view_layer.adapters.RecyclerViewAdapterPendingRequests;
+import nape.biblememory.models.User;
 import nape.biblememory.R;
-import nape.biblememory.data_store.DataStore;
+import nape.biblememory.data_layer.DataStore;
 
 /**
  * A simple {@link Fragment} subclass.

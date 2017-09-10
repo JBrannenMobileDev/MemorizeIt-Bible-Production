@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".view_layer.Activities.UnlockQuizSettings"
+    tools:context=".view_layer.activities.UnlockQuizSettings"
     tools:showIn="@layout/fragment_unlock_quiz_settings">
 
 </RelativeLayout>

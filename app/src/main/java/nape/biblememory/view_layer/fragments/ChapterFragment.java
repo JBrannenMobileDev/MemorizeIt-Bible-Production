@@ -13,8 +13,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.ArrayList;
 import java.util.List;
 
-import nape.biblememory.Adapters.ChapterGridviewAdapter;
-import nape.biblememory.view_layer.Activities.BaseCallback;
+import nape.biblememory.view_layer.adapters.ChapterGridviewAdapter;
+import nape.biblememory.view_layer.activities.BaseCallback;
 import nape.biblememory.utils.UserPreferences;
 import nape.biblememory.R;
 

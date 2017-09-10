@@ -2,9 +2,9 @@
     <string name="app_name">MemorizeIt Bible</string>
 
     //UnlockActivity Strings
-    <string name="did_you_get_it">Did You Get It?</string>
+    <string name="did_you_get_it">Did you get it?</string>
     <string name="read_this_verse_once">Read this verse</string>
-    <string name="what_is_the_verse">What is this verse?</string>
+    <string name="what_is_the_verse">Complete this verse</string>
     <string name="where_is_the_verse">Where is this verse?</string>
     <string name="more">More Verses</string>
     <string name="done">Done</string>

@@ -18,13 +18,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import nape.biblememory.view_layer.Activities.BaseCallback;
-import nape.biblememory.view_layer.fragments.VersesFragment;
-import nape.biblememory.Models.ScriptureData;
-import nape.biblememory.Models.UserPreferencesModel;
 import nape.biblememory.R;
+import nape.biblememory.data_layer.DataStore;
+import nape.biblememory.models.MyVerse;
+import nape.biblememory.models.ScriptureData;
+import nape.biblememory.models.UserPreferencesModel;
 import nape.biblememory.utils.UserPreferences;
-import nape.biblememory.data_store.DataStore;
+import nape.biblememory.view_layer.activities.BaseCallback;
+import nape.biblememory.view_layer.fragments.MyVersesFragment;
 import tourguide.tourguide.ChainTourGuide;
 import tourguide.tourguide.Overlay;
 import tourguide.tourguide.Sequence;
@@ -43,12 +44,12 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     private BaseCallback<ScriptureData> itemSelectedCallback;
     private final OnStartDragListener mDragStartListener;
     private static Activity context;
-    private VersesFragment fragment;
+    private MyVersesFragment fragment;
     private UserPreferences mPrefs;
     private ChainTourGuide mTourGuideHandler;
 
     public RecyclerListAdapter(List<ScriptureData> dataset, Activity context, OnStartDragListener dragStartListener,
-                               VersesFragment fragment, BaseCallback<List<ScriptureData>> dataChangedCallback,
+                               MyVersesFragment fragment, BaseCallback<List<ScriptureData>> dataChangedCallback,
                                BaseCallback<ScriptureData> itemSelectedCallback) {
         mDragStartListener = dragStartListener;
         this.dataset.addAll(dataset);
@@ -58,8 +59,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         this.itemSelectedCallback = itemSelectedCallback;
         mPrefs = new UserPreferences();
     }
-
-
 
     private int calculateProgress(int memoryStage, int memorySubStage) {
         double progress;
@@ -106,13 +105,12 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     public void onBindViewHolder(final ItemViewHolder holder, final int position) {
         holder.verse.setText(dataset.get(position).getVerse());
         holder.verseLocation.setText(dataset.get(position).getVerseLocation());
-        if(position > 2){
-            holder.quizIcon.setVisibility(View.GONE);
-            holder.progressView.setVisibility(View.GONE);
-            holder.itemLayout.setBackgroundResource(R.color.greyBgLight);
-            holder.verseLocation.setTextColor(context.getResources().getColor(R.color.greyBgDark));
-            holder.verse.setTextColor(context.getResources().getColor(R.color.greyBgDark));
+        if(dataset.get(position).isGoldStar() == 0){
+            holder.quizIcon.setColorFilter(context.getResources().getColor(R.color.greyBgDark));
+            holder.progressView.setTextColor(context.getResources().getColor(R.color.greyBgDark));
+            holder.progressView.setText(String.valueOf(calculateProgress(dataset.get(position).getMemoryStage(), dataset.get(position).getMemorySubStage())) + "%");
         }else{
+            holder.progressView.setTextColor(context.getResources().getColor(R.color.colorProgressBg));
             holder.progressView.setVisibility(View.VISIBLE);
             holder.progressView.setText(String.valueOf(calculateProgress(dataset.get(position).getMemoryStage(), dataset.get(position).getMemorySubStage())) + "%");
             holder.quizIcon.setVisibility(View.VISIBLE);
@@ -169,7 +167,34 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         holder.quizIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fragment.showStarAlert();
+                if(!alread3Start()) {
+                    if (dataset.get(position).isGoldStar() == 1) {
+                        dataset.get(position).setGoldStar(0);
+                        holder.quizIcon.setColorFilter(context.getResources().getColor(R.color.greyBgDark));
+                        holder.progressView.setTextColor(context.getResources().getColor(R.color.greyBgDark));
+                        if (dataset.size() > 1) {
+                            if (dataset.size() == 2) {
+                                onItemMove(holder.getLayoutPosition(), 1);
+                            } else if (dataset.size() == 3) {
+                                onItemMove(holder.getLayoutPosition(), 2);
+                            } else {
+                                dataset.get(3).setGoldStar(0);
+                                onItemMove(holder.getLayoutPosition(), 3);
+                            }
+                        }
+                    } else {
+
+                        holder.progressView.setTextColor(context.getResources().getColor(R.color.colorProgressBg));
+                        dataset.get(position).setGoldStar(1);
+                        if(dataset.size() > 3) {
+                            dataset.get(2).setGoldStar(0);
+                        }
+                        holder.quizIcon.setColorFilter(context.getResources().getColor(R.color.gold));
+                        onItemMove(holder.getLayoutPosition(), 0);
+                    }
+                }  else{
+                    fragment.showStarAlert();
+                }
             }
         });
 
@@ -183,6 +208,18 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
                 return false;
             }
         });
+    }
+
+    private boolean alread3Start() {
+        int startCount = 0;
+        for(ScriptureData verse : dataset){
+            if(verse.isGoldStar() == 1){
+                startCount++;
+            }
+        }
+        if(startCount == 3)
+        return true;
+        return false;
     }
 
     @Override
@@ -219,10 +256,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         }else{
             notifyDataSetChanged();
         }
-    }
-
-    public void refreshDataSet() {
-        notifyDataSetChanged();
     }
 
     /**
@@ -272,9 +305,10 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
                 verseLocation.setTextColor(Color.argb(255,1,81,107));
                 verse.setTextColor(Color.argb(255,1,81,107));
             }else{
-                itemLayout.setBackgroundResource(R.color.greyBgLight);
-                verseLocation.setTextColor(context.getResources().getColor(R.color.greyBgDark));
-                verse.setTextColor(context.getResources().getColor(R.color.greyBgDark));
+                quizIcon.setColorFilter(context.getResources().getColor(R.color.greyBgDark));
+                itemLayout.setBackgroundResource(R.color.White);
+                verseLocation.setTextColor(Color.argb(255,1,81,107));
+                verse.setTextColor(Color.argb(255,1,81,107));
             }
             handleView.setColorFilter(context.getResources().getColor(R.color.greyBgDark));
 
