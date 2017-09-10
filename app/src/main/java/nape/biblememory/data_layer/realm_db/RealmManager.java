@@ -33,6 +33,9 @@ public class RealmManager {
     }
 
     public RealmResults<MyVerse> getVerses(){
+        if(realm.isClosed()){
+            realm = Realm.getDefaultInstance();
+        }
         return realm.where(MyVerse.class).findAll();
     }
 
@@ -45,6 +48,9 @@ public class RealmManager {
     }
 
     public void insertOrUpdateVerse(final MyVerse verse){
+        if(realm.isClosed()){
+            realm = Realm.getDefaultInstance();
+        }
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm bgRealm) {
@@ -85,6 +91,9 @@ public class RealmManager {
     }
 
     public void insertOrUpdateMyVersesWithScriptureData(final List<ScriptureData> verses){
+        if(realm.isClosed()){
+            realm = Realm.getDefaultInstance();
+        }
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm bgRealm) {
@@ -97,6 +106,9 @@ public class RealmManager {
     }
 
     public void insertOrUpdateUsers(final List<User> users){
+        if(realm.isClosed()){
+            realm = Realm.getDefaultInstance();
+        }
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm bgRealm) {
@@ -109,6 +121,9 @@ public class RealmManager {
     }
 
     public void insertOrUpdateNotifs(final List<Notification> notifications){
+        if(realm.isClosed()){
+            realm = Realm.getDefaultInstance();
+        }
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm bgRealm) {
@@ -154,6 +169,9 @@ public class RealmManager {
 
     public void nukeDb() {
         realm.close();
+        while(!realm.isClosed()){
+            realm.close();
+        }
         Realm.deleteRealm(Realm.getDefaultConfiguration());
         openRealm();
     }
