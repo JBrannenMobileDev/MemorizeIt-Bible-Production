@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
 import io.realm.Sort;
 import nape.biblememory.data_layer.firebase_db.FirebaseDb;
 import nape.biblememory.models.MyVerse;
@@ -22,8 +24,7 @@ public class MyVersesPresenter implements MyVersesPresenterInterface {
 
     private MyVersesFragmentInterface fragment;
     private Context context;
-    private List<MyVerse> myVersesRealm;
-    private List<MyVerse> myVerses;
+    private RealmResults<MyVerse> myVersesRealm;
     private List<MyVerse> listToUpdate;
     private Realm realm;
 
@@ -36,26 +37,46 @@ public class MyVersesPresenter implements MyVersesPresenterInterface {
     @Override
     public void fetchData() {
         myVersesRealm = realm.where(MyVerse.class).findAll().sort("listPosition", Sort.ASCENDING);
-        List<MyVerse> tempList = new ArrayList<>(myVersesRealm);
-        myVerses = new ArrayList<>();
-        for(int i = 0; i < tempList.size(); i++){
-            if(tempList.get(i).getGoldStar() == 1){
-                myVerses.add(tempList.get(i));
-                tempList.remove(i);
+        List<MyVerse> reOrderedVerses = new ArrayList<>();
+        for(int i = 0; i < myVersesRealm.size(); i++) {
+            if (myVersesRealm.get(i).getGoldStar() == 1) {
+                reOrderedVerses.add(myVersesRealm.get(i));
             }
         }
-        myVerses.addAll(tempList);
-        fragment.onReceivedRecyclerData(myVerses);
+        for(int i = 0; i < myVersesRealm.size(); i++) {
+            if (myVersesRealm.get(i).getGoldStar() == 0) {
+                reOrderedVerses.add(myVersesRealm.get(i));
+            }
+        }
+        fragment.onReceivedRecyclerData(reOrderedVerses);
     }
 
     @Override
     public void onDatasetChanged(List<MyVerse> response) {
         listToUpdate = response;
-        if(response != null) {
-            if (response.size() != myVersesRealm.size()) {
+        if(listToUpdate != null){
+            for(int i = 0; i < listToUpdate.size(); i++){
+                listToUpdate.get(i).setListPosition(i);
+            }
+            updateRealm();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        if(listToUpdate != null) {
+            for (int i = 0; i < listToUpdate.size(); i++) {
+                DataStore.getInstance().updateQuizVerse(myVersesRealm.get(i), listToUpdate.get(i), context.getApplicationContext());
+            }
+        }
+    }
+
+    private void updateRealm() {
+        if(listToUpdate != null) {
+            if (listToUpdate.size() != myVersesRealm.size()) {
                 for (final MyVerse verseToRemove : myVersesRealm) {
                     boolean deletVerse = true;
-                    for (MyVerse checkVerses : response) {
+                    for (MyVerse checkVerses : listToUpdate) {
                         if (verseToRemove.getVerseLocation().equalsIgnoreCase(checkVerses.getVerseLocation())) {
                             deletVerse = false;
                         }
@@ -76,7 +97,7 @@ public class MyVersesPresenter implements MyVersesPresenterInterface {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
-                    for(MyVerse verseToRemove : myVerses) {
+                    for(MyVerse verseToRemove : myVersesRealm) {
                         MyVerse realmVerse = realm.where(MyVerse.class).equalTo("verseLocation", verseToRemove.getVerseLocation()).findFirst();
                         realmVerse.deleteFromRealm();
                     }
@@ -85,16 +106,5 @@ public class MyVersesPresenter implements MyVersesPresenterInterface {
         }
         DataStore.getInstance().updateQuizVerseToRealm(listToUpdate);
     }
-
-    @Override
-    public void onStop() {
-        if(listToUpdate != null) {
-            for(int i = 0; i < listToUpdate.size(); i++){
-                listToUpdate.get(i).setListPosition(i);
-            }
-            for (int i = 0; i < listToUpdate.size(); i++) {
-                DataStore.getInstance().updateQuizVerse(myVersesRealm.get(i), listToUpdate.get(i), context.getApplicationContext());
-            }
-        }
-    }
 }
+

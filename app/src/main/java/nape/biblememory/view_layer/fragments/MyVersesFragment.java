@@ -37,7 +37,7 @@ public class MyVersesFragment extends Fragment implements OnStartDragListener, M
     private ItemTouchHelper mItemTouchHelper;
     private FirebaseAnalytics mFirebaseAnalytics;
     private MyVersesPresenterInterface presenter;
-    private BaseCallback<List<ScriptureData>> orderChangedCallback;
+    private BaseCallback<List<ScriptureData>> dataChangedCallback;
     private BaseCallback<ScriptureData> itemSelectedCallback;
     private View view;
     private RecyclerListAdapter adapter;
@@ -57,10 +57,6 @@ public class MyVersesFragment extends Fragment implements OnStartDragListener, M
         presenter.onStop();
     }
 
-    public void RefetchData() {
-        presenter.fetchData();
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,7 +68,7 @@ public class MyVersesFragment extends Fragment implements OnStartDragListener, M
     }
 
     private void initCallbacks() {
-        orderChangedCallback = new BaseCallback<List<ScriptureData>>() {
+        dataChangedCallback = new BaseCallback<List<ScriptureData>>() {
             @Override
             public void onResponse(List<ScriptureData> response) {
                 List<MyVerse> verseList = new ArrayList<>();
@@ -129,7 +125,7 @@ public class MyVersesFragment extends Fragment implements OnStartDragListener, M
             scripList.add(verse.toScriptureData());
         }
         adapter = new RecyclerListAdapter(scripList, getActivity(), this, this,
-                orderChangedCallback, itemSelectedCallback);
+                dataChangedCallback, itemSelectedCallback);
         RecyclerView recyclerView = (RecyclerView)view;
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);

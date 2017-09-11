@@ -20,7 +20,6 @@ import java.util.List;
 
 import nape.biblememory.R;
 import nape.biblememory.data_layer.DataStore;
-import nape.biblememory.models.MyVerse;
 import nape.biblememory.models.ScriptureData;
 import nape.biblememory.models.UserPreferencesModel;
 import nape.biblememory.utils.UserPreferences;
@@ -173,13 +172,12 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
                     holder.progressView.setTextColor(context.getResources().getColor(R.color.greyBgDark));
                     RecyclerListAdapter.this.dataChangedCallback.onResponse(dataset);
                 } else {
-                    if(alread3Start()) {
+                    if(alreadyThreeStars()) {
                         fragment.showStarAlert();
-                    }  else {
+                    } else {
                         holder.progressView.setTextColor(context.getResources().getColor(R.color.colorProgressBg));
                         dataset.get(position).setGoldStar(1);
                         holder.quizIcon.setColorFilter(context.getResources().getColor(R.color.gold));
-                        onItemMove(holder.getLayoutPosition(), 0);
                         RecyclerListAdapter.this.dataChangedCallback.onResponse(dataset);
                     }
                 }
@@ -198,7 +196,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         });
     }
 
-    private boolean alread3Start() {
+    private boolean alreadyThreeStars() {
         int startCount = 0;
         for(ScriptureData verse : dataset){
             if(verse.isGoldStar() == 1){
@@ -218,8 +216,12 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
-        Collections.swap(dataset, fromPosition, toPosition);
-        notifyItemMoved(fromPosition, toPosition);
+        if(fromPosition != toPosition) {
+            ScriptureData verseToMove = dataset.get(fromPosition);
+            dataset.remove(fromPosition);
+            dataset.add(toPosition, verseToMove);
+            notifyItemMoved(fromPosition, toPosition);
+        }
     }
 
     @Override

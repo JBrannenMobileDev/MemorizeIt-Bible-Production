@@ -309,6 +309,7 @@ public class DataStore {
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
+
                 for(MyVerse verse : quizVerses){
                     MyVerse realmVerse = realm.where(MyVerse.class).equalTo("verseLocation", verse.getVerseLocation()).findFirst();
                     if(realmVerse != null) {

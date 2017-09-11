@@ -47,6 +47,7 @@ import nape.biblememory.view_layer.fragments.ChapterFragment;
 import nape.biblememory.view_layer.fragments.dialogs.MyVersesEmptyAlertDialog;
 import nape.biblememory.view_layer.fragments.dialogs.NoInternetAlertDialog;
 import nape.biblememory.view_layer.fragments.dialogs.DeleteVerseAlertDialog;
+import nape.biblememory.view_layer.fragments.dialogs.NoStarsAlertDialog;
 import nape.biblememory.view_layer.fragments.dialogs.SelectVersionAlertDialog;
 import nape.biblememory.view_layer.fragments.VerseFragment;
 import nape.biblememory.managers.NetworkManager;
@@ -141,14 +142,16 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 mFirebaseAnalytics.logEvent("start_quiz_Fab_selected", null);
-                if(quizList != null) {
-                    if (quizList.size() > 0) {
+                if(quizList != null && quizList.size() > 0) {
+                    if (hasGoldStartVerses()) {
                         Intent myIntent = new Intent(getApplicationContext(), PhoneUnlockActivity.class);
                         myIntent.putExtra("moreVerses", true);
                         startActivity(myIntent);
                     } else {
-                        new MyVersesEmptyAlertDialog().show(getSupportFragmentManager(), null);
+                        new NoStarsAlertDialog().show(getSupportFragmentManager(), null);
                     }
+                }else{
+                    new MyVersesEmptyAlertDialog().show(getSupportFragmentManager(), null);
                 }
             }
         });
@@ -320,6 +323,15 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         DataStore.getInstance().updateUserData(mPrefs.getUserId(getApplicationContext()), getApplicationContext());
     }
 
+    private boolean hasGoldStartVerses() {
+        for(MyVerse verse : quizList){
+            if(verse.getGoldStar() == 1){
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void initData() {
         realm = Realm.getDefaultInstance();
         quizList = realm.where(MyVerse.class).findAll();
@@ -346,8 +358,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                         mPrefs.saveRandomQuizVerseLocation("", getApplicationContext());
                         mPrefs.saveRandomQuizVerseLastSeen("", getApplicationContext());
                         mPrefs.saveRandomQuizVerseVersion("", getApplicationContext());
-                        mPrefs.saveRandomQuizVerseMemoryStage(response.getMemoryStage(), getApplicationContext());
-                        mPrefs.saveRandomQuizVerseMemorySubStage(response.getMemorySubStage(), getApplicationContext());
                     }
                 }
 
