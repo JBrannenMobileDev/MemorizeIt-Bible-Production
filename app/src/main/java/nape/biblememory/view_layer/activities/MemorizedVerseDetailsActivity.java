@@ -1,28 +1,33 @@
 package nape.biblememory.view_layer.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import nape.biblememory.data_layer.DataStore;
-import nape.biblememory.models.MyVerse;
-import nape.biblememory.view_layer.fragments.dialogs.DeleteVerseAlertDialog;
-import nape.biblememory.models.ScriptureData;
+import io.realm.Realm;
+import io.realm.RealmResults;
 import nape.biblememory.R;
+import nape.biblememory.data_layer.DataStore;
+import nape.biblememory.models.MemorizedVerse;
+import nape.biblememory.utils.UserPreferences;
+import nape.biblememory.view_layer.fragments.dialogs.DeleteVerseAlertDialog;
 
-public class VerseDetailsActivity extends AppCompatActivity implements DeleteVerseAlertDialog.YesSelected{
+public class MemorizedVerseDetailsActivity extends AppCompatActivity implements DeleteVerseAlertDialog.YesSelected{
 
     @BindView(R.id.verse_details_verse)TextView verseText;
     @BindView(R.id.verse_details_last_seen_tv)TextView lastSeen;
     @BindView(R.id.verse_details_progress_tv)TextView progressTv;
 
-    private ScriptureData verse;
+    private MemorizedVerse verse;
+    private String verseLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +35,12 @@ public class VerseDetailsActivity extends AppCompatActivity implements DeleteVer
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verse_details);
         ButterKnife.bind(this);
-        initView((ScriptureData)getIntent().getParcelableExtra("verse"));
+        verseLocation = getIntent().getStringExtra("verseLocation");
+        Realm realm = Realm.getDefaultInstance();
+        MemorizedVerse verses = realm.where(MemorizedVerse.class).equalTo("verseLocation", verseLocation).findFirst();
+        initView(verses);
+        UserPreferences mPrefs = new UserPreferences();
+        mPrefs.setComingFromMemorizedDetails(true, getApplicationContext());
     }
 
     @Override
@@ -67,7 +77,7 @@ public class VerseDetailsActivity extends AppCompatActivity implements DeleteVer
             i.setType("text/plain");
             i.putExtra(Intent.EXTRA_SUBJECT, verse.getVerseLocation() + "  " + "Memorize It - Bible");
             String sAux = "\n" +verse.getVerseLocation() + "  " + verse.getVerse() + "\n\n";
-            sAux = sAux + "Hey! I just memorized " + verse.getVerseLocation() +  " using this app.  It gives me a quiz every time I open my phone.\n\n";
+            sAux = sAux + "Hey! I just memorized this verse using this app.  It gives me a quiz every time i open my phone.\n\n";
             sAux = sAux + "https://play.google.com/store/apps/details?id=nape.biblememory&hl=en \n\n";
             i.putExtra(Intent.EXTRA_TEXT, sAux);
             startActivity(Intent.createChooser(i, "choose one"));
@@ -82,11 +92,15 @@ public class VerseDetailsActivity extends AppCompatActivity implements DeleteVer
         overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_right);
     }
 
-    private void initView(ScriptureData verse) {
+    private void initView(MemorizedVerse verse) {
         this.verse = verse;
         verseText.setText(verse.getVerse());
         lastSeen.setText(verse.getLastSeenDate());
-        progressTv.setText(calculateProgress(verse.getMemoryStage(), verse.getMemorySubStage()) + "%");
+        if(verse.isForgotten()) {
+            progressTv.setText(calculateProgress(verse.getMemoryStage(), verse.getMemorySubStage()) + "%");
+        }else{
+            progressTv.setText("100%");
+        }
         setTitle(Html.fromHtml("<h2>" +verse.getVerseLocation()+ "</h2>"));
     }
 
@@ -124,9 +138,12 @@ public class VerseDetailsActivity extends AppCompatActivity implements DeleteVer
         return (int)progress;
     }
 
+
     @Override
     public void onDeleteVerse(String verseLocation) {
-        DataStore.getInstance().deleteQuizVerse(new MyVerse("", verseLocation), getApplicationContext());
+        MemorizedVerse temp = new MemorizedVerse();
+        temp.setVerseLocation(verseLocation);
+        DataStore.getInstance().deleteMemorizedVerse(temp, getApplicationContext());
         finish();
     }
 }

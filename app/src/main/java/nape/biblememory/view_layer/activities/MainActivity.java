@@ -38,6 +38,7 @@ import io.realm.RealmChangeListener;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 import nape.biblememory.data_layer.realm_db.RealmManager;
+import nape.biblememory.models.MemorizedVerse;
 import nape.biblememory.models.MyVerse;
 import nape.biblememory.view_layer.adapters.ViewPagerAdapter;
 import nape.biblememory.view_layer.adapters.ViewPagerAdapterVerseSelector;
@@ -340,35 +341,9 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     @Override
     public void onStop(){
         super.onStop();
+        mPrefs.setComingFromMemorizedDetails(false, getApplicationContext());
         if(snackbar != null)
             snackbar.dismiss();
-        if(quizList.size() > 0) {
-            BaseCallback<MyVerse> randomVerseCallback = new BaseCallback<MyVerse>() {
-                @Override
-                public void onResponse(MyVerse response) {
-                    if(response != null) {
-                        mPrefs.saveRandomQuizVerse(response.getVerse(), getApplicationContext());
-                        mPrefs.saveRandomQuizVerseLocation(response.getVerseLocation(), getApplicationContext());
-                        mPrefs.saveRandomQuizVerseLastSeen(response.getLastSeenDate(), getApplicationContext());
-                        mPrefs.saveRandomQuizVerseVersion(response.getVersionCode(), getApplicationContext());
-                        mPrefs.saveRandomQuizVerseMemoryStage(response.getMemoryStage(), getApplicationContext());
-                        mPrefs.saveRandomQuizVerseMemorySubStage(response.getMemorySubStage(), getApplicationContext());
-                    }else{
-                        mPrefs.saveRandomQuizVerse("", getApplicationContext());
-                        mPrefs.saveRandomQuizVerseLocation("", getApplicationContext());
-                        mPrefs.saveRandomQuizVerseLastSeen("", getApplicationContext());
-                        mPrefs.saveRandomQuizVerseVersion("", getApplicationContext());
-                    }
-                }
-
-                @Override
-                public void onFailure(Exception e) {
-
-                }
-            };
-            DataStore.getInstance().getRandomQuizVerse(randomVerseCallback);
-
-        }
     }
 
     private void setNavIconColors() {
@@ -396,9 +371,9 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                 .findItem(R.id.nav_support_the_dev)
                 .getIcon()
                 .setColorFilter(getResources().getColor(R.color.greyIcon), PorterDuff.Mode.SRC_IN);
-        BaseCallback<List<ScriptureData>> memorizedVersesCallback = new BaseCallback<List<ScriptureData>>() {
+        BaseCallback<List<MemorizedVerse>> memorizedVersesCallback = new BaseCallback<List<MemorizedVerse>>() {
             @Override
-            public void onResponse(List<ScriptureData> response) {
+            public void onResponse(List<MemorizedVerse> response) {
                 if(response != null && response.size() > 5){
                     navigationView.getMenu()
                             .findItem(R.id.nav_support_the_dev)
@@ -446,6 +421,12 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         super.onResume();
         DataStore.getInstance().getFriendRequests(getApplicationContext());
         setSlidingTabViewMain();
+        if(pagerMain != null){
+            if(mPrefs.isComingFromMemorized(getApplicationContext())){
+                pagerMain.setCurrentItem(1);
+                mPrefs.setComingFromMemorizedDetails(false, getApplicationContext());
+            }
+        }
     }
 
 
@@ -808,7 +789,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         if(!comingFromNewVerses) {
             onBackPressed();
         }
-        adapterMain.refreshrecyclerViews();
     }
 
     @Override

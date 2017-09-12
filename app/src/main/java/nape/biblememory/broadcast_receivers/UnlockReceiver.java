@@ -14,8 +14,10 @@ import java.util.Date;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
+import nape.biblememory.data_layer.DataStore;
 import nape.biblememory.models.MyVerse;
 import nape.biblememory.models.ScriptureData;
+import nape.biblememory.view_layer.activities.BaseCallback;
 import nape.biblememory.view_layer.activities.PhoneUnlockActivity;
 import nape.biblememory.utils.UserPreferences;
 
@@ -25,10 +27,10 @@ public class UnlockReceiver extends BroadcastReceiver {
     private UserPreferences mPrefs;
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, Intent intent) {
         mPrefs = new UserPreferences();
         Realm.init(context.getApplicationContext());
-        RealmConfiguration config = new RealmConfiguration.Builder().name("myrealm.realm").build();
+        RealmConfiguration config = new RealmConfiguration.Builder().name("myrealm4.realm").schemaVersion(4).deleteRealmIfMigrationNeeded().build();
         Realm.setDefaultConfiguration(config);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -40,113 +42,115 @@ public class UnlockReceiver extends BroadcastReceiver {
                         mPrefs.setIsIntentFromPhoneCall(false, context.getApplicationContext());
                         Log.d(TAG, "UnlockReceiver - Intent from phone call set to false in mPrefs.");
                     } else {
-                        Intent s = new Intent(context.getApplicationContext(), PhoneUnlockActivity.class);
-                        s.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        MyVerse myVerse = new MyVerse();
-                        myVerse.setVerse(mPrefs.getRandomQuizVerse(context));
-                        myVerse.setVerseLocation(mPrefs.getRandomQuizVerseLocation(context));
-                        myVerse.setVersionCode(mPrefs.getRandomQuizVerseVersion(context));
-                        myVerse.setLastSeenDate(mPrefs.getRandomQuizVerseLastSeen(context));
-                        myVerse.setMemoryStage(mPrefs.getRandomQuizVerseMemoryStage(context));
-                        myVerse.setMemorySubStage(mPrefs.getRandomQuizVerseMemorySubStage(context));
-                        s.putExtra("verse", myVerse);
+                        BaseCallback<MyVerse> myVerseCallback = new BaseCallback<MyVerse>() {
+                            @Override
+                            public void onResponse(MyVerse response) {
+                                Intent s = new Intent(context.getApplicationContext(), PhoneUnlockActivity.class);
+                                s.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                if (response != null && mPrefs.isStartQuizWhenPhoneUnlock(context.getApplicationContext())) {
+                                    Calendar calendar = Calendar.getInstance();
+                                    boolean startQuiz = true;
+                                    int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+                                    if (dayOfWeek == Calendar.MONDAY) {
+                                        if (!mPrefs.showQuizOnMonday(context.getApplicationContext()) && mPrefs.showQuizTimeOnMondayChecked(context.getApplicationContext())) {
+                                            if (calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeMonday(context.getApplicationContext()))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeMonday(context.getApplicationContext())))) {
+                                                startQuiz = false;
+                                            } else {
+                                                startQuiz = true;
+                                            }
+                                        } else if (!mPrefs.showQuizOnMonday(context) && !mPrefs.showQuizTimeOnMondayChecked(context.getApplicationContext())) {
+                                            startQuiz = false;
+                                        } else if (mPrefs.showQuizOnMonday(context.getApplicationContext())) {
+                                            startQuiz = true;
+                                        }
+                                    } else if (dayOfWeek == Calendar.TUESDAY) {
+                                        if (!mPrefs.showQuizOnTuesday(context) && mPrefs.showQuizTimeOnTuesdayChecked(context.getApplicationContext())) {
+                                            if (calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeTuesday(context.getApplicationContext()))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeTuesday(context.getApplicationContext())))) {
+                                                startQuiz = false;
+                                            } else {
+                                                startQuiz = true;
+                                            }
+                                        } else if (!mPrefs.showQuizOnTuesday(context.getApplicationContext()) && !mPrefs.showQuizTimeOnTuesdayChecked(context.getApplicationContext())) {
+                                            startQuiz = false;
+                                        } else if (mPrefs.showQuizOnTuesday(context.getApplicationContext())) {
+                                            startQuiz = true;
+                                        }
+                                    } else if (dayOfWeek == Calendar.WEDNESDAY) {
+                                        if (!mPrefs.showQuizOnWednesday(context.getApplicationContext()) && mPrefs.showQuizTimeOnWednesdayChecked(context.getApplicationContext())) {
+                                            if (calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeWednesday(context.getApplicationContext()))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeWednesday(context.getApplicationContext())))) {
+                                                startQuiz = false;
+                                            } else {
+                                                startQuiz = true;
+                                            }
+                                        } else if (!mPrefs.showQuizOnWednesday(context.getApplicationContext()) && !mPrefs.showQuizTimeOnWednesdayChecked(context.getApplicationContext())) {
+                                            startQuiz = false;
+                                        } else if (mPrefs.showQuizOnWednesday(context.getApplicationContext())) {
+                                            startQuiz = true;
+                                        }
+                                    } else if (dayOfWeek == Calendar.THURSDAY) {
+                                        if (!mPrefs.showQuizOnThursday(context.getApplicationContext()) && mPrefs.showQuizTimeOnThursdayChecked(context.getApplicationContext())) {
+                                            if (calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeThursday(context.getApplicationContext()))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeThursday(context.getApplicationContext())))) {
+                                                startQuiz = false;
+                                            } else {
+                                                startQuiz = true;
+                                            }
+                                        } else if (!mPrefs.showQuizOnThursday(context.getApplicationContext()) && !mPrefs.showQuizTimeOnThursdayChecked(context.getApplicationContext())) {
+                                            startQuiz = false;
+                                        } else if (mPrefs.showQuizOnThursday(context.getApplicationContext())) {
+                                            startQuiz = true;
+                                        }
+                                    } else if (dayOfWeek == Calendar.FRIDAY) {
+                                        if (!mPrefs.showQuizOnFriday(context.getApplicationContext()) && mPrefs.showQuizTimeOnFridayChecked(context.getApplicationContext())) {
+                                            if (calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeFriday(context.getApplicationContext()))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeFriday(context.getApplicationContext())))) {
+                                                startQuiz = false;
+                                            } else {
+                                                startQuiz = true;
+                                            }
+                                        } else if (!mPrefs.showQuizOnFriday(context.getApplicationContext()) && !mPrefs.showQuizTimeOnFridayChecked(context.getApplicationContext())) {
+                                            startQuiz = false;
+                                        } else if (mPrefs.showQuizOnFriday(context.getApplicationContext())) {
+                                            startQuiz = true;
+                                        }
+                                    } else if (dayOfWeek == Calendar.SATURDAY) {
+                                        if (!mPrefs.showQuizOnSaturday(context.getApplicationContext()) && mPrefs.showQuizTimeOnSaturdayChecked(context.getApplicationContext())) {
+                                            if (calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeSaturday(context.getApplicationContext()))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeSaturday(context.getApplicationContext())))) {
+                                                startQuiz = false;
+                                            } else {
+                                                startQuiz = true;
+                                            }
+                                        } else if (!mPrefs.showQuizOnSaturday(context.getApplicationContext()) && !mPrefs.showQuizTimeOnSaturdayChecked(context.getApplicationContext())) {
+                                            startQuiz = false;
+                                        } else if (mPrefs.showQuizOnSaturday(context.getApplicationContext())) {
+                                            startQuiz = true;
+                                        }
+                                    } else if (dayOfWeek == Calendar.SUNDAY) {
+                                        if (!mPrefs.showQuizOnSunday(context.getApplicationContext()) && mPrefs.showQuizTimeOnSundayChecked(context.getApplicationContext())) {
+                                            if (calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeSunday(context.getApplicationContext()))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeSunday(context.getApplicationContext())))) {
+                                                startQuiz = false;
+                                            } else {
+                                                startQuiz = true;
+                                            }
+                                        } else if (!mPrefs.showQuizOnSunday(context.getApplicationContext()) && !mPrefs.showQuizTimeOnSundayChecked(context.getApplicationContext())) {
+                                            startQuiz = false;
+                                        } else if (mPrefs.showQuizOnSunday(context.getApplicationContext())) {
+                                            startQuiz = true;
+                                        }
+                                    }
 
-                        if (!myVerse.getVerse().equalsIgnoreCase("") && mPrefs.isStartQuizWhenPhoneUnlock(context.getApplicationContext())) {
-                            Calendar calendar = Calendar.getInstance();
-                            boolean startQuiz = true;
-                            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-                            if (dayOfWeek == Calendar.MONDAY) {
-                                if (!mPrefs.showQuizOnMonday(context.getApplicationContext()) && mPrefs.showQuizTimeOnMondayChecked(context.getApplicationContext())) {
-                                    if (calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeMonday(context.getApplicationContext()))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeMonday(context.getApplicationContext())))) {
-                                        startQuiz = false;
-                                    } else {
-                                        startQuiz = true;
+                                    if (startQuiz) {
+                                        Log.d(TAG, "UnlockReceiver - Unlock activity has been launched.");
+                                        context.getApplicationContext().startActivity(s);
                                     }
-                                } else if (!mPrefs.showQuizOnMonday(context) && !mPrefs.showQuizTimeOnMondayChecked(context.getApplicationContext())) {
-                                    startQuiz = false;
-                                } else if (mPrefs.showQuizOnMonday(context.getApplicationContext())) {
-                                    startQuiz = true;
-                                }
-                            } else if (dayOfWeek == Calendar.TUESDAY) {
-                                if (!mPrefs.showQuizOnTuesday(context) && mPrefs.showQuizTimeOnTuesdayChecked(context.getApplicationContext())) {
-                                    if (calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeTuesday(context.getApplicationContext()))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeTuesday(context.getApplicationContext())))) {
-                                        startQuiz = false;
-                                    } else {
-                                        startQuiz = true;
-                                    }
-                                } else if (!mPrefs.showQuizOnTuesday(context.getApplicationContext()) && !mPrefs.showQuizTimeOnTuesdayChecked(context.getApplicationContext())) {
-                                    startQuiz = false;
-                                } else if (mPrefs.showQuizOnTuesday(context.getApplicationContext())) {
-                                    startQuiz = true;
-                                }
-                            } else if (dayOfWeek == Calendar.WEDNESDAY) {
-                                if (!mPrefs.showQuizOnWednesday(context.getApplicationContext()) && mPrefs.showQuizTimeOnWednesdayChecked(context.getApplicationContext())) {
-                                    if (calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeWednesday(context.getApplicationContext()))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeWednesday(context.getApplicationContext())))) {
-                                        startQuiz = false;
-                                    } else {
-                                        startQuiz = true;
-                                    }
-                                } else if (!mPrefs.showQuizOnWednesday(context.getApplicationContext()) && !mPrefs.showQuizTimeOnWednesdayChecked(context.getApplicationContext())) {
-                                    startQuiz = false;
-                                } else if (mPrefs.showQuizOnWednesday(context.getApplicationContext())) {
-                                    startQuiz = true;
-                                }
-                            } else if (dayOfWeek == Calendar.THURSDAY) {
-                                if (!mPrefs.showQuizOnThursday(context.getApplicationContext()) && mPrefs.showQuizTimeOnThursdayChecked(context.getApplicationContext())) {
-                                    if (calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeThursday(context.getApplicationContext()))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeThursday(context.getApplicationContext())))) {
-                                        startQuiz = false;
-                                    } else {
-                                        startQuiz = true;
-                                    }
-                                } else if (!mPrefs.showQuizOnThursday(context.getApplicationContext()) && !mPrefs.showQuizTimeOnThursdayChecked(context.getApplicationContext())) {
-                                    startQuiz = false;
-                                } else if (mPrefs.showQuizOnThursday(context.getApplicationContext())) {
-                                    startQuiz = true;
-                                }
-                            } else if (dayOfWeek == Calendar.FRIDAY) {
-                                if (!mPrefs.showQuizOnFriday(context.getApplicationContext()) && mPrefs.showQuizTimeOnFridayChecked(context.getApplicationContext())) {
-                                    if (calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeFriday(context.getApplicationContext()))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeFriday(context.getApplicationContext())))) {
-                                        startQuiz = false;
-                                    } else {
-                                        startQuiz = true;
-                                    }
-                                } else if (!mPrefs.showQuizOnFriday(context.getApplicationContext()) && !mPrefs.showQuizTimeOnFridayChecked(context.getApplicationContext())) {
-                                    startQuiz = false;
-                                } else if (mPrefs.showQuizOnFriday(context.getApplicationContext())) {
-                                    startQuiz = true;
-                                }
-                            } else if (dayOfWeek == Calendar.SATURDAY) {
-                                if (!mPrefs.showQuizOnSaturday(context.getApplicationContext()) && mPrefs.showQuizTimeOnSaturdayChecked(context.getApplicationContext())) {
-                                    if (calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeSaturday(context.getApplicationContext()))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeSaturday(context.getApplicationContext())))) {
-                                        startQuiz = false;
-                                    } else {
-                                        startQuiz = true;
-                                    }
-                                } else if (!mPrefs.showQuizOnSaturday(context.getApplicationContext()) && !mPrefs.showQuizTimeOnSaturdayChecked(context.getApplicationContext())) {
-                                    startQuiz = false;
-                                } else if (mPrefs.showQuizOnSaturday(context.getApplicationContext())) {
-                                    startQuiz = true;
-                                }
-                            } else if (dayOfWeek == Calendar.SUNDAY) {
-                                if (!mPrefs.showQuizOnSunday(context.getApplicationContext()) && mPrefs.showQuizTimeOnSundayChecked(context.getApplicationContext())) {
-                                    if (calendar.getTime().before(new Date(mPrefs.getSettingsEndTimeSunday(context.getApplicationContext()))) && calendar.getTime().after(new Date(mPrefs.getSettingsStartTimeSunday(context.getApplicationContext())))) {
-                                        startQuiz = false;
-                                    } else {
-                                        startQuiz = true;
-                                    }
-                                } else if (!mPrefs.showQuizOnSunday(context.getApplicationContext()) && !mPrefs.showQuizTimeOnSundayChecked(context.getApplicationContext())) {
-                                    startQuiz = false;
-                                } else if (mPrefs.showQuizOnSunday(context.getApplicationContext())) {
-                                    startQuiz = true;
+
                                 }
                             }
 
-                            if (startQuiz) {
-                                Log.d(TAG, "UnlockReceiver - Unlock activity has been launched.");
-                                context.getApplicationContext().startActivity(s);
-                            }
+                            @Override
+                            public void onFailure(Exception e) {
 
-                        }
+                            }
+                        };
+                        DataStore.getInstance().getRandomQuizVerse(myVerseCallback);
                     }
                 } else if (intent.getAction().equals(Intent.ACTION_ANSWER)) {
                     String stateStr = intent.getStringExtra(TelephonyManager.EXTRA_STATE);

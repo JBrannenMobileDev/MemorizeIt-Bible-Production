@@ -70,4 +70,5 @@ public class UserPreferenceConstants {
     public static final String RANDOM_VERSE_VERSION = "random_verse_version";
     public static final String RANDOM_VERSE_MEMORY_STAGE = "random_verse_memory_stage";
     public static final String RANDOM_VERSE_MEMORY_SUB_STAGE = "random_verse_memory_sub_stage";
+    public static final String COMING_FROM_MEMORIZED = "coming_from_memorized";
 }

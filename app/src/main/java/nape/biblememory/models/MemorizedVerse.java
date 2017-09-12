@@ -1,13 +1,17 @@
 package nape.biblememory.models;
 
-
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-public class ScriptureData implements Parcelable, Comparable<ScriptureData>{
+/**
+ * Created by jbrannen on 9/11/17.
+ */
+public class MemorizedVerse extends RealmObject implements Parcelable {
     private String verse;
+    @PrimaryKey
     private String verseLocation;
     private String startDate;
     private String remeberedDate;
@@ -25,8 +29,9 @@ public class ScriptureData implements Parcelable, Comparable<ScriptureData>{
     private String versionCode;
     private int listPosition;
     private int goldStar;
+    private boolean forgotten;
 
-    protected ScriptureData(Parcel in) {
+    protected MemorizedVerse(Parcel in) {
         verse = in.readString();
         verseLocation = in.readString();
         startDate = in.readString();
@@ -45,12 +50,44 @@ public class ScriptureData implements Parcelable, Comparable<ScriptureData>{
         versionCode = in.readString();
         listPosition = in.readInt();
         goldStar = in.readInt();
+        forgotten = in.readInt() != 0;
     }
 
-    public ScriptureData(){
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(verse);
+        dest.writeString(verseLocation);
+        dest.writeString(startDate);
+        dest.writeString(remeberedDate);
+        dest.writeString(memorizedDate);
+        dest.writeString(lastSeenDate);
+        dest.writeInt(primary_key_id);
+        dest.writeInt(correctCount);
+        dest.writeInt(viewedCount);
+        dest.writeInt(memoryStage);
+        dest.writeInt(memorySubStage);
+        dest.writeString(bookName);
+        dest.writeString(chapter);
+        dest.writeLong(numOfVersesInChapter);
+        dest.writeString(verseNumber);
+        dest.writeString(versionCode);
+        dest.writeInt(listPosition);
+        dest.writeInt(goldStar);
+        dest.writeInt(forgotten ? 1:0);
     }
 
-    public int isGoldStar() {
+    public MemorizedVerse(){
+    }
+
+    public boolean isForgotten() {
+        return forgotten;
+    }
+
+    public void setForgotten(boolean forgotten) {
+        this.forgotten = forgotten;
+    }
+
+    public int getGoldStar() {
         return goldStar;
     }
 
@@ -66,15 +103,15 @@ public class ScriptureData implements Parcelable, Comparable<ScriptureData>{
         this.listPosition = listPosition;
     }
 
-    public static final Creator<ScriptureData> CREATOR = new Creator<ScriptureData>() {
+    public static final Creator<MyVerse> CREATOR = new Creator<MyVerse>() {
         @Override
-        public ScriptureData createFromParcel(Parcel in) {
-            return new ScriptureData(in);
+        public MyVerse createFromParcel(Parcel in) {
+            return new MyVerse(in);
         }
 
         @Override
-        public ScriptureData[] newArray(int size) {
-            return new ScriptureData[size];
+        public MyVerse[] newArray(int size) {
+            return new MyVerse[size];
         }
     };
 
@@ -94,7 +131,7 @@ public class ScriptureData implements Parcelable, Comparable<ScriptureData>{
         this.numOfVersesInChapter = numOfVersesInChapter;
     }
 
-    public ScriptureData(String verse, String verseLocation) {
+    public MemorizedVerse(String verse, String verseLocation) {
         setVerse(verse);
         setVerseLocation(verseLocation);
     }
@@ -216,29 +253,31 @@ public class ScriptureData implements Parcelable, Comparable<ScriptureData>{
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(verse);
-        dest.writeString(verseLocation);
-        dest.writeString(startDate);
-        dest.writeString(remeberedDate);
-        dest.writeString(memorizedDate);
-        dest.writeString(lastSeenDate);
-        dest.writeInt(primary_key_id);
-        dest.writeInt(correctCount);
-        dest.writeInt(viewedCount);
-        dest.writeInt(memoryStage);
-        dest.writeInt(memorySubStage);
-        dest.writeString(bookName);
-        dest.writeString(chapter);
-        dest.writeLong(numOfVersesInChapter);
-        dest.writeString(verseNumber);
-        dest.writeString(versionCode);
-        dest.writeInt(listPosition);
-        dest.writeInt(goldStar);
+
+
+    public ScriptureData toScriptureData() {
+        ScriptureData myVerse = new ScriptureData();
+        myVerse.setVerse(verse);
+        myVerse.setVersionCode(versionCode);
+        myVerse.setVerseLocation(verseLocation);
+        myVerse.setMemoryStage(memoryStage);
+        myVerse.setBookName(bookName);
+        myVerse.setChapter(chapter);
+        myVerse.setCorrectCount(correctCount);
+        myVerse.setLastSeenDate(lastSeenDate);
+        myVerse.setMemorizedDate(memorizedDate);
+        myVerse.setMemorySubStage(memorySubStage);
+        myVerse.setNumOfVersesInChapter(numOfVersesInChapter);
+        myVerse.setPrimary_key_id(primary_key_id);
+        myVerse.setRemeberedDate(remeberedDate);
+        myVerse.setStartDate(startDate);
+        myVerse.setViewedCount(viewedCount);
+        myVerse.setListPosition(listPosition);
+        myVerse.setGoldStar(goldStar);
+        return myVerse;
     }
 
-    public MyVerse toMyVerse() {
+    public MyVerse toMyVerseData() {
         MyVerse myVerse = new MyVerse();
         myVerse.setVerse(verse);
         myVerse.setVersionCode(versionCode);
@@ -258,32 +297,5 @@ public class ScriptureData implements Parcelable, Comparable<ScriptureData>{
         myVerse.setListPosition(listPosition);
         myVerse.setGoldStar(goldStar);
         return myVerse;
-    }
-
-    public MemorizedVerse toMemorizedVerseData() {
-        MemorizedVerse myVerse = new MemorizedVerse();
-        myVerse.setVerse(verse);
-        myVerse.setVersionCode(versionCode);
-        myVerse.setVerseLocation(verseLocation);
-        myVerse.setMemoryStage(memoryStage);
-        myVerse.setBookName(bookName);
-        myVerse.setChapter(chapter);
-        myVerse.setCorrectCount(correctCount);
-        myVerse.setLastSeenDate(lastSeenDate);
-        myVerse.setMemorizedDate(memorizedDate);
-        myVerse.setMemorySubStage(memorySubStage);
-        myVerse.setNumOfVersesInChapter(numOfVersesInChapter);
-        myVerse.setPrimary_key_id(primary_key_id);
-        myVerse.setRemeberedDate(remeberedDate);
-        myVerse.setStartDate(startDate);
-        myVerse.setViewedCount(viewedCount);
-        myVerse.setListPosition(listPosition);
-        myVerse.setGoldStar(goldStar);
-        return myVerse;
-    }
-
-    @Override
-    public int compareTo(@NonNull ScriptureData o) {
-        return (listPosition - o.getListPosition());
     }
 }

@@ -97,6 +97,9 @@
         <activity android:name=".view_layer.activities.VerseDetailsActivity"
             android:parentActivityName=".view_layer.activities.MainActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".view_layer.activities.MemorizedVerseDetailsActivity"
+            android:parentActivityName=".view_layer.activities.MainActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

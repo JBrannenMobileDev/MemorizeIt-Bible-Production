@@ -35,7 +35,7 @@ public class VerseMemorizedAlertDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final boolean callFinish = getArguments().getBoolean("callOnFinish", false);
+        final boolean callFinish = getArguments().getBoolean("callOnFinish", true);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Verse Memorized!");
         builder.setMessage("Good job! To view or review your memorized verses, please visit the Memorized page. ");

@@ -23,7 +23,7 @@ import nape.biblememory.view_layer.activities.BaseCallback;
 import nape.biblememory.view_layer.activities.VerseDetailsActivity;
 import nape.biblememory.view_layer.fragments.dialogs.StarAlertDialog;
 import nape.biblememory.view_layer.material_recyclerview.OnStartDragListener;
-import nape.biblememory.view_layer.material_recyclerview.RecyclerListAdapter;
+import nape.biblememory.view_layer.material_recyclerview.RecyclerListAdapterMyVerses;
 import nape.biblememory.view_layer.material_recyclerview.SimpleItemTouchHelperCallback;
 import nape.biblememory.view_layer.fragments.interfaces.MyVersesFragmentInterface;
 import nape.biblememory.view_layer.fragments.interfaces.MyVersesPresenterInterface;
@@ -40,7 +40,7 @@ public class MyVersesFragment extends Fragment implements OnStartDragListener, M
     private BaseCallback<List<ScriptureData>> dataChangedCallback;
     private BaseCallback<ScriptureData> itemSelectedCallback;
     private View view;
-    private RecyclerListAdapter adapter;
+    private RecyclerListAdapterMyVerses adapter;
 
     public MyVersesFragment() {
     }
@@ -51,10 +51,15 @@ public class MyVersesFragment extends Fragment implements OnStartDragListener, M
         presenter.fetchData();
     }
 
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        presenter.onStop();
+    }
     @Override
     public void onStop(){
         super.onStop();
-        presenter.onStop();
     }
 
     @Nullable
@@ -124,7 +129,7 @@ public class MyVersesFragment extends Fragment implements OnStartDragListener, M
         for(MyVerse verse : myVerses){
             scripList.add(verse.toScriptureData());
         }
-        adapter = new RecyclerListAdapter(scripList, getActivity(), this, this,
+        adapter = new RecyclerListAdapterMyVerses(scripList, getActivity(), this, this,
                 dataChangedCallback, itemSelectedCallback);
         RecyclerView recyclerView = (RecyclerView)view;
         recyclerView.setHasFixedSize(true);

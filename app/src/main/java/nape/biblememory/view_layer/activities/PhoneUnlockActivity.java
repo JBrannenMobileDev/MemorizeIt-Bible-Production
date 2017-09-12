@@ -95,7 +95,6 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
         hintLayout = (FrameLayout) findViewById(R.id.hint_fab_frame);
         bibleVersionTv = (TextView) findViewById(R.id.phone_unlock_bible_version_tv);
         mPrefs = new UserPreferences();
-        myVerse = getIntent().getParcelableExtra("verse");
         moreVerses = getIntent().getBooleanExtra("moreVerses", false);
         mPresenter = new PhoneUnlockPresenterImp(this, getApplicationContext(), myVerse, moreVerses);
 
@@ -147,9 +146,8 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
                 mPresenter.onRequestReviewData();
             }
         }
-        if(myVerse == null) {
-            mPresenter.onRequestData();
-        }
+        mPresenter.onRequestData();
+
         if(mPrefs.getScreenWidth(getApplicationContext()) == 0) {
             DisplayMetrics dm = new DisplayMetrics();
             this.getWindow().getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -285,7 +283,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
     public void showMemorizedAlert(boolean memorizedAndLearningListIsEmpty) {
         VerseMemorizedAlertDialog alert = new VerseMemorizedAlertDialog();
         Bundle bundle = new Bundle();
-        bundle.putBoolean("callOnFinish", memorizedAndLearningListIsEmpty);
+        bundle.putBoolean("callOnFinish", true);
         alert.setArguments(bundle);
         alert.show(getSupportFragmentManager(), null);
     }

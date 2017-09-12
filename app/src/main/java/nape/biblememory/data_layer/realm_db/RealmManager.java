@@ -6,6 +6,7 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+import nape.biblememory.models.MemorizedVerse;
 import nape.biblememory.models.MyVerse;
 import nape.biblememory.models.Notification;
 import nape.biblememory.models.ScriptureData;
@@ -105,6 +106,34 @@ public class RealmManager {
         });
     }
 
+    public void insertOrUpdateMemorizedVerses(final List<MemorizedVerse> verses){
+        if(realm.isClosed()){
+            realm = Realm.getDefaultInstance();
+        }
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm bgRealm) {
+                for(MemorizedVerse verse : verses){
+                    bgRealm.copyToRealmOrUpdate(verse);
+                }
+
+            }
+        });
+    }
+
+    public void insertOrUpdateMemorizedVerse(final MemorizedVerse verse){
+        if(realm.isClosed()){
+            realm = Realm.getDefaultInstance();
+        }
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm bgRealm) {
+                bgRealm.copyToRealmOrUpdate(verse);
+            }
+        });
+    }
+
+
     public void insertOrUpdateUsers(final List<User> users){
         if(realm.isClosed()){
             realm = Realm.getDefaultInstance();
@@ -148,6 +177,19 @@ public class RealmManager {
         });
     }
 
+    public void deleteMemorizedVerse(final MemorizedVerse verse) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmQuery<MemorizedVerse> versetoDelete = realm.where(MemorizedVerse.class).contains("verseLocation", verse.getVerseLocation());
+                if(versetoDelete.findFirst() != null) {
+                    versetoDelete.findFirst().deleteFromRealm();
+                }
+            }
+        });
+    }
+
     public void deleteUser(final User user){
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -179,5 +221,4 @@ public class RealmManager {
     private void openRealm(){
         realm = Realm.getDefaultInstance();
     }
-
 }

@@ -11,6 +11,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
 import nape.biblememory.data_layer.realm_db.RealmManager;
+import nape.biblememory.models.MemorizedVerse;
 import nape.biblememory.models.MyVerse;
 import nape.biblememory.utils.UserPreferences;
 import nape.biblememory.view_layer.activities.BaseCallback;
@@ -46,9 +47,21 @@ public class DataStore {
             @Override
             public void onResponse(List<ScriptureData> response) {
                 realmManager.insertOrUpdateMyVersesWithScriptureData(response);
-                Intent intent = new Intent(context, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                context.startActivity(intent);
+                BaseCallback<List<MemorizedVerse>> memorizedCallback = new BaseCallback<List<MemorizedVerse>>() {
+                    @Override
+                    public void onResponse(List<MemorizedVerse> response) {
+                        realmManager.insertOrUpdateMemorizedVerses(response);
+                        Intent intent = new Intent(context, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        context.startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+
+                    }
+                };
+                FirebaseDb.getInstance().getMemorizedVersesFromFirebaseDb(context, memorizedCallback);
             }
 
             @Override
@@ -56,6 +69,7 @@ public class DataStore {
 
             }
         };
+
         BaseCallback<UserPreferencesModel> userPrefsCallback = new BaseCallback<UserPreferencesModel>() {
             @Override
             public void onResponse(UserPreferencesModel response) {
@@ -208,10 +222,10 @@ public class DataStore {
     }
 
     public void updateUserData(final String uid, final Context context){
-        BaseCallback<List<ScriptureData>> memorizedCallback = new BaseCallback<List<ScriptureData>>() {
+        BaseCallback<List<MemorizedVerse>> memorizedCallback = new BaseCallback<List<MemorizedVerse>>() {
             int verseCount = 0;
             @Override
-            public void onResponse(List<ScriptureData> response) {
+            public void onResponse(List<MemorizedVerse> response) {
                 if(response != null){
                     verseCount = verseCount + response.size();
                 }
@@ -248,9 +262,9 @@ public class DataStore {
         realmManager.insertOrUpdateVerse(verse.toMyVerse());
     }
 
-    public void saveMemorizedVerse(ScriptureData verse, Context applicationContext){
+    public void saveMemorizedVerse(MemorizedVerse verse, Context applicationContext){
         FirebaseDb.getInstance().saveMemorizedVerseToFirebase(verse, applicationContext);
-        //TODO add memorized verse support to Realm
+        realmManager.insertOrUpdateMemorizedVerse(verse);
     }
 
     public void saveForgottenVerse(ScriptureData verse, Context applicationContext){
@@ -263,9 +277,9 @@ public class DataStore {
         realmManager.deleteQuizVerse(verse);
     }
 
-    public void deleteMemorizedVerse(ScriptureData verse, Context context){
-        //TODO add delete memorized support for Realm
+    public void deleteMemorizedVerse(MemorizedVerse verse, Context context){
        FirebaseDb.getInstance().deleteMemorizedVerse(verse, context);
+        realmManager.deleteMemorizedVerse(verse);
     }
 
     public void deleteForgottenVerse(ScriptureData verse, Context context){
@@ -273,7 +287,7 @@ public class DataStore {
         FirebaseDb.getInstance().deleteForgottenVerse(verse, context);
     }
 
-    public void getMemorizedVerses(BaseCallback<List<ScriptureData>> memorizedCallback, Context applicationContext){
+    public void getMemorizedVerses(BaseCallback<List<MemorizedVerse>> memorizedCallback, Context applicationContext){
         FirebaseDb.getInstance().getMemorizedVersesFromFirebaseDb(applicationContext, memorizedCallback);
         //TODO add memorized verse support to realm
     }
@@ -283,10 +297,28 @@ public class DataStore {
         //TODO add memorized verse support to realm
     }
 
+    public void updateMemorizedVerse(final MemorizedVerse verse, Context applcationContext){
+        FirebaseDb.getInstance().updateMemorizedVerse(verse, applcationContext);
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                MemorizedVerse realmVerse = realm.where(MemorizedVerse.class).equalTo("verseLocation", verse.getVerseLocation()).findFirst();
+                realmVerse.setMemoryStage(verse.getMemoryStage());
+                realmVerse.setMemorySubStage(verse.getMemorySubStage());
+                realmVerse.setCorrectCount(verse.getCorrectCount());
+                realmVerse.setLastSeenDate(verse.getLastSeenDate());
+                realmVerse.setForgotten(verse.isForgotten());
+                realm.copyToRealmOrUpdate(realmVerse);
+            }
+        });
+        realm.close();
+    }
+
     public void updateQuizVerse(final MyVerse verse, Context applcationContext){
         FirebaseDb.getInstance().updateQuizVerse(verse, applcationContext);
         Realm realm = Realm.getDefaultInstance();
-        realm.executeTransactionAsync(new Realm.Transaction() {
+        realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 MyVerse realmVerse = realm.where(MyVerse.class).equalTo("verseLocation", verse.getVerseLocation()).findFirst();
@@ -294,10 +326,16 @@ public class DataStore {
                 realmVerse.setMemorySubStage(verse.getMemorySubStage());
                 realmVerse.setCorrectCount(verse.getCorrectCount());
                 realmVerse.setLastSeenDate(verse.getLastSeenDate());
+                realmVerse.setGoldStar(verse.getGoldStar());
                 realm.copyToRealmOrUpdate(realmVerse);
             }
         });
         realm.close();
+    }
+    public void updateQuizStarVerse(final String location, Context applcationContext){
+        MyVerse temp = new MyVerse(null, location);
+        temp.setGoldStar(1);
+        FirebaseDb.getInstance().updateQuizStarVerse(temp, applcationContext);
     }
 
     public void updateQuizVerse(final MyVerse locationToUpdate, final MyVerse valueToSave, Context applcationContext){
@@ -458,11 +496,33 @@ public class DataStore {
         FirebaseDb.getInstance().deleteBlessingNotification(uidToDelete, applicationContext);
     }
 
-    public void addVerseMemorized(ScriptureData verse){
-        FirebaseDb.getInstance().addVerseMemorized(verse);
+    public void addVerseMemorized(ScriptureData verse, Context context){
+        FirebaseDb.getInstance().addVerseMemorized(verse, context);
     }
 
     public void getAllMemorizedVerses(final BaseCallback<List<ScriptureData>> allMemorizedCallback){
         FirebaseDb.getInstance().getAllMemorizedVerses(allMemorizedCallback);
+    }
+
+    public void starNextVerse(final Context context) {
+        Realm realm = Realm.getDefaultInstance();
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                List<MyVerse> verseList = realm.where(MyVerse.class).findAll();
+                for(MyVerse verse : verseList){
+                    if(verse.getGoldStar() == 0){
+                        verse.setGoldStar(1);
+                        realm.copyToRealmOrUpdate(verse);
+                        String location = verse.getVerseLocation();
+                        updateQuizStarVerse(location, context);
+                        break;
+                    }
+                }
+            }
+        });
+
+
     }
 }

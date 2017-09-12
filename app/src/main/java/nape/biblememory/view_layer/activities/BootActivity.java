@@ -52,7 +52,7 @@ public class BootActivity extends Activity {
         ButterKnife.bind(this);
         mPrefs = new UserPreferences();
         Realm.init(this);
-        RealmConfiguration config = new RealmConfiguration.Builder().name("myrealm.realm").build();
+        RealmConfiguration config = new RealmConfiguration.Builder().name("myrealm4.realm").schemaVersion(4).deleteRealmIfMigrationNeeded().build();
         Realm.setDefaultConfiguration(config);
         FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
         mFirebaseAnalytics.setCurrentScreen(this, "Settings", null);

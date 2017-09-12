@@ -661,75 +661,14 @@ public class UserPreferences{
         return getSharedPreferences(context).getBoolean(UserPreferenceConstants.SNACKBAR_VISIBLE , false);
     }
 
-    public void saveRandomQuizVerseLocation(String randomQuizVerse, Context context) {
-        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
-        editor.putString(UserPreferenceConstants.RANDOM_VERSE_LOCATION, randomQuizVerse);
+
+    public void setComingFromMemorizedDetails(boolean b, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putBoolean(UserPreferenceConstants.COMING_FROM_MEMORIZED, b);
         editor.commit();
-
-
     }
 
-    public String getRandomQuizVerseLocation(Context context){
-        return getSharedPreferences(context).getString(UserPreferenceConstants.RANDOM_VERSE_LOCATION , "");
-    }
-
-    public void saveRandomQuizVerse(String randomQuizVerse, Context context) {
-        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
-        editor.putString(UserPreferenceConstants.RANDOM_VERSE, randomQuizVerse);
-        editor.commit();
-
-
-    }
-
-    public String getRandomQuizVerse(Context context){
-        return getSharedPreferences(context).getString(UserPreferenceConstants.RANDOM_VERSE , "");
-    }
-
-    public void saveRandomQuizVerseLastSeen(String randomQuizVerse, Context context) {
-        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
-        editor.putString(UserPreferenceConstants.RANDOM_VERSE_LAST_SEEN, randomQuizVerse);
-        editor.commit();
-
-
-    }
-
-    public String getRandomQuizVerseLastSeen(Context context){
-        return getSharedPreferences(context).getString(UserPreferenceConstants.RANDOM_VERSE_LAST_SEEN , "");
-    }
-
-    public void saveRandomQuizVerseVersion(String randomQuizVerse, Context context) {
-        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
-        editor.putString(UserPreferenceConstants.RANDOM_VERSE_VERSION, randomQuizVerse);
-        editor.commit();
-
-
-    }
-
-    public String getRandomQuizVerseVersion(Context context){
-        return getSharedPreferences(context).getString(UserPreferenceConstants.RANDOM_VERSE_VERSION , "");
-    }
-
-    public void saveRandomQuizVerseMemoryStage(int randomQuizVerse, Context context) {
-        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
-        editor.putInt(UserPreferenceConstants.RANDOM_VERSE_MEMORY_STAGE, randomQuizVerse);
-        editor.commit();
-
-
-    }
-
-    public int getRandomQuizVerseMemoryStage(Context context){
-        return getSharedPreferences(context).getInt(UserPreferenceConstants.RANDOM_VERSE_MEMORY_STAGE , 0);
-    }
-
-    public void saveRandomQuizVerseMemorySubStage(int randomQuizVerse, Context context) {
-        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
-        editor.putInt(UserPreferenceConstants.RANDOM_VERSE_MEMORY_SUB_STAGE, randomQuizVerse);
-        editor.commit();
-
-
-    }
-
-    public int getRandomQuizVerseMemorySubStage(Context context){
-        return getSharedPreferences(context).getInt(UserPreferenceConstants.RANDOM_VERSE_MEMORY_SUB_STAGE , 0);
+    public boolean isComingFromMemorized(Context context) {
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.COMING_FROM_MEMORIZED , false);
     }
 }

@@ -260,4 +260,26 @@ public class MyVerse extends RealmObject implements Parcelable{
         myVerse.setGoldStar(goldStar);
         return myVerse;
     }
+
+    public MemorizedVerse toMemorizedVerseData() {
+        MemorizedVerse myVerse = new MemorizedVerse();
+        myVerse.setVerse(verse);
+        myVerse.setVersionCode(versionCode);
+        myVerse.setVerseLocation(verseLocation);
+        myVerse.setMemoryStage(memoryStage);
+        myVerse.setBookName(bookName);
+        myVerse.setChapter(chapter);
+        myVerse.setCorrectCount(correctCount);
+        myVerse.setLastSeenDate(lastSeenDate);
+        myVerse.setMemorizedDate(memorizedDate);
+        myVerse.setMemorySubStage(memorySubStage);
+        myVerse.setNumOfVersesInChapter(numOfVersesInChapter);
+        myVerse.setPrimary_key_id(primary_key_id);
+        myVerse.setRemeberedDate(remeberedDate);
+        myVerse.setStartDate(startDate);
+        myVerse.setViewedCount(viewedCount);
+        myVerse.setListPosition(listPosition);
+        myVerse.setGoldStar(goldStar);
+        return myVerse;
+    }
 }

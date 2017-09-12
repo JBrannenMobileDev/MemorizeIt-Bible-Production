@@ -3,9 +3,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import nape.biblememory.view_layer.fragments.MemorizedSetFragment;
+import nape.biblememory.view_layer.fragments.MemorizedFragment;
 import nape.biblememory.view_layer.fragments.MyVersesFragment;
-import nape.biblememory.models.ScriptureData;
 
 /**
  * Created by hp1 on 21-01-2015.
@@ -16,7 +15,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     private static final int NumbOfTabs = 2; // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created
 
     private MyVersesFragment versesFragment;
-    private MemorizedSetFragment memorizedSetFragment;
+    private MemorizedFragment memorizedSetFragment;
 
     // Build a Constructor and assign the passed Values to appropriate values in the class
     public ViewPagerAdapter(FragmentManager fm, CharSequence mTitles[]) {
@@ -35,8 +34,8 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 versesFragment = (MyVersesFragment) selectedFrag;
                 break;
             case 1:
-                selectedFrag = new MemorizedSetFragment();
-                memorizedSetFragment = (MemorizedSetFragment) selectedFrag;
+                selectedFrag = new MemorizedFragment();
+                memorizedSetFragment = (MemorizedFragment) selectedFrag;
                 break;
             default:
                 selectedFrag = new MyVersesFragment();
@@ -57,11 +56,5 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return NumbOfTabs;
-    }
-
-    public void refreshrecyclerViews(){
-        if(memorizedSetFragment != null && memorizedSetFragment.isVisible()){
-            memorizedSetFragment.RefreshRecyclerView();
-        }
     }
 }

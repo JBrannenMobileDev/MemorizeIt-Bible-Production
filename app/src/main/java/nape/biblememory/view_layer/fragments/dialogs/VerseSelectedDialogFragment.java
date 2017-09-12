@@ -16,12 +16,14 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import nape.biblememory.models.MemorizedVerse;
 import nape.biblememory.models.MyVerse;
 import nape.biblememory.view_layer.activities.BaseCallback;
 import nape.biblememory.data_layer.DataStore;
 import nape.biblememory.models.ScriptureData;
 import nape.biblememory.utils.UserPreferences;
 import nape.biblememory.R;
+import nape.biblememory.view_layer.fragments.MemorizedFragment;
 
 /**
  * Created by OWNER-PC on 12/19/2016.
@@ -106,9 +108,9 @@ public class VerseSelectedDialogFragment extends DialogFragment {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BaseCallback<List<ScriptureData>> memorizedCallback = new BaseCallback<List<ScriptureData>>() {
+                BaseCallback<List<MemorizedVerse>> memorizedCallback = new BaseCallback<List<MemorizedVerse>>() {
                     @Override
-                    public void onResponse(List<ScriptureData> response) {
+                    public void onResponse(List<MemorizedVerse> response) {
                         if(response != null) {
                             ScriptureData verse = new ScriptureData();
                             verse.setVerse(verseText);
@@ -125,14 +127,14 @@ public class VerseSelectedDialogFragment extends DialogFragment {
                             bundle.putString("verse_added", verse.getVerseLocation());
                             mFirebaseAnalytics.logEvent("verse_added", bundle);
                             List<MyVerse> learningList = myVerses;
-                            List<ScriptureData> rememberedList = response;
+                            List<MemorizedVerse> rememberedList = response;
                             boolean verseAlreadyExists = false;
                             for (MyVerse verseLearning : learningList) {
                                 if (verseLearning.getVerseLocation().equalsIgnoreCase(verse.getVerseLocation())) {
                                     verseAlreadyExists = true;
                                 }
                             }
-                            for (ScriptureData verseRemembered : rememberedList) {
+                            for (MemorizedVerse verseRemembered : rememberedList) {
                                 if (verseRemembered.getVerseLocation().equalsIgnoreCase(verse.getVerseLocation())) {
                                     verseAlreadyExists = true;
                                 }

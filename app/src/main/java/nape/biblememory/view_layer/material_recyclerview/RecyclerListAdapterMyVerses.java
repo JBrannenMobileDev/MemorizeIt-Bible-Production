@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import nape.biblememory.R;
@@ -35,7 +34,7 @@ import tourguide.tourguide.TourGuide;
  * Created by jbrannen on 9/2/17.
  */
 
-public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemViewHolder>
+public class RecyclerListAdapterMyVerses extends RecyclerView.Adapter<RecyclerListAdapterMyVerses.ItemViewHolder>
         implements ItemTouchHelperAdapter {
 
     private final List<ScriptureData> dataset = new ArrayList<>();
@@ -47,9 +46,9 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     private UserPreferences mPrefs;
     private ChainTourGuide mTourGuideHandler;
 
-    public RecyclerListAdapter(List<ScriptureData> dataset, Activity context, OnStartDragListener dragStartListener,
-                               MyVersesFragment fragment, BaseCallback<List<ScriptureData>> dataChangedCallback,
-                               BaseCallback<ScriptureData> itemSelectedCallback) {
+    public RecyclerListAdapterMyVerses(List<ScriptureData> dataset, Activity context, OnStartDragListener dragStartListener,
+                                       MyVersesFragment fragment, BaseCallback<List<ScriptureData>> dataChangedCallback,
+                                       BaseCallback<ScriptureData> itemSelectedCallback) {
         mDragStartListener = dragStartListener;
         this.dataset.addAll(dataset);
         this.context = context;
@@ -170,7 +169,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
                     dataset.get(position).setGoldStar(0);
                     holder.quizIcon.setColorFilter(context.getResources().getColor(R.color.greyBgDark));
                     holder.progressView.setTextColor(context.getResources().getColor(R.color.greyBgDark));
-                    RecyclerListAdapter.this.dataChangedCallback.onResponse(dataset);
+                    RecyclerListAdapterMyVerses.this.dataChangedCallback.onResponse(dataset);
                 } else {
                     if(alreadyThreeStars()) {
                         fragment.showStarAlert();
@@ -178,7 +177,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
                         holder.progressView.setTextColor(context.getResources().getColor(R.color.colorProgressBg));
                         dataset.get(position).setGoldStar(1);
                         holder.quizIcon.setColorFilter(context.getResources().getColor(R.color.gold));
-                        RecyclerListAdapter.this.dataChangedCallback.onResponse(dataset);
+                        RecyclerListAdapterMyVerses.this.dataChangedCallback.onResponse(dataset);
                     }
                 }
             }
@@ -284,9 +283,9 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
             handleView.setColorFilter(context.getResources().getColor(R.color.greyBgDark));
 
             if (mostRecentActionState != ItemTouchHelper.ACTION_STATE_SWIPE) {
-                RecyclerListAdapter.this.notifyDataSetChanged();
+                RecyclerListAdapterMyVerses.this.notifyDataSetChanged();
             }
-            RecyclerListAdapter.this.dataChangedCallback.onResponse(dataset);
+            RecyclerListAdapterMyVerses.this.dataChangedCallback.onResponse(dataset);
         }
     }
 }
