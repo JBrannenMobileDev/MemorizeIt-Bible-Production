@@ -50,6 +50,13 @@ public class VerseDetailsActivity extends AppCompatActivity implements DeleteVer
             sendShareIntent();
             return true;
         }
+        if (id == R.id.action_reset) {
+            verse.setMemoryStage(0);
+            verse.setMemorySubStage(0);
+            DataStore.getInstance().updateQuizVerse(verse.toMyVerse(), getApplicationContext());
+            progressTv.setText("0%");
+            return true;
+        }
         if (id == R.id.action_delete_verse) {
             DeleteVerseAlertDialog deleteDialog = new DeleteVerseAlertDialog();
             Bundle bundle = new Bundle();

@@ -1,6 +1,7 @@
 package nape.biblememory.view_layer.fragments;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
 import nape.biblememory.models.MyVerse;
 import nape.biblememory.models.ScriptureData;
 import nape.biblememory.view_layer.activities.BaseCallback;
@@ -39,8 +41,10 @@ public class MyVersesFragment extends Fragment implements OnStartDragListener, M
     private MyVersesPresenterInterface presenter;
     private BaseCallback<List<ScriptureData>> dataChangedCallback;
     private BaseCallback<ScriptureData> itemSelectedCallback;
+    private BaseCallback<ScriptureData> onItemRemovedCallback;
     private View view;
     private RecyclerListAdapterMyVerses adapter;
+    private myVersesListener mListener;
 
     public MyVersesFragment() {
     }
@@ -106,6 +110,32 @@ public class MyVersesFragment extends Fragment implements OnStartDragListener, M
 
             }
         };
+
+        onItemRemovedCallback = new BaseCallback<ScriptureData>() {
+            @Override
+            public void onResponse(ScriptureData verse) {
+                mListener.onVerseDeleted(verse);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+    }
+
+    @Override
+    public void onAttach(Activity activity){
+        super.onAttach(activity);
+        // Verify that the host activity implements the callback interface
+        try {
+            // Instantiate the NoticeDialogListener so we can send events to the host
+            mListener = (myVersesListener) activity;
+        } catch (ClassCastException e) {
+            // The activity doesn't implement the interface, throw exception
+            throw new ClassCastException(activity.toString()
+                    + " must implement NoticeDialogListener");
+        }
     }
 
     @Override
@@ -130,7 +160,7 @@ public class MyVersesFragment extends Fragment implements OnStartDragListener, M
             scripList.add(verse.toScriptureData());
         }
         adapter = new RecyclerListAdapterMyVerses(scripList, getActivity(), this, this,
-                dataChangedCallback, itemSelectedCallback);
+                dataChangedCallback, itemSelectedCallback, onItemRemovedCallback);
         RecyclerView recyclerView = (RecyclerView)view;
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
@@ -138,5 +168,21 @@ public class MyVersesFragment extends Fragment implements OnStartDragListener, M
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    public void undoDelete(final ScriptureData verse) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealmOrUpdate(verse.toMyVerse());
+            }
+        });
+        realm.close();
+        adapter.addItem(verse);
+    }
+
+    public interface myVersesListener {
+        void onVerseDeleted(ScriptureData verse);
     }
 }

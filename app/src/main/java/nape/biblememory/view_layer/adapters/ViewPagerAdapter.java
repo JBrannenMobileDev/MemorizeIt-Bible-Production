@@ -1,8 +1,11 @@
 package nape.biblememory.view_layer.adapters;
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import nape.biblememory.data_layer.DataStore;
+import nape.biblememory.models.ScriptureData;
 import nape.biblememory.view_layer.fragments.MemorizedFragment;
 import nape.biblememory.view_layer.fragments.MyVersesFragment;
 
@@ -56,5 +59,19 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return NumbOfTabs;
+    }
+
+    public void refreshMyVersesList() {
+        if(versesFragment != null){
+            versesFragment.onResume();
+        }
+    }
+
+    public void undoDeletedVerse(ScriptureData verse, Context context) {
+        if(versesFragment != null){
+            versesFragment.undoDelete(verse);
+        }else{
+            DataStore.getInstance().saveQuizVerse(verse, context);
+        }
     }
 }

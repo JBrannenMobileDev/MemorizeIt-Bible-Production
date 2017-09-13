@@ -4,6 +4,7 @@ import java.util.List;
 
 import io.realm.RealmResults;
 import nape.biblememory.models.MyVerse;
+import nape.biblememory.models.ScriptureData;
 
 /**
  * Created by jbrannen on 9/3/17.

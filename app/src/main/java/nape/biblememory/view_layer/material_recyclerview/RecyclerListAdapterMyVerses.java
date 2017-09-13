@@ -37,9 +37,10 @@ import tourguide.tourguide.TourGuide;
 public class RecyclerListAdapterMyVerses extends RecyclerView.Adapter<RecyclerListAdapterMyVerses.ItemViewHolder>
         implements ItemTouchHelperAdapter {
 
-    private final List<ScriptureData> dataset = new ArrayList<>();
+    private List<ScriptureData> dataset;
     private BaseCallback<List<ScriptureData>> dataChangedCallback;
     private BaseCallback<ScriptureData> itemSelectedCallback;
+    private BaseCallback<ScriptureData> onItemRemovedCallback;
     private final OnStartDragListener mDragStartListener;
     private static Activity context;
     private MyVersesFragment fragment;
@@ -48,14 +49,15 @@ public class RecyclerListAdapterMyVerses extends RecyclerView.Adapter<RecyclerLi
 
     public RecyclerListAdapterMyVerses(List<ScriptureData> dataset, Activity context, OnStartDragListener dragStartListener,
                                        MyVersesFragment fragment, BaseCallback<List<ScriptureData>> dataChangedCallback,
-                                       BaseCallback<ScriptureData> itemSelectedCallback) {
+                                       BaseCallback<ScriptureData> itemSelectedCallback, BaseCallback<ScriptureData> onItemRemovedCallback) {
         mDragStartListener = dragStartListener;
-        this.dataset.addAll(dataset);
+        this.dataset = dataset;
         this.context = context;
         this.fragment = fragment;
         this.dataChangedCallback = dataChangedCallback;
         this.itemSelectedCallback = itemSelectedCallback;
         mPrefs = new UserPreferences();
+        this.onItemRemovedCallback = onItemRemovedCallback;
     }
 
     private int calculateProgress(int memoryStage, int memorySubStage) {
@@ -127,7 +129,7 @@ public class RecyclerListAdapterMyVerses extends RecyclerView.Adapter<RecyclerLi
 
         if(mPrefs.isTourStep1Complete(context) && !mPrefs.isTourStep2Complete(context)) {
             ChainTourGuide step1 = ChainTourGuide.init(context)
-                    .setToolTip(new ToolTip().setTitle("Tip 1").setDescription("All added verses will appear in this list.").
+                    .setToolTip(new ToolTip().setTitle("Tip 1").setDescription("This is where you can manage your verses").
                             setGravity(Gravity.BOTTOM).setBackgroundColor(context.getResources().getColor(R.color.colorAccent)))
                     .playLater(holder.itemLayout);
 
@@ -209,8 +211,10 @@ public class RecyclerListAdapterMyVerses extends RecyclerView.Adapter<RecyclerLi
 
     @Override
     public void onItemDismiss(int position) {
+        ScriptureData temp = dataset.get(position);
         dataset.remove(position);
         notifyItemRemoved(position);
+        onItemRemovedCallback.onResponse(temp);
     }
 
     @Override
@@ -227,6 +231,12 @@ public class RecyclerListAdapterMyVerses extends RecyclerView.Adapter<RecyclerLi
     public int getItemCount() {
         return dataset.size();
     }
+
+    public void addItem(ScriptureData verse) {
+        dataset.add(verse);
+        notifyDataSetChanged();
+    }
+
 
     /**
      * Simple example of a view holder that implements {@link ItemTouchHelperViewHolder} and has a

@@ -21,12 +21,14 @@ public class RecyclerViewAdapterMemorized extends RecyclerView.Adapter<RecyclerV
     private List<MemorizedVerse> mDataSet;
     private BaseCallback<MemorizedVerse> itemSelectedCallback;
     private BaseCallback<MemorizedVerse> shareSelectedCallback;
+    private BaseCallback<MemorizedVerse> reviewNowSelectedCallback;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView verseLocation;
         public TextView verse;
         public ImageView shareIcon;
         private FrameLayout itemLayout;
+        private FrameLayout reviewNowLayout;
 
         public ViewHolder(View v) {
             super(v);
@@ -34,6 +36,7 @@ public class RecyclerViewAdapterMemorized extends RecyclerView.Adapter<RecyclerV
             verse = (TextView) v.findViewById(R.id.memorized_verse);
             shareIcon = (ImageView) v.findViewById(R.id.share_verse_icon);
             itemLayout = (FrameLayout) v.findViewById(R.id.memorized_verses_layout);
+            reviewNowLayout = (FrameLayout) v.findViewById(R.id.review_now_layout);
 
             itemLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -48,13 +51,22 @@ public class RecyclerViewAdapterMemorized extends RecyclerView.Adapter<RecyclerV
                     shareSelectedCallback.onResponse(mDataSet.get(getLayoutPosition()));
                 }
             });
+
+            reviewNowLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    reviewNowSelectedCallback.onResponse(mDataSet.get(getLayoutPosition()));
+                }
+            });
         }
     }
 
-    public RecyclerViewAdapterMemorized(List<MemorizedVerse> dataset, BaseCallback<MemorizedVerse> itemSelectedCallback, BaseCallback<MemorizedVerse> shareSelectedCallback) {
+    public RecyclerViewAdapterMemorized(List<MemorizedVerse> dataset, BaseCallback<MemorizedVerse> itemSelectedCallback,
+                                        BaseCallback<MemorizedVerse> shareSelectedCallback, BaseCallback<MemorizedVerse> reviewNowSelectedCallback) {
         mDataSet = dataset;
         this.itemSelectedCallback = itemSelectedCallback;
         this.shareSelectedCallback = shareSelectedCallback;
+        this.reviewNowSelectedCallback = reviewNowSelectedCallback;
     }
 
     @Override
@@ -72,6 +84,7 @@ public class RecyclerViewAdapterMemorized extends RecyclerView.Adapter<RecyclerV
             holder.verseLocation.setTextColor(Color.argb(255, 218, 0, 0));
             holder.verse.setTextColor(Color.argb(255, 218, 0, 0));
             holder.shareIcon.setVisibility(View.GONE);
+            holder.reviewNowLayout.setVisibility(View.VISIBLE);
         }else {
             holder.verseLocation.setText(mDataSet.get(position).getVerseLocation());
             holder.verse.setText(mDataSet.get(position).getVerse());

@@ -258,8 +258,8 @@ public class DataStore {
     }
 
     public void saveQuizVerse(ScriptureData verse, Context applicationContext){
-        FirebaseDb.getInstance().saveQuizVerseToFirebase(verse, applicationContext);
         realmManager.insertOrUpdateVerse(verse.toMyVerse());
+        FirebaseDb.getInstance().saveQuizVerseToFirebase(verse, applicationContext);
     }
 
     public void saveMemorizedVerse(MemorizedVerse verse, Context applicationContext){
@@ -309,6 +309,28 @@ public class DataStore {
                 realmVerse.setCorrectCount(verse.getCorrectCount());
                 realmVerse.setLastSeenDate(verse.getLastSeenDate());
                 realmVerse.setForgotten(verse.isForgotten());
+                realm.copyToRealmOrUpdate(realmVerse);
+            }
+        });
+        realm.close();
+    }
+
+    public void updateReMemorizedVerse(final MemorizedVerse verse, Context applcationContext){
+        final String verseLocation = verse.getVerseLocation();
+        MyVerse myVerse = verse.toMyVerseData();
+        MemorizedVerse newCopy = myVerse.toMemorizedVerseData();
+        newCopy.setForgotten(false);
+        newCopy.setMemorySubStage(0);
+        newCopy.setMemoryStage(7);
+        FirebaseDb.getInstance().updateMemorizedVerse(newCopy, applcationContext);
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                MemorizedVerse realmVerse = realm.where(MemorizedVerse.class).equalTo("verseLocation", verseLocation).findFirst();
+                realmVerse.setMemoryStage(7);
+                realmVerse.setMemorySubStage(0);
+                realmVerse.setForgotten(false);
                 realm.copyToRealmOrUpdate(realmVerse);
             }
         });

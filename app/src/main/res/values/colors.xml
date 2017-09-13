@@ -24,7 +24,7 @@
     <color name="testColor">#9dc9d7</color>
     <color name="divider_bar">#1f000000</color>
     <color name="greyBgDarker">#989898</color>
-    <color name="red">#da0000</color>
+    <color name="red">#ff0000</color>
     <color name="greyIcon">#606060</color>
     <color name="gold">#ffd501</color>
     <color name="yellow">#ffe601</color>

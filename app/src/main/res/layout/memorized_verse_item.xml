@@ -10,6 +10,35 @@
     android:focusable="true"
     android:foreground="?selectableItemBackground">
 
+    <FrameLayout
+        android:id="@+id/review_now_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:paddingLeft="15dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/review_now_text"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="40dp"
+            android:text="REVIEW NOW!"
+            android:textAlignment="center"
+            android:textColor="@color/red"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/review_now_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="15dp"
+            android:tint="@color/red"
+            app:srcCompat="@drawable/ic_error_black_24dp" />
+    </FrameLayout>
+
     <TextView
         android:id="@+id/memorized_verse"
         android:layout_width="match_parent"

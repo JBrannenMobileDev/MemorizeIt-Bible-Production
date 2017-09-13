@@ -77,7 +77,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         dateFormat = new SimpleDateFormat("MM-dd-yyyy");
         c = Calendar.getInstance();
         isReviewMode = false;
-        reviewIndex = 0;
+        reviewIndex = mPrefs.getQuizReviewIndex(context);
         realm = Realm.getDefaultInstance();
         myVerses = realm.where(MyVerse.class).findAll();
     }
@@ -132,6 +132,10 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                 view.setReviewTitleText("Review memorized verse");
                 view.setReviewTitleColor(R.color.colorGreenText);
                 reviewVersesList = reviewVerses;
+                if(++reviewIndex == reviewVerses.size()){
+                    reviewIndex = 0;
+                }
+                mPrefs.setQuizReviewIndex(reviewIndex, context);
                 onSuccess(reviewVerses.get(reviewIndex));
             }
         }else{
@@ -241,7 +245,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                     }else if(!isReviewMode){
                         DataStore.getInstance().updateQuizVerse(scripture.toMyVerse(), context);
                     }
-                } else if (subStage > 0 && stage == 6) {
+                } else if (subStage >= 0 && stage == 6) {
                     scripture.setMemorySubStage(0);
                     scripture.setMemoryStage(stage + 1);
                     if(forgottenVerse){
@@ -336,7 +340,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         }else if(reviewVerse){
             scripture.setLastSeenDate(formattedDate);
             scripture.setMemorySubStage(2);
-            scripture.setMemoryStage(stage - 1);
+            scripture.setMemoryStage(stage - 5);
             MemorizedVerse temp = scripture.toMemorizedVerseData();
             temp.setForgotten(true);
             DataStore.getInstance().updateMemorizedVerse(temp, context);
@@ -449,9 +453,6 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
             view.setCheckAnswerButtonText(R.string.check_answer);
             if (scripture.getMemoryStage() != 7) {
                 view.setHintButtonVisibility(View.VISIBLE, scripture.toMyVerse());
-            }else{
-                SpannableStringBuilder finalStageTip = stringModifier.createFinalStageTip("Final Stage!");
-                view.setSpannableVerseText(finalStageTip);
             }
         }
         view.setCheckAnswerButtonVisibility(View.VISIBLE);

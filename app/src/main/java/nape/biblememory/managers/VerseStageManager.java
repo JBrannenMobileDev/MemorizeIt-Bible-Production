@@ -83,7 +83,7 @@ public class VerseStageManager {
                     verseContent = modifyVerseForStage(0, scripture.getVerse(), verseStage);
                     break;
                 case 7:
-                    verseContent = "";
+                    verseContent = getPlaceholderVerse(scripture.getVerse());
                     break;
                 default:
                     verseContent = scripture.getVerse();

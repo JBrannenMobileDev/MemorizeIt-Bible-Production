@@ -34,6 +34,7 @@ public class MemorizedFragment extends Fragment implements MemorizedFragmentInte
     private RecyclerViewAdapterMemorized adapter;
     private BaseCallback<MemorizedVerse> itemSelectedCallback;
     private BaseCallback<MemorizedVerse> shareSelectedCallback;
+    private BaseCallback<MemorizedVerse> reviewNowSelectedCallback;
     @BindView(R.id.memorized_recycler_view)RecyclerView recyclerView;
 
     public MemorizedFragment() {
@@ -58,6 +59,9 @@ public class MemorizedFragment extends Fragment implements MemorizedFragmentInte
             @Override
             public void onResponse(MemorizedVerse verse) {
                 Intent intent = new Intent(getActivity(), MemorizedVerseDetailsActivity.class);
+                if(verse.isForgotten()){
+                    intent.putExtra("reviewNow", true);
+                }
                 intent.putExtra("verseLocation", verse.getVerseLocation());
                 startActivityForResult(intent, 3);
             }
@@ -72,6 +76,21 @@ public class MemorizedFragment extends Fragment implements MemorizedFragmentInte
             @Override
             public void onResponse(MemorizedVerse verse) {
                 sendShareIntent(verse);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+
+        reviewNowSelectedCallback = new BaseCallback<MemorizedVerse>() {
+            @Override
+            public void onResponse(MemorizedVerse verse) {
+                Intent intent = new Intent(getActivity(), MemorizedVerseDetailsActivity.class);
+                intent.putExtra("verseLocation", verse.getVerseLocation());
+                intent.putExtra("reviewNow", true);
+                startActivity(intent);
             }
 
             @Override
@@ -112,7 +131,7 @@ public class MemorizedFragment extends Fragment implements MemorizedFragmentInte
 
     @Override
     public void onReceivedRecyclerData(List<MemorizedVerse> myVerses) {
-        adapter = new RecyclerViewAdapterMemorized(myVerses, itemSelectedCallback, shareSelectedCallback);
+        adapter = new RecyclerViewAdapterMemorized(myVerses, itemSelectedCallback, shareSelectedCallback, reviewNowSelectedCallback);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

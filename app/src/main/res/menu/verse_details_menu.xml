@@ -4,9 +4,14 @@
 
     <item
         android:id="@+id/action_share"
-        android:icon="@drawable/ic_menu_share"
         android:orderInCategory="100"
         android:title="Share verse"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_reset"
+        android:orderInCategory="100"
+        android:title="Reset progress"
         app:showAsAction="never" />
 
     <item

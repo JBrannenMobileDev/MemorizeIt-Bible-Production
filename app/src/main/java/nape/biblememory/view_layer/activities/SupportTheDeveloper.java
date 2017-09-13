@@ -40,7 +40,8 @@ public class SupportTheDeveloper extends AppCompatActivity {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
         mFirebaseAnalytics.setCurrentScreen(this, "Support the developer activity", null);
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId(getString(R.string.supportTheDevInterstellar));
+
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
         mInterstitialAd.setAdListener(new AdListener() {
             @Override

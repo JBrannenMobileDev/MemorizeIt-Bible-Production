@@ -34,10 +34,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmChangeListener;
-import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
-import nape.biblememory.data_layer.realm_db.RealmManager;
 import nape.biblememory.models.MemorizedVerse;
 import nape.biblememory.models.MyVerse;
 import nape.biblememory.view_layer.adapters.ViewPagerAdapter;
@@ -45,9 +42,9 @@ import nape.biblememory.view_layer.adapters.ViewPagerAdapterVerseSelector;
 import nape.biblememory.data_layer.dbt_api.DBTApi;
 import nape.biblememory.view_layer.fragments.BooksFragment;
 import nape.biblememory.view_layer.fragments.ChapterFragment;
+import nape.biblememory.view_layer.fragments.MyVersesFragment;
 import nape.biblememory.view_layer.fragments.dialogs.MyVersesEmptyAlertDialog;
 import nape.biblememory.view_layer.fragments.dialogs.NoInternetAlertDialog;
-import nape.biblememory.view_layer.fragments.dialogs.DeleteVerseAlertDialog;
 import nape.biblememory.view_layer.fragments.dialogs.NoStarsAlertDialog;
 import nape.biblememory.view_layer.fragments.dialogs.SelectVersionAlertDialog;
 import nape.biblememory.view_layer.fragments.VerseFragment;
@@ -67,7 +64,7 @@ import tourguide.tourguide.TourGuide;
 
 public class MainActivity extends ActionBarActivity implements NavigationView.OnNavigationItemSelectedListener, BooksFragment.BooksFragmentListener,
         ChapterFragment.ChaptersFragmentListener, VerseFragment.OnVerseSelected, VerseSelectedDialogFragment.addVerseDialogActions,
-        SelectVersionAlertDialog.VersionSelected{
+        SelectVersionAlertDialog.VersionSelected, MyVersesFragment.myVersesListener {
 
     private ViewPager pagerMain;
     private ViewPagerAdapter adapterMain;
@@ -171,7 +168,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             mPrefs.setFirstTimeUser(false, context);
         }
 
-        if(!mPrefs.isFirstTimeUser(getApplicationContext())) {
+        if(false) {
             BaseCallback<List<User>> friendRequestCallback = new BaseCallback<List<User>>() {
                 @Override
                 public void onResponse(List<User> response) {
@@ -206,11 +203,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
                             @Override
                             public void onShown(Snackbar transientBottomBar) {
-                                float distance = TypedValue.applyDimension(
-                                        TypedValue.COMPLEX_UNIT_DIP, 40,
-                                        getResources().getDisplayMetrics()
-                                );
-                                startQuizFabFrame.animate().translationY(-distance);
                                 mPrefs.setSnackbarVisible(true, getApplicationContext());
                                 super.onShown(transientBottomBar);
                             }
@@ -220,6 +212,10 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                         // Changing message text color
                         snackbar.setActionTextColor(getResources().getColor(R.color.colorGreenText));
                         snackbar.getView().setBackgroundColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
+                        float distance = TypedValue.applyDimension(
+                                TypedValue.COMPLEX_UNIT_DIP, 40,
+                                getResources().getDisplayMetrics()
+                        );
                         snackbar.show();
 
                         BaseCallback<List<User>> friendsThatBlessedCallbackForNavDrawer = new BaseCallback<List<User>>() {
@@ -278,11 +274,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
                                         @Override
                                         public void onShown(Snackbar transientBottomBar) {
-                                            float distance = TypedValue.applyDimension(
-                                                    TypedValue.COMPLEX_UNIT_DIP, 40,
-                                                    getResources().getDisplayMetrics()
-                                            );
-                                            startQuizFabFrame.animate().translationY(-distance);
                                             mPrefs.setSnackbarVisible(true, getApplicationContext());
                                             super.onShown(transientBottomBar);
                                         }
@@ -292,6 +283,11 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                                     // Changing message text color
                                     snackbar.setActionTextColor(getResources().getColor(R.color.colorGreenText));
                                     snackbar.getView().setBackgroundColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
+                                    float distance = TypedValue.applyDimension(
+                                            TypedValue.COMPLEX_UNIT_DIP, 40,
+                                            getResources().getDisplayMetrics()
+                                    );
+                                    startQuizFabFrame.animate().translationY(-distance);
                                     snackbar.show();
                                 }
                             }
@@ -680,11 +676,13 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             newVerse.setVerse("Submit yourselves therefore to God. Resist the devil, and he will flee from you. ");
             newVerse.setVersionCode("ESV");
             DataStore.getInstance().saveQuizVerse(newVerse, getApplicationContext());
+            adapterMain.refreshMyVersesList();
         }
         mPrefs.setTourStep1Complete(true, getApplicationContext());
         UserPreferencesModel model = new UserPreferencesModel();
         model.initAllData(getApplicationContext(), mPrefs);
         DataStore.getInstance().saveUserPrefs(model, getApplicationContext());
+
     }
 
     @Override
@@ -848,5 +846,43 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     @Override
     public void onVersionSelectedFromDialog(String verseNum) {
         onVerseSelected(verseNum);
+    }
+
+    @Override
+    public void onVerseDeleted(final ScriptureData verse) {
+        Snackbar snackbar = Snackbar
+                .make(coordinatorLayout, verse.getVerseLocation() + " deleted", Snackbar.LENGTH_LONG).
+                        setAction("UNDO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                adapterMain.undoDeletedVerse(verse, getApplicationContext());
+                            }
+                        });
+
+        snackbar.addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
+            @Override
+            public void onDismissed(Snackbar transientBottomBar, int event) {
+                startQuizFabFrame.animate().translationY(0);
+                mPrefs.setSnackbarVisible(false, getApplicationContext());
+                super.onDismissed(transientBottomBar, event);
+            }
+
+            @Override
+            public void onShown(Snackbar transientBottomBar) {
+                mPrefs.setSnackbarVisible(true, getApplicationContext());
+                super.onShown(transientBottomBar);
+            }
+        });
+
+
+        // Changing message text color
+        snackbar.setActionTextColor(getResources().getColor(R.color.colorGreenText));
+        snackbar.getView().setBackgroundColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
+        float distance = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 40,
+                getResources().getDisplayMetrics()
+        );
+        startQuizFabFrame.animate().translationY(-distance);
+        snackbar.show();
     }
 }

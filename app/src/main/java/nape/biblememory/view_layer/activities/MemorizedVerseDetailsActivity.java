@@ -1,46 +1,51 @@
 package nape.biblememory.view_layer.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
-
-import java.util.List;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
-import io.realm.RealmResults;
 import nape.biblememory.R;
 import nape.biblememory.data_layer.DataStore;
 import nape.biblememory.models.MemorizedVerse;
 import nape.biblememory.utils.UserPreferences;
+import nape.biblememory.view_layer.adapters.ViewPagerAdapterMemorized;
 import nape.biblememory.view_layer.fragments.dialogs.DeleteVerseAlertDialog;
+import nape.biblememory.view_layer.views.SlidingTabLayout;
 
 public class MemorizedVerseDetailsActivity extends AppCompatActivity implements DeleteVerseAlertDialog.YesSelected{
 
-    @BindView(R.id.verse_details_verse)TextView verseText;
-    @BindView(R.id.verse_details_last_seen_tv)TextView lastSeen;
-    @BindView(R.id.verse_details_progress_tv)TextView progressTv;
-
     private MemorizedVerse verse;
     private String verseLocation;
+    @BindView(R.id.memorized_pager)ViewPager pagerMain;
+    @BindView(R.id.memorized_tabs) SlidingTabLayout tabsMain;
+    private ViewPagerAdapterMemorized adapterMain;
+    private CharSequence mainTitles[]={"Details","Review"};
+    private boolean comingFromReviewNow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_right);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_verse_details);
+        setContentView(R.layout.activity_memorized_verse_details);
         ButterKnife.bind(this);
         verseLocation = getIntent().getStringExtra("verseLocation");
+        setTitle(Html.fromHtml("<h2>" +verseLocation+ "</h2>"));
         Realm realm = Realm.getDefaultInstance();
-        MemorizedVerse verses = realm.where(MemorizedVerse.class).equalTo("verseLocation", verseLocation).findFirst();
-        initView(verses);
+        verse = realm.where(MemorizedVerse.class).equalTo("verseLocation", verseLocation).findFirst();
         UserPreferences mPrefs = new UserPreferences();
         mPrefs.setComingFromMemorizedDetails(true, getApplicationContext());
+        comingFromReviewNow = getIntent().getBooleanExtra("reviewNow", false);
+        setSlidingTabViewVerseSelector(comingFromReviewNow);
     }
 
     @Override
@@ -85,59 +90,73 @@ public class MemorizedVerseDetailsActivity extends AppCompatActivity implements 
 
         }
     }
+    private void setSlidingTabViewVerseSelector(boolean comingFromReviewNow) {
+        // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
+        adapterMain =  new ViewPagerAdapterMemorized(getSupportFragmentManager(),mainTitles,2, verseLocation, comingFromReviewNow);
+
+        // Assigning ViewPager View and setting the adapter
+        pagerMain.setAdapter(adapterMain);
+        pagerMain.setVisibility(View.VISIBLE);
+
+        // Assiging the Sliding Tab Layout View
+        tabsMain.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
+        tabsMain.setVisibility(View.VISIBLE);
+
+        // Setting Custom Color for the Scroll bar indicator of the Tab View
+        tabsMain.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @Override
+            public int getIndicatorColor(int position) {
+                return getResources().getColor(R.color.tabsScrollColor);
+            }
+        });
+
+        // Setting the ViewPager For the SlidingTabsLayout
+        tabsMain.setViewPager(pagerMain);
+        pagerMain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if(position == 1) {
+                    adapterMain.setEditTextFocus();
+                }
+                if(position == 0){
+                    hideSoftKeyboard();
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 1) {
+                    adapterMain.setEditTextFocus();
+                }
+                if(position == 0){
+                    hideSoftKeyboard();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        if(comingFromReviewNow){
+            pagerMain.setCurrentItem(1);
+        }
+    }
+
+    private void hideSoftKeyboard(){
+        View view = getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
     @Override
     public void finish(){
         super.finish();
         overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_right);
     }
-
-    private void initView(MemorizedVerse verse) {
-        this.verse = verse;
-        verseText.setText(verse.getVerse());
-        lastSeen.setText(verse.getLastSeenDate());
-        if(verse.isForgotten()) {
-            progressTv.setText(calculateProgress(verse.getMemoryStage(), verse.getMemorySubStage()) + "%");
-        }else{
-            progressTv.setText("100%");
-        }
-        setTitle(Html.fromHtml("<h2>" +verse.getVerseLocation()+ "</h2>"));
-    }
-
-    private int calculateProgress(int memoryStage, int memorySubStage) {
-        double progress;
-        switch (memoryStage) {
-            case 0:
-                progress = 0;
-                break;
-            case 1:
-                progress = 1 + memorySubStage;
-                break;
-            case 2:
-                progress = 4 + memorySubStage;
-                break;
-            case 3:
-                progress = 7 + memorySubStage;
-                break;
-            case 4:
-                progress = 10 + memorySubStage;
-                break;
-            case 5:
-                progress = 13 + memorySubStage;
-                break;
-            case 6:
-                progress = 16 + memorySubStage;
-                break;
-            case 7:
-                progress = 19;
-                break;
-            default:
-                progress = 0;
-        }
-        progress = (progress/20)*100;
-        return (int)progress;
-    }
-
 
     @Override
     public void onDeleteVerse(String verseLocation) {

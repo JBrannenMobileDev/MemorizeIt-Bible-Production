@@ -3,16 +3,15 @@ package nape.biblememory.view_layer.fragments.presenters;
 import android.content.Context;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import io.realm.Sort;
 import nape.biblememory.data_layer.firebase_db.FirebaseDb;
 import nape.biblememory.models.MyVerse;
 import nape.biblememory.data_layer.DataStore;
+import nape.biblememory.models.ScriptureData;
 import nape.biblememory.view_layer.fragments.interfaces.MyVersesFragmentInterface;
 import nape.biblememory.view_layer.fragments.interfaces.MyVersesPresenterInterface;
 
