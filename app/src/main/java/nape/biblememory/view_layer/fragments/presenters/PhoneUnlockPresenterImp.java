@@ -123,7 +123,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                 forgottenVerse = true;
                 view.setReviewTitleVisibility(View.VISIBLE);
                 view.setReviewTitleText("Review forgotten verse");
-                view.setReviewTitleColor(R.color.colorNoText);
+                view.setReviewTitleColor(R.color.Red);
                 reviewForgottenVerses = forgottenVerseReview;
                 onSuccess(forgottenVerseReview);
             }else{
@@ -260,7 +260,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                         moveForgottenVerseToMemorizedList();
                     }else if(!isReviewMode){
                         moveVerseToRememberedList();
-                        verseMemorized = true;
+                        myMemorizedVerse.setForgotten(false);
                     }
                     if (myVerses.size() < 1) {
                         memorizedAndLearningListIsEmpty = true;
@@ -268,7 +268,13 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                     view.showMemorizedAlert(myVerses.size() < 1 && true);
                 } else {
                     scripture.setMemorySubStage(subStage + 1);
-                    DataStore.getInstance().updateQuizVerse(scripture.toMyVerse(), context);
+                    if(forgottenVerse || reviewVerse){
+                        MemorizedVerse temp = scripture.toMemorizedVerseData();
+                        temp.setForgotten(myMemorizedVerse.isForgotten());
+                        DataStore.getInstance().updateMemorizedVerse(temp, context);
+                    }else{
+                        DataStore.getInstance().updateQuizVerse(scripture.toMyVerse(), context);
+                    }
                 }
             }
         }
@@ -435,7 +441,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         view.setVerseLocationText(EMPTY_STRING);
         view.setBasebarText(CLOSE);
         view.setVerificationLayoutVisibility(View.GONE);
-        view.setTitlebarTextColor(context.getResources().getColor(R.color.colorWhite));
+        view.setTitlebarTextColor(context.getResources().getColor(R.color.gold));
         onRequestData();
     }
 

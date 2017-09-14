@@ -8,6 +8,37 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <EditText
+        android:id="@+id/memorized_review_user_input"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:gravity="bottom|center_horizontal"
+        android:inputType="textFilter" />
+
+    <ImageView
+        android:id="@+id/memorized_review_info"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="69dp"
+        android:elevation="4dp"
+        android:tint="@color/colorProgressBg"
+        app:srcCompat="@drawable/ic_info_black_24dp" />
+
+    <ImageView
+        android:id="@+id/memorized_review_replay"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:elevation="4dp"
+        android:tint="@color/colorProgressBg"
+        android:visibility="gone"
+        app:srcCompat="@mipmap/ic_replay_black_48dp" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="64dp"
@@ -19,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="60dp"
             android:elevation="6dp"
             android:textColor="@color/White"
             android:textSize="24sp"
@@ -134,38 +165,19 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp"
                 android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/well_done1_image"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_gravity="top|center_horizontal"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="20dp"
+                android:visibility="visible"
+                app:srcCompat="@drawable/well_done" />
+
         </LinearLayout>
     </ScrollView>
-
-    <EditText
-        android:id="@+id/memorized_review_user_input"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:ems="10"
-        android:gravity="bottom|center_horizontal"
-        android:inputType="textFilter" />
-
-    <ImageView
-        android:id="@+id/memorized_review_info"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_gravity="right"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="69dp"
-        android:elevation="4dp"
-        android:tint="@color/colorProgressBg"
-        app:srcCompat="@drawable/ic_info_black_24dp" />
-
-    <ImageView
-        android:id="@+id/memorized_review_replay"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_gravity="bottom|right"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
-        android:elevation="4dp"
-        android:tint="@color/colorProgressBg"
-        android:visibility="gone"
-        app:srcCompat="@mipmap/ic_replay_black_48dp" />
 
 </FrameLayout>

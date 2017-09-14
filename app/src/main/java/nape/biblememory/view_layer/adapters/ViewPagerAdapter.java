@@ -67,9 +67,9 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         }
     }
 
-    public void undoDeletedVerse(ScriptureData verse, Context context) {
+    public void undoDeletedVerse(ScriptureData verse, Context context, int position) {
         if(versesFragment != null){
-            versesFragment.undoDelete(verse);
+            versesFragment.undoDelete(verse, position);
         }else{
             DataStore.getInstance().saveQuizVerse(verse, context);
         }

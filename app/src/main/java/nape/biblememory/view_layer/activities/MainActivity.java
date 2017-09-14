@@ -849,13 +849,13 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     }
 
     @Override
-    public void onVerseDeleted(final ScriptureData verse) {
+    public void onVerseDeleted(final ScriptureData verse, final int position) {
         Snackbar snackbar = Snackbar
                 .make(coordinatorLayout, verse.getVerseLocation() + " deleted", Snackbar.LENGTH_LONG).
                         setAction("UNDO", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                adapterMain.undoDeletedVerse(verse, getApplicationContext());
+                                adapterMain.undoDeletedVerse(verse, getApplicationContext(), position);
                             }
                         });
 

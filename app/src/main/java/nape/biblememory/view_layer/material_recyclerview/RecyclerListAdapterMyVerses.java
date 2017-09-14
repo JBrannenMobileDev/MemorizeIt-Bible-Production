@@ -19,6 +19,7 @@ import java.util.List;
 
 import nape.biblememory.R;
 import nape.biblememory.data_layer.DataStore;
+import nape.biblememory.models.RemoveVerse;
 import nape.biblememory.models.ScriptureData;
 import nape.biblememory.models.UserPreferencesModel;
 import nape.biblememory.utils.UserPreferences;
@@ -40,7 +41,7 @@ public class RecyclerListAdapterMyVerses extends RecyclerView.Adapter<RecyclerLi
     private List<ScriptureData> dataset;
     private BaseCallback<List<ScriptureData>> dataChangedCallback;
     private BaseCallback<ScriptureData> itemSelectedCallback;
-    private BaseCallback<ScriptureData> onItemRemovedCallback;
+    private BaseCallback<RemoveVerse> onItemRemovedCallback;
     private final OnStartDragListener mDragStartListener;
     private static Activity context;
     private MyVersesFragment fragment;
@@ -49,7 +50,7 @@ public class RecyclerListAdapterMyVerses extends RecyclerView.Adapter<RecyclerLi
 
     public RecyclerListAdapterMyVerses(List<ScriptureData> dataset, Activity context, OnStartDragListener dragStartListener,
                                        MyVersesFragment fragment, BaseCallback<List<ScriptureData>> dataChangedCallback,
-                                       BaseCallback<ScriptureData> itemSelectedCallback, BaseCallback<ScriptureData> onItemRemovedCallback) {
+                                       BaseCallback<ScriptureData> itemSelectedCallback, BaseCallback<RemoveVerse> onItemRemovedCallback) {
         mDragStartListener = dragStartListener;
         this.dataset = dataset;
         this.context = context;
@@ -214,7 +215,7 @@ public class RecyclerListAdapterMyVerses extends RecyclerView.Adapter<RecyclerLi
         ScriptureData temp = dataset.get(position);
         dataset.remove(position);
         notifyItemRemoved(position);
-        onItemRemovedCallback.onResponse(temp);
+        onItemRemovedCallback.onResponse(new RemoveVerse(position, temp));
     }
 
     @Override
@@ -232,9 +233,9 @@ public class RecyclerListAdapterMyVerses extends RecyclerView.Adapter<RecyclerLi
         return dataset.size();
     }
 
-    public void addItem(ScriptureData verse) {
-        dataset.add(verse);
-        notifyDataSetChanged();
+    public void addItem(ScriptureData verse, int position) {
+        dataset.add(position, verse);
+        notifyItemInserted(position);
     }
 
 

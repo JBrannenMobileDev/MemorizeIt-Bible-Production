@@ -20,6 +20,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import nape.biblememory.models.MyVerse;
+import nape.biblememory.models.RemoveVerse;
 import nape.biblememory.models.ScriptureData;
 import nape.biblememory.view_layer.activities.BaseCallback;
 import nape.biblememory.view_layer.activities.VerseDetailsActivity;
@@ -41,7 +42,7 @@ public class MyVersesFragment extends Fragment implements OnStartDragListener, M
     private MyVersesPresenterInterface presenter;
     private BaseCallback<List<ScriptureData>> dataChangedCallback;
     private BaseCallback<ScriptureData> itemSelectedCallback;
-    private BaseCallback<ScriptureData> onItemRemovedCallback;
+    private BaseCallback<RemoveVerse> onItemRemovedCallback;
     private View view;
     private RecyclerListAdapterMyVerses adapter;
     private myVersesListener mListener;
@@ -111,10 +112,10 @@ public class MyVersesFragment extends Fragment implements OnStartDragListener, M
             }
         };
 
-        onItemRemovedCallback = new BaseCallback<ScriptureData>() {
+        onItemRemovedCallback = new BaseCallback<RemoveVerse>() {
             @Override
-            public void onResponse(ScriptureData verse) {
-                mListener.onVerseDeleted(verse);
+            public void onResponse(RemoveVerse verse) {
+                mListener.onVerseDeleted(verse.getVerse(), verse.getPosition());
             }
 
             @Override
@@ -170,7 +171,7 @@ public class MyVersesFragment extends Fragment implements OnStartDragListener, M
         mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    public void undoDelete(final ScriptureData verse) {
+    public void undoDelete(final ScriptureData verse, final int position) {
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -179,10 +180,10 @@ public class MyVersesFragment extends Fragment implements OnStartDragListener, M
             }
         });
         realm.close();
-        adapter.addItem(verse);
+        adapter.addItem(verse, position);
     }
 
     public interface myVersesListener {
-        void onVerseDeleted(ScriptureData verse);
+        void onVerseDeleted(ScriptureData verse, int position);
     }
 }

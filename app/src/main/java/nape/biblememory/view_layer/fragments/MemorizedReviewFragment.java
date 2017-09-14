@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,6 +52,7 @@ public class MemorizedReviewFragment extends Fragment implements MemorizedVerseR
     @BindView(R.id.memorized_percent_complete)TextView progressText;
     @BindView(R.id.memorized_review_replay)ImageView replayIcon;
     @BindView(R.id.memorized_review_info)ImageView infoButton;
+    @BindView(R.id.well_done1_image)ImageView wellDoneImage;
     private MemorizedVerseReviewInterface presenter;
     private String verseLocation;
     private String verse;
@@ -137,6 +139,8 @@ public class MemorizedReviewFragment extends Fragment implements MemorizedVerseR
     }
 
     public void requestEditTextFocus(){
+        replayIcon.setVisibility(View.GONE);
+        wellDoneImage.setVisibility(View.GONE);
         presenter.resetReview();
         correctCountTv.setText("0");
         verse = "";
@@ -151,6 +155,8 @@ public class MemorizedReviewFragment extends Fragment implements MemorizedVerseR
     }
 
     public void requestEditTextFocusFromPresenter(){
+        wellDoneImage.setVisibility(View.GONE);
+        replayIcon.setVisibility(View.GONE);
         userInput.requestFocus();
         verseTextTv.setText("");
         InputMethodManager imm = (InputMethodManager) getActivity().getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -273,11 +279,25 @@ public class MemorizedReviewFragment extends Fragment implements MemorizedVerseR
     public void onReviewComplete(int correctCount, int wordCount) {
         int percentComplete = (int)((((float)correctCount)/((float)wordCount))*100f);
         if(percentComplete == 100){
-            reviewNow = false;
             if(reviewNow) {
                 new ReMemorizedAlertDialog().show(getFragmentManager(), null);
                 presenter.onReMemorized();
+                reviewNow = false;
             }
+            Random rand = new Random();
+            int n = rand.nextInt(3) + 1;
+            switch(n){
+                case 1:
+                    wellDoneImage.setImageDrawable(getActivity().getDrawable(R.drawable.well_done));
+                    break;
+                case 2:
+                    wellDoneImage.setImageDrawable(getActivity().getDrawable(R.drawable.well_done_2));
+                    break;
+                case 3:
+                    wellDoneImage.setImageDrawable(getActivity().getDrawable(R.drawable.well_done_3));
+                    break;
+            }
+            wellDoneImage.setVisibility(View.VISIBLE);
             progressText.setTextColor(getResources().getColor(R.color.colorGreenText));
         }else{
             progressText.setTextColor(getResources().getColor(R.color.colorWhite));
