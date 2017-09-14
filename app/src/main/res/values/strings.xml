@@ -24,15 +24,22 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
     <string name="first_time_unlock_toast">Tap anywhere on the screen to reveal the answer. Tap again to exit the quiz.</string>
-    //Prod
-    <!--<string name="unlock_view_banner_ad">ca-app-pub-2849776172926644/2824273775</string>-->
-    //Testing
-    <string name="unlock_view_banner_ad">ca-app-pub-3940256099942544/6300978111</string>
+
 
     //Prod
-    <!--<string name="supportTheDevInterstellar">ca-app-pub-2849776172926644/4765532093</string>-->
+    <string name="unlock_view_banner_ad">ca-app-pub-2849776172926644/2824273775</string>
+
     //Testing
-    <string name="supportTheDevInterstellar">ca-app-pub-3940256099942544/1033173712</string>
+    <!--<string name="unlock_view_banner_ad">ca-app-pub-3940256099942544/6300978111</string>-->
+
+
+    //Prod
+    <string name="supportTheDevInterstellar">ca-app-pub-2849776172926644/4765532093</string>-->
+
+    //Testing
+    <!--<string name="supportTheDevInterstellar">ca-app-pub-3940256099942544/1033173712</string>-->
+
+
     <string name="app_ad_id">ca-app-pub-2849776172926644~7369668225</string>
     <string name="title_activity_current_list">CurrentList</string>
     <string name="title_activity_learning_list">LearningList</string>
