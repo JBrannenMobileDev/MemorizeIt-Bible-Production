@@ -111,13 +111,13 @@ public class VerseStageManager {
                 result = bookName + " " + chp_verse_num;
                 break;
             case 1:
-                result = bookName + " " + removeChars(1, chp_verse_num);
+                result = bookName + " " + removeChars(chp_verse_num);
                 break;
             case 2:
-                result = bookName + " " + removeChars(1, chp_verse_num);
+                result = bookName + " " + removeChars(chp_verse_num);
                 break;
             case 3:
-                result = bookName + " " + removeChars(2, chp_verse_num);
+                result = bookName + " " + removeChars(chp_verse_num);
                 break;
             case 4:
                 result = getBookNamePlaceholder(bookName) + " " + chp_verse_num;
@@ -140,7 +140,7 @@ public class VerseStageManager {
         return result;
     }
 
-    private String removeChars(int removeCount, String chp_verse_num) {
+    private String removeChars(String chp_verse_num) {
         if(chp_verse_num != null) {
             String result;
             String[] chpAndVerse = chp_verse_num.split(":");
@@ -194,7 +194,9 @@ public class VerseStageManager {
             int length = bookName.length();
             StringBuilder result = new StringBuilder(bookName);
             for (int i = 0; i < length; i++) {
-                result.setCharAt(i, '_');
+                if(result.charAt(i) != ' ') {
+                    result.setCharAt(i, '_');
+                }
             }
             return result.toString();
         }
@@ -205,7 +207,7 @@ public class VerseStageManager {
         int length = verseLocation.length();
         StringBuilder result = new StringBuilder(verseLocation);
         for(int i = 0;i < length; i++){
-            if(result.charAt(i) != ' ' && result.charAt(i) != ':') {
+            if(result.charAt(i) != ' ' && result.charAt(i) != ':' && result.charAt(i) != '-') {
                 result.setCharAt(i, '_');
             }
         }

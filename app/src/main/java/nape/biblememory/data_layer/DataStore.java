@@ -300,7 +300,7 @@ public class DataStore {
     public void updateMemorizedVerse(final MemorizedVerse verse, Context applcationContext){
         FirebaseDb.getInstance().updateMemorizedVerse(verse, applcationContext);
         Realm realm = Realm.getDefaultInstance();
-        realm.executeTransactionAsync(new Realm.Transaction() {
+        realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 MemorizedVerse realmVerse = realm.where(MemorizedVerse.class).equalTo("verseLocation", verse.getVerseLocation()).findFirst();
@@ -518,8 +518,8 @@ public class DataStore {
         FirebaseDb.getInstance().deleteBlessingNotification(uidToDelete, applicationContext);
     }
 
-    public void addVerseMemorized(ScriptureData verse, Context context){
-        FirebaseDb.getInstance().addVerseMemorized(verse, context);
+    public void addVerseMemorized(ScriptureData verse){
+        FirebaseDb.getInstance().addVerseMemorized(verse);
     }
 
     public void getAllMemorizedVerses(final BaseCallback<List<ScriptureData>> allMemorizedCallback){

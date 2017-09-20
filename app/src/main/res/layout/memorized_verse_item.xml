@@ -19,23 +19,23 @@
         android:visibility="gone">
 
         <TextView
-            android:id="@+id/review_now_text"
+            android:id="@+id/review_alert_text"
             android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:layout_marginRight="40dp"
             android:text="REVIEW NOW!"
             android:textAlignment="center"
-            android:textColor="@color/red"
+            android:textColor="@color/colorNoText"
             android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/review_now_image"
+            android:id="@+id/review_alert_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:layout_marginRight="15dp"
-            android:tint="@color/red"
+            android:tint="@color/colorNoText"
             app:srcCompat="@drawable/ic_error_black_24dp" />
     </FrameLayout>
 

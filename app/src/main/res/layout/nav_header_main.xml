@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_weight="1"
-        android:text="v2.1.2"
+        android:text="v2.1.4"
         android:textAlignment="textEnd"
         android:textColor="@color/colorWhite"
         android:textStyle="bold" />

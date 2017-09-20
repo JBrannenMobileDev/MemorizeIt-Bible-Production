@@ -80,9 +80,9 @@ public class MemorizedVerseDetailsActivity extends AppCompatActivity implements 
         try {
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("text/plain");
-            i.putExtra(Intent.EXTRA_SUBJECT, verse.getVerseLocation() + "  " + "Memorize It - Bible");
+            i.putExtra(Intent.EXTRA_SUBJECT, verse.getVerseLocation() + " Memorize It - Bible");
             String sAux = "\n" +verse.getVerseLocation() + "  " + verse.getVerse() + "\n\n";
-            sAux = sAux + "Hey! I just memorized this verse using this app.  It gives me a quiz every time i open my phone.\n\n";
+            sAux = sAux + "Hey! I just memorized " + verse.getVerseLocation() + " using this app.  It gives me a quiz every time i open my phone.\n\n";
             sAux = sAux + "https://play.google.com/store/apps/details?id=nape.biblememory&hl=en \n\n";
             i.putExtra(Intent.EXTRA_TEXT, sAux);
             startActivity(Intent.createChooser(i, "choose one"));
@@ -115,12 +115,6 @@ public class MemorizedVerseDetailsActivity extends AppCompatActivity implements 
         pagerMain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if(position == 1) {
-                    adapterMain.setEditTextFocus();
-                }
-                if(position == 0){
-                    hideSoftKeyboard();
-                }
             }
 
             @Override
@@ -135,7 +129,6 @@ public class MemorizedVerseDetailsActivity extends AppCompatActivity implements 
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
 

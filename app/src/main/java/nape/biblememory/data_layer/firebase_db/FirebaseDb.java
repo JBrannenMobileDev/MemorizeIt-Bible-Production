@@ -448,33 +448,9 @@ public class FirebaseDb {
         userPrefsReference.setValue(mPrefsModel);
     }
 
-    public void addVerseMemorized(final ScriptureData verseToSave, Context context){
-        BaseCallback<List<MemorizedVerse>> memorizedCallback = new BaseCallback<List<MemorizedVerse>>() {
-            @Override
-            public void onResponse(List<MemorizedVerse> response) {
-                if(response != null) {
-                    boolean alreadyExists = false;
-                    for (MemorizedVerse verse : response) {
-                        if(verse.getVerseLocation().equalsIgnoreCase(verseToSave.getVerseLocation())){
-                            alreadyExists = true;
-                        }
-                    }
-                    if(!alreadyExists){
-                        memorizedVersesReference = FirebaseDatabase.getInstance().getReference().child(Constants.ALL_MEMORIZED_VERSES);
-                        memorizedVersesReference.push().setValue(verseToSave);
-                    }
-                }else{
-                    memorizedVersesReference = FirebaseDatabase.getInstance().getReference().child(Constants.ALL_MEMORIZED_VERSES);
-                    memorizedVersesReference.push().setValue(verseToSave);
-                }
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-
-            }
-        };
-        FirebaseDb.getInstance().getMemorizedVersesFromFirebaseDb(context, memorizedCallback);
+    public void addVerseMemorized(final ScriptureData verseToSave){
+        memorizedVersesReference = FirebaseDatabase.getInstance().getReference().child(Constants.ALL_MEMORIZED_VERSES);
+        memorizedVersesReference.push().setValue(verseToSave);
     }
 
     public void getAllMemorizedVerses(final BaseCallback<List<ScriptureData>> allMemorizedCallback){

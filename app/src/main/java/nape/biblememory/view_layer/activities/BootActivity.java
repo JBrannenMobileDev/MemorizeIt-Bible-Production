@@ -51,6 +51,7 @@ public class BootActivity extends Activity {
         hideSystemUI();
         ButterKnife.bind(this);
         mPrefs = new UserPreferences();
+        mPrefs.setComingFromMemorizedDetails(false, getApplicationContext());
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder().name("myrealm4.realm").schemaVersion(4).deleteRealmIfMigrationNeeded().build();
         Realm.setDefaultConfiguration(config);

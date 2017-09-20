@@ -16,16 +16,17 @@ import io.realm.RealmChangeListener;
 import io.realm.RealmModel;
 import nape.biblememory.R;
 import nape.biblememory.models.MemorizedVerse;
+import nape.biblememory.models.MyVerse;
 
-public class MemorizedVerseDetailsFragment extends Fragment {
+public class MyVerseDetailsFragment extends Fragment {
     @BindView(R.id.verse_details_verse)TextView verseText;
     @BindView(R.id.verse_details_last_seen_tv)TextView lastSeen;
     @BindView(R.id.verse_details_progress_tv)TextView progressTv;
-    private MemorizedVerse verse;
+    private MyVerse verse;
     private String verseLocation;
     private Realm realm;
 
-    public MemorizedVerseDetailsFragment() {
+    public MyVerseDetailsFragment() {
         // Required empty public constructor
     }
 
@@ -34,11 +35,11 @@ public class MemorizedVerseDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_memorized_verse_details, container, false);
+        View v = inflater.inflate(R.layout.fragment_my_verse_details, container, false);
         ButterKnife.bind(this, v);
         verseLocation = getArguments().getString("verseLocation");
         realm = Realm.getDefaultInstance();
-        verse = realm.where(MemorizedVerse.class).equalTo("verseLocation", verseLocation).findFirst();
+        verse = realm.where(MyVerse.class).equalTo("verseLocation", verseLocation).findFirst();
         verse.addChangeListener(new RealmChangeListener<RealmModel>() {
             @Override
             public void onChange(RealmModel realmModel) {
@@ -52,19 +53,50 @@ public class MemorizedVerseDetailsFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
+        getActivity().setTitle(Html.fromHtml("<h2>" +verseLocation+ "</h2>"));
     }
 
-    private void initView(MemorizedVerse verse) {
+    private void initView(MyVerse verse) {
         if(verse.isValid()) {
             this.verse = verse;
             verseText.setText(verse.getVerse());
             lastSeen.setText(verse.getLastSeenDate());
-            if (verse.isForgotten()) {
-                progressTv.setText("Forgotten");
-            } else {
-                progressTv.setText("100%");
-            }
+            progressTv.setText(String.valueOf(calculateProgress(verse.getMemoryStage(), verse.getMemorySubStage())) + "%");
         }
+    }
+
+    private int calculateProgress(int memoryStage, int memorySubStage) {
+        double progress;
+        switch (memoryStage) {
+            case 0:
+                progress = 0;
+                break;
+            case 1:
+                progress = 1 + memorySubStage;
+                break;
+            case 2:
+                progress = 4 + memorySubStage;
+                break;
+            case 3:
+                progress = 7 + memorySubStage;
+                break;
+            case 4:
+                progress = 10 + memorySubStage;
+                break;
+            case 5:
+                progress = 13 + memorySubStage;
+                break;
+            case 6:
+                progress = 16 + memorySubStage;
+                break;
+            case 7:
+                progress = 19;
+                break;
+            default:
+                progress = 0;
+        }
+        progress = (progress/20)*100;
+        return (int)progress;
     }
 
     @Override

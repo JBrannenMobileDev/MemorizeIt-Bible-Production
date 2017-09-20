@@ -1,97 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view_layer.activities.VerseDetailsActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <nape.biblememory.view_layer.views.SlidingTabLayout
+        android:id="@+id/my_verses_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:background="@color/colorPrimary"
+        android:elevation="2dp"
+        app:tabMode="scrollable" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/my_verses_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:elevation="4dp"
-            android:orientation="horizontal"
-            android:paddingBottom="10dp"
-            android:paddingLeft="15dp"
-            android:paddingTop="10dp">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView33"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:text="Progress:"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/textView330"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:text="Last seen:"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/verse_details_progress_tv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="85%"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/verse_details_last_seen_tv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="09-04-2017"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/verse_details_verse"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="20dp"
-                    android:text="Submit yourselves therefore to God. Resist the devil and he will flee from you."
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="30sp" />
-            </LinearLayout>
-        </ScrollView>
-
-    </LinearLayout>
-</FrameLayout>
+        android:layout_weight="1" />
+</LinearLayout>

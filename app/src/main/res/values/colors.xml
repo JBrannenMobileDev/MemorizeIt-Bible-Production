@@ -8,7 +8,8 @@
     <color name="colorWhite">#ffffff</color>
     <color name="colorCloseButtonTextUnselected">#014860</color>
     <color name="colorGreenText">#2bfc74</color>
-    <color name="colorNoText">#ff642c</color>
+    <color name="colorNoText">#ff4400</color>
+    <color name="orange">#ff9900</color>
     <color name="indicator">#01bdfc</color>
     <color name="black_overlay">#66000000</color>
     <color name="circle_button">#016585</color>

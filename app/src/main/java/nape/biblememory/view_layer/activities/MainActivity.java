@@ -337,7 +337,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     @Override
     public void onStop(){
         super.onStop();
-        mPrefs.setComingFromMemorizedDetails(false, getApplicationContext());
         if(snackbar != null)
             snackbar.dismiss();
     }
@@ -618,7 +617,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("text/plain");
             i.putExtra(Intent.EXTRA_SUBJECT, "Check this out!");
-            String sAux = "\nI found this bible memory app that has been really useful. Every time you unlock your phone a short quiz pops up. \n\n";
+            String sAux = "Hey!  check out this app! Super useful for memorizing bible verses. Every time i open my phone a short quiz pops up. \n\n";
             sAux = sAux + "https://play.google.com/store/apps/details?id=nape.biblememory&hl=en \n\n";
             i.putExtra(Intent.EXTRA_TEXT, sAux);
             startActivity(Intent.createChooser(i, "choose one"));

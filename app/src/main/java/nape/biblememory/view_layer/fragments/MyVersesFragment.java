@@ -102,8 +102,8 @@ public class MyVersesFragment extends Fragment implements OnStartDragListener, M
             @Override
             public void onResponse(ScriptureData verse) {
                 Intent intent = new Intent(getActivity(), VerseDetailsActivity.class);
-                intent.putExtra("verse", verse);
-                startActivityForResult(intent, 2);
+                intent.putExtra("verseLocation", verse.getVerseLocation());
+                startActivity(intent);
             }
 
             @Override

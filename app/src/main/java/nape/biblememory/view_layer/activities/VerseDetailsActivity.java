@@ -1,28 +1,37 @@
 package nape.biblememory.view_layer.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 import nape.biblememory.data_layer.DataStore;
 import nape.biblememory.models.MyVerse;
+import nape.biblememory.utils.UserPreferences;
+import nape.biblememory.view_layer.adapters.ViewPagerAdapterMyVerses;
 import nape.biblememory.view_layer.fragments.dialogs.DeleteVerseAlertDialog;
 import nape.biblememory.models.ScriptureData;
 import nape.biblememory.R;
+import nape.biblememory.view_layer.views.SlidingTabLayout;
 
 public class VerseDetailsActivity extends AppCompatActivity implements DeleteVerseAlertDialog.YesSelected{
 
-    @BindView(R.id.verse_details_verse)TextView verseText;
-    @BindView(R.id.verse_details_last_seen_tv)TextView lastSeen;
-    @BindView(R.id.verse_details_progress_tv)TextView progressTv;
-
-    private ScriptureData verse;
+    @BindView(R.id.my_verses_pager)ViewPager pagerMain;
+    @BindView(R.id.my_verses_tabs) SlidingTabLayout tabsMain;
+    private ViewPagerAdapterMyVerses adapterMain;
+    private CharSequence mainTitles[]={"Details","Learn verse"};
+    private MyVerse verse;
+    private String verseLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +39,16 @@ public class VerseDetailsActivity extends AppCompatActivity implements DeleteVer
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verse_details);
         ButterKnife.bind(this);
-        initView((ScriptureData)getIntent().getParcelableExtra("verse"));
+        verseLocation = getIntent().getStringExtra("verseLocation");
+        setTitle(Html.fromHtml("<h2>" +verseLocation+ "</h2>"));
+        Realm realm = Realm.getDefaultInstance();
+        verse = realm.where(MyVerse.class).equalTo("verseLocation", verseLocation).findFirst();
+        setSlidingTabViewVerseSelector();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
     }
 
     @Override
@@ -38,6 +56,51 @@ public class VerseDetailsActivity extends AppCompatActivity implements DeleteVer
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.verse_details_menu, menu);
         return true;
+    }
+
+    private void setSlidingTabViewVerseSelector() {
+        // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
+        adapterMain =  new ViewPagerAdapterMyVerses(getSupportFragmentManager(),mainTitles,2, verseLocation);
+
+        // Assigning ViewPager View and setting the adapter
+        pagerMain.setAdapter(adapterMain);
+        pagerMain.setVisibility(View.VISIBLE);
+
+        // Assiging the Sliding Tab Layout View
+        tabsMain.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
+        tabsMain.setVisibility(View.VISIBLE);
+
+        // Setting Custom Color for the Scroll bar indicator of the Tab View
+        tabsMain.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @Override
+            public int getIndicatorColor(int position) {
+                return getResources().getColor(R.color.tabsScrollColor);
+            }
+        });
+
+        // Setting the ViewPager For the SlidingTabsLayout
+        tabsMain.setViewPager(pagerMain);
+        pagerMain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 1) {
+                    setTitle("Learning");
+                    adapterMain.setEditTextFocus();
+                }
+                if(position == 0){
+                    setTitle(Html.fromHtml("<h2>" +verseLocation+ "</h2>"));
+                    hideSoftKeyboard();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
     }
 
     @Override
@@ -53,8 +116,7 @@ public class VerseDetailsActivity extends AppCompatActivity implements DeleteVer
         if (id == R.id.action_reset) {
             verse.setMemoryStage(0);
             verse.setMemorySubStage(0);
-            DataStore.getInstance().updateQuizVerse(verse.toMyVerse(), getApplicationContext());
-            progressTv.setText("0%");
+            DataStore.getInstance().updateQuizVerse(verse, getApplicationContext());
             return true;
         }
         if (id == R.id.action_delete_verse) {
@@ -74,7 +136,7 @@ public class VerseDetailsActivity extends AppCompatActivity implements DeleteVer
             i.setType("text/plain");
             i.putExtra(Intent.EXTRA_SUBJECT, verse.getVerseLocation() + "  " + "Memorize It - Bible");
             String sAux = "\n" +verse.getVerseLocation() + "  " + verse.getVerse() + "\n\n";
-            sAux = sAux + "Hey! I just memorized " + verse.getVerseLocation() +  " using this app.  It gives me a quiz every time I open my phone.\n\n";
+            sAux = sAux + "Hey! I just started memorizing " + verse.getVerseLocation() +  " using this app. You should check it out. It gives me a quiz every time I open my phone.\n\n";
             sAux = sAux + "https://play.google.com/store/apps/details?id=nape.biblememory&hl=en \n\n";
             i.putExtra(Intent.EXTRA_TEXT, sAux);
             startActivity(Intent.createChooser(i, "choose one"));
@@ -83,52 +145,18 @@ public class VerseDetailsActivity extends AppCompatActivity implements DeleteVer
         }
     }
 
+    private void hideSoftKeyboard(){
+        View view = getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
     @Override
     public void finish(){
         super.finish();
         overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_right);
-    }
-
-    private void initView(ScriptureData verse) {
-        this.verse = verse;
-        verseText.setText(verse.getVerse());
-        lastSeen.setText(verse.getLastSeenDate());
-        progressTv.setText(calculateProgress(verse.getMemoryStage(), verse.getMemorySubStage()) + "%");
-        setTitle(Html.fromHtml("<h2>" +verse.getVerseLocation()+ "</h2>"));
-    }
-
-    private int calculateProgress(int memoryStage, int memorySubStage) {
-        double progress;
-        switch (memoryStage) {
-            case 0:
-                progress = 0;
-                break;
-            case 1:
-                progress = 1 + memorySubStage;
-                break;
-            case 2:
-                progress = 4 + memorySubStage;
-                break;
-            case 3:
-                progress = 7 + memorySubStage;
-                break;
-            case 4:
-                progress = 10 + memorySubStage;
-                break;
-            case 5:
-                progress = 13 + memorySubStage;
-                break;
-            case 6:
-                progress = 16 + memorySubStage;
-                break;
-            case 7:
-                progress = 19;
-                break;
-            default:
-                progress = 0;
-        }
-        progress = (progress/20)*100;
-        return (int)progress;
     }
 
     @Override

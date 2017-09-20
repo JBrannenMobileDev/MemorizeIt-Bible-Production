@@ -279,6 +279,7 @@ public class ScriptureData implements Parcelable, Comparable<ScriptureData>{
         myVerse.setViewedCount(viewedCount);
         myVerse.setListPosition(listPosition);
         myVerse.setGoldStar(goldStar);
+        myVerse.setForgotten(false);
         return myVerse;
     }
 

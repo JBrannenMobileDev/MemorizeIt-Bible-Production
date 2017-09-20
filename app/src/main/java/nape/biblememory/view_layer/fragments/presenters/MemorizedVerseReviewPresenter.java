@@ -1,7 +1,6 @@
 package nape.biblememory.view_layer.fragments.presenters;
 
 import io.realm.Realm;
-import nape.biblememory.data_layer.DataStore;
 import nape.biblememory.models.MemorizedVerse;
 import nape.biblememory.view_layer.fragments.interfaces.MemorizedVerseReviewFragmentInterface;
 import nape.biblememory.view_layer.fragments.interfaces.MemorizedVerseReviewInterface;
@@ -18,17 +17,18 @@ public class MemorizedVerseReviewPresenter implements MemorizedVerseReviewInterf
     private int wordIndex;
     private int correctCount;
     private int incorrectCount;
+    private Realm realm;
 
     public MemorizedVerseReviewPresenter(MemorizedVerseReviewFragmentInterface fragment){
         this.fragment = fragment;
         wordIndex = 0;
         correctCount = 0;
         incorrectCount = 0;
+        realm = Realm.getDefaultInstance();
     }
 
     @Override
     public void fetchData(String verseLocation) {
-        Realm realm = Realm.getDefaultInstance();
         verse = realm.where(MemorizedVerse.class).equalTo("verseLocation", verseLocation).findFirst();
         words = countWordsUsingSplit(verse.getVerse());
         fragment.onDataReceived(String.valueOf(words.length));
@@ -48,7 +48,7 @@ public class MemorizedVerseReviewPresenter implements MemorizedVerseReviewInterf
                 if(incorrectCount >= 4){
                     incorrectCount = 0;
                 }
-                fragment.onInCorrect(words[wordIndex], incorrectCount);
+                fragment.onIncorrect(words[wordIndex], incorrectCount);
                 if(incorrectCount == 3) {
                     wordIndex++;
                 }
@@ -69,6 +69,35 @@ public class MemorizedVerseReviewPresenter implements MemorizedVerseReviewInterf
     @Override
     public void onReMemorized() {
         fragment.onUpdateReMemorizedVerse(verse);
+    }
+
+    @Override
+    public void updateMemorizedVerse(final String date) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                MemorizedVerse realmVerse = realm.where(MemorizedVerse.class).equalTo("verseLocation", verse.getVerseLocation()).findFirst();
+                realmVerse.setLastSeenDate(date);
+            }
+        });
+        fragment.updateMemorizedVerse(verse, date);
+    }
+
+    @Override
+    public void onStop() {
+        realm.close();
+    }
+
+    @Override
+    public void updateMemorizedVerseToFalse() {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                MemorizedVerse realmVerse = realm.where(MemorizedVerse.class).equalTo("verseLocation", verse.getVerseLocation()).findFirst();
+                realmVerse.setForgotten(true);
+            }
+        });
+        fragment.updateMemorizedVerseToForgotten(verse);
     }
 
     public static String[] countWordsUsingSplit(String input) {

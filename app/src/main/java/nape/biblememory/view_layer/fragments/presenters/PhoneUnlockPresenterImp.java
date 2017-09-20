@@ -123,7 +123,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                 forgottenVerse = true;
                 view.setReviewTitleVisibility(View.VISIBLE);
                 view.setReviewTitleText("Review forgotten verse");
-                view.setReviewTitleColor(R.color.Red);
+                view.setReviewTitleColor(R.color.colorNoText);
                 reviewForgottenVerses = forgottenVerseReview;
                 onSuccess(forgottenVerseReview);
             }else{
@@ -132,7 +132,8 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                 view.setReviewTitleText("Review memorized verse");
                 view.setReviewTitleColor(R.color.colorGreenText);
                 reviewVersesList = reviewVerses;
-                if(++reviewIndex == reviewVerses.size()){
+                reviewIndex++;
+                if(reviewIndex == reviewVerses.size()){
                     reviewIndex = 0;
                 }
                 mPrefs.setQuizReviewIndex(reviewIndex, context);
@@ -241,6 +242,8 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                     if(forgottenVerse){
                         MemorizedVerse temp = scripture.toMemorizedVerseData();
                         temp.setForgotten(myMemorizedVerse.isForgotten());
+                        String formattedDate = dateFormat.format(c.getTime());
+                        temp.setLastSeenDate(formattedDate);
                         DataStore.getInstance().updateMemorizedVerse(temp, context);
                     }else if(!isReviewMode){
                         DataStore.getInstance().updateQuizVerse(scripture.toMyVerse(), context);
@@ -251,6 +254,8 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                     if(forgottenVerse){
                         MemorizedVerse temp = scripture.toMemorizedVerseData();
                         temp.setForgotten(myMemorizedVerse.isForgotten());
+                        String formattedDate = dateFormat.format(c.getTime());
+                        temp.setLastSeenDate(formattedDate);
                         DataStore.getInstance().updateMemorizedVerse(temp, context);
                     }else if(!isReviewMode){
                         DataStore.getInstance().updateQuizVerse(scripture.toMyVerse(), context);
@@ -260,7 +265,6 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                         moveForgottenVerseToMemorizedList();
                     }else if(!isReviewMode){
                         moveVerseToRememberedList();
-                        myMemorizedVerse.setForgotten(false);
                     }
                     if (myVerses.size() < 1) {
                         memorizedAndLearningListIsEmpty = true;
@@ -271,6 +275,8 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                     if(forgottenVerse || reviewVerse){
                         MemorizedVerse temp = scripture.toMemorizedVerseData();
                         temp.setForgotten(myMemorizedVerse.isForgotten());
+                        String formattedDate = dateFormat.format(c.getTime());
+                        temp.setLastSeenDate(formattedDate);
                         DataStore.getInstance().updateMemorizedVerse(temp, context);
                     }else{
                         DataStore.getInstance().updateQuizVerse(scripture.toMyVerse(), context);
@@ -283,12 +289,13 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
             if(!isReviewMode) {
                 if (myVerses.size() > 0) {
                     resetVerseView();
-                } else {
-                    if (!memorizedAndLearningListIsEmpty)
-                        view.onFinishActivity();
                 }
             }else{
-                resetVerseView();
+                if (myVerses.size() > 0) {
+                    resetVerseView();
+                } else {
+                    view.onFinishActivity();
+                }
             }
         }else{
             if(!isReviewMode){
@@ -308,13 +315,15 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
         MemorizedVerse temp = scripture.toMemorizedVerseData();
         temp.setForgotten(false);
         DataStore.getInstance().updateMemorizedVerse(temp, context);
-        view.onFinishActivity();
+        if(myVerses.size() < 1) {
+            view.onFinishActivity();
+        }
     }
-
 
     private void moveVerseToRememberedList() {
         String formattedDate = dateFormat.format(c.getTime());
         scripture.setRemeberedDate(formattedDate);
+        DataStore.getInstance().addVerseMemorized(scripture);
         DataStore.getInstance().saveMemorizedVerse(scripture.toMemorizedVerseData(), context);
         DataStore.getInstance().deleteQuizVerse(scripture.toMyVerse(), context);
         DataStore.getInstance().starNextVerse(context);
@@ -345,8 +354,12 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
             DataStore.getInstance().updateMemorizedVerse(temp, context);
         }else if(reviewVerse){
             scripture.setLastSeenDate(formattedDate);
-            scripture.setMemorySubStage(2);
-            scripture.setMemoryStage(stage - 5);
+            if(subStage == 0){
+                scripture.setMemoryStage(stage - 1);
+                scripture.setMemorySubStage(2);
+            }else{
+                scripture.setMemorySubStage(subStage - 1);
+            }
             MemorizedVerse temp = scripture.toMemorizedVerseData();
             temp.setForgotten(true);
             DataStore.getInstance().updateMemorizedVerse(temp, context);

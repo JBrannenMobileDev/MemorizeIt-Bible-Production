@@ -283,7 +283,7 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
     public void showMemorizedAlert(boolean memorizedAndLearningListIsEmpty) {
         VerseMemorizedAlertDialog alert = new VerseMemorizedAlertDialog();
         Bundle bundle = new Bundle();
-        bundle.putBoolean("callOnFinish", true);
+        bundle.putBoolean("callOnFinish", memorizedAndLearningListIsEmpty);
         alert.setArguments(bundle);
         alert.show(getSupportFragmentManager(), null);
     }

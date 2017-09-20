@@ -8,11 +8,13 @@ import nape.biblememory.models.MemorizedVerse;
  */
 
 public interface MemorizedVerseReviewFragmentInterface {
-    void onDataReceived(String wordCount);
     void onCorrect(String word);
-    void onInCorrect(String word, int numOfRedLights);
+    void onIncorrect(String word, int numOfRedLights);
     void hideKeyboard();
     void updateCorrectCount(int correctCount);
+    void onDataReceived(String wordCount);
     void onReviewComplete(int correctCount, int wordCount);
     void onUpdateReMemorizedVerse(MemorizedVerse verse);
+    void updateMemorizedVerse(MemorizedVerse verse, String date);
+    void updateMemorizedVerseToForgotten(MemorizedVerse verse);
 }

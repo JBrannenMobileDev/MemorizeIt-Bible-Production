@@ -10,6 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import nape.biblememory.models.MemorizedVerse;
@@ -26,6 +30,8 @@ public class RecyclerViewAdapterMemorized extends RecyclerView.Adapter<RecyclerV
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView verseLocation;
         public TextView verse;
+        public TextView alertMsg;
+        public ImageView alertIcon;
         public ImageView shareIcon;
         private FrameLayout itemLayout;
         private FrameLayout reviewNowLayout;
@@ -37,6 +43,8 @@ public class RecyclerViewAdapterMemorized extends RecyclerView.Adapter<RecyclerV
             shareIcon = (ImageView) v.findViewById(R.id.share_verse_icon);
             itemLayout = (FrameLayout) v.findViewById(R.id.memorized_verses_layout);
             reviewNowLayout = (FrameLayout) v.findViewById(R.id.review_now_layout);
+            alertIcon = (ImageView) v.findViewById(R.id.review_alert_image);
+            alertMsg = (TextView) v.findViewById(R.id.review_alert_text);
 
             itemLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -78,14 +86,49 @@ public class RecyclerViewAdapterMemorized extends RecyclerView.Adapter<RecyclerV
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        String pattern = "MM-dd-yyyy";
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+        Calendar cal = Calendar.getInstance();
+        Calendar reviewDatePlusOneMonth = Calendar.getInstance();
+        Calendar reviewDatePlusOneWeek = Calendar.getInstance();
+        Date lastReviewed = null;
+        try {
+            lastReviewed = formatter.parse(mDataSet.get(position).getLastSeenDate());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(lastReviewed != null) {
+            reviewDatePlusOneMonth.setTime(lastReviewed);
+            reviewDatePlusOneMonth.add(Calendar.DATE, 30);
+            reviewDatePlusOneWeek.setTime(lastReviewed);
+            reviewDatePlusOneWeek.add(Calendar.DATE, 7);
+        }
         if(mDataSet.get(position).isForgotten()){
             holder.verseLocation.setText(mDataSet.get(position).getVerseLocation());
-            holder.verse.setText(mDataSet.get(position).getVerse());
-            holder.verseLocation.setTextColor(Color.argb(255, 218, 0, 0));
-            holder.verse.setTextColor(Color.argb(255, 218, 0, 0));
+            holder.verse.setText("Forgotten!");
+            holder.verseLocation.setTextColor(Color.argb(255, 255, 68, 0));
+            holder.verse.setTextColor(Color.argb(255, 255, 68, 0));
             holder.shareIcon.setVisibility(View.GONE);
             holder.reviewNowLayout.setVisibility(View.VISIBLE);
-        }else {
+        }else if(lastReviewed != null && reviewDatePlusOneMonth.before(cal)) {
+            holder.verseLocation.setText(mDataSet.get(position).getVerseLocation());
+            holder.verse.setText("Review past due!");
+            holder.verseLocation.setTextColor(Color.argb(255, 255, 153, 0));
+            holder.verse.setTextColor(Color.argb(255, 255, 153, 0));
+            holder.shareIcon.setVisibility(View.GONE);
+            holder.reviewNowLayout.setVisibility(View.VISIBLE);
+            holder.alertIcon.setColorFilter(Color.argb(255, 255, 153, 0));
+            holder.alertMsg.setTextColor(Color.argb(255, 255, 153, 0));
+        }else if(lastReviewed != null && reviewDatePlusOneWeek.before(cal)) {
+            holder.verseLocation.setText(mDataSet.get(position).getVerseLocation());
+            holder.verse.setText("Review due!");
+            holder.verseLocation.setTextColor(Color.argb(255, 255, 213, 1));
+            holder.verse.setTextColor(Color.argb(255, 255, 213, 1));
+            holder.shareIcon.setVisibility(View.GONE);
+            holder.reviewNowLayout.setVisibility(View.VISIBLE);
+            holder.alertIcon.setColorFilter(Color.argb(255, 255, 213, 1));
+            holder.alertMsg.setTextColor(Color.argb(255, 255, 213, 1));
+        }else{
             holder.verseLocation.setText(mDataSet.get(position).getVerseLocation());
             holder.verse.setText(mDataSet.get(position).getVerse());
         }
