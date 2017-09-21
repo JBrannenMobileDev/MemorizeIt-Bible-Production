@@ -318,6 +318,9 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             }
         }
         DataStore.getInstance().updateUserData(mPrefs.getUserId(getApplicationContext()), getApplicationContext());
+        if(getIntent().getBooleanExtra("comingFromUnlockQuiz", false)){
+            addVerseSelected();
+        }
     }
 
     private boolean hasGoldStartVerses() {

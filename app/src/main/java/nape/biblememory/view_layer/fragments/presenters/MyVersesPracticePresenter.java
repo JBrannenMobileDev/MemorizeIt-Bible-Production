@@ -127,21 +127,31 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
                 break;
             case 5:
                 fragment.setVerseLocationTextColor();
+                fragment.setVerseTextColor();
+                fragment.setVerseLocationTextColor();
                 fragment.setVerseLocationText(modifyVerseLocationForStage(verseLocation, verse.getMemoryStage(), verse.getMemorySubStage()));
                 if(verse.getMemorySubStage() == 0){
-                    //remove verseLocation only.
+                    fragment.onDataReceived(String.valueOf(locationRemovedWordsList.size()));
+                    fragment.setVerseText(verse.getVerse());
                 }else {
-                    //Only show first word
+                    fragment.setVerseText(getVerseTextForStage5(words));
+                    fragment.onDataReceived(String.valueOf(removedWordsList.size()));
                 }
                 break;
             case 6:
                 fragment.setVerseLocationTextColor();
-                fragment.setVerseLocationText(modifyVerseLocationForStage(verseLocation, verse.getMemoryStage(), verse.getMemorySubStage()));
-                //use placeholder text
+                fragment.setVerseTextColor();
+                fragment.setVerseLocationTextColor();
+                fragment.setVerseLocationText(verseLocation);
+                fragment.setVerseText(getVerseTextForStage6(words));
+                fragment.onDataReceived(String.valueOf(removedWordsList.size()));
                 break;
             case 7:
                 fragment.setVerseLocationTextColor();
-                fragment.setVerseLocationText(modifyVerseLocationForStage(verseLocation, verse.getMemoryStage(), verse.getMemorySubStage()));
+                fragment.setVerseTextColor();
+                fragment.setVerseLocationTextColor();
+                fragment.setVerseLocationText(verseLocation);
+                fragment.setVerseText(verse.getVerse());
                 break;
         }
     }
@@ -313,6 +323,55 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
                             wrongCount = 0;
                         }
                     }
+                    if(locationWordIndex == locationRemovedWordsList.size()){
+                        fragment.onReviewComplete(correctCount, locationRemovedWordsList.size());
+                        fragment.hideKeyboard();
+                    }
+                }else if(wordIndex < removedWordsList.size()){
+                    if (Character.toLowerCase(c) == Character.toLowerCase(getFirstLetterOfWord(removedWordsList.get(wordIndex).getWord()))) {
+                        fragment.setVerseText(getVerseTextModified(words, true, wordIndex));
+                        wordIndex++;
+                        correctCount++;
+                        wrongCount = 0;
+                        fragment.updateCorrectCount(correctCount);
+                        fragment.turnLightGreen();
+                    }else{
+                        wrongCount++;
+                        fragment.turnLightRed(wrongCount);
+                        if(wrongCount == 3){
+                            wrongCount = 0;
+                            fragment.setVerseText(getVerseTextModified(words, false, wordIndex));
+                            wordIndex++;
+                        }
+                    }
+                    if(wordIndex == removedWordsList.size()){
+                        fragment.onReviewComplete(correctCount, removedWordsList.size());
+                        fragment.hideKeyboard();
+                    }
+                }
+                break;
+            case 6:
+                if(wordIndex < removedWordsList.size()){
+                    if (Character.toLowerCase(c) == Character.toLowerCase(getFirstLetterOfWord(removedWordsList.get(wordIndex).getWord()))) {
+                        fragment.setVerseText(getVerseTextModified(words, true, wordIndex));
+                        wordIndex++;
+                        correctCount++;
+                        wrongCount = 0;
+                        fragment.updateCorrectCount(correctCount);
+                        fragment.turnLightGreen();
+                    }else{
+                        wrongCount++;
+                        fragment.turnLightRed(wrongCount);
+                        if(wrongCount == 3){
+                            wrongCount = 0;
+                            fragment.setVerseText(getVerseTextModified(words, false, wordIndex));
+                            wordIndex++;
+                        }
+                    }
+                    if(wordIndex == removedWordsList.size()){
+                        fragment.onReviewComplete(correctCount, words.length);
+                        fragment.hideKeyboard();
+                    }
                 }
                 break;
         }
@@ -389,7 +448,15 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
             scripture.setMemorySubStage(0);
             scripture.setMemoryStage(stage + 1);
         }else {
-            scripture.setMemorySubStage(subStage + 1);
+            if(scripture.getMemoryStage() == 5 && scripture.getMemorySubStage() == 1){
+                scripture.setMemoryStage(6);
+                scripture.setMemorySubStage(0);
+            }else if(scripture.getMemoryStage() == 6 && scripture.getMemorySubStage() == 0){
+                scripture.setMemoryStage(7);
+                scripture.setMemorySubStage(0);
+            }else{
+                scripture.setMemorySubStage(subStage + 1);
+            }
         }
         return scripture;
     }
@@ -660,8 +727,7 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
     }
 
     private SpannableStringBuilder getVerseTextForStage5(String[] words){
-        int numToRemove = (int)(words.length*((float)(STAGE_5_PERCENTAGE)/100f));
-        String[] modifiedWordList = removeRandomWords(words, numToRemove);
+        String[] modifiedWordList = removeAllWordsExceptFirst(words);
         String result = "";
         for(String word : modifiedWordList){
             if(result.equalsIgnoreCase("")){
@@ -676,7 +742,18 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
     }
 
     private SpannableStringBuilder getVerseTextForStage6(String[] words){
-        return new SpannableStringBuilder();
+        String[] modifiedWordList = removeAllWords(words);
+        String result = "";
+        for(String word : modifiedWordList){
+            if(result.equalsIgnoreCase("")){
+                result = result + word;
+            }else {
+                result = result + " " +  word;
+            }
+        }
+        currentVerseText = result;
+        final SpannableStringBuilder sb = new SpannableStringBuilder(result);
+        return sb;
     }
 
     private SpannableStringBuilder getVerseTextForStage7(String[] words){
@@ -715,6 +792,30 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
             removedWordsList.add(removedWord);
             words[randomNum] = replaceWithUnderscore(words[randomNum]);
             wordsIndexAlreadyRemoved.add(randomNum);
+        }
+        Collections.sort(removedWordsList);
+        return words;
+    }
+
+    private String[] removeAllWordsExceptFirst(String[] words) {
+        for(int i = 1; i < words.length; i++){
+            RemovedWord removedWord = new RemovedWord();
+            removedWord.setIndex(i);
+            removedWord.setWord(words[i]);
+            removedWordsList.add(removedWord);
+            words[i] = replaceWithUnderscore(words[i]);
+        }
+        Collections.sort(removedWordsList);
+        return words;
+    }
+
+    private String[] removeAllWords(String[] words) {
+        for(int i = 0; i < words.length; i++){
+            RemovedWord removedWord = new RemovedWord();
+            removedWord.setIndex(i);
+            removedWord.setWord(words[i]);
+            removedWordsList.add(removedWord);
+            words[i] = replaceWithUnderscore(words[i]);
         }
         Collections.sort(removedWordsList);
         return words;

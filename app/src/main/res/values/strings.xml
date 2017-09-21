@@ -64,6 +64,13 @@
     <string name="KJVVersionEnglishNewTestament">ENGKJVN2ET</string>
     <string name="KJVVersionEnglishOldTestament">ENGKJVO2ET</string>
 
+    <string-array name="verse_memorized_options">
+        <item>Add new verse</item>
+        <item>Share verse</item>
+        <item>Rate this app</item>
+        <item>Close</item>
+    </string-array>
+
     <string-array name="books_of_the_bible">
         <item>Genesis</item>
         <item>Exodus</item>

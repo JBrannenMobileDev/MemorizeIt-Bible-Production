@@ -31,6 +31,7 @@ import nape.biblememory.models.MyVerse;
 import nape.biblememory.models.ScriptureData;
 import nape.biblememory.utils.MyVerseCopyer;
 import nape.biblememory.view_layer.fragments.dialogs.MemorizedReviewInfoAlertDialog;
+import nape.biblememory.view_layer.fragments.dialogs.VerseMemorizedAlertDialog;
 import nape.biblememory.view_layer.fragments.interfaces.MyVersesPracticeFragmentInterface;
 import nape.biblememory.view_layer.fragments.interfaces.MyVersesPracticeInterface;
 import nape.biblememory.view_layer.fragments.presenters.MyVersesPracticePresenter;
@@ -38,7 +39,7 @@ import nape.biblememory.view_layer.fragments.presenters.MyVersesPracticePresente
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyVersesPracticeFragment extends Fragment implements MyVersesPracticeFragmentInterface {
+public class MyVersesPracticeFragment extends Fragment implements MyVersesPracticeFragmentInterface , VerseMemorizedAlertDialog.YesSelected{
     @BindView(R.id.my_verses_review_user_input)EditText userInput;
     @BindView(R.id.memorized_review_verse_text)TextView verseTextTv;
     @BindView(R.id.memorized_review_correct_count)TextView correctCountTv;
@@ -287,7 +288,20 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
     public void updateMyVerseVerse(MyVerse verse, String date) {
         MyVerse temp = MyVerseCopyer.getCopy(verse);
         temp.setLastSeenDate(date);
-        FirebaseDb.getInstance().updateQuizVerse(temp, getActivity().getApplicationContext());
+        if(verse.getMemoryStage() == 7){
+            ScriptureData scripture = verse.toScriptureData();
+            String formattedDate = new SimpleDateFormat("MM-dd-yyyy").format(Calendar.getInstance().getTime());
+            scripture.setRemeberedDate(formattedDate);
+            DataStore.getInstance().addVerseMemorized(scripture);
+            DataStore.getInstance().saveMemorizedVerse(scripture.toMemorizedVerseData(), getActivity().getApplicationContext());
+            DataStore.getInstance().deleteQuizVerse(scripture.toMyVerse(), getActivity().getApplicationContext());
+            if(scripture.isGoldStar() == 1) {
+                DataStore.getInstance().starNextVerse(getActivity().getApplicationContext());
+            }
+
+        }else {
+            FirebaseDb.getInstance().updateQuizVerse(temp, getActivity().getApplicationContext());
+        }
     }
 
     @Override
@@ -332,5 +346,15 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
     @Override
     public void setVerseLocationTextColor() {
         verseLocationTv.setTextColor(getResources().getColor(R.color.bgColor));
+    }
+
+    @Override
+    public void callOnFinished() {
+        getActivity().finish();
+    }
+
+    @Override
+    public void onHideUIControls() {
+
     }
 }
