@@ -269,7 +269,7 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                     if (myVerses.size() < 1) {
                         memorizedAndLearningListIsEmpty = true;
                     }
-                    view.showMemorizedAlert(myVerses.size() < 1 && true);
+                    view.showMemorizedAlert(myVerses.size() < 1 || !moreVerses);
                 } else {
                     scripture.setMemorySubStage(subStage + 1);
                     if(forgottenVerse || reviewVerse){

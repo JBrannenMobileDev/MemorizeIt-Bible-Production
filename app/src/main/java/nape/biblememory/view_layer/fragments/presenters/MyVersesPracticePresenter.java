@@ -57,6 +57,7 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
     private String currentVerseText;
     private SimpleDateFormat dateFormat;
     private String verseLocation;
+    private String modifiedVerseLocation;
     private int sizeToSubtractFromTotal;
 
     public MyVersesPracticePresenter(MyVersesPracticeFragmentInterface fragment, String verseLocation){
@@ -251,6 +252,7 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
                         fragment.setVerseLocationText(getVerselocationTextModified(true, locationWordIndex));
                         locationWordIndex++;
                         correctCount++;
+                        wrongCount = 0;
                         fragment.updateCorrectCount(correctCount);
                         fragment.turnLightGreen();
                     }else{
@@ -270,6 +272,7 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
                         fragment.setVerseText(getVerseTextModified(words, true, wordIndex));
                         wordIndex++;
                         correctCount++;
+                        wrongCount = 0;
                         fragment.updateCorrectCount(correctCount);
                         fragment.turnLightGreen();
                     }else{
@@ -287,6 +290,31 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
                     }
                 }
                 break;
+            case 5:
+                if(verse.getMemorySubStage() == 0){
+                    if(locationWordIndex < locationRemovedWordsList.size()){
+                        if(Character.toLowerCase(c) == Character.toLowerCase(locationRemovedWordsList.get(locationWordIndex).getWord().charAt(0))) {
+                            fragment.setVerseLocationText(getVerselocationTextModified(true, locationWordIndex));
+                            locationWordIndex++;
+                            correctCount++;
+                            wrongCount = 0;
+                            fragment.updateCorrectCount(correctCount);
+                            fragment.turnLightGreen();
+                        }else{
+                            wrongCount++;
+                            fragment.turnLightRed(wrongCount);
+                            if(wrongCount == 3){
+                                wrongCount = 0;
+                                fragment.setVerseLocationText(getVerselocationTextModified(false, locationWordIndex));
+                                locationWordIndex++;
+                            }
+                        }
+                        if(locationWordIndex == locationRemovedWordsList.size()){
+                            wrongCount = 0;
+                        }
+                    }
+                }
+                break;
         }
     }
 
@@ -297,6 +325,7 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
         locationWordIndex = 0;
         correctCount = 0;
         wrongCount = 0;
+        modifiedVerseLocation = "";
         spanEndsWrong.clear();
         spanEndsCorrect.clear();
         spanStartsWrong.clear();
@@ -463,10 +492,15 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
                     locationSpanEndsCorrect.add(result.length());
                 }
             }else {
-                if(locationWords[i].equalsIgnoreCase(":") || result.charAt(result.length()-1) == ':' || locationWords[i].equalsIgnoreCase("-") || result.charAt(result.length()-1) == '-'){
+                if(locationWords[i].equalsIgnoreCase(":") || result.charAt(result.length()-1) == ':' || locationWords[i].equalsIgnoreCase("-") ||
+                        result.charAt(result.length()-1) == '-'){
                     result = result + locationWords[i];
                 }else {
-                    result = result + " " + locationWords[i];
+                    if((Character.isDigit(locationWords[i].charAt(0)) && Character.isDigit(locationWords[i-1].charAt(0)))) {
+                        result = result + locationWords[i];
+                    }else{
+                        result = result + " " + locationWords[i];
+                    }
                 }
                 if(i == locationWordIndex) {
                     if(i+1 < locationWords.length && (locationWords[i+1].equalsIgnoreCase(":") || locationWords[i+1].equalsIgnoreCase("-"))){
@@ -557,7 +591,7 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
         final SpannableStringBuilder sb = new SpannableStringBuilder(result);
         for (int i = 0; i < spanStartsCorrect.size(); i++) {
             sb.replace(spanStartsCorrect.get(i), spanEndsCorrect.get(i), correctWords.get(i));
-            sb.setSpan(new ForegroundColorSpan(Color.rgb(43, 252, 116)), spanStartsCorrect.get(i), spanEndsCorrect.get(i), 0);
+            sb.setSpan(new ForegroundColorSpan(Color.rgb(41, 222, 104)), spanStartsCorrect.get(i), spanEndsCorrect.get(i), 0);
         }
         for (int i = 0; i < spanStartsWrong.size(); i++) {
             sb.replace(spanStartsWrong.get(i), spanEndsWrong.get(i), wrongWords.get(i));
@@ -574,14 +608,23 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
             locationSpanStartsWrong.add(locationRemovedWordsList.get(locationWordIndex).getIndex());
             locationSpanEndsWrong.add(locationRemovedWordsList.get(locationWordIndex).getIndex() + locationRemovedWordsList.get(locationWordIndex).getWord().length());
         }
-        final SpannableStringBuilder sb = new SpannableStringBuilder(verseLocation);
+        addCheckedWordBackIntoVerseLocation(locationWordIndex);
+        final SpannableStringBuilder sb = new SpannableStringBuilder(modifiedVerseLocation);
         for (int i = 0; i < locationSpanStartsCorrect.size(); i++) {
-            sb.setSpan(new ForegroundColorSpan(Color.rgb(43, 252, 116)), locationSpanStartsCorrect.get(i), locationSpanEndsCorrect.get(i), 0);
+            sb.setSpan(new ForegroundColorSpan(Color.rgb(41, 222, 104)), locationSpanStartsCorrect.get(i), locationSpanEndsCorrect.get(i), 0);
         }
         for (int i = 0; i < locationSpanStartsWrong.size(); i++) {
             sb.setSpan(new ForegroundColorSpan(Color.rgb(255, 68, 0)), locationSpanStartsWrong.get(i), locationSpanEndsWrong.get(i), 0);
         }
         return sb;
+    }
+
+    private void addCheckedWordBackIntoVerseLocation(int locationWordIndex) {
+        StringBuilder modifiedVerseLocationBuilder = new StringBuilder(modifiedVerseLocation);
+        for (int i = 0; i < locationRemovedWordsList.get(locationWordIndex).getWord().length(); i++){
+            modifiedVerseLocationBuilder.setCharAt(i + locationRemovedWordsList.get(locationWordIndex).getIndex(), locationRemovedWordsList.get(locationWordIndex).getWord().charAt(i));
+        }
+        modifiedVerseLocation = modifiedVerseLocationBuilder.toString();
     }
 
     private SpannableStringBuilder getVerseTextForStage3(String[] words){
@@ -720,16 +763,16 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
                 result = bookName + " " + chp_verse_num;
                 break;
             case 1:
-                result = removeRandomLocationItems(1);
+                result = removeRandomLocationItems(35);
                 break;
             case 2:
-                result = removeRandomLocationItems(1);
+                result = removeRandomLocationItems(60);
                 break;
             case 3:
-                result = removeRandomLocationItems(2);
+                result = removeRandomLocationItems(80);
                 break;
             case 4:
-                result = removeRandomLocationItems(3);
+                result = removeRandomLocationItems(80);
                 break;
             case 5:
                 if(verseSubStage == 0){
@@ -746,11 +789,13 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
                 break;
 
         }
+        modifiedVerseLocation = result;
         return result;
     }
 
-    private String removeRandomLocationItems(int itemsToRemove) {
+    private String removeRandomLocationItems(double percentOfWordsToRemove) {
         removeNonWordsFromLocationWords();
+        int itemsToRemove = (int)((percentOfWordsToRemove/100)*locationWords.length);
         List<Integer> indexesRemoved = new ArrayList<>();
         for(int i = 0; i < itemsToRemove; i++ ){
             int rand = generateRandomNumber(locationWords.length);
@@ -758,13 +803,12 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
                 rand = generateRandomNumber(locationWords.length);
             }
             indexesRemoved.add(rand);
-
-            for(Integer index : indexesRemoved){
-                RemovedWord removedWord = new RemovedWord();
-                removedWord.setWord(locationWords[index]);
-                removedWord.setIndex(locationSpanAllStarts.get(index));
-                locationRemovedWordsList.add(removedWord);
-            }
+        }
+        for(Integer index : indexesRemoved){
+            RemovedWord removedWord = new RemovedWord();
+            removedWord.setWord(locationWords[index]);
+            removedWord.setIndex(locationSpanAllStarts.get(index));
+            locationRemovedWordsList.add(removedWord);
         }
         return buildModifiedVerseLocation();
     }
@@ -880,6 +924,7 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
                 result.setCharAt(i, '_');
             }
         }
+        removeRandomLocationItems(100);
         return result.toString();
     }
 

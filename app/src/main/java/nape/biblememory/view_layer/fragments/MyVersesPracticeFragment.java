@@ -272,9 +272,11 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
             }
             wellDoneImage.setVisibility(View.VISIBLE);
             progressText.setTextColor(getResources().getColor(R.color.colorGreenText));
+        }else if(percentComplete >= 75){
+            progressText.setTextColor(getResources().getColor(R.color.colorWhite));
         }else{
             presenter.updateMyVerseWrong(dateFormat.format(c.getTime()));
-            progressText.setTextColor(getResources().getColor(R.color.colorWhite));
+            progressText.setTextColor(getResources().getColor(R.color.colorNoText));
         }
         progressText.setText(String.valueOf(percentComplete) + "%");
         progressText.setVisibility(View.VISIBLE);
