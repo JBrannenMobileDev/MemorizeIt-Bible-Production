@@ -65,10 +65,12 @@ public class RecyclerViewAdapterRequests extends RecyclerView.Adapter<RecyclerVi
         if(usersPendingRequests.contains(mDataSet.get(position).getUID())){
             holder.addFriend.setText("Requested");
             holder.addFriend.setBackground(context.getResources().getDrawable(R.drawable.rounded_rectangle_grey_bg));
-        }
-        if(friendList.contains(mDataSet.get(position).getUID())){
+        }else if(friendList.contains(mDataSet.get(position).getUID())){
             holder.addFriend.setText("Following");
             holder.addFriend.setBackground(context.getResources().getDrawable(R.drawable.rounded_rectangle_grey_bg));
+        }else{
+            holder.addFriend.setText("Add friend");
+            holder.addFriend.setBackground(context.getResources().getDrawable(R.drawable.rounded_rectangle));
         }
         holder.name.setText(mDataSet.get(position).getName());
     }

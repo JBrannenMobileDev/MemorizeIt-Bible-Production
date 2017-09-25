@@ -30,8 +30,8 @@ android {
         applicationId "nape.biblememory"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 24
-        versionName "2.1.4"
+        versionCode 25
+        versionName "2.2.0"
         resConfigs "auto"
     }
     buildTypes {
@@ -43,7 +43,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile('com.github.worker8:tourguide:1.0.17-SNAPSHOT@aar') {
         transitive = true
     }
@@ -67,6 +67,7 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.0'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
+    compile files('libs/activation.jar')
 }
 
 configurations.all {

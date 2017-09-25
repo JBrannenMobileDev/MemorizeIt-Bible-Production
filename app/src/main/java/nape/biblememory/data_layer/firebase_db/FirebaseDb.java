@@ -595,7 +595,7 @@ public class FirebaseDb {
         });
     }
 
-    public void getMemorizedVersesFromFirebaseDb(Context applicationContext, final BaseCallback<List<MemorizedVerse>> memorizedCallback) {
+    public void getFriendsMemorizedVersesFromFirebaseDb(Context applicationContext, final BaseCallback<List<MemorizedVerse>> memorizedCallback) {
         final List<MemorizedVerse> memorizedList = new ArrayList<>();
         memorizedVersesReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).child(mPrefs.getUserId(applicationContext)).
                 child(Constants.FIREBASE_CHILD_MEMORIZED_VERSES);
@@ -616,7 +616,28 @@ public class FirebaseDb {
         });
     }
 
-    public void getMemorizedVersesFromFirebaseDb(final BaseCallback<List<ScriptureData>> memorizedCallback, String uid) {
+    public void getFriendsMyVersesFromFirebaseDb(final BaseCallback<List<ScriptureData>> myVersesCallback, String uid) {
+        final List<ScriptureData> quizVersesList = new ArrayList<>();
+        quizVersesReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).child(uid).
+                child(Constants.FIREBASE_CHILD_QUIZ_VERSES);
+        quizVersesReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot data : dataSnapshot.getChildren()) {
+                    ScriptureData verse = data.getValue(ScriptureData.class);
+                    quizVersesList.add(verse);
+                }
+                myVersesCallback.onResponse(quizVersesList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                quizVersesList.add(new ScriptureData());
+            }
+        });
+    }
+
+    public void getFriendsMemorizedVersesFromFirebaseDb(final BaseCallback<List<ScriptureData>> memorizedCallback, String uid) {
         final List<ScriptureData> memorizedList = new ArrayList<>();
         memorizedVersesReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).child(uid).
                 child(Constants.FIREBASE_CHILD_MEMORIZED_VERSES);
@@ -848,7 +869,9 @@ public class FirebaseDb {
     }
 
     public void nukeDb(Context context) {
-        FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).child(mPrefs.getUserId(context)).removeValue();
+        FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_QUIZ_VERSES).removeValue();
+        FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_MEMORIZED_VERSES).removeValue();
+        FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USERS).child(mPrefs.getUserId(context)).child(Constants.FIREBASE_CHILD_USER_PREFS).removeValue();
         FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USER_DATA).child(mPrefs.getUserId(context)).removeValue();
     }
 }

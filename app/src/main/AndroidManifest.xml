@@ -94,12 +94,19 @@
             android:name=".view_layer.activities.NotificationActivity"
             android:parentActivityName=".view_layer.activities.SocialActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view_layer.activities.VerseDetailsActivity"
+        <activity
+            android:name=".view_layer.activities.VerseDetailsActivity"
             android:parentActivityName=".view_layer.activities.MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view_layer.activities.MemorizedVerseDetailsActivity"
+        <activity
+            android:name=".view_layer.activities.MemorizedVerseDetailsActivity"
             android:parentActivityName=".view_layer.activities.MainActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view_layer.activities.SendFeedbackActivity"
+            android:parentActivityName=".view_layer.activities.MainActivity"
+            android:screenOrientation="portrait"
+        />
     </application>
 
 </manifest>

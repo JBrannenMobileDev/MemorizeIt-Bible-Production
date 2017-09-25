@@ -168,7 +168,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             mPrefs.setFirstTimeUser(false, context);
         }
 
-        if(false) {
+        if(!mPrefs.isFirstTimeUser(getApplicationContext())) {
             BaseCallback<List<User>> friendRequestCallback = new BaseCallback<List<User>>() {
                 @Override
                 public void onResponse(List<User> response) {
@@ -213,9 +213,10 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                         snackbar.setActionTextColor(getResources().getColor(R.color.colorGreenText));
                         snackbar.getView().setBackgroundColor(getResources().getColor(R.color.colorCloseButtonTextUnselected));
                         float distance = TypedValue.applyDimension(
-                                TypedValue.COMPLEX_UNIT_DIP, 40,
+                                TypedValue.COMPLEX_UNIT_DIP, -45,
                                 getResources().getDisplayMetrics()
                         );
+                        startQuizFabFrame.animate().translationY(distance);
                         snackbar.show();
 
                         BaseCallback<List<User>> friendsThatBlessedCallbackForNavDrawer = new BaseCallback<List<User>>() {
@@ -317,7 +318,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                         .playOn(addVerseFab);
             }
         }
-        DataStore.getInstance().updateUserData(mPrefs.getUserId(getApplicationContext()), getApplicationContext());
+        DataStore.getInstance().updateUserData(mPrefs.getUserId(getApplicationContext()));
         if(getIntent().getBooleanExtra("launch_add_verse", false)){
             addVerseSelected();
         }
@@ -575,8 +576,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             sendShareIntent();
         } else if(id == R.id.nav_feedback){
             mFirebaseAnalytics.logEvent("feedback_nav_draw_selected", null);
-            intent = new Intent(android.content.Intent.ACTION_SENDTO);
-            intent.setData(Uri.parse("mailto:" + "MemorizeItBible@gmail.com"));
+            intent = new Intent(getApplicationContext(), SendFeedbackActivity.class);
         } else if(id == R.id.nav_rate){
             mFirebaseAnalytics.logEvent("rate_nav_draw_selected", null);
             sendRateThisAppIntent();

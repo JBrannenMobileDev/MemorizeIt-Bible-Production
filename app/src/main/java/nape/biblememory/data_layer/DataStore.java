@@ -61,7 +61,7 @@ public class DataStore {
 
                     }
                 };
-                FirebaseDb.getInstance().getMemorizedVersesFromFirebaseDb(context, memorizedCallback);
+                FirebaseDb.getInstance().getFriendsMemorizedVersesFromFirebaseDb(context, memorizedCallback);
             }
 
             @Override
@@ -221,40 +221,10 @@ public class DataStore {
         FirebaseDb.getInstance().updateSingleVerseUserdata(UID, updateAmount);
     }
 
-    public void updateUserData(final String uid, final Context context){
-        BaseCallback<List<MemorizedVerse>> memorizedCallback = new BaseCallback<List<MemorizedVerse>>() {
-            int verseCount = 0;
-            @Override
-            public void onResponse(List<MemorizedVerse> response) {
-                if(response != null){
-                    verseCount = verseCount + response.size();
-                }
-                BaseCallback<List<ScriptureData>> forgottenCallback = new BaseCallback<List<ScriptureData>>() {
-                    @Override
-                    public void onResponse(List<ScriptureData> response) {
-                        if(response != null){
-                            verseCount = verseCount + response.size();
-                        }
-                        Realm realm = Realm.getDefaultInstance();
-                        verseCount = verseCount + realm.where(MyVerse.class).findAll().size();
-                        realm.close();
-                        FirebaseDb.getInstance().updateUserdata(uid, verseCount);
-                    }
-
-                    @Override
-                    public void onFailure(Exception e) {
-
-                    }
-                };
-                getForgottenVerses(forgottenCallback, context);
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-
-            }
-        };
-        getMemorizedVerses(memorizedCallback, context);
+    public void updateUserData(final String uid){
+        Realm realm = Realm.getDefaultInstance();
+        FirebaseDb.getInstance().updateUserdata(uid, realm.where(MyVerse.class).findAll().size() + realm.where(MemorizedVerse.class).findAll().size());
+        realm.close();
     }
 
     public void saveQuizVerse(ScriptureData verse, Context applicationContext){
@@ -267,11 +237,6 @@ public class DataStore {
         realmManager.insertOrUpdateMemorizedVerse(verse);
     }
 
-    public void saveForgottenVerse(ScriptureData verse, Context applicationContext){
-        FirebaseDb.getInstance().saveForgottenVerseToFirebase(verse, applicationContext);
-        //TODO add memorized verse support to Realm
-    }
-
     public void deleteQuizVerse(MyVerse verse, Context context){
         FirebaseDb.getInstance().deleteQuizVerse(verse, context);
         realmManager.deleteQuizVerse(verse);
@@ -282,19 +247,12 @@ public class DataStore {
         realmManager.deleteMemorizedVerse(verse);
     }
 
-    public void deleteForgottenVerse(ScriptureData verse, Context context){
-        //TODO add delete forgotten support for Realm
-        FirebaseDb.getInstance().deleteForgottenVerse(verse, context);
-    }
-
     public void getMemorizedVerses(BaseCallback<List<MemorizedVerse>> memorizedCallback, Context applicationContext){
-        FirebaseDb.getInstance().getMemorizedVersesFromFirebaseDb(applicationContext, memorizedCallback);
-        //TODO add memorized verse support to realm
+        FirebaseDb.getInstance().getFriendsMemorizedVersesFromFirebaseDb(applicationContext, memorizedCallback);
     }
 
     public void getForgottenVerses(BaseCallback<List<ScriptureData>> forgottenCallback, Context applicationContext){
         FirebaseDb.getInstance().getForgottenVersesFromFirebaseDb(applicationContext, forgottenCallback);
-        //TODO add memorized verse support to realm
     }
 
     public void updateMemorizedVerse(final MemorizedVerse verse, Context applcationContext){
@@ -470,18 +428,13 @@ public class DataStore {
 
     public void getAllVerses(final String uid, final BaseCallback<List<ScriptureData>> allVersesCallback) {
         BaseCallback<List<ScriptureData>> memorizedCallback = new BaseCallback<List<ScriptureData>>() {
-            Realm realm = Realm.getDefaultInstance();
-            RealmResults<MyVerse> quizList = realm.where(MyVerse.class).findAll();
             final List<ScriptureData> allVerses = new ArrayList<>();
             @Override
             public void onResponse(List<ScriptureData> response) {
-                for(MyVerse verse : quizList){
-                    allVerses.add(verse.toScriptureData());
-                }
                 if(response != null){
                     allVerses.addAll(response);
                 }
-                BaseCallback<List<ScriptureData>> forgottenCallback = new BaseCallback<List<ScriptureData>>() {
+                BaseCallback<List<ScriptureData>> myVersesCallback = new BaseCallback<List<ScriptureData>>() {
                     @Override
                     public void onResponse(List<ScriptureData> response) {
                         if(response != null){
@@ -495,7 +448,7 @@ public class DataStore {
 
                     }
                 };
-                FirebaseDb.getInstance().getForgottenVersesFromFirebaseDb(forgottenCallback, uid);
+                FirebaseDb.getInstance().getFriendsMyVersesFromFirebaseDb(myVersesCallback, uid);
             }
 
             @Override
@@ -503,7 +456,7 @@ public class DataStore {
 
             }
         };
-        FirebaseDb.getInstance().getMemorizedVersesFromFirebaseDb(memorizedCallback, uid);
+        FirebaseDb.getInstance().getFriendsMemorizedVersesFromFirebaseDb(memorizedCallback, uid);
     }
 
     public void nukeAllData(Context context) {

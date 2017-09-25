@@ -109,7 +109,10 @@ public class FriendDetailsActivity extends AppCompatActivity {
                     if (alreadyHaveVerse) {
                         Toast.makeText(getApplicationContext(), "You already have this verse.", Toast.LENGTH_SHORT).show();
                     } else {
-                        DataStore.getInstance().saveQuizVerse(allFriendVerses.get(response), getApplicationContext());
+                        ScriptureData verseToCopy = allFriendVerses.get(response);
+                        verseToCopy.setMemoryStage(0);
+                        verseToCopy.setMemorySubStage(0);
+                        DataStore.getInstance().saveQuizVerse(verseToCopy, getApplicationContext());
                     }
                     BaseCallback<List<ScriptureData>> allMyVersesCb = new BaseCallback<List<ScriptureData>>() {
                         @Override
@@ -184,7 +187,10 @@ public class FriendDetailsActivity extends AppCompatActivity {
                     }
                 }
                 if (!alreadyHaveVerse) {
-                    DataStore.getInstance().saveQuizVerse(friendVerse, getApplicationContext());
+                    ScriptureData verseToCopy = friendVerse;
+                    verseToCopy.setMemoryStage(0);
+                    verseToCopy.setMemorySubStage(0);
+                    DataStore.getInstance().saveQuizVerse(verseToCopy, getApplicationContext());
                 }
             }
             BaseCallback<List<ScriptureData>> allMyVersesCb = new BaseCallback<List<ScriptureData>>() {
