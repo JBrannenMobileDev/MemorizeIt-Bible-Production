@@ -409,6 +409,15 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
     }
 
     @Override
+    public void infoPressed() {
+        if(verse.getMemoryStage() == 0){
+            fragment.showStage1InfoDialog();
+        }else{
+            fragment.showStageInfoDialog();
+        }
+    }
+
+    @Override
     public void updateMyVerseCorrect(final String date) {
         final ScriptureData updatedVerse = increaseMemoryStage(verse.getMemoryStage(), verse.getMemorySubStage(), verse.toScriptureData());
         realm.executeTransaction(new Realm.Transaction() {

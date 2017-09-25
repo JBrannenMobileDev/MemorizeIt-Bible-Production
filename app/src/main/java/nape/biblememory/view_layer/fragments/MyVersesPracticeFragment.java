@@ -31,6 +31,7 @@ import nape.biblememory.models.MyVerse;
 import nape.biblememory.models.ScriptureData;
 import nape.biblememory.utils.MyVerseCopyer;
 import nape.biblememory.view_layer.fragments.dialogs.MemorizedReviewInfoAlertDialog;
+import nape.biblememory.view_layer.fragments.dialogs.MyVersesLearningInfoAlertDialog;
 import nape.biblememory.view_layer.fragments.dialogs.VerseMemorizedAlertDialog;
 import nape.biblememory.view_layer.fragments.interfaces.MyVersesPracticeFragmentInterface;
 import nape.biblememory.view_layer.fragments.interfaces.MyVersesPracticeInterface;
@@ -55,8 +56,6 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
     private MyVersesPracticeInterface presenter;
     private String verseLocation;
     private boolean reviewComplete;
-    private boolean initialState;
-    private int inputSize;
 
     public MyVersesPracticeFragment() {
         // Required empty public constructor
@@ -72,8 +71,6 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
         verseLocation = getArguments().getString("verseLocation");
         presenter = new MyVersesPracticePresenter(this, verseLocation);
         initListeners(v);
-        initialState = true;
-        inputSize = 0;
         return v;
     }
 
@@ -100,23 +97,10 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
 
             @Override
             public void afterTextChanged(Editable s) {
-                initialState = false;
-                if(s.length() > 0 && s.length() != inputSize) {
+                if(s.length() > 0) {
                     char input = s.charAt(s.length() - 1);
                     presenter.onNewCharInput(input);
-                    inputSize = s.length();
                 }
-            }
-        });
-
-        userInput.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_DEL) {
-                    if(inputSize > 0)
-                        inputSize = inputSize - 1;
-                }
-                return false;
             }
         });
 
@@ -132,7 +116,7 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
         infoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new MemorizedReviewInfoAlertDialog().show(getFragmentManager(), null);
+                presenter.infoPressed();
             }
         });
     }
@@ -162,7 +146,6 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
         imm.showSoftInput(userInput, InputMethodManager.SHOW_IMPLICIT);
         verseTextTv.setText("");
         presenter.resetReview();
-        inputSize = 0;
     }
 
     public void requestEditTextFocusFromPresenter(){
@@ -298,7 +281,13 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
             if(scripture.isGoldStar() == 1) {
                 DataStore.getInstance().starNextVerse(getActivity().getApplicationContext());
             }
-
+            VerseMemorizedAlertDialog alert = new VerseMemorizedAlertDialog();
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("callOnFinish", true);
+            bundle.putString("verseLocation", verse.getVerseLocation());
+            bundle.putString("verse", verse.getVerse());
+            alert.setArguments(bundle);
+            alert.show(getFragmentManager(), null);
         }else {
             FirebaseDb.getInstance().updateQuizVerse(temp, getActivity().getApplicationContext());
         }
@@ -346,6 +335,16 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
     @Override
     public void setVerseLocationTextColor() {
         verseLocationTv.setTextColor(getResources().getColor(R.color.bgColor));
+    }
+
+    @Override
+    public void showStage1InfoDialog() {
+        new MemorizedReviewInfoAlertDialog().show(getFragmentManager(), null);
+    }
+
+    @Override
+    public void showStageInfoDialog() {
+        new MyVersesLearningInfoAlertDialog().show(getFragmentManager(), null);
     }
 
     @Override

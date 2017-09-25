@@ -4,9 +4,26 @@
     android:layout_height="match_parent"
     tools:context="nape.biblememory.view_layer.fragments.MemorizedFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/memorized_recycler_view"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/memorized_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="false" />
+
+            <TextView
+                android:id="@+id/textView24"
+                android:layout_width="match_parent"
+                android:layout_height="180dp" />
+        </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>

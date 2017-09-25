@@ -671,4 +671,24 @@ public class UserPreferences{
     public boolean isComingFromMemorized(Context context) {
         return getSharedPreferences(context).getBoolean(UserPreferenceConstants.COMING_FROM_MEMORIZED , false);
     }
+
+    public void setCloseSelectedCount(int i, Context context) {
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putInt(UserPreferenceConstants.CLOSE_SELECTED_COUNT, i);
+        editor.commit();
+    }
+
+    public int getCloseSelectedCount(Context context) {
+        return getSharedPreferences(context).getInt(UserPreferenceConstants.CLOSE_SELECTED_COUNT, 0);
+    }
+
+    public void setCloseDialogShown(boolean b, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putBoolean(UserPreferenceConstants.CLOSE_DIALOG_SHOWN, b);
+        editor.commit();
+    }
+
+    public boolean hasCloseDialogBeenShown(Context context) {
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.CLOSE_DIALOG_SHOWN , true);
+    }
 }

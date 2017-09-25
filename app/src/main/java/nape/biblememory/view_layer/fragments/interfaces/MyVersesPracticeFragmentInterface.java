@@ -26,4 +26,6 @@ public interface MyVersesPracticeFragmentInterface {
     void setVerseLocationText(SpannableStringBuilder verseLocation);
     void resetTextColorForStage0();
     void setVerseLocationTextColor();
+    void showStage1InfoDialog();
+    void showStageInfoDialog();
 }

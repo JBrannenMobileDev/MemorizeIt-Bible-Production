@@ -31,4 +31,5 @@
     <color name="yellow">#ffe601</color>
     <color name="colorGreenProgress">#93fdb9</color>
     <color name="colorHighlightProgress">#eaf9fe</color>
+    <color name="unlockVersionText">#003445</color>
 </resources>

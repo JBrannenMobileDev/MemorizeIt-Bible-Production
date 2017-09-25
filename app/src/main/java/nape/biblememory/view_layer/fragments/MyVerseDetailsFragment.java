@@ -53,7 +53,7 @@ public class MyVerseDetailsFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        getActivity().setTitle(Html.fromHtml("<h2>" +verseLocation+ "</h2>"));
+        getActivity().setTitle(verseLocation);
     }
 
     private void initView(MyVerse verse) {

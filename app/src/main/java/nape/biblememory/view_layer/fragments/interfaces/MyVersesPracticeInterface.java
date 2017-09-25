@@ -12,4 +12,5 @@ public interface MyVersesPracticeInterface {
     void updateMyVerseWrong(String date);
     void onStop();
     void resetVerseText();
+    void infoPressed();
 }

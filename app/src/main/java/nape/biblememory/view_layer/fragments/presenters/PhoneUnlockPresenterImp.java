@@ -13,6 +13,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import nape.biblememory.models.MemorizedVerse;
 import nape.biblememory.models.MyVerse;
+import nape.biblememory.models.UserPreferencesModel;
 import nape.biblememory.view_layer.activities.BaseCallback;
 import nape.biblememory.managers.ModifyVerseText;
 import nape.biblememory.managers.VerseStageManager;
@@ -20,6 +21,7 @@ import nape.biblememory.models.ScriptureData;
 import nape.biblememory.data_layer.DataStore;
 import nape.biblememory.use_cases.UsecaseCallback;
 import nape.biblememory.utils.UserPreferences;
+import nape.biblememory.view_layer.fragments.dialogs.CloseSelectedTooManyTimesAlertDialog;
 import nape.biblememory.view_layer.fragments.interfaces.PhoneUnlockPresenter;
 import nape.biblememory.view_layer.fragments.interfaces.PhoneUnlockView;
 import nape.biblememory.R;
@@ -137,6 +139,9 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
                     reviewIndex = 0;
                 }
                 mPrefs.setQuizReviewIndex(reviewIndex, context);
+                UserPreferencesModel model = new UserPreferencesModel();
+                model.initAllData(context, mPrefs);
+                DataStore.getInstance().saveUserPrefs(model, context);
                 onSuccess(reviewVerses.get(reviewIndex));
             }
         }else{
@@ -194,11 +199,20 @@ public class PhoneUnlockPresenterImp implements PhoneUnlockPresenter, UsecaseCal
 
     @Override
     public void onCloseClicked() {
-        view.onFinishActivity();
+        if(mPrefs.getCloseSelectedCount(context) > 4 && !mPrefs.hasCloseDialogBeenShown(context)){
+            view.showCloseSelectedTooManyTimesDialog();
+            mPrefs.setCloseDialogShown(true, context);
+        }else {
+            mPrefs.setCloseSelectedCount(mPrefs.getCloseSelectedCount(context) + 1, context);
+            view.onFinishActivity();
+        }
     }
 
     @Override
     public void onCheckAnswerClicked() {
+        if(!mPrefs.hasCloseDialogBeenShown(context)) {
+            mPrefs.setCloseSelectedCount(0, context);
+        }
         if(initialStage){
             initialStage = false;
             scripture.setMemoryStage(1);

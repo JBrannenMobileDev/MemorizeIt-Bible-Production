@@ -17,14 +17,16 @@ import butterknife.ButterKnife;
 import io.realm.Realm;
 import nape.biblememory.data_layer.DataStore;
 import nape.biblememory.models.MyVerse;
+import nape.biblememory.utils.MyVerseCopyer;
 import nape.biblememory.utils.UserPreferences;
 import nape.biblememory.view_layer.adapters.ViewPagerAdapterMyVerses;
 import nape.biblememory.view_layer.fragments.dialogs.DeleteVerseAlertDialog;
 import nape.biblememory.models.ScriptureData;
 import nape.biblememory.R;
+import nape.biblememory.view_layer.fragments.dialogs.VerseMemorizedAlertDialog;
 import nape.biblememory.view_layer.views.SlidingTabLayout;
 
-public class VerseDetailsActivity extends AppCompatActivity implements DeleteVerseAlertDialog.YesSelected{
+public class VerseDetailsActivity extends AppCompatActivity implements DeleteVerseAlertDialog.YesSelected, VerseMemorizedAlertDialog.YesSelected{
 
     @BindView(R.id.my_verses_pager)ViewPager pagerMain;
     @BindView(R.id.my_verses_tabs) SlidingTabLayout tabsMain;
@@ -40,7 +42,7 @@ public class VerseDetailsActivity extends AppCompatActivity implements DeleteVer
         setContentView(R.layout.activity_verse_details);
         ButterKnife.bind(this);
         verseLocation = getIntent().getStringExtra("verseLocation");
-        setTitle(Html.fromHtml("<h2>" +verseLocation+ "</h2>"));
+        setTitle(verseLocation);
         Realm realm = Realm.getDefaultInstance();
         verse = realm.where(MyVerse.class).equalTo("verseLocation", verseLocation).findFirst();
         setSlidingTabViewVerseSelector();
@@ -92,7 +94,7 @@ public class VerseDetailsActivity extends AppCompatActivity implements DeleteVer
                     adapterMain.setEditTextFocus();
                 }
                 if(position == 0){
-                    setTitle(Html.fromHtml("<h2>" +verseLocation+ "</h2>"));
+                    setTitle(verseLocation);
                     hideSoftKeyboard();
                 }
             }
@@ -114,9 +116,10 @@ public class VerseDetailsActivity extends AppCompatActivity implements DeleteVer
             return true;
         }
         if (id == R.id.action_reset) {
-            verse.setMemoryStage(0);
-            verse.setMemorySubStage(0);
-            DataStore.getInstance().updateQuizVerse(verse, getApplicationContext());
+            MyVerse temp = MyVerseCopyer.getCopy(verse);
+            temp.setMemoryStage(0);
+            temp.setMemorySubStage(0);
+            DataStore.getInstance().updateQuizVerse(temp, getApplicationContext());
             return true;
         }
         if (id == R.id.action_delete_verse) {
@@ -163,5 +166,15 @@ public class VerseDetailsActivity extends AppCompatActivity implements DeleteVer
     public void onDeleteVerse(String verseLocation) {
         DataStore.getInstance().deleteQuizVerse(new MyVerse("", verseLocation), getApplicationContext());
         finish();
+    }
+
+    @Override
+    public void callOnFinished() {
+        finish();
+    }
+
+    @Override
+    public void onHideUIControls() {
+        hideSoftKeyboard();
     }
 }

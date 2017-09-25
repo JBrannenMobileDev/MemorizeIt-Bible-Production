@@ -26,4 +26,5 @@ public interface PhoneUnlockView{
     void setReviewTitleText(String s);
     void setReviewTitleColor(int colorNoText);
     void setTitlebarTextColor(int color);
+    void showCloseSelectedTooManyTimesDialog();
 }

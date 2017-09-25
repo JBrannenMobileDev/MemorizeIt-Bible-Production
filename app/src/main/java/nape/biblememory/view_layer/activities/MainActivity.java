@@ -318,8 +318,16 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             }
         }
         DataStore.getInstance().updateUserData(mPrefs.getUserId(getApplicationContext()), getApplicationContext());
-        if(getIntent().getBooleanExtra("comingFromUnlockQuiz", false)){
+        if(getIntent().getBooleanExtra("launch_add_verse", false)){
             addVerseSelected();
+        }
+        if(getIntent().getBooleanExtra("launch_share", false)){
+            final String verseLocation = getIntent().getStringExtra("verseLocation");
+            final String verse = getIntent().getStringExtra("verse");
+            sendShareIntent(verseLocation, verse);
+        }
+        if(getIntent().getBooleanExtra("launch_rate", false)){
+            sendRateThisAppIntent();
         }
     }
 
@@ -629,6 +637,24 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         }
     }
 
+    private void sendShareIntent(String verseLocation, String verse){
+        try {
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("text/plain");
+            i.putExtra(Intent.EXTRA_SUBJECT, "Check this out!");
+            String sAux;
+            if(verseLocation != null && verse != null){
+                sAux = verseLocation + "\n" + verse + "\n\n" + "Hey! I just memorized " + verseLocation + " using the MemorizeIt Bible app!  ";
+            }else {
+                sAux = "Hey!  check out this app! Super useful for memorizing bible verses. Every time i open my phone a short quiz pops up. \n\n";
+            }            sAux = sAux + "https://play.google.com/store/apps/details?id=nape.biblememory&hl=en \n\n";
+            i.putExtra(Intent.EXTRA_TEXT, sAux);
+            startActivity(Intent.createChooser(i, "choose one"));
+        } catch(Exception e) {
+
+        }
+    }
+
     public void addVerseSelected() {
         if(NetworkManager.getInstance().isInternet(getApplicationContext())) {
             this.setTitle("Verse Selection");
@@ -672,10 +698,10 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             startQuizFabFrame.setVisibility(View.VISIBLE);
             setSlidingTabViewMain();
         }
-        if(quizList == null || quizList.size() == 0){
+        if((quizList == null || quizList.size() == 0) && !mPrefs.isTourStep2Complete(getApplicationContext())){
             ScriptureData newVerse = new ScriptureData();
-            newVerse.setVerseLocation("James 4:7");
-            newVerse.setVerse("Submit yourselves therefore to God. Resist the devil, and he will flee from you. ");
+            newVerse.setVerseLocation("Romans 6:23");
+            newVerse.setVerse("For the wages of sin is death, but the free gift of God is eternal life in Christ Jesus our Lord.");
             newVerse.setVersionCode("ESV");
             DataStore.getInstance().saveQuizVerse(newVerse, getApplicationContext());
             adapterMain.refreshMyVersesList();

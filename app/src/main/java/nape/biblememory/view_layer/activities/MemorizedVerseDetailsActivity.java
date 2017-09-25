@@ -39,7 +39,7 @@ public class MemorizedVerseDetailsActivity extends AppCompatActivity implements 
         setContentView(R.layout.activity_memorized_verse_details);
         ButterKnife.bind(this);
         verseLocation = getIntent().getStringExtra("verseLocation");
-        setTitle(Html.fromHtml("<h2>" +verseLocation+ "</h2>"));
+        setTitle(verseLocation);
         Realm realm = Realm.getDefaultInstance();
         verse = realm.where(MemorizedVerse.class).equalTo("verseLocation", verseLocation).findFirst();
         UserPreferences mPrefs = new UserPreferences();

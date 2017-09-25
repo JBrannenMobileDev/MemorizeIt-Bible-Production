@@ -71,6 +71,12 @@
         <item>Close</item>
     </string-array>
 
+    <string-array name="close_selected_options">
+        <item>Turn off quiz</item>
+        <item>Go to settings</item>
+        <item>Close</item>
+    </string-array>
+
     <string-array name="books_of_the_bible">
         <item>Genesis</item>
         <item>Exodus</item>

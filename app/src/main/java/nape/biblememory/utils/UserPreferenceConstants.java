@@ -71,4 +71,6 @@ public class UserPreferenceConstants {
     public static final String RANDOM_VERSE_MEMORY_STAGE = "random_verse_memory_stage";
     public static final String RANDOM_VERSE_MEMORY_SUB_STAGE = "random_verse_memory_sub_stage";
     public static final String COMING_FROM_MEMORIZED = "coming_from_memorized";
+    public static final String CLOSE_SELECTED_COUNT = "close_selected_count";
+    public static final String CLOSE_DIALOG_SHOWN = "close_dialog_shown";
 }

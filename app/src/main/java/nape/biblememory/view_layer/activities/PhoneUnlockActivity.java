@@ -20,6 +20,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
 import nape.biblememory.models.MyVerse;
+import nape.biblememory.view_layer.fragments.dialogs.CloseSelectedTooManyTimesAlertDialog;
 import nape.biblememory.view_layer.fragments.dialogs.FirstTimeUnlockDialog;
 import nape.biblememory.view_layer.fragments.dialogs.VerseMemorizedAlertDialog;
 import nape.biblememory.models.ScriptureData;
@@ -33,7 +34,8 @@ import nape.biblememory.utils.DpConverterUtil;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 
-public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnlockView, VerseMemorizedAlertDialog.YesSelected{
+public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnlockView,
+        VerseMemorizedAlertDialog.YesSelected, CloseSelectedTooManyTimesAlertDialog.YesSelected{
     private View mContentView;
     private TextView verse;
     private TextView verseLocation;
@@ -284,6 +286,10 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
         VerseMemorizedAlertDialog alert = new VerseMemorizedAlertDialog();
         Bundle bundle = new Bundle();
         bundle.putBoolean("callOnFinish", memorizedAndLearningListIsEmpty);
+        if(myVerse != null) {
+            bundle.putString("verseLocation", myVerse.getVerseLocation());
+            bundle.putString("verse", myVerse.getVerse());
+        }
         alert.setArguments(bundle);
         alert.show(getSupportFragmentManager(), null);
     }
@@ -306,6 +312,11 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
     @Override
     public void setTitlebarTextColor(int color) {
         pageTitle.setTextColor(color);
+    }
+
+    @Override
+    public void showCloseSelectedTooManyTimesDialog() {
+        new CloseSelectedTooManyTimesAlertDialog().show(getSupportFragmentManager(), null);
     }
 
 
