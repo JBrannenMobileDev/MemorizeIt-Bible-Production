@@ -96,6 +96,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     private TourGuide mTourGuideHandler;
     private Realm realm;
     private RealmResults<MyVerse> quizList;
+    private boolean nextBackVerseSelection;
 
 
 
@@ -157,7 +158,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         addVerseFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addVerseSelected();
+                startActivityForResult(new Intent(getApplicationContext(), VerseSelectionActivity.class), 0);
                 if(mTourGuideHandler != null) {
                     mTourGuideHandler.cleanUp();
                 }
@@ -320,7 +321,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         }
         DataStore.getInstance().updateUserData(mPrefs.getUserId(getApplicationContext()));
         if(getIntent().getBooleanExtra("launch_add_verse", false)){
-            addVerseSelected();
+            findVerseSelected();
         }
         if(getIntent().getBooleanExtra("launch_share", false)){
             final String verseLocation = getIntent().getStringExtra("verseLocation");
@@ -549,7 +550,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
         if (id == R.id.nav_add_new_verse) {
             mFirebaseAnalytics.logEvent("add_verse_from_nav_draw_selected", null);
-            addVerseSelected();
+            startActivityForResult(new Intent(getApplicationContext(), VerseSelectionActivity.class), 0);
         } else if (id == R.id.nav_start_quiz) {
             startQuiz.callOnClick();
             mFirebaseAnalytics.logEvent("start_quiz_nav_draw_selected", null);
@@ -655,7 +656,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         }
     }
 
-    public void addVerseSelected() {
+    public void findVerseSelected() {
         if(NetworkManager.getInstance().isInternet(getApplicationContext())) {
             this.setTitle("Verse Selection");
             pagerMain.setVisibility(View.GONE);
@@ -674,8 +675,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
     @Override
     public void onBackPressed(){
         this.setTitle("MemorizeIt-Bible");
-
-//        navigationView.getMenu().getItem(0).setChecked(true);
 
         if(pagerVerseSelector != null && pagerVerseSelector.getVisibility() == View.VISIBLE){
             onBackPressedFromNewVerseSelector();
@@ -773,7 +772,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
 
         String damId;
         if(mPrefs.isBookLocationOT(context)){
-            switch(mPrefs.getTempSelectedVersion(getApplicationContext())){
+            switch(mPrefs.getSelectedVersion(getApplicationContext())){
                 case "ESV":
                     damId = getString(R.string.ESVVersionEnglishOldTestament);
                     break;
@@ -790,7 +789,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                     damId = getString(R.string.ESVVersionEnglishOldTestament);
             }
         }else {
-            switch (mPrefs.getTempSelectedVersion(getApplicationContext())) {
+            switch (mPrefs.getSelectedVersion(getApplicationContext())) {
                 case "ESV":
                     damId = getString(R.string.ESVVersionEnglishNewTestament);
                     break;
@@ -833,7 +832,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         };
         String damId;
         if(mPrefs.isBookLocationOT(getApplicationContext())){
-            switch(mPrefs.getTempSelectedVersion(getApplicationContext())){
+            switch(mPrefs.getSelectedVersion(getApplicationContext())){
                 case "ESV":
                     damId = getString(R.string.ESVVersionEnglishOldTestament);
                     break;
@@ -850,7 +849,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                     damId = getString(R.string.ESVVersionEnglishOldTestament);
             }
         }else {
-            switch (mPrefs.getTempSelectedVersion(getApplicationContext())) {
+            switch (mPrefs.getSelectedVersion(getApplicationContext())) {
                 case "ESV":
                     damId = getString(R.string.ESVVersionEnglishNewTestament);
                     break;

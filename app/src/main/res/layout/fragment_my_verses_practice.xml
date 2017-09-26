@@ -6,8 +6,6 @@
     android:background="@color/White"
     tools:context="nape.biblememory.view_layer.fragments.MemorizedReviewFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <EditText
         android:id="@+id/my_verses_review_user_input"
         android:layout_width="0dp"

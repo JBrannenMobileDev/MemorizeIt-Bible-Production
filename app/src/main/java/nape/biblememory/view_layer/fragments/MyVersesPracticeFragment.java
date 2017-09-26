@@ -17,6 +17,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Random;
@@ -59,7 +63,6 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
     public MyVersesPracticeFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
@@ -24,6 +28,7 @@ public class MemorizedVerseDetailsFragment extends Fragment {
     private MemorizedVerse verse;
     private String verseLocation;
     private Realm realm;
+    private AdView mAdView;
 
     public MemorizedVerseDetailsFragment() {
         // Required empty public constructor
@@ -46,6 +51,11 @@ public class MemorizedVerseDetailsFragment extends Fragment {
             }
         });
         initView(verse);
+
+        MobileAds.initialize(getActivity().getApplicationContext(), String.valueOf(R.string.app_ad_id));
+        mAdView = (AdView) v.findViewById(R.id.review_ad);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         return v;
     }
 

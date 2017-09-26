@@ -65,7 +65,7 @@ public class SelectVersionAlertDialog extends DialogFragment {
                     case 2:
                         versionCode = "KJV";
                 }
-                mPrefs.setTempSelectedVersion(versionCode, getActivity().getApplicationContext());
+                mPrefs.setSelectedVersion(versionCode, getActivity().getApplicationContext());
                 mListener.onVersionSelectedFromDialog(verseNum);
                 dismiss();
             }

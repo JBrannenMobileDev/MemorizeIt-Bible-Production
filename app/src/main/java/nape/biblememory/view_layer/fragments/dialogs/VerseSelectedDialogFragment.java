@@ -87,11 +87,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
         }
         verse.setText(verseText);
         verseLocationTv.setText(verseLocation);
-        if(mPrefs.getTempSelectedVersion(getActivity().getApplicationContext()).equals("")) {
-            verseVersion.setText("(" + mPrefs.getSelectedVersion(getActivity().getApplicationContext()) + ")");
-        }else{
-            verseVersion.setText("(" + mPrefs.getTempSelectedVersion(getActivity().getApplicationContext()) + ")");
-        }
+        verseVersion.setText("(" + mPrefs.getSelectedVersion(getActivity().getApplicationContext()) + ")");
         dialogActionsListener = (addVerseDialogActions) getActivity();
         setOnclickListeners();
         currentSelectedVerse = Long.valueOf(initialSelectedVerseNum);
@@ -118,11 +114,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
                             verse.setVerseNumber(initialSelectedVerseNum);
                             verse.setBookName(mPrefs.getSelectedBook(getActivity().getApplicationContext()));
                             verse.setChapter(mPrefs.getSelectedChapter(getActivity().getApplicationContext()));
-                            if(mPrefs.getTempSelectedVersion(getActivity().getApplicationContext()).equals("")) {
-                                verse.setVersionCode(mPrefs.getSelectedVersion(getActivity().getApplicationContext()));
-                            }else{
-                                verse.setVersionCode(mPrefs.getTempSelectedVersion(getActivity().getApplicationContext()));
-                            }
+                            verse.setVersionCode(mPrefs.getSelectedVersion(getActivity().getApplicationContext()));
                             Bundle bundle = new Bundle();
                             bundle.putString("verse_added", verse.getVerseLocation());
                             mFirebaseAnalytics.logEvent("verse_added", bundle);

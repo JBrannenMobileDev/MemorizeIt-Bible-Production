@@ -32,6 +32,18 @@
     //Testing
     <string name="unlock_view_banner_ad">ca-app-pub-3940256099942544/6300978111</string>
 
+    //Prod
+    <!--<string name="learning_ad">ca-app-pub-2849776172926644/4980956762</string>-->
+
+    //Testing
+    <string name="learning_ad">ca-app-pub-3940256099942544/6300978111</string>
+
+    //Prod
+    <!--<string name="review_ad">ca-app-pub-2849776172926644/3616915966</string>-->
+
+    //Testing
+    <string name="review_ad">ca-app-pub-3940256099942544/6300978111</string>
+
 
     //Prod
     <!--<string name="supportTheDevInterstellar">ca-app-pub-2849776172926644/4765532093</string>-->

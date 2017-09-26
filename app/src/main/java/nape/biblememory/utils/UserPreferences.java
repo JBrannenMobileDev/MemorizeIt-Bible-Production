@@ -213,18 +213,8 @@ public class UserPreferences{
         editor.commit();
     }
 
-    public void setTempSelectedVersion(String versionCode, Context applicationContext) {
-        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
-        editor.putString(UserPreferenceConstants.SELECTED_BIBLE_VERSION_TEMP, versionCode);
-        editor.commit();
-    }
-
     public String getSelectedVersion(Context context) {
         return getSharedPreferences(context).getString(UserPreferenceConstants.SELECTED_BIBLE_VERSION, "ESV");
-    }
-
-    public String getTempSelectedVersion(Context context) {
-        return getSharedPreferences(context).getString(UserPreferenceConstants.SELECTED_BIBLE_VERSION_TEMP, "");
     }
 
     public void setDamIdNewTestament(String damId, Context context){
