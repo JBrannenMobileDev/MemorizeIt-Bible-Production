@@ -76,6 +76,58 @@
     <string name="KJVVersionEnglishNewTestament">ENGKJVN2ET</string>
     <string name="KJVVersionEnglishOldTestament">ENGKJVO2ET</string>
 
+    <string-array name="category_peace_reference_esv">
+        <item>Colossians 3:15</item>
+        <item>Galatians 5:22-23</item>
+        <item>Hebrews 12:14</item>
+        <item>1 Peter 5:7</item>
+        <item>Philippians 4:7</item>
+        <item>Proverbs 12:20</item>
+        <item>Psalm 29:11</item>
+        <item>Romans 12:18</item>
+        <item>Isaiah 26:12</item>
+        <item>1 Peter 5:7</item>
+    </string-array>
+
+    <string-array name="category_peace_text_esv">
+        <item>And let the peace of Christ rule in your hearts, to which indeed you were called in one body. And be thankful.</item>
+        <item>But the fruit of the Spirit is love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control; against such things there is no law.</item>
+        <item>Strive for peace with everyone, and for the holiness without which no one will see the Lord.</item>
+        <item>casting all your anxieties on him, because he cares for you.</item>
+        <item>And the peace of God, which surpasses all understanding, will guard your hearts and your minds in Christ Jesus.</item>
+        <item>Deceit is in the heart of those who devise evil, but those who plan peace have joy.</item>
+        <item>May the Lord give strength to his people! May the Lord bless his people with peace!</item>
+        <item>If possible, so far as it depends on you, live peaceably with all.</item>
+        <item>O Lord, you will ordain peace for us, for you have indeed done for us all our works.</item>
+        <item>casting all your anxieties on him, because he cares for you.</item>
+    </string-array>
+
+    <string-array name="category_encouragement_reference_esv">
+        <item>1 Thessalonians 5:11</item>
+        <item>Isaiah 40:31</item>
+        <item>Joshua 1:9</item>
+        <item>Proverbs 18:10</item>
+        <item>Proverbs 3:5-6</item>
+        <item>John 16:33</item>
+        <item>2 Timothy 1:7</item>
+        <item>Psalm 55:22</item>
+        <item>Psalm 119:71</item>
+        <item>Psalm 120:1</item>
+    </string-array>
+
+    <string-array name="category_encouragement_text_esv">
+        <item>Therefore encourage one another and build one another up, just as you are doing.</item>
+        <item>but they who wait for the Lord shall renew their strength; they shall mount up with wings like eagles; they shall run and not be weary; they shall walk and not faint.</item>
+        <item>Have I not commanded you? Be strong and courageous. Do not be frightened, and do not be dismayed, for the Lord your God is with you wherever you go.</item>
+        <item>The name of the Lord is a strong tower; the righteous man runs into it and is safe.</item>
+        <item>Trust in the Lord with all your heart, and do not lean on your own understanding. In all your ways acknowledge him, and he will make straight your paths.</item>
+        <item>"I have said these things to you, that in me you may have peace. In the world you will have tribulation. But take heart; I have overcome the world.”</item>
+        <item>for God gave us a spirit not of fear but of power and love and self-control.</item>
+        <item>Cast your burden on the Lord, and he will sustain you; he will never permit the righteous to be moved.</item>
+        <item>It is good for me that I was afflicted, that I might learn your statutes.</item>
+        <item>In my distress I called to the Lord, and he answered me.</item>
+    </string-array>
+
     <string-array name="verse_memorized_options">
         <item>Add new verse</item>
         <item>Share verse</item>

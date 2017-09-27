@@ -62,34 +62,22 @@ import tourguide.tourguide.Pointer;
 import tourguide.tourguide.ToolTip;
 import tourguide.tourguide.TourGuide;
 
-public class MainActivity extends ActionBarActivity implements NavigationView.OnNavigationItemSelectedListener, BooksFragment.BooksFragmentListener,
-        ChapterFragment.ChaptersFragmentListener, VerseFragment.OnVerseSelected, VerseSelectedDialogFragment.addVerseDialogActions,
-        SelectVersionAlertDialog.VersionSelected, MyVersesFragment.myVersesListener {
+public class MainActivity extends ActionBarActivity implements NavigationView.OnNavigationItemSelectedListener,
+        MyVersesFragment.myVersesListener {
 
     private ViewPager pagerMain;
     private ViewPagerAdapter adapterMain;
     private SlidingTabLayout tabsMain;
-    private FrameLayout fragmentContainer;
     private CharSequence mainTitles[]={"My verses","Memorized"};
-    private ViewPager pagerVerseSelector;
-    private ViewPagerAdapterVerseSelector adapterVerseSelector;
-    private SlidingTabLayout tabsVerseSelector;
-    private CharSequence VerseSelectorTitles[]={"BOOKS","CHAPTER","VERSE"};
-    private int Numboftabs = 3;
     private FloatingActionButton startQuiz;
     private FloatingActionButton addVerseFab;
     private UserPreferences mPrefs;
-    private String bookName;
-    private String chapterNum;
-    private String verseNum;
     private NavigationView navigationView;
     private FrameLayout startQuizFabFrame;
     private FirebaseAnalytics mFirebaseAnalytics;
     private TextView userEmail;
     private CoordinatorLayout coordinatorLayout;
 
-    private DBTApi REST;
-    private BaseCallback<List<Verse>> selectedVerseCallback;
     private Context context;
     private Snackbar snackbar;
 
@@ -122,6 +110,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
+        initData();
         setNavIconColors();
         View headerView = navigationView.getHeaderView(0);
         userEmail = (TextView) headerView.findViewById(R.id.nav_drawer_user_email);
@@ -131,8 +120,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         setSlidingTabViewMain();
-
-        initData();
 
         startQuizFabFrame = (FrameLayout) findViewById(R.id.start_quiz_fab_frame);
         startQuiz = (FloatingActionButton) findViewById(R.id.start_quiz_fab);
@@ -321,7 +308,7 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         }
         DataStore.getInstance().updateUserData(mPrefs.getUserId(getApplicationContext()));
         if(getIntent().getBooleanExtra("launch_add_verse", false)){
-            findVerseSelected();
+            startActivity(new Intent(getApplicationContext(), VerseSelectionActivity.class));
         }
         if(getIntent().getBooleanExtra("launch_share", false)){
             final String verseLocation = getIntent().getStringExtra("verseLocation");
@@ -379,23 +366,15 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                 .findItem(R.id.nav_support_the_dev)
                 .getIcon()
                 .setColorFilter(getResources().getColor(R.color.greyIcon), PorterDuff.Mode.SRC_IN);
-        BaseCallback<List<MemorizedVerse>> memorizedVersesCallback = new BaseCallback<List<MemorizedVerse>>() {
-            @Override
-            public void onResponse(List<MemorizedVerse> response) {
-                if(response != null && response.size() > 5){
-                    navigationView.getMenu()
-                            .findItem(R.id.nav_support_the_dev)
-                            .getIcon()
-                            .setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
-                }
-            }
 
-            @Override
-            public void onFailure(Exception e) {
+        RealmResults<MemorizedVerse> memorizedList = realm.where(MemorizedVerse.class).findAll();
+        if(memorizedList != null && memorizedList.size() > 3){
+            navigationView.getMenu()
+                    .findItem(R.id.nav_support_the_dev)
+                    .getIcon()
+                    .setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
+        }
 
-            }
-        };
-        DataStore.getInstance().getMemorizedVerses(memorizedVersesCallback, getApplicationContext());
         navigationView.getMenu()
                 .findItem(R.id.nav_share)
                 .getIcon()
@@ -490,34 +469,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
             }
         });
     }
-
-    private void setSlidingTabViewVerseSelector() {
-        // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
-        adapterVerseSelector =  new ViewPagerAdapterVerseSelector(getSupportFragmentManager(),VerseSelectorTitles,Numboftabs);
-
-        // Assigning ViewPager View and setting the adapter
-        pagerVerseSelector = (ViewPager) findViewById(R.id.pager_verse_selector);
-        pagerVerseSelector.setAdapter(adapterVerseSelector);
-        pagerVerseSelector.setVisibility(View.VISIBLE);
-
-        // Assiging the Sliding Tab Layout View
-        tabsVerseSelector = (SlidingTabLayout) findViewById(R.id.tabs_verse_selector);
-        tabsVerseSelector.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
-        tabsVerseSelector.setVisibility(View.VISIBLE);
-
-        // Setting Custom Color for the Scroll bar indicator of the Tab View
-        tabsVerseSelector.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
-            @Override
-            public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.tabsScrollColor);
-            }
-        });
-
-        // Setting the ViewPager For the SlidingTabsLayout
-        tabsVerseSelector.setViewPager(pagerVerseSelector);
-    }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -656,46 +607,9 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         }
     }
 
-    public void findVerseSelected() {
-        if(NetworkManager.getInstance().isInternet(getApplicationContext())) {
-            this.setTitle("Verse Selection");
-            pagerMain.setVisibility(View.GONE);
-            tabsMain.setVisibility(View.GONE);
-            setSlidingTabViewVerseSelector();
-            startQuiz.setVisibility(View.GONE);
-            startQuizFabFrame.setVisibility(View.GONE);
-            if(snackbar != null) {
-                snackbar.dismiss();
-            }
-        }else{
-            new NoInternetAlertDialog().show(getSupportFragmentManager(), null);
-        }
-    }
-
-    @Override
-    public void onBackPressed(){
-        this.setTitle("MemorizeIt-Bible");
-
-        if(pagerVerseSelector != null && pagerVerseSelector.getVisibility() == View.VISIBLE){
-            onBackPressedFromNewVerseSelector();
-            return;
-        }
-        finish();
-        super.onBackPressed();
-    }
-
     private void onBackPressedFromNewVerseSelector(){
-        if(tabsVerseSelector != null) {
-            if(snackbar != null) {
-                snackbar.show();
-            }
-            tabsVerseSelector.setVisibility(View.GONE);
-            pagerVerseSelector.setVisibility(View.GONE);
-            pagerMain.setVisibility(View.VISIBLE);
-            tabsMain.setVisibility(View.VISIBLE);
-            startQuiz.setVisibility(View.VISIBLE);
-            startQuizFabFrame.setVisibility(View.VISIBLE);
-            setSlidingTabViewMain();
+        if(snackbar != null) {
+            snackbar.show();
         }
         if((quizList == null || quizList.size() == 0) && !mPrefs.isTourStep2Complete(getApplicationContext())){
             ScriptureData newVerse = new ScriptureData();
@@ -710,169 +624,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         model.initAllData(getApplicationContext(), mPrefs);
         DataStore.getInstance().saveUserPrefs(model, getApplicationContext());
 
-    }
-
-    @Override
-    public void onBookSelected(String bookName) {
-        this.bookName = bookName;
-        if(mPrefs.getNumberOfChapters(getApplicationContext()) == 0) {
-            mPrefs.setNumberOfChapters(getNumOfChapters(bookName), getApplicationContext());
-        }
-        pagerVerseSelector.setCurrentItem(1,true);
-    }
-
-    private int getNumOfChapters(String bookName) {
-        Resources res = getResources();
-        String[] books = res.getStringArray(R.array.books_of_the_bible);
-        String[] chapters = res.getStringArray(R.array.number_of_chapters_list);
-        int size = books.length;
-        int result = 0;
-        for(int i = 0 ; i < size ; i++){
-            if(books[i].equalsIgnoreCase(bookName)){
-                result = Integer.valueOf(chapters[i]);
-                break;
-            }
-        }
-        return result;
-    }
-
-    @Override
-    public void onChapterSelected(String chapterNum) {
-        this.chapterNum = chapterNum;
-        pagerVerseSelector.setCurrentItem(2,true);
-    }
-
-    @Override
-    public void onVerseSelected(final String verseNumber) {
-        REST = new DBTApi(getApplicationContext());
-        selectedVerseCallback = new BaseCallback<List<Verse>>() {
-            @Override
-            public void onResponse(List<Verse> response) {
-                adapterVerseSelector.setVerseGridViewVisible();
-                FragmentManager fm = getSupportFragmentManager();
-                VerseSelectedDialogFragment verseSelectedDialog = new VerseSelectedDialogFragment();
-
-                if(response.size() > 0) {
-                    Bundle args = new Bundle();
-                    args.putString("num", verseNumber);
-                    args.putString("verseText", response.get(0).getVerseText());
-                    args.putString("verseLocation", mPrefs.getSelectedBook(context) + " " + mPrefs.getSelectedChapter(context) + ":" + verseNumber);
-                    args.putLong("numOfVersesInChapter", mPrefs.getNumberOfVerses(context));
-                    verseSelectedDialog.setArguments(args);
-
-                    verseSelectedDialog.show(fm, "verseSelectedFragment");
-                }
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                Exception t = e;
-            }
-        };
-
-        String damId;
-        if(mPrefs.isBookLocationOT(context)){
-            switch(mPrefs.getSelectedVersion(getApplicationContext())){
-                case "ESV":
-                    damId = getString(R.string.ESVVersionEnglishOldTestament);
-                    break;
-                case "WEB":
-                    damId = getString(R.string.WEBVersionEnglishOldTestament);
-                    break;
-                case "CEB":
-                    damId = getString(R.string.CEBVersionEnglishOldTestament);
-                    break;
-                case "KJV":
-                    damId = getString(R.string.KJVVersionEnglishOldTestament);
-                    break;
-                default:
-                    damId = getString(R.string.ESVVersionEnglishOldTestament);
-            }
-        }else {
-            switch (mPrefs.getSelectedVersion(getApplicationContext())) {
-                case "ESV":
-                    damId = getString(R.string.ESVVersionEnglishNewTestament);
-                    break;
-                case "WEB":
-                    damId = getString(R.string.WEBVersionEnglishNewTestament);
-                    break;
-                case "CEB":
-                    damId = getString(R.string.CEBVersionEnglishNewTestament);
-                    break;
-                case "KJV":
-                    damId = getString(R.string.KJVVersionEnglishNewTestament);
-                    break;
-                default:
-                    damId = getString(R.string.ESVVersionEnglishNewTestament);
-            }
-        }
-        REST.getVerse(selectedVerseCallback, damId, mPrefs.getSelectedBookId(context), verseNumber, mPrefs.getSelectedChapter(context));
-    }
-
-    @Override
-    public void onVerseAdded(boolean comingFromNewVerses){
-        if(!comingFromNewVerses) {
-            onBackPressed();
-        }
-    }
-
-    @Override
-    public void includeNextVerseSelected(String verseLocation, final BaseCallback<Verse> callback, String selectedVerseNum) {
-        DBTApi api = new DBTApi(getApplicationContext());
-        BaseCallback<List<Verse>> nextVerseCallback = new BaseCallback<List<Verse>>() {
-            @Override
-            public void onResponse(List<Verse> response) {
-                callback.onResponse(response.get(0));
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                callback.onFailure(e);
-            }
-        };
-        String damId;
-        if(mPrefs.isBookLocationOT(getApplicationContext())){
-            switch(mPrefs.getSelectedVersion(getApplicationContext())){
-                case "ESV":
-                    damId = getString(R.string.ESVVersionEnglishOldTestament);
-                    break;
-                case "WEB":
-                    damId = getString(R.string.WEBVersionEnglishOldTestament);
-                    break;
-                case "CEB":
-                    damId = getString(R.string.CEBVersionEnglishOldTestament);
-                    break;
-                case "KJV":
-                    damId = getString(R.string.KJVVersionEnglishOldTestament);
-                    break;
-                default:
-                    damId = getString(R.string.ESVVersionEnglishOldTestament);
-            }
-        }else {
-            switch (mPrefs.getSelectedVersion(getApplicationContext())) {
-                case "ESV":
-                    damId = getString(R.string.ESVVersionEnglishNewTestament);
-                    break;
-                case "WEB":
-                    damId = getString(R.string.WEBVersionEnglishNewTestament);
-                    break;
-                case "CEB":
-                    damId = getString(R.string.CEBVersionEnglishNewTestament);
-                    break;
-                case "KJV":
-                    damId = getString(R.string.KJVVersionEnglishNewTestament);
-                    break;
-                default:
-                    damId = getString(R.string.ESVVersionEnglishNewTestament);
-            }
-        }
-        String nextVerseNum = String.valueOf(Integer.valueOf(selectedVerseNum) + 1);
-        api.getVerse(nextVerseCallback, damId, mPrefs.getSelectedBookId(getApplicationContext()), nextVerseNum, mPrefs.getSelectedChapter(getApplicationContext()));
-    }
-
-    @Override
-    public void onVersionSelectedFromDialog(String verseNum) {
-        onVerseSelected(verseNum);
     }
 
     @Override

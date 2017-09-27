@@ -28,6 +28,10 @@ public class DBTApi {
         Dbt.setApiKey(context.getResources().getString(R.string.dbt_api_key));
     }
 
+    public DBTApi() {
+        Dbt.setApiKey("90272a6a087822f43ae502456a20ec35");
+    }
+
     public void getVolumeList(final BaseCallback volumeCallback, String languageCode){
         Dbt.getLibraryVolume(null, "text", null, languageCode, new VolumeCallback() {
             @Override

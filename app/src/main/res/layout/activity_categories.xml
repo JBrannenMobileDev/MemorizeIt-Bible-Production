@@ -1,12 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="nape.biblememory.view_layer.fragments.MemorizedFragment">
+    android:background="@color/greyBg"
+    tools:context="nape.biblememory.view_layer.activities.CategoriesActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/memorized_recycler_view"
+        android:id="@+id/categories_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 </FrameLayout>

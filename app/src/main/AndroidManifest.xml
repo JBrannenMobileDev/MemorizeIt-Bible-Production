@@ -110,6 +110,14 @@
             android:name=".view_layer.activities.VerseSelectionActivity"
             android:parentActivityName=".view_layer.activities.MainActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view_layer.activities.FindAVerseActivity"
+            android:parentActivityName=".view_layer.activities.VerseSelectionActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view_layer.activities.CategoriesActivity"
+            android:parentActivityName=".view_layer.activities.VerseSelectionActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
