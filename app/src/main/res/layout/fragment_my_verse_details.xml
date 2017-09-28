@@ -6,17 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".view_layer.activities.VerseDetailsActivity">
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/learning_ad"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="false"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="bottom|center_horizontal"
-        android:elevation="4dp"
-        ads:adSize="SMART_BANNER"
-        ads:adUnitId="@string/learning_ad"></com.google.android.gms.ads.AdView>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

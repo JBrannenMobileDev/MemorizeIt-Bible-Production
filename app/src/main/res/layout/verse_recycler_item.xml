@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/request_item_layout"
+    android:id="@+id/verse_item_layout"
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:layout_marginBottom="1dp"
@@ -21,8 +21,9 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:paddingLeft="20dp"
-            android:textColor="@color/colorProgressBg"
-            android:textSize="18sp" />
+            android:textColor="@color/greyBgDarker"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/verse_tv"
@@ -33,17 +34,17 @@
             android:maxLines="2"
             android:paddingLeft="20dp"
             android:paddingRight="75dp"
-            android:textColor="@color/colorProgressBg"
+            android:textColor="@color/greyBgDarker"
             android:textSize="14sp" />
     </LinearLayout>
 
     <ImageView
         android:id="@+id/verse_plus_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_gravity="right|center_vertical"
         android:layout_marginRight="20dp"
-        android:tint="@color/colorProgressBg"
-        app:srcCompat="@drawable/ic_add_white_24dp" />
+        android:tint="@color/bgColor"
+        app:srcCompat="@drawable/ic_add_black_48dp" />
 
 </FrameLayout>

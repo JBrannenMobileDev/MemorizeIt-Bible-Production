@@ -125,6 +125,7 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
 
     @Override
     public void onResume(){
+        presenter.onResume();
         super.onResume();
     }
 

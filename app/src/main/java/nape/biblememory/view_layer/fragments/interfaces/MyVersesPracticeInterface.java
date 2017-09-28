@@ -13,4 +13,5 @@ public interface MyVersesPracticeInterface {
     void onStop();
     void resetVerseText();
     void infoPressed();
+    void onResume();
 }

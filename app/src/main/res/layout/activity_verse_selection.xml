@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="80dp"
-            android:text="Popular verses"
+            android:text="Trending verses"
             android:textColor="@color/bgColor"
             android:textSize="18sp" />
 

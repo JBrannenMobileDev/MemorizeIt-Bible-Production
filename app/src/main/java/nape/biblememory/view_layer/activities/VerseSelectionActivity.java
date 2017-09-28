@@ -20,6 +20,8 @@ public class VerseSelectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_verse_selection);
         ButterKnife.bind(this);
         setTitle("Verse selection");
+        Intent returnIntent = new Intent();
+        setResult(0,returnIntent);
     }
 
     @Override
@@ -44,6 +46,7 @@ public class VerseSelectionActivity extends AppCompatActivity {
 
     @OnClick(R.id.verse_selection_categories)
     public void onCategoriesClicked(){
-        startActivity(new Intent(getApplicationContext(), CategoriesActivity.class));
+        Toast.makeText(this, "This feature is under construction.", Toast.LENGTH_LONG).show();
+//        startActivity(new Intent(getApplicationContext(), CategoriesActivity.class));
     }
 }

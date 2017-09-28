@@ -14,8 +14,12 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.ResultCodes;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 
@@ -36,7 +40,7 @@ import static android.view.View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 public class BootActivity extends Activity {
     private static final int RC_SIGN_IN = 2884;
     private UserPreferences mPrefs;
-
+    private InterstitialAd mInterstitialAd;
     private FirebaseAuth auth;
 
     @BindView(R.id.boot_button_layout)LinearLayout buttonLayout;
@@ -61,7 +65,7 @@ public class BootActivity extends Activity {
         if (auth.getCurrentUser() != null && !mPrefs.isFirstTimeLogind(getApplicationContext())) {
             loadingCircle.setVisibility(View.VISIBLE);
             mPrefs.setUserId(auth.getCurrentUser().getUid(), getApplicationContext());
-            BaseCallback<UserPreferencesModel> userPrefsCallback = new BaseCallback<UserPreferencesModel>() {
+            final BaseCallback<UserPreferencesModel> userPrefsCallback = new BaseCallback<UserPreferencesModel>() {
                 @Override
                 public void onResponse(UserPreferencesModel response) {
                     mPrefs.setPrefs(response, getApplicationContext());
@@ -74,7 +78,28 @@ public class BootActivity extends Activity {
                 }
             };
             if(NetworkManager.getInstance().isInternet(getApplicationContext())) {
-                DataStore.getInstance().getUserPrefs(getApplicationContext(), userPrefsCallback);
+                mInterstitialAd = new InterstitialAd(this);
+                mInterstitialAd.setAdUnitId(getString(R.string.LoginInterstellar));
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                mInterstitialAd.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdClosed() {
+                        super.onAdClosed();
+                        DataStore.getInstance().getUserPrefs(getApplicationContext(), userPrefsCallback);
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(int i) {
+                        super.onAdFailedToLoad(i);
+                        DataStore.getInstance().getUserPrefs(getApplicationContext(), userPrefsCallback);
+                    }
+
+                    @Override
+                    public void onAdLoaded() {
+                        super.onAdLoaded();
+                        mInterstitialAd.show();
+                    }
+                });
             }else{
                 startActivity(new Intent(getApplicationContext(), LoginSuccessActivity.class));
             }

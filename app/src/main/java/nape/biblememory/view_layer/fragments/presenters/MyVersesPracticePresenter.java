@@ -418,6 +418,13 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
     }
 
     @Override
+    public void onResume() {
+        if(verse == null){
+            resetReview();
+        }
+    }
+
+    @Override
     public void updateMyVerseCorrect(final String date) {
         final ScriptureData updatedVerse = increaseMemoryStage(verse.getMemoryStage(), verse.getMemorySubStage(), verse.toScriptureData());
         realm.executeTransaction(new Realm.Transaction() {

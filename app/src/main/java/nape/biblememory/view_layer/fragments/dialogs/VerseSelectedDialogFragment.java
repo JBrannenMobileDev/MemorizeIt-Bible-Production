@@ -1,6 +1,7 @@
 package nape.biblememory.view_layer.fragments.dialogs;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -56,11 +57,13 @@ public class VerseSelectedDialogFragment extends DialogFragment {
     private FirebaseAnalytics mFirebaseAnalytics;
     private RealmResults<MyVerse> myVerses;
     private Realm realm;
+    private Context context;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.verse_selected_dialog, container);
+        context = getActivity().getApplicationContext();
         verse = (TextView) view.findViewById(R.id.verseTextView);
         verseLocationTv = (TextView) view.findViewById(R.id.verseLocationTextView);
         includeNextVerseTv = (TextView) view.findViewById(R.id.include_next_verse);
@@ -87,7 +90,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
         }
         verse.setText(verseText);
         verseLocationTv.setText(verseLocation);
-        verseVersion.setText("(" + mPrefs.getSelectedVersion(getActivity().getApplicationContext()) + ")");
+        verseVersion.setText("(" + mPrefs.getSelectedVersion(context) + ")");
         dialogActionsListener = (addVerseDialogActions) getActivity();
         setOnclickListeners();
         currentSelectedVerse = Long.valueOf(initialSelectedVerseNum);
@@ -95,7 +98,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
             includeNextVerseTv.setVisibility(View.INVISIBLE);
         }
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity().getApplicationContext());
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
         mFirebaseAnalytics.setCurrentScreen(getActivity(), "Verse selection dialog", null);
         return view;
     }
@@ -112,9 +115,9 @@ public class VerseSelectedDialogFragment extends DialogFragment {
                             verse.setVerse(verseText);
                             verse.setVerseLocation(verseLocation);
                             verse.setVerseNumber(initialSelectedVerseNum);
-                            verse.setBookName(mPrefs.getSelectedBook(getActivity().getApplicationContext()));
-                            verse.setChapter(mPrefs.getSelectedChapter(getActivity().getApplicationContext()));
-                            verse.setVersionCode(mPrefs.getSelectedVersion(getActivity().getApplicationContext()));
+                            verse.setBookName(mPrefs.getSelectedBook(context));
+                            verse.setChapter(mPrefs.getSelectedChapter(context));
+                            verse.setVersionCode(mPrefs.getSelectedVersion(context));
                             Bundle bundle = new Bundle();
                             bundle.putString("verse_added", verse.getVerseLocation());
                             mFirebaseAnalytics.logEvent("verse_added", bundle);
@@ -137,8 +140,8 @@ public class VerseSelectedDialogFragment extends DialogFragment {
                                 if(learningList.size() < 3){
                                     verse.setGoldStar(1);
                                 }
-                                DataStore.getInstance().saveQuizVerse(verse, getActivity().getApplicationContext());
-                                DataStore.getInstance().updateSingleVerseUserData(mPrefs.getUserId(getActivity().getApplicationContext()), 1);
+                                DataStore.getInstance().saveQuizVerse(verse, context);
+                                DataStore.getInstance().updateSingleVerseUserData(mPrefs.getUserId(context), 1);
                                 dialogActionsListener.onVerseAdded(comingFromNewVerses);
                                 VerseSelectedDialogFragment.this.getDialog().cancel();
                             } else {
@@ -152,7 +155,7 @@ public class VerseSelectedDialogFragment extends DialogFragment {
 
                     }
                 };
-                DataStore.getInstance().getMemorizedVerses(memorizedCallback, getActivity().getApplicationContext());
+                DataStore.getInstance().getMemorizedVerses(memorizedCallback, context);
             }
         });
 
@@ -228,11 +231,11 @@ public class VerseSelectedDialogFragment extends DialogFragment {
             if (bookName != null && chapter != null) {
                 return bookName + " " + chapter + ":" + initialSelectedVerseNum + "-" + verseId;
             }
-            return mPrefs.getSelectedBook(getActivity().getApplicationContext()) + " " +
-                    mPrefs.getSelectedChapter(getActivity().getApplicationContext()) + ":" + initialSelectedVerseNum + "-" + verseId;
+            return mPrefs.getSelectedBook(context) + " " +
+                    mPrefs.getSelectedChapter(context) + ":" + initialSelectedVerseNum + "-" + verseId;
         }else{
-            return mPrefs.getSelectedBook(getActivity().getApplicationContext()) + " " +
-                    mPrefs.getSelectedChapter(getActivity().getApplicationContext()) + ":" + getStartVerseNum(initialSelectedVerseNum) + "-" + verseId;
+            return mPrefs.getSelectedBook(context) + " " +
+                    mPrefs.getSelectedChapter(context) + ":" + getStartVerseNum(initialSelectedVerseNum) + "-" + verseId;
         }
     }
 

@@ -29,7 +29,6 @@ public class MyVerseDetailsFragment extends Fragment {
     private MyVerse verse;
     private String verseLocation;
     private Realm realm;
-    private AdView mAdView;
 
     public MyVerseDetailsFragment() {
         // Required empty public constructor
@@ -52,11 +51,6 @@ public class MyVerseDetailsFragment extends Fragment {
             }
         });
         initView(verse);
-
-        MobileAds.initialize(getActivity().getApplicationContext(), String.valueOf(R.string.app_ad_id));
-        mAdView = (AdView) v.findViewById(R.id.learning_ad);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
         return v;
     }
 

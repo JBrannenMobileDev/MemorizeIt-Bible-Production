@@ -547,6 +547,10 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         if(resultCode == 2) {
             finish();
         }
+
+        if(resultCode == 0){
+            onBackPressedFromNewVerseSelector();
+        }
     }
 
     private boolean MyStartActivity(Intent aIntent) {
