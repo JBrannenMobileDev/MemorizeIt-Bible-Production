@@ -46,7 +46,6 @@ public class VerseSelectionActivity extends AppCompatActivity {
 
     @OnClick(R.id.verse_selection_categories)
     public void onCategoriesClicked(){
-        Toast.makeText(this, "This feature is under construction.", Toast.LENGTH_LONG).show();
-//        startActivity(new Intent(getApplicationContext(), CategoriesActivity.class));
+        startActivity(new Intent(getApplicationContext(), CategoriesActivity.class));
     }
 }

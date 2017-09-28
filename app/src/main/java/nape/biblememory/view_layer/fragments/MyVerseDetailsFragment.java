@@ -44,13 +44,15 @@ public class MyVerseDetailsFragment extends Fragment {
         verseLocation = getArguments().getString("verseLocation");
         realm = Realm.getDefaultInstance();
         verse = realm.where(MyVerse.class).equalTo("verseLocation", verseLocation).findFirst();
-        verse.addChangeListener(new RealmChangeListener<RealmModel>() {
-            @Override
-            public void onChange(RealmModel realmModel) {
-                initView(verse);
-            }
-        });
-        initView(verse);
+        if(verse != null) {
+            verse.addChangeListener(new RealmChangeListener<RealmModel>() {
+                @Override
+                public void onChange(RealmModel realmModel) {
+                    initView(verse);
+                }
+            });
+            initView(verse);
+        }
         return v;
     }
 

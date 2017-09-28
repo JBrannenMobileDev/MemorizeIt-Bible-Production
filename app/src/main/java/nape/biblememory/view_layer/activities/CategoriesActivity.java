@@ -75,9 +75,27 @@ public class CategoriesActivity extends AppCompatActivity {
         verseSelected = new BaseCallback<MyVerse>() {
             @Override
             public void onResponse(MyVerse response) {
-                Intent intent = new Intent(getApplicationContext(), VerseDetailsActivity.class);
-                intent.putExtra("verseLocation", response.getVerseLocation());
-                startActivity(intent);
+                Realm realm = Realm.getDefaultInstance();
+                RealmResults<MyVerse> myVerses = realm.where(MyVerse.class).findAll();
+                RealmResults<MemorizedVerse> memorizedVerses = realm.where(MemorizedVerse.class).findAll();
+                boolean alreadyHas = false;
+                for(MyVerse verseLocal : myVerses){
+                    if(response.getVerseLocation().equalsIgnoreCase(verseLocal.getVerseLocation())){
+                        alreadyHas = true;
+                    }
+                }
+
+                for(MemorizedVerse verseLocal : memorizedVerses){
+                    if(response.getVerseLocation().equalsIgnoreCase(verseLocal.getVerseLocation())){
+                        alreadyHas = true;
+                    }
+                }
+                if(alreadyHas){
+                    Intent intent = new Intent(getApplicationContext(), VerseDetailsActivity.class);
+                    intent.putExtra("verseLocation", response.getVerseLocation());
+                    startActivity(intent);
+                }
+                realm.close();
             }
 
             @Override

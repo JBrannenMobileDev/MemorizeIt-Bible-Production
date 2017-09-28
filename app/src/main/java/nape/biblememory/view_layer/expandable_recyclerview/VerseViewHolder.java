@@ -75,7 +75,11 @@ public class VerseViewHolder extends ChildViewHolder {
         if(alreadyHas){
            verseTv.setTextColor(Color.argb(255,0,114,152));
            verseLocationTv.setTextColor(Color.argb(255,0,114,152));
-            addBt.setVisibility(View.GONE);
+           addBt.setVisibility(View.GONE);
+        }else{
+            verseTv.setTextColor(Color.argb(255,187,186,186));
+            verseLocationTv.setTextColor(Color.argb(255,187,186,186));
+            addBt.setVisibility(View.VISIBLE);
         }
         realm.close();
 
