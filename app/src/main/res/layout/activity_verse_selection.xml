@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="80dp"
-            android:text="Trending verses"
+            android:text="Popular verses"
             android:textColor="@color/bgColor"
             android:textSize="18sp" />
 
@@ -116,5 +116,42 @@
             android:layout_marginLeft="16dp"
             android:tint="@color/colorProgressBg"
             app:srcCompat="@mipmap/ic_view_list_black_48dp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/verse_selection_manual_entry"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginTop="195dp"
+        android:background="@android:color/white"
+        android:elevation="2dp">
+
+        <ImageView
+            android:id="@+id/imageView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="16dp"
+            android:tint="@color/greyBgDark"
+            app:srcCompat="@mipmap/ic_navigate_next_black_24dp" />
+
+        <TextView
+            android:id="@+id/textView27"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="80dp"
+            android:text="Manual entry"
+            android:textColor="@color/bgColor"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/imageView12"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:tint="@color/colorProgressBg"
+            app:srcCompat="@drawable/ic_keyboard_black_48dp" />
     </FrameLayout>
 </FrameLayout>

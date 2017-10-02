@@ -615,19 +615,18 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         if(snackbar != null) {
             snackbar.show();
         }
-        if((quizList == null || quizList.size() == 0) && !mPrefs.isTourStep2Complete(getApplicationContext())){
+        if((quizList == null || quizList.size() == 0) && !mPrefs.isTourStep1Complete(getApplicationContext())){
             ScriptureData newVerse = new ScriptureData();
             newVerse.setVerseLocation("Romans 6:23");
             newVerse.setVerse("For the wages of sin is death, but the free gift of God is eternal life in Christ Jesus our Lord.");
             newVerse.setVersionCode("ESV");
             DataStore.getInstance().saveQuizVerse(newVerse, getApplicationContext());
             adapterMain.refreshMyVersesList();
+            mPrefs.setTourStep1Complete(true, getApplicationContext());
+            UserPreferencesModel model = new UserPreferencesModel();
+            model.initAllData(getApplicationContext(), mPrefs);
+            DataStore.getInstance().saveUserPrefs(model, getApplicationContext());
         }
-        mPrefs.setTourStep1Complete(true, getApplicationContext());
-        UserPreferencesModel model = new UserPreferencesModel();
-        model.initAllData(getApplicationContext(), mPrefs);
-        DataStore.getInstance().saveUserPrefs(model, getApplicationContext());
-
     }
 
     @Override

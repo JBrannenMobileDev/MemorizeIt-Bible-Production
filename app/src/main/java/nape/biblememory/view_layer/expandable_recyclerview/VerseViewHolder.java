@@ -51,7 +51,7 @@ public class VerseViewHolder extends ChildViewHolder {
         });
     }
 
-    public void onBind(MyVerse verse, BaseCallback<MyVerse> addVerseSelected, BaseCallback<MyVerse> verseSelected, int childIndex) {
+    public void onBind(MyVerse verse, BaseCallback<MyVerse> addVerseSelected, BaseCallback<MyVerse> verseSelected) {
         this.addVerseSelected = addVerseSelected;
         this.verseSelected = verseSelected;
         this.verse = verse;

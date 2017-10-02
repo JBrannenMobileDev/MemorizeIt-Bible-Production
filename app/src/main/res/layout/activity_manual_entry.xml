@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="nape.biblememory.view_layer.activities.ManualEntryActivity">
+
+    <TextView
+        android:id="@+id/manual_entry_clear"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="85dp"
+        android:elevation="2dp"
+        android:gravity="center"
+        android:text="Clear"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/manual_entry_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/rounded_rectangle"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:text="Add verse"
+        android:textColor="@color/White" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/manual_entry_verse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="60dp"
+                    android:ems="10"
+                    android:hint="I have stored up your word in my..."
+                    android:inputType="textMultiLine" />
+
+                <EditText
+                    android:id="@+id/manual_entry_verse_location"
+                    android:layout_width="225dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:ems="10"
+                    android:hint="Psalm 119:11"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/manual_entry_bible_verseion"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="20dp"
+                    android:ems="10"
+                    android:hint="ESV"
+                    android:inputType="textPersonName" />
+            </FrameLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

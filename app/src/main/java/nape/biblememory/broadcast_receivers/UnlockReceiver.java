@@ -139,7 +139,11 @@ public class UnlockReceiver extends BroadcastReceiver {
 
                                     if (startQuiz) {
                                         Log.d(TAG, "UnlockReceiver - Unlock activity has been launched.");
-                                        context.getApplicationContext().startActivity(s);
+                                        try {
+                                            context.getApplicationContext().startActivity(s);
+                                        }catch(Exception e){
+
+                                        }
                                     }
 
                                 }

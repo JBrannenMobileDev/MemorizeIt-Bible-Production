@@ -46,7 +46,7 @@ public class CategoryAdapter extends ExpandableRecyclerViewAdapter<CategoryViewH
     @Override
     public void onBindChildViewHolder(VerseViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
         final MyVerse verse = (MyVerse)(group.getItems().get(childIndex));
-        holder.onBind(verse, addVerseSelected, verseSelected, childIndex);
+        holder.onBind(verse, addVerseSelected, verseSelected);
     }
 
     @Override

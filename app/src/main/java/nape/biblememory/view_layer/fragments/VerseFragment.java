@@ -164,7 +164,7 @@ public class VerseFragment extends Fragment {
     }
 
     private void getNumOfVersesToDisplay(final BaseCallback<Integer> numOfVersesCallback) {
-        final DBTApi REST = new DBTApi(getActivity().getApplicationContext());
+        final DBTApi REST = new DBTApi(context);
 
         BaseCallback<List<Verse>> verseListCallback = new BaseCallback<List<Verse>>() {
             @Override
@@ -185,7 +185,7 @@ public class VerseFragment extends Fragment {
     }
 
     private void getChapterList(final BaseCallback<List<Chapter>> chapterSelectedCallback){
-        final DBTApi REST = new DBTApi(getActivity().getApplicationContext());
+        final DBTApi REST = new DBTApi(context);
 
         final BaseCallback<List<Chapter>> chapterCallback = new BaseCallback<List<Chapter>>() {
             @Override

@@ -19,6 +19,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import nape.biblememory.models.MemorizedVerse;
 import nape.biblememory.models.MyVerse;
+import nape.biblememory.models.UserPreferencesModel;
 import nape.biblememory.view_layer.activities.BaseCallback;
 import nape.biblememory.data_layer.DataStore;
 import nape.biblememory.models.ScriptureData;
@@ -140,6 +141,12 @@ public class VerseSelectedDialogFragment extends DialogFragment {
                                 if(learningList.size() < 3){
                                     verse.setGoldStar(1);
                                 }
+
+                                mPrefs.setTourStep1Complete(true, getActivity().getApplicationContext());
+                                UserPreferencesModel model = new UserPreferencesModel();
+                                model.initAllData(getActivity().getApplicationContext(), mPrefs);
+                                DataStore.getInstance().saveUserPrefs(model, getActivity().getApplicationContext());
+
                                 DataStore.getInstance().saveQuizVerse(verse, context);
                                 DataStore.getInstance().updateSingleVerseUserData(mPrefs.getUserId(context), 1);
                                 dialogActionsListener.onVerseAdded(comingFromNewVerses);

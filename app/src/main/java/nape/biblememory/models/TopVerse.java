@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 
-public class ScriptureData implements Parcelable, Comparable<ScriptureData>{
+public class TopVerse implements Parcelable, Comparable<TopVerse>{
     private String verse;
     private String verseLocation;
     private String startDate;
@@ -26,7 +26,7 @@ public class ScriptureData implements Parcelable, Comparable<ScriptureData>{
     private int listPosition;
     private int goldStar;
 
-    protected ScriptureData(Parcel in) {
+    protected TopVerse(Parcel in) {
         verse = in.readString();
         verseLocation = in.readString();
         startDate = in.readString();
@@ -47,7 +47,7 @@ public class ScriptureData implements Parcelable, Comparable<ScriptureData>{
         goldStar = in.readInt();
     }
 
-    public ScriptureData(){
+    public TopVerse(){
     }
 
     public int isGoldStar() {
@@ -66,15 +66,15 @@ public class ScriptureData implements Parcelable, Comparable<ScriptureData>{
         this.listPosition = listPosition;
     }
 
-    public static final Creator<ScriptureData> CREATOR = new Creator<ScriptureData>() {
+    public static final Creator<TopVerse> CREATOR = new Creator<TopVerse>() {
         @Override
-        public ScriptureData createFromParcel(Parcel in) {
-            return new ScriptureData(in);
+        public TopVerse createFromParcel(Parcel in) {
+            return new TopVerse(in);
         }
 
         @Override
-        public ScriptureData[] newArray(int size) {
-            return new ScriptureData[size];
+        public TopVerse[] newArray(int size) {
+            return new TopVerse[size];
         }
     };
 
@@ -94,7 +94,7 @@ public class ScriptureData implements Parcelable, Comparable<ScriptureData>{
         this.numOfVersesInChapter = numOfVersesInChapter;
     }
 
-    public ScriptureData(String verse, String verseLocation) {
+    public TopVerse(String verse, String verseLocation) {
         setVerse(verse);
         setVerseLocation(verseLocation);
     }
@@ -283,30 +283,8 @@ public class ScriptureData implements Parcelable, Comparable<ScriptureData>{
         return myVerse;
     }
 
-    public TopVerse toTopVerseData() {
-        TopVerse myVerse = new TopVerse();
-        myVerse.setVerse(verse);
-        myVerse.setVersionCode(versionCode);
-        myVerse.setVerseLocation(verseLocation);
-        myVerse.setMemoryStage(memoryStage);
-        myVerse.setBookName(bookName);
-        myVerse.setChapter(chapter);
-        myVerse.setCorrectCount(correctCount);
-        myVerse.setLastSeenDate(lastSeenDate);
-        myVerse.setMemorizedDate(memorizedDate);
-        myVerse.setMemorySubStage(memorySubStage);
-        myVerse.setNumOfVersesInChapter(numOfVersesInChapter);
-        myVerse.setPrimary_key_id(primary_key_id);
-        myVerse.setRemeberedDate(remeberedDate);
-        myVerse.setStartDate(startDate);
-        myVerse.setViewedCount(viewedCount);
-        myVerse.setListPosition(listPosition);
-        myVerse.setGoldStar(goldStar);
-        return myVerse;
-    }
-
     @Override
-    public int compareTo(@NonNull ScriptureData o) {
-        return (listPosition - o.getListPosition());
+    public int compareTo(@NonNull TopVerse o) {
+        return (verseLocation.compareToIgnoreCase(o.getVerseLocation()));
     }
 }

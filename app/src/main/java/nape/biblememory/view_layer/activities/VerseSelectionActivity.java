@@ -48,4 +48,9 @@ public class VerseSelectionActivity extends AppCompatActivity {
     public void onCategoriesClicked(){
         startActivity(new Intent(getApplicationContext(), CategoriesActivity.class));
     }
+
+    @OnClick(R.id.verse_selection_manual_entry)
+    public void onManualEntryClicked(){
+        startActivity(new Intent(getApplicationContext(), ManualEntryActivity.class));
+    }
 }
