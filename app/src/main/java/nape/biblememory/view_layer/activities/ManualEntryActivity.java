@@ -13,6 +13,8 @@ import butterknife.OnClick;
 import nape.biblememory.R;
 import nape.biblememory.data_layer.DataStore;
 import nape.biblememory.models.ScriptureData;
+import nape.biblememory.models.UserPreferencesModel;
+import nape.biblememory.utils.UserPreferences;
 
 public class ManualEntryActivity extends AppCompatActivity {
 
@@ -56,6 +58,7 @@ public class ManualEntryActivity extends AppCompatActivity {
     }
 
     private void addVerse(String verseLocation, String verse, String verseion) {
+        UserPreferences mPrefs = new UserPreferences();
         ScriptureData newVerse = new ScriptureData();
         newVerse.setVerseLocation(verseLocation);
         newVerse.setVerse(verse);
@@ -63,5 +66,9 @@ public class ManualEntryActivity extends AppCompatActivity {
         newVerse.setMemoryStage(0);
         newVerse.setMemorySubStage(0);
         DataStore.getInstance().saveQuizVerse(newVerse, getApplicationContext());
+        mPrefs.setTourStep1Complete(true, getApplicationContext());
+        UserPreferencesModel model = new UserPreferencesModel();
+        model.initAllData(getApplicationContext(), mPrefs);
+        DataStore.getInstance().saveUserPrefs(model, getApplicationContext());
     }
 }

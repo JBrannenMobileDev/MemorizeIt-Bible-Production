@@ -19,6 +19,8 @@ import nape.biblememory.data_layer.DataStore;
 import nape.biblememory.models.Category;
 import nape.biblememory.models.MemorizedVerse;
 import nape.biblememory.models.MyVerse;
+import nape.biblememory.models.UserPreferencesModel;
+import nape.biblememory.utils.UserPreferences;
 import nape.biblememory.view_layer.expandable_recyclerview.CategoryAdapter;
 
 public class CategoriesActivity extends AppCompatActivity {
@@ -59,8 +61,13 @@ public class CategoriesActivity extends AppCompatActivity {
                     }
                 }
                 if(!alreadyHas){
+                    UserPreferences mPrefs = new UserPreferences();
                     DataStore.getInstance().saveQuizVerse(response.toScriptureData(), getApplicationContext());
                     Toast.makeText(CategoriesActivity.this, "Verse added!", Toast.LENGTH_SHORT).show();
+                    mPrefs.setTourStep1Complete(true, getApplicationContext());
+                    UserPreferencesModel model = new UserPreferencesModel();
+                    model.initAllData(getApplicationContext(), mPrefs);
+                    DataStore.getInstance().saveUserPrefs(model, getApplicationContext());
                     adapter.notifyDataSetChanged();
                 }
                 realm.close();

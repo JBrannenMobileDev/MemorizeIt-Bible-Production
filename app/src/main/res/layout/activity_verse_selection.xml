@@ -127,7 +127,7 @@
         android:elevation="2dp">
 
         <ImageView
-            android:id="@+id/imageView15"
+            android:id="@+id/imageView157"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
@@ -136,7 +136,7 @@
             app:srcCompat="@mipmap/ic_navigate_next_black_24dp" />
 
         <TextView
-            android:id="@+id/textView27"
+            android:id="@+id/textView2755"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -146,7 +146,7 @@
             android:textSize="18sp" />
 
         <ImageView
-            android:id="@+id/imageView12"
+            android:id="@+id/imageView129898"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
