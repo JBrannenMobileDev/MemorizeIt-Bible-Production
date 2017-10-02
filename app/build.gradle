@@ -30,8 +30,8 @@ android {
         applicationId "nape.biblememory"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 26
-        versionName "2.2.1"
+        versionCode 27
+        versionName "2.3.0"
         resConfigs "auto"
     }
     buildTypes {
