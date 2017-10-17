@@ -73,9 +73,9 @@ public class ManualEntryActivity extends AppCompatActivity {
     private void addVerse(String verseLocation, String verse, String verseion) {
         UserPreferences mPrefs = new UserPreferences();
         ScriptureData newVerse = new ScriptureData();
-        newVerse.setVerseLocation(sanatizeUserInput(verseLocation));
-        newVerse.setVerse(sanatizeUserInput(verse));
-        newVerse.setVersionCode(sanatizeUserInput(verseion));
+        newVerse.setVerseLocation(sanitizeUserInput(verseLocation));
+        newVerse.setVerse(sanitizeUserInput(verse));
+        newVerse.setVersionCode(sanitizeUserInput(verseion));
         newVerse.setMemoryStage(0);
         newVerse.setMemorySubStage(0);
         RealmResults<MyVerse> quizVerses = Realm.getDefaultInstance().where(MyVerse.class).findAll();
@@ -93,8 +93,14 @@ public class ManualEntryActivity extends AppCompatActivity {
         DataStore.getInstance().saveUserPrefs(model, getApplicationContext());
     }
 
-    private String sanatizeUserInput(String userinput){
-        StringBuilder temp = new StringBuilder(userinput);
+    private String sanitizeUserInput(String userInput){
+        StringBuilder temp = new StringBuilder(userInput);
+        while(temp.charAt(0) == ' '){
+            temp = new StringBuilder(temp.substring(1));
+        }
+        while(temp.charAt(temp.length() - 1) == ' '){
+            temp = new StringBuilder(temp.substring(0, temp.length() - 1));
+        }
         for (int i = 0 ; i< temp.length() ; i++) {
             if (temp.charAt(i) == '\n' || temp.charAt(i) == '\t') {
                 temp.deleteCharAt(i);

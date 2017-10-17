@@ -19,6 +19,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import nape.biblememory.models.MyVerse;
 import nape.biblememory.view_layer.fragments.dialogs.CloseSelectedTooManyTimesAlertDialog;
 import nape.biblememory.view_layer.fragments.dialogs.FirstTimeUnlockDialog;
@@ -77,6 +79,9 @@ public class PhoneUnlockActivity extends AppCompatActivity implements PhoneUnloc
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
         mFirebaseAnalytics.setCurrentScreen(this, "Phone_unlock_quiz", null);
 
+        Realm.init(getApplicationContext());
+        RealmConfiguration config = new RealmConfiguration.Builder().name("myrealm4.realm").schemaVersion(4).deleteRealmIfMigrationNeeded().build();
+        Realm.setDefaultConfiguration(config);
 
         InitializeBannerAd();
 

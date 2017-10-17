@@ -131,6 +131,10 @@ public class RecyclerViewAdapterMemorized extends RecyclerView.Adapter<RecyclerV
         }else{
             holder.verseLocation.setText(mDataSet.get(position).getVerseLocation());
             holder.verse.setText(mDataSet.get(position).getVerse());
+            holder.verseLocation.setTextColor(Color.argb(255, 1, 81, 107));
+            holder.verse.setTextColor(Color.argb(255, 1, 81, 107));
+            holder.shareIcon.setVisibility(View.VISIBLE);
+            holder.reviewNowLayout.setVisibility(View.GONE);
         }
     }
 

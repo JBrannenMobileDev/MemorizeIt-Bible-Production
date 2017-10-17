@@ -181,46 +181,50 @@ public class MyVersesPracticePresenter implements MyVersesPracticeInterface {
     }
 
     private String[] getLocationWords(String verseLocation) {
-        String[] wordsBySpace = countWordsUsingSplit(verseLocation);
-        String[] wordsByColon = wordsBySpace[wordsBySpace.length - 1].split(":");
-        String[] wordsByDash = wordsByColon[wordsByColon.length - 1].split("-");
-        List<String> result = new ArrayList<>();
+        if(verseLocation.length() > 0) {
+            String[] wordsBySpace = countWordsUsingSplit(verseLocation);
+            String[] wordsByColon = wordsBySpace[wordsBySpace.length - 1].split(":");
+            String[] wordsByDash = wordsByColon[wordsByColon.length - 1].split("-");
+            List<String> result = new ArrayList<>();
 
-        for(int i = 0; i < wordsBySpace.length - 1; i++){
-            result.add(wordsBySpace[i]);
-        }
-        for(int i = 0; i < wordsByColon.length - 1; i++){
-            result.add(wordsByColon[i]);
-            if(i == 0){
-                result.add(":");
-                sizeToSubtractFromTotal++;
+            for (int i = 0; i < wordsBySpace.length - 1; i++) {
+                result.add(wordsBySpace[i]);
             }
-        }
-        for(int i = 0; i < wordsByDash.length; i++) {
-            result.add(wordsByDash[i]);
-            if(i == 0 && wordsByDash.length > 1){
-                result.add("-");
-                sizeToSubtractFromTotal++;
-            }
-        }
-
-        List<String> finalWordSplitList = new ArrayList<>();
-        for(String word : result){
-            if(Character.isDigit(word.charAt(0)) && word.length() > 1){
-                for(char digit : word.toCharArray()){
-                    String newWord = String.valueOf(digit);
-                    finalWordSplitList.add(newWord);
+            for (int i = 0; i < wordsByColon.length - 1; i++) {
+                result.add(wordsByColon[i]);
+                if (i == 0) {
+                    result.add(":");
+                    sizeToSubtractFromTotal++;
                 }
-            }else{
-                finalWordSplitList.add(word);
             }
-        }
+            for (int i = 0; i < wordsByDash.length; i++) {
+                result.add(wordsByDash[i]);
+                if (i == 0 && wordsByDash.length > 1) {
+                    result.add("-");
+                    sizeToSubtractFromTotal++;
+                }
+            }
 
-        String[] response = new String[finalWordSplitList.size()];
-        for(int i = 0; i < finalWordSplitList.size(); i++){
-            response[i] = finalWordSplitList.get(i);
+            List<String> finalWordSplitList = new ArrayList<>();
+            for (String word : result) {
+                if (Character.isDigit(word.charAt(0)) && word.length() > 1) {
+                    for (char digit : word.toCharArray()) {
+                        String newWord = String.valueOf(digit);
+                        finalWordSplitList.add(newWord);
+                    }
+                } else {
+                    finalWordSplitList.add(word);
+                }
+            }
+
+            String[] response = new String[finalWordSplitList.size()];
+            for (int i = 0; i < finalWordSplitList.size(); i++) {
+                response[i] = finalWordSplitList.get(i);
+            }
+            return response;
+        }else{
+            return new String[0];
         }
-        return response;
     }
 
     @Override

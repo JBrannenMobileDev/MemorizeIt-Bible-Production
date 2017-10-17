@@ -358,7 +358,6 @@ public class DataStore {
                 goldStartList.add(verseToAdd);
             }
         }
-        realm.close();
 
         int caseNumber;
         MyVerse resultVerse = null;
@@ -410,6 +409,7 @@ public class DataStore {
             }
         }
         verseCallback.onResponse(resultVerse);
+        realm.close();
     }
 
     private int calculateCaseNumber(int random) {

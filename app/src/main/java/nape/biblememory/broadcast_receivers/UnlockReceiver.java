@@ -13,10 +13,8 @@ import java.util.Date;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import io.realm.RealmResults;
 import nape.biblememory.data_layer.DataStore;
 import nape.biblememory.models.MyVerse;
-import nape.biblememory.models.ScriptureData;
 import nape.biblememory.view_layer.activities.BaseCallback;
 import nape.biblememory.view_layer.activities.PhoneUnlockActivity;
 import nape.biblememory.utils.UserPreferences;
