@@ -28,6 +28,7 @@ public class UserPreferencesModel {
     private boolean rebuildError;
     private boolean tourStep1Complete;
     private boolean tourStep2Complete;
+    private boolean howAreWeDoingShown;
     private long mondayStartTime;
     private long mondayEndTime;
     private long tuesdayStartTime;
@@ -50,6 +51,7 @@ public class UserPreferencesModel {
     }
 
     public void initAllData(Context context, UserPreferences mPrefs){
+        howAreWeDoingShown = mPrefs.hasHowAreWeDoingDialogBeenShown(context);
         tourStep1Complete = mPrefs.isTourStep1Complete(context);
         tourStep2Complete = mPrefs.isTourStep2Complete(context);
         quizViewCount = mPrefs.getQuizViewCount(context);
@@ -86,6 +88,14 @@ public class UserPreferencesModel {
         saturdayEndTime = mPrefs.getSettingsEndTimeSaturday(context);
         sundayStartTime = mPrefs.getSettingsStartTimeSunday(context);
         sundayEndTime = mPrefs.getSettingsEndTimeSunday(context);
+    }
+
+    public boolean isHowAreWeDoingShown() {
+        return howAreWeDoingShown;
+    }
+
+    public void setHowAreWeDoingShown(boolean howAreWeDoingShown) {
+        this.howAreWeDoingShown = howAreWeDoingShown;
     }
 
     public boolean isTourStep1Complete() {

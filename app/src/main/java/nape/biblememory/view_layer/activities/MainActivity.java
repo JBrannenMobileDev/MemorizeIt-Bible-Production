@@ -46,6 +46,7 @@ import nape.biblememory.view_layer.fragments.MyVersesFragment;
 import nape.biblememory.view_layer.fragments.dialogs.MyVersesEmptyAlertDialog;
 import nape.biblememory.view_layer.fragments.dialogs.NoInternetAlertDialog;
 import nape.biblememory.view_layer.fragments.dialogs.NoStarsAlertDialog;
+import nape.biblememory.view_layer.fragments.dialogs.QuestionUserAlertDialog;
 import nape.biblememory.view_layer.fragments.dialogs.SelectVersionAlertDialog;
 import nape.biblememory.view_layer.fragments.VerseFragment;
 import nape.biblememory.managers.NetworkManager;
@@ -317,6 +318,10 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         }
         if(getIntent().getBooleanExtra("launch_rate", false)){
             sendRateThisAppIntent();
+        }
+        RealmResults<MemorizedVerse> memorizedVerses = realm.where(MemorizedVerse.class).findAll();
+        if(memorizedVerses != null && memorizedVerses.size() > 0 && !mPrefs.hasHowAreWeDoingDialogBeenShown(getApplicationContext())){
+            new QuestionUserAlertDialog().show(getSupportFragmentManager(), null);
         }
     }
 

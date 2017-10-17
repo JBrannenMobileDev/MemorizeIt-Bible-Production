@@ -60,6 +60,16 @@
     <string name="CEBVersionEnglishOldTestament">ENGCEBO2ET</string>
     <string name="KJVVersionEnglishNewTestament">ENGKJVN2ET</string>
     <string name="KJVVersionEnglishOldTestament">ENGKJVO2ET</string>
+    <string name="categories_activity_title">Categories</string>
+    <string name="verse_added_error_toast_msg">Error, verse not added</string>
+    <string name="verse_selected_eeror_toast_msg">Error, verse details not available.</string>
+    <string name="categories_firebase_screen_name">Categories activity</string>
+    <string name="verse_added_toast_msg">Verse added!</string>
+
+    <string-array name="category_names">
+        <item>Peace</item>
+        <item>Encouragement</item>
+    </string-array>
 
     <string-array name="category_peace_reference_esv">
         <item>Colossians 3:15</item>

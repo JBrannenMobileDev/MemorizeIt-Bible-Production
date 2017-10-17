@@ -9,6 +9,9 @@ import android.widget.Toast;
 
 import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import nape.biblememory.R;
@@ -23,65 +26,75 @@ import nape.biblememory.view_layer.activities.CategoriesActivity;
  */
 
 public class VerseViewHolder extends ChildViewHolder {
-    private TextView verseTv;
-    private TextView verseLocationTv;
-    private FrameLayout verseLayout;
-    private ImageView addBt;
+    @BindView(R.id.verse_tv) TextView verseTv;
+    @BindView(R.id.verse_location_tv) TextView verseLocationTv;
+    @BindView(R.id.verse_plus_image) ImageView addBt;
     private BaseCallback<MyVerse> addVerseSelected;
     private BaseCallback<MyVerse> verseSelected;
     private MyVerse verse;
 
     public VerseViewHolder(View itemView) {
         super(itemView);
-        verseTv = (TextView)itemView.findViewById(R.id.verse_tv);
-        verseLocationTv = (TextView)itemView.findViewById(R.id.verse_location_tv);
-        addBt = (ImageView)itemView.findViewById(R.id.verse_plus_image);
-        verseLayout = (FrameLayout)itemView.findViewById(R.id.verse_item_layout);
-        addBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addVerseSelected.onResponse(verse);
-            }
-        });
-        verseLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                verseSelected.onResponse(verse);
-            }
-        });
+        ButterKnife.bind(this, itemView);
+    }
+
+    @OnClick(R.id.verse_plus_image)
+    public void onAddVerseClicked(){
+        if(verse == null){
+            addVerseSelected.onFailure(new Exception("verse from Category verse added is null."));
+        }else {
+            addVerseSelected.onResponse(verse);
+        }
+    }
+
+    @OnClick(R.id.verse_item_layout)
+    public void onItemClicked(){
+        if(verse == null){
+            verseSelected.onFailure(new Exception("verse is null, cannot access verse details."));
+        }else {
+            verseSelected.onResponse(verse);
+        }
     }
 
     public void onBind(MyVerse verse, BaseCallback<MyVerse> addVerseSelected, BaseCallback<MyVerse> verseSelected) {
         this.addVerseSelected = addVerseSelected;
         this.verseSelected = verseSelected;
         this.verse = verse;
+
         verseTv.setText(verse.getVerse());
         verseLocationTv.setText(verse.getVerseLocation());
-        Realm realm = Realm.getDefaultInstance();
-        RealmResults<MyVerse> myVerses = realm.where(MyVerse.class).findAll();
-        RealmResults<MemorizedVerse> memorizedVerses = realm.where(MemorizedVerse.class).findAll();
-        boolean alreadyHas = false;
-        for(MyVerse verseLocal : myVerses){
-            if(verse.getVerseLocation().equalsIgnoreCase(verseLocal.getVerseLocation())){
-                alreadyHas = true;
-            }
-        }
 
-        for(MemorizedVerse verseLocal : memorizedVerses){
-            if(verse.getVerseLocation().equalsIgnoreCase(verseLocal.getVerseLocation())){
-                alreadyHas = true;
-            }
-        }
-        if(alreadyHas){
-           verseTv.setTextColor(Color.argb(255,0,114,152));
-           verseLocationTv.setTextColor(Color.argb(255,0,114,152));
-           addBt.setVisibility(View.GONE);
+        if(doesUserHaveVerse(verse)){
+            verseTv.setTextColor(Color.argb(255,0,114,152));
+            verseLocationTv.setTextColor(Color.argb(255,0,114,152));
+            addBt.setVisibility(View.GONE);
         }else{
             verseTv.setTextColor(Color.argb(255,187,186,186));
             verseLocationTv.setTextColor(Color.argb(255,187,186,186));
             addBt.setVisibility(View.VISIBLE);
         }
-        realm.close();
+    }
 
+    private boolean doesUserHaveVerse(MyVerse verse){
+        boolean alreadyHasVerse = false;
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<MyVerse> myVerses = realm.where(MyVerse.class).findAll();
+        RealmResults<MemorizedVerse> memorizedVerses = realm.where(MemorizedVerse.class).findAll();
+
+        //Checks users verse list to see if they already have the verse.
+        for(MyVerse verseLocal : myVerses){
+            if(verse.getVerseLocation().equalsIgnoreCase(verseLocal.getVerseLocation())){
+                alreadyHasVerse = true;
+            }
+        }
+
+        //Checks users memorized verse list to see if they already have the verse.
+        for(MemorizedVerse verseLocal : memorizedVerses){
+            if(verse.getVerseLocation().equalsIgnoreCase(verseLocal.getVerseLocation())){
+                alreadyHasVerse = true;
+            }
+        }
+        realm.close();
+        return alreadyHasVerse;
     }
 }

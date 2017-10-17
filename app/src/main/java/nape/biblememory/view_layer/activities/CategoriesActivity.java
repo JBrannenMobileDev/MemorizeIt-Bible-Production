@@ -5,152 +5,140 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import android.util.Log;
 import android.widget.Toast;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import io.realm.Realm;
-import io.realm.RealmResults;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import nape.biblememory.R;
 import nape.biblememory.data_layer.DataStore;
 import nape.biblememory.models.Category;
-import nape.biblememory.models.MemorizedVerse;
 import nape.biblememory.models.MyVerse;
 import nape.biblememory.models.UserPreferencesModel;
 import nape.biblememory.utils.UserPreferences;
+import nape.biblememory.view_layer.activities.interfaces.CategoriesActivityInterface;
+import nape.biblememory.view_layer.activities.interfaces.CategoriesPresenterInterface;
+import nape.biblememory.view_layer.activities.presenters.CategoriesPresenter;
 import nape.biblememory.view_layer.expandable_recyclerview.CategoryAdapter;
 
-public class CategoriesActivity extends AppCompatActivity {
-
+public class CategoriesActivity extends AppCompatActivity implements CategoriesActivityInterface {
+    private static final String TAG = CategoriesActivity.class.getName();
+    @BindView(R.id.categories_recycler_view) RecyclerView recyclerViewExpandable;
     private CategoryAdapter adapter;
-    private BaseCallback<MyVerse> addVerseSelected;
+    private BaseCallback<MyVerse> addVerseCallback;
     private BaseCallback<MyVerse> verseSelected;
-    private List<Category> categories;
-    private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
+    private FirebaseAnalytics mFirebaseAnalytics;
+    private CategoriesPresenterInterface presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_right);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
-        setTitle("Categories");
-        categories = getCategories();
-        recyclerView = (RecyclerView) findViewById(R.id.categories_recycler_view);
-        layoutManager = new LinearLayoutManager(this);
+        ButterKnife.bind(this);
+        setTitle(getString(R.string.categories_activity_title));
+        presenter = new CategoriesPresenter(this);
+        initFirebase();
+        initCallbacks();
+        initData();
+    }
 
-        addVerseSelected = new BaseCallback<MyVerse>() {
+    private void initData() {
+        List<List<String>> categoryReferences = new ArrayList<>();
+        categoryReferences.add(Arrays.asList(getResources().getStringArray(R.array.category_peace_reference_esv)));
+        categoryReferences.add(Arrays.asList(getResources().getStringArray(R.array.category_encouragement_reference_esv)));
+
+        List<List<String>> categoryVerses = new ArrayList<>();
+        categoryVerses.add(Arrays.asList(getResources().getStringArray(R.array.category_peace_text_esv)));
+        categoryVerses.add(Arrays.asList(getResources().getStringArray(R.array.category_encouragement_text_esv)));
+
+        List<String> categoryNames = Arrays.asList(getResources().getStringArray(R.array.category_names));
+
+        presenter.buildCategoriesForAdapter(categoryReferences, categoryVerses, categoryNames);
+    }
+
+    private void initCallbacks() {
+        addVerseCallback = new BaseCallback<MyVerse>() {
             @Override
             public void onResponse(MyVerse response) {
-                Realm realm = Realm.getDefaultInstance();
-                RealmResults<MyVerse> myVerses = realm.where(MyVerse.class).findAll();
-                RealmResults<MemorizedVerse> memorizedVerses = realm.where(MemorizedVerse.class).findAll();
-                boolean alreadyHas = false;
-                for(MyVerse verseLocal : myVerses){
-                    if(response.getVerseLocation().equalsIgnoreCase(verseLocal.getVerseLocation())){
-                        alreadyHas = true;
-                    }
-                }
-
-                for(MemorizedVerse verseLocal : memorizedVerses){
-                    if(response.getVerseLocation().equalsIgnoreCase(verseLocal.getVerseLocation())){
-                        alreadyHas = true;
-                    }
-                }
-                if(!alreadyHas){
-                    UserPreferences mPrefs = new UserPreferences();
-                    DataStore.getInstance().saveQuizVerse(response.toScriptureData(), getApplicationContext());
-                    Toast.makeText(CategoriesActivity.this, "Verse added!", Toast.LENGTH_SHORT).show();
-                    mPrefs.setTourStep1Complete(true, getApplicationContext());
-                    UserPreferencesModel model = new UserPreferencesModel();
-                    model.initAllData(getApplicationContext(), mPrefs);
-                    DataStore.getInstance().saveUserPrefs(model, getApplicationContext());
-                    adapter.notifyDataSetChanged();
-                }
-                realm.close();
+                updatefirebaseAnalytics(response);
+                updateUserPrefSettings();
+                DataStore.getInstance().saveQuizVerse(response.toScriptureData(), getApplicationContext());//Updates the local and Firebase DB with the added verse.
+                showVerseAddedToast();
+                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onFailure(Exception e) {
-
+                Log.d(TAG, e.getMessage());
+                Toast.makeText(CategoriesActivity.this, R.string.verse_added_error_toast_msg, Toast.LENGTH_SHORT).show();
             }
         };
 
         verseSelected = new BaseCallback<MyVerse>() {
             @Override
             public void onResponse(MyVerse response) {
-                Realm realm = Realm.getDefaultInstance();
-                RealmResults<MyVerse> myVerses = realm.where(MyVerse.class).findAll();
-                RealmResults<MemorizedVerse> memorizedVerses = realm.where(MemorizedVerse.class).findAll();
-                boolean alreadyHas = false;
-                for(MyVerse verseLocal : myVerses){
-                    if(response.getVerseLocation().equalsIgnoreCase(verseLocal.getVerseLocation())){
-                        alreadyHas = true;
-                    }
-                }
-
-                for(MemorizedVerse verseLocal : memorizedVerses){
-                    if(response.getVerseLocation().equalsIgnoreCase(verseLocal.getVerseLocation())){
-                        alreadyHas = true;
-                    }
-                }
-                if(alreadyHas){
-                    Intent intent = new Intent(getApplicationContext(), VerseDetailsActivity.class);
-                    intent.putExtra("verseLocation", response.getVerseLocation());
-                    startActivity(intent);
-                }
-                realm.close();
+                presenter.onVerseSelected(response);
             }
 
             @Override
             public void onFailure(Exception e) {
-
+                Log.d(TAG, e.getMessage());
+                showVerseDetailsErrorToast();
             }
         };
-        initAdapter();
     }
 
-    private void initAdapter(){
-        //instantiate your adapter with the list of genres
+    private void initFirebase() {
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+        mFirebaseAnalytics.setCurrentScreen(this, getString(R.string.categories_firebase_screen_name), null);
+    }
+
+    private void updatefirebaseAnalytics(MyVerse response){
+        Bundle bundle = new Bundle();
+        bundle.putString("verse_added_categories", response.getVerseLocation());
+        mFirebaseAnalytics.logEvent("verse_added_categories", bundle);
+    }
+
+    private void updateUserPrefSettings(){
+        UserPreferencesModel model = new UserPreferencesModel();
+        UserPreferences mPrefs = new UserPreferences();
+        mPrefs.setTourStep1Complete(true, getApplicationContext());
+        model.initAllData(getApplicationContext(), mPrefs);
+        DataStore.getInstance().saveUserPrefs(model, getApplicationContext());
+    }
+
+    @Override
+    public void initAdapter(List<Category> categories){
+        layoutManager = new LinearLayoutManager(this);
         adapter = new CategoryAdapter(categories);
-        adapter.setCallback(addVerseSelected, verseSelected);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+        adapter.setCallback(addVerseCallback, verseSelected);
+        recyclerViewExpandable.setLayoutManager(layoutManager);
+        recyclerViewExpandable.setAdapter(adapter);
     }
 
-    public List<Category> getCategories() {
-        List<MyVerse> cat1MyVerseList = new ArrayList<>();
-        List<String> category1References = Arrays.asList(getResources().getStringArray(R.array.category_peace_reference_esv));
-        List<String> category1Verse = Arrays.asList(getResources().getStringArray(R.array.category_peace_text_esv));
+    @Override
+    public void showVerseAddedToast(){
+        Toast.makeText(CategoriesActivity.this, R.string.verse_added_toast_msg, Toast.LENGTH_SHORT).show();
+    }
 
-        List<MyVerse> cat2MyVerseList = new ArrayList<>();
-        List<String> category2References = Arrays.asList(getResources().getStringArray(R.array.category_encouragement_reference_esv));
-        List<String> category2Verse = Arrays.asList(getResources().getStringArray(R.array.category_encouragement_text_esv));
+    @Override
+    public void showVerseDetailsErrorToast() {
+        Toast.makeText(CategoriesActivity.this, R.string.verse_selected_eeror_toast_msg, Toast.LENGTH_SHORT).show();
+    }
 
-        for(int i = 0; i < category1References.size(); i++){
-            MyVerse temp = new MyVerse();
-            temp.setVerseLocation(category1References.get(i));
-            temp.setVerse(category1Verse.get(i));
-            temp.setMemoryStage(0);
-            temp.setMemorySubStage(0);
-            cat1MyVerseList.add(temp);
-        }
-
-        for(int i = 0; i < category2References.size(); i++){
-            MyVerse temp = new MyVerse();
-            temp.setVerseLocation(category2References.get(i));
-            temp.setVerse(category2Verse.get(i));
-            temp.setMemoryStage(0);
-            temp.setMemorySubStage(0);
-            cat2MyVerseList.add(temp);
-        }
-        List<Category> categories = new ArrayList<>();
-        categories.add(new Category("Peace", cat1MyVerseList));
-        categories.add(new Category("Encouragement", cat2MyVerseList));
-        return categories;
+    @Override
+    public void launchVerseDetailsActivity(String verseLocation){
+        Intent intent = new Intent(getApplicationContext(), VerseDetailsActivity.class);
+        intent.putExtra("verseLocation", verseLocation);
+        startActivity(intent);
     }
 
     @Override

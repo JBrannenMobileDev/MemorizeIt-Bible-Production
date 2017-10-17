@@ -10,7 +10,7 @@ import javax.mail.internet.*;
 
 public class SendEmail {
     private String from = "jbinvestments15@gmail.com";
-    private String password = "stickman15";
+    private String password = "Stickman15!";
     private String to = "memorizeitbible@gmail.com";
 
     public void sendEmail(String subject, String msg) {

@@ -23,6 +23,7 @@ public class UserPreferences{
 
     public void setPrefs(UserPreferencesModel response, Context context) {
         if(response != null) {
+            setHowAreWeDoingDialogShown(response.isHowAreWeDoingShown(), context);
             setTourStep1Complete(response.isTourStep1Complete(), context);
             setTourStep2Complete(response.isTourStep2Complete(), context);
             setQuizViewCount(response.getQuizViewCount(), context);
@@ -680,5 +681,15 @@ public class UserPreferences{
 
     public boolean hasCloseDialogBeenShown(Context context) {
         return getSharedPreferences(context).getBoolean(UserPreferenceConstants.CLOSE_DIALOG_SHOWN , true);
+    }
+
+    public void setHowAreWeDoingDialogShown(boolean b, Context applicationContext) {
+        SharedPreferences.Editor editor = getSharedPreferences(applicationContext).edit();
+        editor.putBoolean(UserPreferenceConstants.HOW_ARE_WE_DOING, b);
+        editor.commit();
+    }
+
+    public boolean hasHowAreWeDoingDialogBeenShown(Context context) {
+        return getSharedPreferences(context).getBoolean(UserPreferenceConstants.HOW_ARE_WE_DOING , false);
     }
 }
