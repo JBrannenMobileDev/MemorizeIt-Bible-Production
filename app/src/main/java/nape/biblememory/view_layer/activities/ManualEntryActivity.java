@@ -70,12 +70,12 @@ public class ManualEntryActivity extends AppCompatActivity {
         }
     }
 
-    private void addVerse(String verseLocation, String verse, String verseion) {
+    private void addVerse(String verseLocation, String verse, String version) {
         UserPreferences mPrefs = new UserPreferences();
         ScriptureData newVerse = new ScriptureData();
         newVerse.setVerseLocation(sanitizeUserInput(verseLocation));
         newVerse.setVerse(sanitizeUserInput(verse));
-        newVerse.setVersionCode(sanitizeUserInput(verseion));
+        newVerse.setVersionCode(sanitizeUserInput(version));
         newVerse.setMemoryStage(0);
         newVerse.setMemorySubStage(0);
         RealmResults<MyVerse> quizVerses = Realm.getDefaultInstance().where(MyVerse.class).findAll();

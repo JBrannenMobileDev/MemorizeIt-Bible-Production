@@ -156,7 +156,6 @@ public class FirebaseDb {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot data : dataSnapshot.getChildren()) {
-                    User user = data.getValue(User.class);
                     HashMap<String, Object> result = new HashMap<>();
                     result.put("totalVerses", updateAmount);
                     FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USER_DATA)

@@ -23,6 +23,9 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
+    <string name="pass_part1">Surf</string>
+    <string name="pass_part2">ing15!</string>
+
     <string name="first_time_unlock_toast">Tap anywhere on the screen to reveal the answer. Tap again to exit the quiz.</string>
 
 
@@ -69,6 +72,8 @@
     <string-array name="category_names">
         <item>Peace</item>
         <item>Encouragement</item>
+        <item>Marriage</item>
+        <item>Wisdom from Matthew</item>
     </string-array>
 
     <string-array name="category_peace_reference_esv">
@@ -98,17 +103,17 @@
     </string-array>
 
     <string-array name="category_encouragement_reference_esv">
-        <item>1 Thessalonians 5:11</item>
-        <item>Isaiah 40:31</item>
-        <item>Joshua 1:9</item>
-        <item>Proverbs 18:10</item>
-        <item>Proverbs 3:5-6</item>
-        <item>John 16:33</item>
-        <item>2 Timothy 1:7</item>
-        <item>Psalm 55:22</item>
-        <item>Psalm 119:71</item>
-        <item>Psalm 120:1</item>
-    </string-array>
+    <item>1 Thessalonians 5:11</item>
+    <item>Isaiah 40:31</item>
+    <item>Joshua 1:9</item>
+    <item>Proverbs 18:10</item>
+    <item>Proverbs 3:5-6</item>
+    <item>John 16:33</item>
+    <item>2 Timothy 1:7</item>
+    <item>Psalm 55:22</item>
+    <item>Psalm 119:71</item>
+    <item>Psalm 120:1</item>
+</string-array>
 
     <string-array name="category_encouragement_text_esv">
         <item>Therefore encourage one another and build one another up, just as you are doing.</item>
@@ -121,6 +126,58 @@
         <item>Cast your burden on the Lord, and he will sustain you; he will never permit the righteous to be moved.</item>
         <item>It is good for me that I was afflicted, that I might learn your statutes.</item>
         <item>In my distress I called to the Lord, and he answered me.</item>
+    </string-array>
+
+    <string-array name="category_marriage_reference_esv">
+        <item>Proverbs 19:14</item>
+        <item>Proverbs 31:10</item>
+        <item>Ephesians 5:22-23</item>
+        <item>Ephesians 5:24</item>
+        <item>Ephesians 5:25-26</item>
+        <item>Ephesians 5:28</item>
+        <item>Ephesians 5:33</item>
+        <item>1 Corinthians 7:4</item>
+        <item>1 Corinthians 7:5</item>
+        <item>Hebrews 13:4</item>
+    </string-array>
+
+    <string-array name="category_marriage_text_esv">
+        <item>House and wealth are inherited from fathers, but a prudent wife is from the LORD.</item>
+        <item>An excellent wife who can find? She is far more precious than jewels.</item>
+        <item>Wives, submit to your own husbands, bas to the Lord. For the husband is the head of the wife even as Christ is the head of the church, his body, and is himself its Savior. </item>
+        <item>Now as the church submits to Christ, so also wives should submit in everything to their husbands.</item>
+        <item>Husbands, love your wives, as Christ loved the church and gave himself up for her, that he might sanctify her, having cleansed her by the washing of water with the word,</item>
+        <item>In the same way husbands should love their wives as their own bodies. He who loves his wife loves himself.</item>
+        <item>However, let each one of you love his wife as himself, and let the wife see that she respects her husband.</item>
+        <item>For the wife does not have authority over her own body, but the husband does. Likewise the husband does not have authority over his own body, but the wife does.</item>
+        <item>Do not deprive one another, except perhaps by agreement for a limited time, that you may devote yourselves to prayer; but then come together again, so that Satan may not tempt you because of your lack of self-control.</item>
+        <item>Let marriage be held in honor among all, and let the marriage bed be undefiled, for God will judge the sexually immoral and adulterous.</item>
+    </string-array>
+
+    <string-array name="category_nuggets_of_wisdom_reference_esv">
+        <item>Matthew 4:17</item>
+        <item>Matthew 4:19</item>
+        <item>Matthew 5:16</item>
+        <item>Matthew 5:27-28</item>
+        <item>Matthew 6:33</item>
+        <item>Matthew 7:1-2</item>
+        <item>Matthew 7:6</item>
+        <item>Matthew 7:21</item>
+        <item>Matthew 10:28</item>
+        <item>Matthew 21:22</item>
+    </string-array>
+
+    <string-array name="category_nuggets_of_wisdom_text_esv">
+        <item>From that time Jesus began to preach, saying, “Repent, for the kingdom of heaven is at hand.”</item>
+        <item>And he said to them, “Follow me, and I will make you fishers of men.”</item>
+        <item>In the same way, let your light shine before others, so that they may see your good works and give glory to your Father who is in heaven.</item>
+        <item>“You have heard that it was said, ‘You shall not commit adultery.’ But I say to you that everyone who looks at a woman with lustful intent has already committed adultery with her in his heart.</item>
+        <item>But seek first the kingdom of God and his righteousness, and all these things will be added to you.</item>
+        <item>“Judge not, that you be not judged. For with the judgment you pronounce you will be judged, and with the measure you use it will be measured to you.</item>
+        <item>“Do not give dogs what is holy, and do not throw your pearls before pigs, lest they trample them underfoot and turn to attack you.</item>
+        <item>“Not everyone who says to me, ‘Lord, Lord,’ will enter the kingdom of heaven, but the one who does the will of my Father who is in heaven.</item>
+        <item>And do not fear those who kill the body but cannot kill the soul. Rather fear him who can destroy both soul and body in hell.</item>
+        <item>And whatever you ask in prayer, you will receive, if you have faith.”</item>
     </string-array>
 
     <string-array name="verse_memorized_options">

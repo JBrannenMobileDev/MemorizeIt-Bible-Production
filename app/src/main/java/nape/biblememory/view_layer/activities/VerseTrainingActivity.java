@@ -1,25 +1,22 @@
-package nape.biblememory.view_layer.fragments;
-
+package nape.biblememory.view_layer.activities;
 
 import android.content.Context;
-import android.os.Bundle;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Vibrator;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
-
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -27,12 +24,15 @@ import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import nape.biblememory.R;
+import io.realm.Realm;
+import nape.biblememory.custom_views.BackAwareEditText;
 import nape.biblememory.data_layer.DataStore;
 import nape.biblememory.data_layer.firebase_db.FirebaseDb;
 import nape.biblememory.models.MyVerse;
-import nape.biblememory.models.ScriptureData;
 import nape.biblememory.utils.MyVerseCopyer;
+import nape.biblememory.view_layer.fragments.dialogs.DeleteVerseAlertDialog;
+import nape.biblememory.models.ScriptureData;
+import nape.biblememory.R;
 import nape.biblememory.view_layer.fragments.dialogs.MemorizedReviewInfoAlertDialog;
 import nape.biblememory.view_layer.fragments.dialogs.MyVersesLearningInfoAlertDialog;
 import nape.biblememory.view_layer.fragments.dialogs.VerseMemorizedAlertDialog;
@@ -40,11 +40,12 @@ import nape.biblememory.view_layer.fragments.interfaces.MyVersesPracticeFragment
 import nape.biblememory.view_layer.fragments.interfaces.MyVersesPracticeInterface;
 import nape.biblememory.view_layer.fragments.presenters.MyVersesPracticePresenter;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class MyVersesPracticeFragment extends Fragment implements MyVersesPracticeFragmentInterface , VerseMemorizedAlertDialog.YesSelected{
-    @BindView(R.id.my_verses_review_user_input)EditText userInput;
+public class VerseTrainingActivity extends AppCompatActivity implements DeleteVerseAlertDialog.YesSelected,
+        VerseMemorizedAlertDialog.YesSelected, MyVersesPracticeFragmentInterface, BackAwareEditText.BackPressedListener {
+
+    @BindView(R.id.training_scroll_view)ScrollView scrollView;
+    @BindView(R.id.training_frame_layout)FrameLayout frameLayout;
+    @BindView(R.id.my_verses_review_user_input)BackAwareEditText userInput;
     @BindView(R.id.memorized_review_verse_text)TextView verseTextTv;
     @BindView(R.id.memorized_review_correct_count)TextView correctCountTv;
     @BindView(R.id.memorized_word_count)TextView wordCountTv;
@@ -56,33 +57,38 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
     @BindView(R.id.memorized_review_replay)ImageView replayIcon;
     @BindView(R.id.memorized_review_info)ImageView infoButton;
     @BindView(R.id.well_done1_image)ImageView wellDoneImage;
+    @BindView(R.id.training_show_keyboard)ImageView keyboardBt;
     private MyVersesPracticeInterface presenter;
-    private String verseLocation;
     private boolean reviewComplete;
+    private MyVerse verse;
+    private String verseLocation;
 
-    public MyVersesPracticeFragment() {
-        // Required empty public constructor
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_right);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_verse_training);
+        ButterKnife.bind(this);
+        verseLocation = getIntent().getStringExtra("verseLocation");
+        setTitle("Training");
+        Realm realm = Realm.getDefaultInstance();
+        verse = realm.where(MyVerse.class).equalTo("verseLocation", verseLocation).findFirst();
+        presenter = new MyVersesPracticePresenter(this, verseLocation);
+        initListeners();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_my_verses_practice, container, false);
-        ButterKnife.bind(this, v);
-        verseLocation = getArguments().getString("verseLocation");
-        presenter = new MyVersesPracticePresenter(this, verseLocation);
-        initListeners(v);
-        return v;
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.verse_details_menu, menu);
+        return true;
     }
 
-    private void initListeners(View v) {
-        v.setOnClickListener(new View.OnClickListener() {
+    private void initListeners() {
+        keyboardBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!reviewComplete) {
-                    requestEditTextFocusFromPresenter();
-                }
+                showSoftKeyboard();
             }
         });
 
@@ -102,6 +108,15 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
                 if(s.length() > 0) {
                     char input = s.charAt(s.length() - 1);
                     presenter.onNewCharInput(input);
+                }
+            }
+        });
+
+        userInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    keyboardBt.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -145,21 +160,10 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
         userInput.setText("");
         userInput.requestFocus();
         progressText.setVisibility(View.GONE);
-        InputMethodManager imm = (InputMethodManager) getActivity().getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(userInput, InputMethodManager.SHOW_IMPLICIT);
         verseTextTv.setText("");
         presenter.resetReview();
-    }
-
-    public void requestEditTextFocusFromPresenter(){
-        dot1.setVisibility(View.GONE);
-        dot2.setVisibility(View.GONE);
-        dot3.setVisibility(View.GONE);
-        wellDoneImage.setVisibility(View.GONE);
-        replayIcon.setVisibility(View.GONE);
-        userInput.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getActivity().getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(userInput, InputMethodManager.SHOW_IMPLICIT);
     }
 
     @Override
@@ -192,7 +196,7 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
 
     @Override
     public void turnLightRed(int i) {
-        Vibrator v = (Vibrator) getActivity().getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+        Vibrator v = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
         switch(i){
             case 1:
                 v.vibrate(100);
@@ -227,9 +231,9 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
 
     @Override
     public void hideKeyboard() {
-        View view = getActivity().getCurrentFocus();
+        View view = getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getActivity().getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             reviewComplete = true;
         }
@@ -248,13 +252,13 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
             int n = rand.nextInt(3) + 1;
             switch(n){
                 case 1:
-                    wellDoneImage.setImageDrawable(getActivity().getDrawable(R.drawable.well_done));
+                    wellDoneImage.setImageDrawable(getDrawable(R.drawable.well_done));
                     break;
                 case 2:
-                    wellDoneImage.setImageDrawable(getActivity().getDrawable(R.drawable.well_done_2));
+                    wellDoneImage.setImageDrawable(getDrawable(R.drawable.well_done_2));
                     break;
                 case 3:
-                    wellDoneImage.setImageDrawable(getActivity().getDrawable(R.drawable.well_done_3));
+                    wellDoneImage.setImageDrawable(getDrawable(R.drawable.well_done_3));
                     break;
             }
             wellDoneImage.setVisibility(View.VISIBLE);
@@ -279,10 +283,10 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
             String formattedDate = new SimpleDateFormat("MM-dd-yyyy").format(Calendar.getInstance().getTime());
             scripture.setRemeberedDate(formattedDate);
             DataStore.getInstance().addVerseMemorized(scripture);
-            DataStore.getInstance().saveMemorizedVerse(scripture.toMemorizedVerseData(), getActivity().getApplicationContext());
-            DataStore.getInstance().deleteQuizVerse(scripture.toMyVerse(), getActivity().getApplicationContext());
+            DataStore.getInstance().saveMemorizedVerse(scripture.toMemorizedVerseData(), getApplicationContext());
+            DataStore.getInstance().deleteQuizVerse(scripture.toMyVerse(), getApplicationContext());
             if(scripture.isGoldStar() == 1) {
-                DataStore.getInstance().starNextVerse(getActivity().getApplicationContext());
+                DataStore.getInstance().starNextVerse(getApplicationContext());
             }
             VerseMemorizedAlertDialog alert = new VerseMemorizedAlertDialog();
             Bundle bundle = new Bundle();
@@ -290,9 +294,9 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
             bundle.putString("verseLocation", verse.getVerseLocation());
             bundle.putString("verse", verse.getVerse());
             alert.setArguments(bundle);
-            alert.show(getFragmentManager(), null);
+            alert.show(getSupportFragmentManager(), null);
         }else {
-            FirebaseDb.getInstance().updateQuizVerse(temp, getActivity().getApplicationContext());
+            FirebaseDb.getInstance().updateQuizVerse(temp, getApplicationContext());
         }
     }
 
@@ -319,9 +323,9 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
     @Override
     public void moveVerseToMemorized(ScriptureData scripture) {
         DataStore.getInstance().addVerseMemorized(scripture);
-        DataStore.getInstance().saveMemorizedVerse(scripture.toMemorizedVerseData(), getActivity().getApplicationContext());
-        DataStore.getInstance().deleteQuizVerse(scripture.toMyVerse(), getActivity().getApplicationContext());
-        DataStore.getInstance().starNextVerse(getActivity().getApplicationContext());
+        DataStore.getInstance().saveMemorizedVerse(scripture.toMemorizedVerseData(), getApplicationContext());
+        DataStore.getInstance().deleteQuizVerse(scripture.toMyVerse(), getApplicationContext());
+        DataStore.getInstance().starNextVerse(getApplicationContext());
     }
 
     @Override
@@ -342,21 +346,97 @@ public class MyVersesPracticeFragment extends Fragment implements MyVersesPracti
 
     @Override
     public void showStage1InfoDialog() {
-        new MemorizedReviewInfoAlertDialog().show(getFragmentManager(), null);
+        new MemorizedReviewInfoAlertDialog().show(getSupportFragmentManager(), null);
     }
 
     @Override
     public void showStageInfoDialog() {
-        new MyVersesLearningInfoAlertDialog().show(getFragmentManager(), null);
+        new MyVersesLearningInfoAlertDialog().show(getSupportFragmentManager(), null);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_share) {
+            sendShareIntent();
+            return true;
+        }
+        if (id == R.id.action_reset) {
+            MyVerse temp = MyVerseCopyer.getCopy(verse);
+            temp.setMemoryStage(0);
+            temp.setMemorySubStage(0);
+            DataStore.getInstance().updateQuizVerse(temp, getApplicationContext());
+            return true;
+        }
+        if (id == R.id.action_delete_verse) {
+            DeleteVerseAlertDialog deleteDialog = new DeleteVerseAlertDialog();
+            Bundle bundle = new Bundle();
+            bundle.putString("verse_location", verse.getVerseLocation());
+            deleteDialog.setArguments(bundle);
+            deleteDialog.show(getSupportFragmentManager(), null);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void sendShareIntent(){
+        try {
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("text/plain");
+            i.putExtra(Intent.EXTRA_SUBJECT, verse.getVerseLocation() + "  " + "Memorize It - Bible");
+            String sAux = "\n" +verse.getVerseLocation() + "  " + verse.getVerse() + "\n\n";
+            sAux = sAux + "Hey! I just started memorizing " + verse.getVerseLocation() +  " using this app. You should check it out. It gives me a quiz every time I open my phone.\n\n";
+            sAux = sAux + "https://play.google.com/store/apps/details?id=nape.biblememory&hl=en \n\n";
+            i.putExtra(Intent.EXTRA_TEXT, sAux);
+            startActivity(Intent.createChooser(i, "choose one"));
+        } catch(Exception e) {
+
+        }
+    }
+
+    private void hideSoftKeyboard(){
+        View view = getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    private void showSoftKeyboard(){
+        View view = getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(view, 0);
+        }
+    }
+
+    @Override
+    public void finish(){
+        super.finish();
+        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_right);
+    }
+
+    @Override
+    public void onDeleteVerse(String verseLocation) {
+        DataStore.getInstance().deleteQuizVerse(new MyVerse("", verseLocation), getApplicationContext());
+        finish();
     }
 
     @Override
     public void callOnFinished() {
-        getActivity().finish();
+        finish();
     }
 
     @Override
     public void onHideUIControls() {
+        hideSoftKeyboard();
+    }
 
+    @Override
+    public void onImeBack(BackAwareEditText editText) {
+        keyboardBt.setVisibility(View.VISIBLE);
     }
 }

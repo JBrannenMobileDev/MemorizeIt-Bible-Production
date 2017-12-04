@@ -1,6 +1,5 @@
 package nape.biblememory.view_layer.adapters;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -18,9 +16,7 @@ import io.realm.RealmResults;
 import nape.biblememory.R;
 import nape.biblememory.models.MemorizedVerse;
 import nape.biblememory.models.MyVerse;
-import nape.biblememory.models.User;
 import nape.biblememory.view_layer.activities.BaseCallback;
-import nape.biblememory.view_layer.activities.VerseDetailsActivity;
 
 public class RecyclerViewAdapterPopularVerses extends RecyclerView.Adapter<RecyclerViewAdapterPopularVerses.ViewHolder> {
 

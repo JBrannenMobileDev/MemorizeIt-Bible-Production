@@ -12,6 +12,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -23,7 +24,7 @@ import nape.biblememory.models.MyVerse;
 import nape.biblememory.models.RemoveVerse;
 import nape.biblememory.models.ScriptureData;
 import nape.biblememory.view_layer.activities.BaseCallback;
-import nape.biblememory.view_layer.activities.VerseDetailsActivity;
+import nape.biblememory.view_layer.activities.VerseTrainingActivity;
 import nape.biblememory.view_layer.fragments.dialogs.StarAlertDialog;
 import nape.biblememory.view_layer.material_recyclerview.OnStartDragListener;
 import nape.biblememory.view_layer.material_recyclerview.RecyclerListAdapterMyVerses;
@@ -101,14 +102,14 @@ public class MyVersesFragment extends Fragment implements OnStartDragListener, M
         itemSelectedCallback = new BaseCallback<ScriptureData>() {
             @Override
             public void onResponse(ScriptureData verse) {
-                Intent intent = new Intent(getActivity(), VerseDetailsActivity.class);
+                Intent intent = new Intent(getActivity(), VerseTrainingActivity.class);
                 intent.putExtra("verseLocation", verse.getVerseLocation());
                 startActivity(intent);
             }
 
             @Override
             public void onFailure(Exception e) {
-
+                Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
         };
 

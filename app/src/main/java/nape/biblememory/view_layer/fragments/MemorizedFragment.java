@@ -19,7 +19,6 @@ import nape.biblememory.models.MemorizedVerse;
 import nape.biblememory.utils.UserPreferences;
 import nape.biblememory.view_layer.activities.BaseCallback;
 import nape.biblememory.view_layer.activities.MemorizedVerseDetailsActivity;
-import nape.biblememory.view_layer.activities.VerseDetailsActivity;
 import nape.biblememory.view_layer.adapters.RecyclerViewAdapterMemorized;
 import nape.biblememory.view_layer.fragments.interfaces.MemorizedFragmentInterface;
 import nape.biblememory.view_layer.fragments.interfaces.MemorizedPresenterInterface;

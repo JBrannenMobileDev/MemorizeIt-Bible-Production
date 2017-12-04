@@ -124,7 +124,11 @@ public class RecyclerListAdapterMyVerses extends RecyclerView.Adapter<RecyclerLi
         holder.itemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemSelectedCallback.onResponse(dataset.get(position));
+                if(dataset.size() > position) {
+                    itemSelectedCallback.onResponse(dataset.get(position));
+                }else{
+                    itemSelectedCallback.onFailure(new Exception("Something went wrong! Please restart the app and try again."));
+                }
             }
         });
 

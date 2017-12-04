@@ -4,16 +4,21 @@ package nape.biblememory.utils;
  * Created by jbrannen on 9/25/17.
  */
 
+import android.content.Context;
+
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
 
+import nape.biblememory.R;
+
 public class SendEmail {
     private String from = "jbinvestments15@gmail.com";
-    private String password = "Stickman15!";
+    private String password;
     private String to = "memorizeitbible@gmail.com";
 
-    public void sendEmail(String subject, String msg) {
+    public void sendEmail(String subject, String msg, Context context) {
+        password = context.getResources().getString(R.string.pass_part1) + context.getResources().getString(R.string.pass_part2);
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mai l.smtp.socketFactory.port", "465");

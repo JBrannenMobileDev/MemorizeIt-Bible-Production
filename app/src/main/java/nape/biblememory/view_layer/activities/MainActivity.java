@@ -368,19 +368,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
                 .getIcon()
                 .setColorFilter(getResources().getColor(R.color.greyIcon), PorterDuff.Mode.SRC_IN);
         navigationView.getMenu()
-                .findItem(R.id.nav_support_the_dev)
-                .getIcon()
-                .setColorFilter(getResources().getColor(R.color.greyIcon), PorterDuff.Mode.SRC_IN);
-
-        RealmResults<MemorizedVerse> memorizedList = realm.where(MemorizedVerse.class).findAll();
-        if(memorizedList != null && memorizedList.size() > 3){
-            navigationView.getMenu()
-                    .findItem(R.id.nav_support_the_dev)
-                    .getIcon()
-                    .setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
-        }
-
-        navigationView.getMenu()
                 .findItem(R.id.nav_share)
                 .getIcon()
                 .setColorFilter(getResources().getColor(R.color.greyIcon), PorterDuff.Mode.SRC_IN);
@@ -525,9 +512,6 @@ public class MainActivity extends ActionBarActivity implements NavigationView.On
         } else if (id == R.id.nav_home) {
             mFirebaseAnalytics.logEvent("home_nav_draw_selected", null);
             onBackPressedFromNewVerseSelector();
-        } else if(id == R.id.nav_support_the_dev){
-            mFirebaseAnalytics.logEvent("support_dev_nav_draw_selected", null);
-            intent = new Intent(getApplicationContext(), SupportTheDeveloper.class);
         } else if(id == R.id.nav_share){
             mFirebaseAnalytics.logEvent("share_nav_draw_selected", null);
             sendShareIntent();

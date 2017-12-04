@@ -11,7 +11,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/icon_blue"
+        android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -95,7 +95,7 @@
             android:parentActivityName=".view_layer.activities.SocialActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view_layer.activities.VerseDetailsActivity"
+            android:name=".view_layer.activities.VerseTrainingActivity"
             android:parentActivityName=".view_layer.activities.MainActivity"
             android:screenOrientation="portrait" />
         <activity

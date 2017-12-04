@@ -54,10 +54,14 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesA
         List<List<String>> categoryReferences = new ArrayList<>();
         categoryReferences.add(Arrays.asList(getResources().getStringArray(R.array.category_peace_reference_esv)));
         categoryReferences.add(Arrays.asList(getResources().getStringArray(R.array.category_encouragement_reference_esv)));
+        categoryReferences.add(Arrays.asList(getResources().getStringArray(R.array.category_marriage_reference_esv)));
+        categoryReferences.add(Arrays.asList(getResources().getStringArray(R.array.category_nuggets_of_wisdom_reference_esv)));
 
         List<List<String>> categoryVerses = new ArrayList<>();
         categoryVerses.add(Arrays.asList(getResources().getStringArray(R.array.category_peace_text_esv)));
         categoryVerses.add(Arrays.asList(getResources().getStringArray(R.array.category_encouragement_text_esv)));
+        categoryVerses.add(Arrays.asList(getResources().getStringArray(R.array.category_marriage_text_esv)));
+        categoryVerses.add(Arrays.asList(getResources().getStringArray(R.array.category_nuggets_of_wisdom_text_esv)));
 
         List<String> categoryNames = Arrays.asList(getResources().getStringArray(R.array.category_names));
 
@@ -136,7 +140,7 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesA
 
     @Override
     public void launchVerseDetailsActivity(String verseLocation){
-        Intent intent = new Intent(getApplicationContext(), VerseDetailsActivity.class);
+        Intent intent = new Intent(getApplicationContext(), VerseTrainingActivity.class);
         intent.putExtra("verseLocation", verseLocation);
         startActivity(intent);
     }

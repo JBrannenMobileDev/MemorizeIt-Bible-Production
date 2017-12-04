@@ -38,7 +38,8 @@ public class SendFeedbackActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             UserPreferences mPrefs = new UserPreferences();
             SendEmail sendEmail = new SendEmail();
-            sendEmail.sendEmail("MemorizeIt Bible User Feedback", params[0] + "\n" + "UID: " + mPrefs.getUserId(getApplicationContext()) + "\n" + mPrefs.getUserEmail(getApplicationContext()));
+            sendEmail.sendEmail("MemorizeIt Bible User Feedback", params[0] + "\n" + "UID: " +
+                    mPrefs.getUserId(getApplicationContext()) + "\n" + mPrefs.getUserEmail(getApplicationContext()), getApplicationContext());
             return "Executed";
         }
     }

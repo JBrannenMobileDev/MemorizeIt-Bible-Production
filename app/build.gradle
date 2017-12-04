@@ -18,7 +18,7 @@ repositories {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+    buildToolsVersion '26.0.2'
 
 
 
@@ -30,8 +30,8 @@ android {
         applicationId "nape.biblememory"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 30
-        versionName "2.3.3"
+        versionCode 32
+        versionName "2.3.5"
         resConfigs "auto"
     }
     buildTypes {
